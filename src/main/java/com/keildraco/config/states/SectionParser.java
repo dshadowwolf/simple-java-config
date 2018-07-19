@@ -46,7 +46,6 @@ public class SectionParser implements IStateParser {
 
 		ret_error:
 		while( (p = this.nextToken(tok)) != TT_EOF ) {
-			String ident = "";
 			if(!errored()) {
 				if(p == TT_WORD) {
 					if(tok.sval.matches(identifierPattern)) {
