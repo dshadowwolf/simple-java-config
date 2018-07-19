@@ -4,16 +4,21 @@ import static java.io.StreamTokenizer.TT_WORD;
 
 import java.io.StreamTokenizer;
 
+import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.*;
+import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
 public class KeyValueParser implements IStateParser {
 	private boolean errored = false;
 	private String name;
 	private ParserInternalTypeBase parent;
-	
-	public KeyValueParser(String name) {
+	private TypeFactory factory;
+
+	public KeyValueParser(TypeFactory factory, String name) {
 		this.name = name;
+		this.factory = factory;
 	}
 
 	@Override
@@ -29,20 +34,19 @@ public class KeyValueParser implements IStateParser {
 	@Override
 	public ParserInternalTypeBase getState(StreamTokenizer tok) {
 		int p = this.nextToken(tok);
-		String ident = "";
 
 		if(!errored() && p == TT_WORD) {
 			switch(tok.sval.toLowerCase()) {
 			case "[":
-				return new ListParser(this.name).getState(tok);
+				return this.factory.parseTokens("LIST", this.parent, tok);
 			case "true":
 			case "false":
-				return new BooleanType(this.name, Boolean.parseBoolean(tok.sval));
+				return this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.BOOLEAN);
 			default:
 				if(tok.sval.matches(identifierPattern)) {
-					return new IdentifierType(this.name, tok.sval);
+					return this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.IDENTIFIER);
 				} else if(tok.sval.matches(numberPattern)) {
-					return new NumberType(this.name, tok.sval);
+					return this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.NUMBER);
 				} else {
 					String mess = String.format("Unknown item of type TT_WORD (%s) on line %d", tok.sval, tok.lineno());
 					System.err.println(mess);
@@ -74,5 +78,15 @@ public class KeyValueParser implements IStateParser {
 	@Override
 	public ParserInternalTypeBase getParent() {
 		return this.parent;
+	}
+
+	@Override
+	public void setFactory(TypeFactory factory) {
+		this.factory = factory;
+	}
+
+	@Override
+	public TypeFactory getFactory() {
+		return this.factory;
 	}
 }

@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.io.StreamTokenizer;
 import static java.io.StreamTokenizer.*;
 
+import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 public interface IStateParser {
 	public static final String identifierPattern = "^\\s*[a-zA-Z0-9_][a-zA-Z0-9_\\-]*\\s*$";
 	public static final String numberPattern = "^\\s*(?:0[xX]|o|[0-9]){0,1}\\.{0,1}[0-9A-Fa-f]+\\s*$";
 	public static final String operatorPattern = "^\\s*[a-zA-Z0-9_][a-zA-Z0-9_\\-]*\\(\\s*[!~]\\s*[a-zA-Z0-9_][a-zA-Z0-9_\\\\-]*\\s*\\)\\s*$";
+	
+	public void setFactory(TypeFactory factory);
+	public TypeFactory getFactory();
 	
 	default public String ttypeToString(int ttype) {
 		switch(ttype) {

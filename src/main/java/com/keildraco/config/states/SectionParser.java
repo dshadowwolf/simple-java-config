@@ -3,27 +3,31 @@ package com.keildraco.config.states;
 import java.io.StreamTokenizer;
 import java.util.Locale;
 
+import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
 import static java.io.StreamTokenizer.*;
 
-public class ParseSection implements IStateParser {
+public class SectionParser implements IStateParser {
 	private boolean errored = false;
 	private String name;
 	private SectionType section;
 	private ParserInternalTypeBase parent;
+	private TypeFactory factory;
 	
-	public ParseSection() {
+	public SectionParser(TypeFactory factory) {
 		this.name = "ROOT";
-		this.section = new SectionType(EmptyType, "ROOT");
+		this.section = new SectionType(EmptyType, this.name);
+		this.factory = factory;
 	}
 
-	public ParseSection(SectionType parent, String name) {
+	public SectionParser(TypeFactory factory, SectionType parent, String name) {
 		this.name = name;
 		this.parent = parent;
-		this.section = new SectionType(parent, name);
+		this.factory = factory;
+		this.section = new SectionType(parent, this.name);
 	}
 	
 	@Override
@@ -52,10 +56,10 @@ public class ParseSection implements IStateParser {
 						if(!errored()) {
 							switch(tok.sval) {
 							case "{":
-								this.section.addItem(new ParseSection(this.section, ident).getState(tok));
+								this.section.addItem(this.factory.parseTokens("SECTION", this.section, tok));
 								break;
 							case "=":
-								this.section.addItem(new KeyValueParser(ident).getState(tok));
+								this.section.addItem(this.factory.parseTokens("KEYVALUE", this.section, tok));
 								break;
 							case "}":
 								return this.section;
@@ -86,6 +90,16 @@ public class ParseSection implements IStateParser {
 	@Override
 	public ParserInternalTypeBase getParent() {
 		return this.parent;
+	}
+
+	@Override
+	public void setFactory(TypeFactory factory) {
+		this.factory = factory;
+	}
+
+	@Override
+	public TypeFactory getFactory() {
+		return this.factory;
 	}
 
 }

@@ -6,10 +6,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class OperationTypeTest {
+import com.keildraco.config.types.OperationType;
 
+import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
+import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+
+public class OperationTypeTest {
+	private OperationType testItem;
+	
 	@Before
 	public void setUp() throws Exception {
+		this.testItem = new OperationType(EmptyType, "blargh", "foobar");
+		this.testItem.setOperation("!");
 	}
 
 	@After
@@ -18,37 +26,22 @@ public class OperationTypeTest {
 
 	@Test
 	public final void testGetType() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(this.testItem.getType(), ItemType.OPERATION);
 	}
 
 	@Test
 	public final void testAsString() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	@Test
-	public final void testOperationType() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	@Test
-	public final void testOperationTypeString() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	@Test
-	public final void testOperationTypeParserInternalTypeBaseString() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	@Test
-	public final void testOperationTypeParserInternalTypeBaseStringString() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(this.testItem.asString(), "blargh(! foobar)");
 	}
 
 	@Test
 	public final void testSetOperation() {
-		fail("Not yet implemented"); // TODO
+		try {
+			this.testItem.setOperation("!");
+			assertTrue("Expected no exception", true);
+		} catch(Exception e) {
+			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
+		}
 	}
 
 }

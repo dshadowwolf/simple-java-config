@@ -8,7 +8,9 @@ import java.io.StreamTokenizer;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.*;
+import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 /**
  * @author Daniel Hazelton
@@ -19,12 +21,14 @@ public class ListParser implements IStateParser {
 	private String name;
 	private boolean errored = false;
 	private ParserInternalTypeBase parent;
+	private TypeFactory factory;
 	
 	/**
 	 * 
 	 */
-	public ListParser(String name) {
+	public ListParser(TypeFactory factory, String name) {
 		this.name = name;
+		this.factory = factory;
 	}
 
 	/* (non-Javadoc)
@@ -57,15 +61,15 @@ public class ListParser implements IStateParser {
 						if(tok.sval.equals("(")) {
 							store.push(parseOperation(ident,tok));
 						} else {
-							store.push(new IdentifierType(ident));
+							store.push(this.factory.getType(this.getParent(), this.name, ident, ItemType.IDENTIFIER));
 						}
 					}
 				} else if(tok.sval.matches(numberPattern)) {
-					store.push(new NumberType("",tok.sval));
+					store.push(this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.NUMBER));
 				} else if(tok.sval.toLowerCase().matches("\\s*(?:true|false)\\s*")) {
-					store.push(new BooleanType("",Boolean.parseBoolean(tok.sval)));
+					store.push(this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.BOOLEAN));
 				} else {
-					// error!
+					System.err.println("Error parsing at line "+tok.lineno());
 				}
 			}
 		}
@@ -107,8 +111,10 @@ public class ListParser implements IStateParser {
 					return ParserInternalTypeBase.EmptyType;
 				}
 			}
-			if(operator!=null && value!=null) return new OperationType(this.parent, operator, value);
-			else {
+			if(operator!=null && value!=null) {
+				OperationType rv = (OperationType)this.factory.getType(this.getParent(), this.name, value, ItemType.OPERATION);
+				return rv.setOperation(operator);
+			} else {
 				String mess = String.format("Error parsing an operation - found a token of type %s instead of %s", 
 						ttypeToString(tok.ttype), ttypeToString(StreamTokenizer.TT_WORD));
 				System.err.println(mess);
@@ -130,4 +136,13 @@ public class ListParser implements IStateParser {
 		return this.parent;
 	}
 
+	@Override
+	public void setFactory(TypeFactory factory) {
+		this.factory = factory;
+	}
+
+	@Override
+	public TypeFactory getFactory() {
+		return this.factory;
+	}
 }

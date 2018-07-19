@@ -6,10 +6,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class KeyValueParserTest {
+import com.keildraco.config.factory.TypeFactory;
 
+public class KeyValueParserTest {
+	private TypeFactory factory;
+	
 	@Before
 	public void setUp() throws Exception {
+		this.factory = new TypeFactory();
 	}
 
 	@After
