@@ -1,7 +1,6 @@
 package com.keildraco.config.states;
 
 import java.io.StreamTokenizer;
-import java.util.Locale;
 
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
@@ -42,43 +41,67 @@ public class SectionParser implements IStateParser {
 	
 	@Override
 	public ParserInternalTypeBase getState(StreamTokenizer tok) {
-		int p;
-
-		ret_error:
-		while( (p = this.nextToken(tok)) != TT_EOF ) {
-			if(!errored()) {
-				if(p == TT_WORD) {
-					if(tok.sval.matches(identifierPattern)) {
-						// valid identifier, store and get the next token
-						ident = String.format("%s", tok.sval).toLowerCase(new Locale("en"));
-						int n = this.nextToken(tok);
-						if(!errored()) {
-							switch(tok.sval) {
-							case "{":
-								this.section.addItem(this.factory.parseTokens("SECTION", this.section, tok));
-								break;
-							case "=":
-								this.section.addItem(this.factory.parseTokens("KEYVALUE", this.section, tok));
-								break;
-							case "}":
-								return this.section;
-							default:
-								String mess = String.format("Bad token of type %s (%s) found at line %d",
-										ttypeToString(n), tok.sval, tok.lineno());
-								System.err.print(mess);
-								this.setErrored();
-							}
-						}
-						if(errored()) break ret_error;
-					}
-				}			
-			} else {
-				System.err.println("Error parsing at line "+tok.lineno());
+		String ident = "";
+		while( this.nextToken(tok) != TT_EOF && !this.errored()) {
+			int tt = getTokenType(tok);
+			switch(tt) {
+			case '=':
+				if(ident.equals("")) {
+					this.setErrored();
+					System.err.println("Found a store operation (=) where I was expecting an identifier");
+					return EmptyType;
+				}
+				this.section.addItem(this.factory.parseTokens("KEYVALUE", this.section, tok, ident));
+				ident = "";
+				break;
+			case '{':
+				ParserInternalTypeBase gg = this.factory.parseTokens("SECTION", this.section, tok, ident.equals("")?this.name:ident);
+				gg.setName(ident.equals("")?this.name:ident);
+				this.section.addItem(gg);
+				ident = "";
+				break;
+			case '}':
+				return this.section;
+			case -1:
+				ident = tok.sval.trim();
+				break;
+			case -2:
+			case -3:
+			case -4:
+			default:
+				ident = "";
 				this.setErrored();
-				break ret_error;
+				System.err.println(String.format("Found %s where it was not expected - this is an error", itToString(tt)));
+				return EmptyType;
 			}
 		}
-		return EmptyType;
+		return this.section;
+	}
+
+	private String itToString(int tt) {
+		switch(tt) {
+		case -1:
+			return "an Identifier";
+		case -2:
+			return "a Number";
+		case -3:
+			return "a Boolean";
+		case -4:
+		default:
+			return "a WTF is that(?!)";
+		}
+	}
+
+	private static int getTokenType(StreamTokenizer tok) {
+		if(tok.ttype == TT_WORD) {
+			if(tok.sval.matches(identifierPattern)) return -1;
+			else if(tok.sval.matches(numberPattern)) return -2;
+			else if(tok.sval.toLowerCase().matches("\\s*true\\s*") ||
+					tok.sval.toLowerCase().matches("\\s*false\\s*") ) return -3;
+			else return -4;
+		} else {
+			return tok.ttype;
+		}
 	}
 
 	@Override
@@ -101,4 +124,18 @@ public class SectionParser implements IStateParser {
 		return this.factory;
 	}
 
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
+
+	@Override
+	public void clearErrors() {
+		this.errored = false;
+	}
 }

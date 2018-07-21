@@ -5,8 +5,11 @@ package com.keildraco.config.states;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.*;
@@ -52,28 +55,40 @@ public class ListParser implements IStateParser {
 		int p;
 		Deque<ParserInternalTypeBase> store = new LinkedList<>();
 		
-		while((p = this.nextToken(tok)) != StreamTokenizer.TT_EOF) {
-			if(!errored() && p == StreamTokenizer.TT_WORD) {
+		while((p = this.nextToken(tok)) != StreamTokenizer.TT_EOF && p != ']') {
+			if(p=='[') continue;
+			System.err.print(tok.sval+" ");
+			System.err.print(String.format("[%d] ", p));
+			if( p < 127 && p >= 32) System.err.println(String.format("(%c)", p));
+			else System.err.println("("+ttypeToString(p)+")");
+ 			if(!errored() && p == StreamTokenizer.TT_WORD || p == '(') {
 				if(tok.sval.matches(identifierPattern)) {
-					String ident = String.format("%s", tok.sval);
+					String ident = tok.sval;
 					int n = this.peekToken(tok);
-					if(n == StreamTokenizer.TT_WORD) {
-						if(tok.sval.equals("(")) {
-							store.push(parseOperation(ident,tok));
-						} else {
-							store.push(this.factory.getType(this.getParent(), this.name, ident, ItemType.IDENTIFIER));
-						}
+					if(n == StreamTokenizer.TT_WORD || n == ',' || n == ']') {
+						System.err.println("Identifier: "+ident);
+						ParserInternalTypeBase zzz = this.factory.getType(this.getParent(), this.name, ident, ItemType.IDENTIFIER);
+						store.push(zzz);
+					} else if( n == '(') {
+						ParserInternalTypeBase temp = this.parseOperation(ident, tok);
+						System.err.println("Operation: "+temp.asString());
+						store.push(temp);
 					}
 				} else if(tok.sval.matches(numberPattern)) {
+					System.err.println("Number: "+tok.sval);
 					store.push(this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.NUMBER));
 				} else if(tok.sval.toLowerCase().matches("\\s*(?:true|false)\\s*")) {
+					System.err.println("Boolean: "+tok.sval);
 					store.push(this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.BOOLEAN));
 				} else {
 					System.err.println("Error parsing at line "+tok.lineno());
 				}
 			}
+			store.stream().forEach(it -> System.err.println(it.asString()));
 		}
-		return null;
+		List<ParserInternalTypeBase> l = store.stream().collect(Collectors.toList());
+		Collections.reverse(l);
+		return new ListType(this.name, l);
 	}
 
 	/**
@@ -89,12 +104,14 @@ public class ListParser implements IStateParser {
 		try {
 			String operator = null;
 			String value = null;
+			int p;
 			
-			while(tok.nextToken() == StreamTokenizer.TT_WORD && !tok.sval.equals(")")) {
-				if(operator == null && tok.sval.matches("\\s*[~!]\\s*")) {
-					operator = tok.sval;
-				} else if(operator == null && !tok.sval.matches("\\s*[~!]\\s*")) {
-					String mess = String.format("Error parsing an operation - operator not found when expected, got %s instead", tok.sval);
+			while((p = tok.nextToken()) != StreamTokenizer.TT_EOF ) {
+				if(tok.ttype == '(') continue;
+				if(operator == null && (tok.ttype == '~' || tok.ttype == '!')) {
+					operator = String.format("%c", tok.ttype);
+				} else if(operator == null && !(tok.ttype == '~' || tok.ttype == '!')) {
+					String mess = String.format("Error parsing an operation - operator not found when expected, got %c instead", tok.ttype);
 					System.err.println(mess);
 					return ParserInternalTypeBase.EmptyType;
 				} else if(operator != null && value == null) {
@@ -105,20 +122,15 @@ public class ListParser implements IStateParser {
 						System.err.println(mess);
 						return ParserInternalTypeBase.EmptyType;
 					}
+				} else if(operator!=null && value!=null && p == ')') {
+					OperationType rv = (OperationType)this.factory.getType(this.getParent(), this.name, value, ItemType.OPERATION);
+					rv.setName(ident);
+					return rv.setOperation(operator);
 				} else {
 					String mess = String.format("Error parsing an operation - expected to find a closing parentheses, found %s instead", tok.sval);
 					System.err.println(mess);
 					return ParserInternalTypeBase.EmptyType;
 				}
-			}
-			if(operator!=null && value!=null) {
-				OperationType rv = (OperationType)this.factory.getType(this.getParent(), this.name, value, ItemType.OPERATION);
-				return rv.setOperation(operator);
-			} else {
-				String mess = String.format("Error parsing an operation - found a token of type %s instead of %s", 
-						ttypeToString(tok.ttype), ttypeToString(StreamTokenizer.TT_WORD));
-				System.err.println(mess);
-				return ParserInternalTypeBase.EmptyType;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -144,5 +156,20 @@ public class ListParser implements IStateParser {
 	@Override
 	public TypeFactory getFactory() {
 		return this.factory;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
+
+	@Override
+	public void clearErrors() {
+		this.errored = false;
 	}
 }

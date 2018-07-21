@@ -87,7 +87,7 @@ public class ListTypeTest {
 	 */
 	@Test
 	public final void testAsString() {
-		assertEquals(this.testItem.asString(), "[  ]");
+		assertEquals("blank = [  ]", this.testItem.asString());
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.keildraco.config.types;
 
+
 public class OperationType extends ParserInternalTypeBase {
 	private String ident;
 	private String operator;

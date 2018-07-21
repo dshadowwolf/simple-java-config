@@ -62,7 +62,7 @@ public class IdentifierTypeTest {
 	 */
 	@Test
 	public final void testAsString() {
-		assertEquals(this.testItem.asString(), "value");
+		assertEquals("key = value", this.testItem.asString());
 
 	}
 

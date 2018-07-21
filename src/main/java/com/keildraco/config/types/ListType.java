@@ -58,6 +58,8 @@ public class ListType extends ParserInternalTypeBase {
 
 	@Override
 	public String asString() {
+		if(this.getName().equals("")) return String.format("[ %s ]", this.value.stream().map(v -> v.asString()).collect(Collectors.joining(", ")));
+		
 		return String.format("%s = [ %s ]", this.getName(), this.value.stream().map(v -> v.asString()).collect(Collectors.joining(", ")));
 	}
 }

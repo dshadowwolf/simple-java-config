@@ -12,6 +12,7 @@ public class SectionType extends ParserInternalTypeBase {
 	
 	public SectionType(ParserInternalTypeBase parent, String name) {
 		super(parent,name);
+		if(this.getName().equals("")||parent==null) this.setName("ROOT");
 		this.values = new ConcurrentHashMap<>();
 	}
 	
@@ -42,9 +43,18 @@ public class SectionType extends ParserInternalTypeBase {
 	@Override
 	public String asString() {
 		StringBuilder k = new StringBuilder();
-		k.append(String.format("%s {\n", this.getName()));
-		this.values.entrySet().stream()
-		.map( ent -> String.format("\t%s\n", ent.getValue().asString()) ).forEach( k::append );
+
+		if(!this.getName().equals("ROOT")) {
+			k.append(String.format("%s {\n", this.getName()));
+		}
+		
+		this.values.values().stream()
+		.forEach( v -> k.append(String.format(" %s\n", v.asString() )));
+
+		if(!this.getName().equals("ROOT")) {
+			k.append("}\n");
+		}
+		
 		return k.toString();
-	}
+	}	
 }

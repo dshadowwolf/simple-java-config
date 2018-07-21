@@ -4,8 +4,6 @@
 package com.keildraco.config.factory;
 
 import java.io.StreamTokenizer;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,8 +18,8 @@ import com.keildraco.config.types.ParserInternalTypeBase;
  */
 public class TypeFactory {
 
-	private Map<ParserInternalTypeBase.ItemType,Class<? extends ParserInternalTypeBase>> typeMap;
-	private Map<String, Class<? extends IStateParser>> parserMap;
+	private Map<ParserInternalTypeBase.ItemType,IParserType> typeMap;
+	private Map<String, IParserState> parserMap;
 	
 	/**
 	 * Private default constructor
@@ -31,67 +29,36 @@ public class TypeFactory {
 		this.parserMap = new ConcurrentHashMap<>();
 	}
 	
-	public void registerType(Class<? extends ParserInternalTypeBase> clazz, ParserInternalTypeBase.ItemType type) {
-		this.typeMap.put(type, clazz);
-	}
-	
-	private Class<? extends ParserInternalTypeBase> getTypeInternal(ParserInternalTypeBase.ItemType type) {
-		return this.typeMap.get(type);
+	public void registerType(IParserType lambda, ParserInternalTypeBase.ItemType type) {
+		this.typeMap.put(type, lambda);
 	}
 	
 	public ParserInternalTypeBase getType(ParserInternalTypeBase parent, String name, String value, ParserInternalTypeBase.ItemType type) {
-		Class<? extends ParserInternalTypeBase> clazz = this.getTypeInternal(type);
-		
-		if(clazz == null) return ParserInternalTypeBase.EmptyType;
-		
-		Constructor<? extends ParserInternalTypeBase> cons;
-		ParserInternalTypeBase rv;
-		
-		try {
-			cons = clazz.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
-			rv = cons.newInstance(parent,name,value);
-			return rv;
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			String mess = String.format("Error getting instance for type: %s\n%s", e.getMessage(), e.getCause());
-			System.err.println(mess);
-			e.printStackTrace();
-			return ParserInternalTypeBase.EmptyType;
-		}
+		return this.typeMap.get(type).get(parent, name, value);
 	}
 	
-	public void registerParser(Class<? extends IStateParser> clazz, String name) {
-		this.parserMap.put(name, clazz);
-	}
-	
-	private Class<? extends IStateParser> getParserInternal(String name) {
-		return this.parserMap.get(name);
+	public void registerParser(IParserState parser, String name) {
+		this.parserMap.put(name, parser);
 	}
 	
 	@Nullable
-	public IStateParser getParser(String name) {
-		Class<? extends IStateParser> clazz = this.getParserInternal(name);
-		if(clazz == null) return null;
+	public IStateParser getParser(String parserName, ParserInternalTypeBase parent) {
+		IParserState parser = this.parserMap.getOrDefault(parserName, null);
+		if(parser == null) return null;
 		
-		Constructor<? extends IStateParser> cons;
-		IStateParser rv;
-		
-		try {
-			cons = clazz.getConstructor(String.class);
-			rv = cons.newInstance(name);
-			return rv;
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			String mess = String.format("Error getting instance for type: %s\n%s", e.getMessage(), e.getCause());
-			System.err.println(mess);
-			e.printStackTrace();
-			return null;
-		}		
+		return parser.get();
 	}
 	
-	public ParserInternalTypeBase parseTokens(String parserName, ParserInternalTypeBase parent, StreamTokenizer tok) {
-		IStateParser parser = this.getParser(parserName);
+	public ParserInternalTypeBase parseTokens(String parserName, ParserInternalTypeBase parent, StreamTokenizer tok, String itemName) {
+		IStateParser parser = this.getParser(parserName, parent);
 		if(parser==null) return ParserInternalTypeBase.EmptyType;
 		
-		parser.setParent(parent);
-		return parser.getState(tok);
+		System.err.println("parser "+parser);
+		parser.clearErrors();
+		parser.setName(itemName);
+		System.err.println("parser name "+parser.getName());
+		ParserInternalTypeBase rv = parser.getState(tok);
+		rv.setName(itemName);
+		return rv;
 	}
 }

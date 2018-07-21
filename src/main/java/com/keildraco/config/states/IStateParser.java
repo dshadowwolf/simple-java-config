@@ -38,7 +38,7 @@ public interface IStateParser {
 		try {
 			k = tok.nextToken();
 		} catch (IOException e) {
-			setErrored();
+			this.setErrored();
 			e.printStackTrace();
 		} finally {
 			tok.pushBack();
@@ -51,7 +51,7 @@ public interface IStateParser {
 		try {
 			k = tok.nextToken();
 		} catch (IOException e) {
-			setErrored();
+			this.setErrored();
 			e.printStackTrace();
 		}
 		return k;
@@ -60,4 +60,7 @@ public interface IStateParser {
 	public ParserInternalTypeBase getState(StreamTokenizer tok);
 	public void setParent(ParserInternalTypeBase parent);
 	public ParserInternalTypeBase getParent();
+	default public void setName(String name) { return; }
+	public String getName();
+	public void clearErrors();
 }

@@ -82,5 +82,4 @@ public class ParserInternalTypeBase {
     public ParserInternalTypeBase getParent() {
     	return this.parent!=null?this.parent:EmptyType;
     }
-    
 }

@@ -53,6 +53,7 @@ public class NumberType extends ParserInternalTypeBase {
 
 	@Override
 	public String asString() {
+		if(this.getName().equals("")) return this.value.toString();
 		return String.format("%s = %s", this.getName(), this.value.toString());
 	}
 	
