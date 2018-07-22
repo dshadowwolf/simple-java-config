@@ -3,7 +3,6 @@
  */
 package com.keildraco.config.states;
 
-import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.util.Collections;
 import java.util.Deque;
@@ -54,31 +53,23 @@ public class ListParser implements IStateParser {
 	public ParserInternalTypeBase getState(StreamTokenizer tok) {
 		int p;
 		Deque<ParserInternalTypeBase> store = new LinkedList<>();
-		
+		String ident;
 		while((p = this.nextToken(tok)) != StreamTokenizer.TT_EOF && p != ']') {
 			if(p=='[') continue;
-			System.err.print(tok.sval+" ");
-			System.err.print(String.format("[%d] ", p));
-			if( p < 127 && p >= 32) System.err.println(String.format("(%c)", p));
-			else System.err.println("("+ttypeToString(p)+")");
- 			if(!errored() && p == StreamTokenizer.TT_WORD || p == '(') {
+ 			if(!errored() && p == StreamTokenizer.TT_WORD) {
 				if(tok.sval.matches(identifierPattern)) {
-					String ident = tok.sval;
+					ident = tok.sval;
 					int n = this.peekToken(tok);
 					if(n == StreamTokenizer.TT_WORD || n == ',' || n == ']') {
-						System.err.println("Identifier: "+ident);
 						ParserInternalTypeBase zzz = this.factory.getType(this.getParent(), this.name, ident, ItemType.IDENTIFIER);
 						store.push(zzz);
 					} else if( n == '(') {
-						ParserInternalTypeBase temp = this.parseOperation(ident, tok);
-						System.err.println("Operation: "+temp.asString());
+						ParserInternalTypeBase temp = this.factory.getType(this.getParent(), this.name, ident, ItemType.OPERATION);
 						store.push(temp);
 					}
 				} else if(tok.sval.matches(numberPattern)) {
-					System.err.println("Number: "+tok.sval);
 					store.push(this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.NUMBER));
 				} else if(tok.sval.toLowerCase().matches("\\s*(?:true|false)\\s*")) {
-					System.err.println("Boolean: "+tok.sval);
 					store.push(this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.BOOLEAN));
 				} else {
 					System.err.println("Error parsing at line "+tok.lineno());
@@ -89,53 +80,6 @@ public class ListParser implements IStateParser {
 		List<ParserInternalTypeBase> l = store.stream().collect(Collectors.toList());
 		Collections.reverse(l);
 		return new ListType(this.name, l);
-	}
-
-	/**
-	 * Parse an "operation" from the token stream
-	 * This gets called when the opening parentheses of one is found and will return the
-	 * "OperationType" of the final operation as parsed.
-	 * 
-	 * @param ident Overall name for the operation, as parsed from the input data - an Identifier
-	 * @param tok StreamTokenizer to use for input
-	 * @return a value of type OperationType containing the parsed data of the operation or ParserInternalTypeBase.EmptyType on error
-	 */
-	private ParserInternalTypeBase parseOperation(String ident, StreamTokenizer tok) {
-		try {
-			String operator = null;
-			String value = null;
-			int p;
-			
-			while((p = tok.nextToken()) != StreamTokenizer.TT_EOF ) {
-				if(tok.ttype == '(') continue;
-				if(operator == null && (tok.ttype == '~' || tok.ttype == '!')) {
-					operator = String.format("%c", tok.ttype);
-				} else if(operator == null && !(tok.ttype == '~' || tok.ttype == '!')) {
-					String mess = String.format("Error parsing an operation - operator not found when expected, got %c instead", tok.ttype);
-					System.err.println(mess);
-					return ParserInternalTypeBase.EmptyType;
-				} else if(operator != null && value == null) {
-					if(tok.sval.matches(identifierPattern)) {
-						value = tok.sval;
-					} else {
-						String mess = String.format("Error parsing an operation - expected an identifier and found %s instead", tok.sval);
-						System.err.println(mess);
-						return ParserInternalTypeBase.EmptyType;
-					}
-				} else if(operator!=null && value!=null && p == ')') {
-					OperationType rv = (OperationType)this.factory.getType(this.getParent(), this.name, value, ItemType.OPERATION);
-					rv.setName(ident);
-					return rv.setOperation(operator);
-				} else {
-					String mess = String.format("Error parsing an operation - expected to find a closing parentheses, found %s instead", tok.sval);
-					System.err.println(mess);
-					return ParserInternalTypeBase.EmptyType;
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return ParserInternalTypeBase.EmptyType;
 	}
 
 	@Override

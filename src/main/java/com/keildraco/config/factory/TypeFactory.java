@@ -53,10 +53,8 @@ public class TypeFactory {
 		IStateParser parser = this.getParser(parserName, parent);
 		if(parser==null) return ParserInternalTypeBase.EmptyType;
 		
-		System.err.println("parser "+parser);
 		parser.clearErrors();
 		parser.setName(itemName);
-		System.err.println("parser name "+parser.getName());
 		ParserInternalTypeBase rv = parser.getState(tok);
 		rv.setName(itemName);
 		return rv;

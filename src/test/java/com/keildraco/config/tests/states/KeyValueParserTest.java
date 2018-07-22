@@ -1,6 +1,7 @@
 package com.keildraco.config.tests.states;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
 import org.mockito.invocation.InvocationOnMock;
@@ -49,6 +50,27 @@ public class KeyValueParserTest {
 	        });
 			return p;
 		}, "LIST");
+		this.factory.registerParser(() -> {
+			IStateParser p = mock(IStateParser.class);
+			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
+	 
+	            public ParserInternalTypeBase answer(InvocationOnMock invocation) throws Throwable {
+	            	StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
+	            	while(tok.nextToken() != StreamTokenizer.TT_EOF &&
+	            			tok.ttype != ')') ;
+	            	
+	                return factory.getType(null, "", "", ItemType.OPERATION);
+	            }
+	        });
+			
+			when(p.getName()).thenAnswer(new Answer<String>() {
+	 
+	            public String answer(InvocationOnMock invocation) throws Throwable {
+	                return "MockOperationType";
+	            }
+	        });
+			return p;
+		}, "OPERATION");
 		this.factory.registerParser(() -> new KeyValueParser(this.factory, "KEYVALUE"), "KEYVALUE");
 		this.factory.registerType((parent, name, value) -> new BooleanType(parent, name, value), ItemType.BOOLEAN);
 		this.factory.registerType((parent, name, value) -> new IdentifierType(parent, name, value), ItemType.IDENTIFIER);

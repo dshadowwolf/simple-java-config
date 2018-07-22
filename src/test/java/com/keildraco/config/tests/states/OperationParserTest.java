@@ -5,12 +5,6 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/*import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.*;
-
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-*/
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.nio.charset.StandardCharsets;
@@ -24,16 +18,22 @@ import org.mockito.stubbing.Answer;
 
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.IStateParser;
+import com.keildraco.config.states.OperationParser;
 import com.keildraco.config.states.SectionParser;
-import com.keildraco.config.types.*;
+import com.keildraco.config.types.BooleanType;
+import com.keildraco.config.types.IdentifierType;
+import com.keildraco.config.types.ListType;
+import com.keildraco.config.types.NumberType;
+import com.keildraco.config.types.OperationType;
+import com.keildraco.config.types.ParserInternalTypeBase;
+import com.keildraco.config.types.SectionType;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
-public class SectionParserTest {
+public class OperationParserTest {
 	private TypeFactory factory;
-
+	
 	@Before
 	public void setUp() throws Exception {
-
 		this.factory = new TypeFactory();
 		this.factory.registerParser(() -> {
 			IStateParser p = mock(IStateParser.class);
@@ -85,21 +85,21 @@ public class SectionParserTest {
 	            public ParserInternalTypeBase answer(InvocationOnMock invocation) throws Throwable {
 	            	StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
 	            	while(tok.nextToken() != StreamTokenizer.TT_EOF &&
-	            			tok.ttype != ')') ;
+	            			tok.ttype != '}') System.err.println(String.format("<<<%c :: %s", tok.ttype<127?(tok.ttype>0?tok.ttype:'-'):'?', tok.sval));
 	            	
-	                return factory.getType(null, "", "", ItemType.OPERATION);
+	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.SECTION);
 	            }
 	        });
 			
 			when(p.getName()).thenAnswer(new Answer<String>() {
 	 
 	            public String answer(InvocationOnMock invocation) throws Throwable {
-	                return "MockOperationType";
+	                return "MockSectionType";
 	            }
 	        });
 			return p;
-		}, "OPERATION");
-		this.factory.registerParser(() -> new SectionParser(this.factory, null, ""), "SECTION");
+		}, "SECTION");
+		this.factory.registerParser(() -> new OperationParser(factory), "OPERATION");
 		this.factory.registerType((parent, name, value) -> new BooleanType(parent, name, value), ItemType.BOOLEAN);
 		this.factory.registerType((parent, name, value) -> new IdentifierType(parent, name, value), ItemType.IDENTIFIER);
 		this.factory.registerType((parent, name, value) -> new ListType(parent, name, value), ItemType.LIST);
@@ -113,10 +113,10 @@ public class SectionParserTest {
 	}
 
 	@Test
-	public final void testParseSection() {
+	public final void testOperationParserTypeFactory() {
 		try {
 			@SuppressWarnings("unused")
-			SectionParser p = new SectionParser(this.factory);
+			OperationParser p = new OperationParser(this.factory);
 			assertTrue("Expected no exception", true);
 		} catch( Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
@@ -124,47 +124,62 @@ public class SectionParserTest {
 	}
 
 	@Test
-	public final void testParseSectionSectionTypeString() {
+	public final void testOperationParserTypeFactoryParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
-			SectionParser p = new SectionParser(this.factory, null, "ROOT");
+			OperationParser p = new OperationParser(this.factory, null, "BUGGER");
 			assertTrue("Expected no exception", true);
 		} catch( Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+		}		
+	}
+
+	@Test
+	public final void testSetFactory() {
+		try {
+			OperationParser p = new OperationParser(this.factory);
+			p.setFactory(this.factory);
+			assertTrue("Expected no exception", true);
+		} catch( Exception e ) {
+			fail("Caught exception using a parsers setFactory(TypeFactory) method: "+e.getMessage());
+		}		
+	}
+
+	@Test
+	public final void testGetFactory() {
+		try {
+			OperationParser p = new OperationParser(this.factory);
+			TypeFactory f = p.getFactory();
+			assertEquals(this.factory, f);
+		} catch( Exception e ) {
+			fail("Caught exception using a parsers getFactory() method: "+e.getMessage());
 		}		
 	}
 
 	@Test
 	public final void testSetErrored() {
 		try {
-			SectionParser p = new SectionParser(this.factory, null, "ROOT");
+			OperationParser p = new OperationParser(this.factory);
 			p.setErrored();
 			assertTrue("Expected no exception", true);
 		} catch( Exception e ) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+			fail("Caught exception calling a parsers setErrored() method: "+e.getMessage());
 		}		
 	}
 
 	@Test
 	public final void testErrored() {
 		try {
-			SectionParser p = new SectionParser(this.factory, null, "ROOT");
-			assertTrue("Expected fresh parser \"erorred()\" method to return false", p.errored()==false);
+			OperationParser p = new OperationParser(this.factory);
+			assertEquals(Boolean.FALSE, p.errored());
 		} catch( Exception e ) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+			fail("Caught exception calling a parsers errored() method: "+e.getMessage());
 		}		
 	}
 
-	private ParserInternalTypeBase runParser(StreamTokenizer tok) {
-		IStateParser k = this.factory.getParser("SECTION", null);
-		k.setName("ROOT");
-		ParserInternalTypeBase j = k.getState(tok);
-		return j;
-	}
-	
 	@Test
 	public final void testGetState() {
-		String testString = "section1 {\nidentifier = false\nsection2 {\nident2 = true\n}\n}\n\n";
+		String testString = "(! blargh)\n\n";
 		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
 		StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
@@ -172,25 +187,50 @@ public class SectionParserTest {
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase k = this.runParser(t);
-		assertTrue("Expecting the result to have \"section1\", \"section1\" to have \"section2\" and \"section2\" to have \"ident2\"", k.has("section1") && k.get("section1").has("section2") && k.get("section1").get("section2").has("ident2"));
+		ParserInternalTypeBase k = this.factory.parseTokens("OPERATION", null, t, "blech");
+		assertEquals("blech(! blargh)", k.asString().trim());
 	}
 
 	@Test
 	public final void testSetParent() {
 		try {
-			SectionParser p = new SectionParser(this.factory);
+			OperationParser p = new OperationParser(this.factory);
 			p.setParent(ParserInternalTypeBase.EmptyType);
-			assertTrue("Expected setParent() to not have an exception", true);
+			assertTrue("Expected no exception", true);
 		} catch( Exception e ) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
-		}
+			fail("Caught exception calling a parsers setParent() method: "+e.getMessage());
+		}		
 	}
 
 	@Test
 	public final void testGetParent() {
-		SectionParser p = new SectionParser(this.factory);
-		assertTrue("Fresh parser with not setParent() called returns null from getParent()", p.getParent()==null);
+		try {
+			OperationParser p = new OperationParser(this.factory);
+			assertNull(p.getParent());
+		} catch( Exception e ) {
+			fail("Caught exception calling a parsers getParent() method: "+e.getMessage());
+		}		
+	}
+
+	@Test
+	public final void testGetName() {
+		try {
+			OperationParser p = new OperationParser(this.factory, null, "BUGGERED");
+			assertEquals("BUGGERED", p.getName());
+		} catch( Exception e ) {
+			fail("Caught exception trying to get a parsers name: "+e.getMessage());
+		}		
+	}
+
+	@Test
+	public final void testClearErrors() {
+		try {
+			OperationParser p = new OperationParser(this.factory);
+			p.clearErrors();
+			assertTrue("Expected no exception", true);
+		} catch( Exception e ) {
+			fail("Caught exception telling a parser to clear its errors: "+e.getMessage());
+		}		
 	}
 
 }
