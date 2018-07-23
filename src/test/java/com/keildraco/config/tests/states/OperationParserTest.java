@@ -19,7 +19,6 @@ import org.mockito.stubbing.Answer;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.IStateParser;
 import com.keildraco.config.states.OperationParser;
-import com.keildraco.config.states.SectionParser;
 import com.keildraco.config.types.BooleanType;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
