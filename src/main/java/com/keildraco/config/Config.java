@@ -31,8 +31,11 @@ import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 public class Config {
 	private static final TypeFactory coreTypeFactory = new TypeFactory();
-	private static final List<ParserInternalTypeBase> internalTypes = (List<ParserInternalTypeBase>) Arrays.asList(new IdentifierType(null, "", ""), new BooleanType(null, "", ""),
-			new ListType(null, "", ""), new SectionType(null, "", ""), new NumberType(null, "", ""), new OperationType(null, "", ""));
+	private static final List<ParserInternalTypeBase> internalTypes = (List<ParserInternalTypeBase>) Arrays.asList(
+			new IdentifierType(null, "", ""),
+			new ListType(null, "", ""), 
+			new SectionType(null, "", ""), 
+			new OperationType(null, "", ""));
 	private static final Map<String, Class<? extends IStateParser>> internalParsers = new ConcurrentHashMap<>();
 	
 	static {
