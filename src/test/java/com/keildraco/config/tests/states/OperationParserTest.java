@@ -17,16 +17,9 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.states.IStateParser;
-import com.keildraco.config.states.OperationParser;
-import com.keildraco.config.types.BooleanType;
-import com.keildraco.config.types.IdentifierType;
-import com.keildraco.config.types.ListType;
-import com.keildraco.config.types.NumberType;
-import com.keildraco.config.types.OperationType;
-import com.keildraco.config.types.ParserInternalTypeBase;
-import com.keildraco.config.types.SectionType;
-import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.states.*;
+import com.keildraco.config.types.*;
+import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 public class OperationParserTest {
 	private TypeFactory factory;
@@ -99,10 +92,8 @@ public class OperationParserTest {
 			return p;
 		}, "SECTION");
 		this.factory.registerParser(() -> new OperationParser(factory), "OPERATION");
-		this.factory.registerType((parent, name, value) -> new BooleanType(parent, name, value), ItemType.BOOLEAN);
 		this.factory.registerType((parent, name, value) -> new IdentifierType(parent, name, value), ItemType.IDENTIFIER);
 		this.factory.registerType((parent, name, value) -> new ListType(parent, name, value), ItemType.LIST);
-		this.factory.registerType((parent, name, value) -> new NumberType(parent, name, value), ItemType.NUMBER);
 		this.factory.registerType((parent, name, value) -> new OperationType(parent, name, value), ItemType.OPERATION);
 		this.factory.registerType((parent, name, value) -> new SectionType(parent, name, value), ItemType.SECTION);
 	}

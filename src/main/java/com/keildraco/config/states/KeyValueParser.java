@@ -35,32 +35,17 @@ public class KeyValueParser implements IStateParser {
 	public ParserInternalTypeBase getState(StreamTokenizer tok) {
 		int p = this.nextToken(tok);
 		
-		if(!this.errored() && p == TT_WORD ) {
-			switch(tok.sval.toLowerCase()) {
-			case "true":
-			case "false":
-				System.err.println("Boolean: "+tok.sval);
-				return this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.BOOLEAN);
-			default:
-				if(tok.sval.matches(identifierPattern)) {
-					System.err.println("Identifier: "+tok.sval);
-					return this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.IDENTIFIER);
-				} else if(tok.sval.matches(numberPattern)) {
-					System.err.println("Number: "+tok.sval);
-					return this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.NUMBER);
-				} else {
-					String mess = String.format("Unknown item of type TT_WORD (%s) on line %d", tok.sval, tok.lineno());
-					System.err.println(mess);
-					return EmptyType;
-				}
-			}
+		if(!this.errored() && p == TT_WORD && tok.sval.matches(identifierPattern)) {
+			String temp = tok.sval;
+			if(this.peekToken(tok) == '(') return this.factory.parseTokens("OPERATION", null, tok, temp);
+			else return this.factory.getType(this.getParent(), this.name, temp, ItemType.IDENTIFIER);
 		} else if(!errored() && p != TT_WORD) {
 			switch(p) {
 			case StreamTokenizer.TT_EOF:
 				System.err.println(String.format("Premature End of File while parsing a key-value pair, line %d", tok.lineno()));
+				this.setErrored();
 				break;
 			case '[':
-				System.err.println("Starting List Parsing:");
 				return this.factory.parseTokens("LIST", this.parent, tok, this.name);
 			case '}':
 				tok.pushBack();

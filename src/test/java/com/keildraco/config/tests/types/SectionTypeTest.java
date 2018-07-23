@@ -17,7 +17,6 @@ import com.keildraco.config.types.*;
 public class SectionTypeTest {
 	private SectionType root;
 	private SectionType child;
-	private NumberType PI;
 	private IdentifierType kp;
 	
 	/**
@@ -27,9 +26,7 @@ public class SectionTypeTest {
 	public void setUp() throws Exception {
 		this.root = new SectionType("ROOT");
 		this.child = new SectionType(this.root, "CHILD");
-		this.PI = new NumberType("PI", Math.PI);
 		this.kp = new IdentifierType("blargh", "blech");
-		this.child.addItem(this.PI);
 		this.root.addItem(this.kp);
 		this.root.addItem(this.child);
 	}

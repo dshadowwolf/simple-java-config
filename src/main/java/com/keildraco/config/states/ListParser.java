@@ -67,10 +67,6 @@ public class ListParser implements IStateParser {
 						ParserInternalTypeBase temp = this.factory.getType(this.getParent(), this.name, ident, ItemType.OPERATION);
 						store.push(temp);
 					}
-				} else if(tok.sval.matches(numberPattern)) {
-					store.push(this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.NUMBER));
-				} else if(tok.sval.toLowerCase().matches("\\s*(?:true|false)\\s*")) {
-					store.push(this.factory.getType(this.getParent(), this.name, tok.sval, ItemType.BOOLEAN));
 				} else {
 					System.err.println("Error parsing at line "+tok.lineno());
 				}

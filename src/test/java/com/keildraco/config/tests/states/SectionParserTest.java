@@ -100,10 +100,8 @@ public class SectionParserTest {
 			return p;
 		}, "OPERATION");
 		this.factory.registerParser(() -> new SectionParser(this.factory, null, ""), "SECTION");
-		this.factory.registerType((parent, name, value) -> new BooleanType(parent, name, value), ItemType.BOOLEAN);
 		this.factory.registerType((parent, name, value) -> new IdentifierType(parent, name, value), ItemType.IDENTIFIER);
 		this.factory.registerType((parent, name, value) -> new ListType(parent, name, value), ItemType.LIST);
-		this.factory.registerType((parent, name, value) -> new NumberType(parent, name, value), ItemType.NUMBER);
 		this.factory.registerType((parent, name, value) -> new OperationType(parent, name, value), ItemType.OPERATION);
 		this.factory.registerType((parent, name, value) -> new SectionType(parent, name, value), ItemType.SECTION);
 	}

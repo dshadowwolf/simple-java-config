@@ -82,22 +82,14 @@ public class SectionParser implements IStateParser {
 		switch(tt) {
 		case -1:
 			return "an Identifier";
-		case -2:
-			return "a Number";
-		case -3:
-			return "a Boolean";
-		case -4:
 		default:
-			return "a WTF is that(?!)";
+			return String.format("'%c'", tt);
 		}
 	}
 
 	private static int getTokenType(StreamTokenizer tok) {
 		if(tok.ttype == TT_WORD) {
 			if(tok.sval.matches(identifierPattern)) return -1;
-			else if(tok.sval.matches(numberPattern)) return -2;
-			else if(tok.sval.toLowerCase().matches("\\s*true\\s*") ||
-					tok.sval.toLowerCase().matches("\\s*false\\s*") ) return -3;
 			else return -4;
 		} else {
 			return tok.ttype;
