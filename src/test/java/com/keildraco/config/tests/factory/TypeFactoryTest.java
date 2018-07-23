@@ -40,7 +40,7 @@ public class TypeFactoryTest {
 	public final void testRegisterType() {
 		try {
 			TypeFactory f = new TypeFactory();
-			f.registerType((parent, name, value) -> new BooleanType(parent, name, value), ItemType.BOOLEAN);
+			f.registerType((parent, name, value) -> new IdentifierType(parent, name, value), ItemType.BOOLEAN);
 			assertTrue("Expected no exception", true);
 		} catch(Exception e) {
 			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");
@@ -51,7 +51,7 @@ public class TypeFactoryTest {
 	public final void testGetType() {
 		try {
 			TypeFactory f = new TypeFactory();
-			f.registerType((parent, name, value) -> new BooleanType(parent, name, value), ItemType.BOOLEAN);
+			f.registerType((parent, name, value) -> new IdentifierType(parent, name, value), ItemType.BOOLEAN);
 			assertNotEquals(ParserInternalTypeBase.EmptyType, f.getType(null, "", "", ItemType.BOOLEAN));
 		} catch(Exception e) {
 			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");
@@ -88,10 +88,8 @@ public class TypeFactoryTest {
 			f.registerParser(() -> new ListParser(f, "LIST"), "LIST");
 			f.registerParser(() -> new KeyValueParser(f, "KEYVALUE"), "KEYVALUE");
 			f.registerParser(() -> new SectionParser(f, null, ""), "SECTION");
-			f.registerType((parent, name, value) -> new BooleanType(parent, name, value), ItemType.BOOLEAN);
 			f.registerType((parent, name, value) -> new IdentifierType(parent, name, value), ItemType.IDENTIFIER);
 			f.registerType((parent, name, value) -> new ListType(parent, name, value), ItemType.LIST);
-			f.registerType((parent, name, value) -> new NumberType(parent, name, value), ItemType.NUMBER);
 			f.registerType((parent, name, value) -> new OperationType(parent, name, value), ItemType.OPERATION);
 			f.registerType((parent, name, value) -> new SectionType(parent, name, value), ItemType.SECTION);
 			String testString = "section1 {\nidentifier = false\nsection2 {\nident2 = true\n}\n}\n\n";
