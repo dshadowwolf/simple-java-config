@@ -84,7 +84,7 @@ public class ParserInternalTypeBase {
     	this.items.put(item.getName(),item);
     }
     
-    private Map<String, ParserInternalTypeBase> getChildren() {
+    public Map<String, ParserInternalTypeBase> getChildren() {
     	return Collections.unmodifiableMap(this.items);
     }
 
@@ -154,4 +154,5 @@ public class ParserInternalTypeBase {
     public String getValue() {
     	return "";
     }
+    
 }

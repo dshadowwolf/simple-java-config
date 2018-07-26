@@ -17,40 +17,29 @@ import java.util.stream.Collectors;
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
 public class DataQuery {
-	private static List<String> specialNames = Arrays.asList("all");
-	private static Map<String, List<String>> aggregates = new ConcurrentHashMap<>();
-	private List<String> pieces;
 	private SectionType baseSection;
-	
+	private ItemMatcher matcher;
 	private DataQuery() {
 		throw new IllegalAccessError("Cannot instantiate with no parameters");
 	}
 	
 	private DataQuery(SectionType section) {
 		this.baseSection = section;
-		this.pieces = new LinkedList<>();
 	}
 
 	public static DataQuery of(SectionType section) {
 		return new DataQuery(section);
 	}
 	
-	public static void addAggregate(String aggregateName, String itemName) {
-		List<String> existing = aggregates.getOrDefault(aggregateName, new LinkedList<>());
-		existing.add(itemName);
-		aggregates.put(aggregateName, existing);
-	}
-	
 	public boolean get(String key) {
-		return this.pieces.contains(key);
+		return this.matcher==null?false:this.matcher.matches(key);
 	}
 	
 	/**
 	 * Walk the parse-tree and convert it to a queryable format
 	 */
 	public DataQuery create() {
-		List<String> raw = this.baseSection.flattenData();
-		
-		return null;
+		this.matcher = new ItemMatcher(this.baseSection);
+		return this;
 	}
 }
