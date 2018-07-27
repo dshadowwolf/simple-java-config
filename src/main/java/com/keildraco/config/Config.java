@@ -8,6 +8,7 @@ import java.io.StreamTokenizer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -86,6 +87,10 @@ public class Config {
 		internalParsers.entrySet().stream().forEach( ent -> registerParser(ent.getKey(), ent.getValue()));
 	}
 	
+	public static void reset() {
+		coreTypeFactory.reset();
+	}
+	
 	private static SectionType runParser(Reader reader) {
 		StreamTokenizer tok = new StreamTokenizer(reader);
 		tok.commentChar('#');
@@ -93,23 +98,31 @@ public class Config {
 		tok.wordChars('-', '-');
 		tok.slashSlashComments(true);
 		tok.slashStarComments(true);
-		return (SectionType)coreTypeFactory.getParser("SECTION", null).getState(tok);
+		ParserInternalTypeBase root = coreTypeFactory.getType(null, "root", "", ItemType.SECTION);
+		return (SectionType)coreTypeFactory.getParser("SECTION", root).getState(tok);
 	}
 	
+	private static FileSystem getFilesystemForURI(URI uri) throws IOException {
+		if(uri.getScheme().equalsIgnoreCase("jar")) return FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
+		else return FileSystems.getDefault();
+	}
 	public static DataQuery LoadFile(URI filePath) throws IOException {
-		FileSystem fs = FileSystems.newFileSystem(filePath, Collections.<String, Object>emptyMap());
-		Path p = fs.getPath(filePath.getPath());
+		System.err.println(String.format("LoadFile([URI] %s)", filePath.getPath()));
+		FileSystem fs = getFilesystemForURI(filePath);
+		Path p = fs.getPath(filePath.getPath().substring(1));
 		BufferedReader br = Files.newBufferedReader(p);
 		SectionType res = runParser(br);
 		return DataQuery.of(res).create();
 	}
 	
-	public static DataQuery LoadFile(Path filePath) throws IOException {
+	public static DataQuery LoadFile(Path filePath) throws IOException, URISyntaxException {
+		System.err.println("LoadFile([PATH] "+filePath.toString()+")");
 		return LoadFile(filePath.toUri());
 	}
 	
-	public static DataQuery LoadFile(String filePath) throws IOException {
-		return LoadFile(Paths.get(filePath));
+	public static DataQuery LoadFile(String filePath) throws IOException, URISyntaxException {
+		System.err.println("LoadFile([STRING] "+filePath+")");
+		return LoadFile(Paths.get(filePath).toUri());
 	}
 	
 	public static DataQuery parseString(String data) {

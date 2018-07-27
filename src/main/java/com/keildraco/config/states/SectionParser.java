@@ -29,6 +29,13 @@ public class SectionParser implements IStateParser {
 		this.section = new SectionType(parent, this.name);
 	}
 	
+	public SectionParser(TypeFactory factory, String name) {
+		this.parent = null;
+		this.factory = factory;
+		this.name = name;
+		this.section = new SectionType(parent, this.name);
+	}
+	
 	@Override
 	public void setErrored() {
 		this.errored = true;
@@ -44,6 +51,7 @@ public class SectionParser implements IStateParser {
 		String ident = "";
 		while( this.nextToken(tok) != TT_EOF && !this.errored()) {
 			int tt = getTokenType(tok);
+			
 			switch(tt) {
 			case '=':
 				if(ident.equals("")) {
@@ -55,10 +63,7 @@ public class SectionParser implements IStateParser {
 				ident = "";
 				break;
 			case '{':
-				ParserInternalTypeBase gg = this.factory.parseTokens("SECTION", this.section, tok, ident.equals("")?this.name:ident);
-				gg.setName(ident.equals("")?this.name:ident);
-				this.section.addItem(gg);
-				ident = "";
+				this.section.addItem(this.factory.parseTokens("SECTION", this.section, tok, ident));
 				break;
 			case '}':
 				return this.section;

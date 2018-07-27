@@ -16,7 +16,7 @@ public class OperationParser implements IStateParser {
 	
 	public OperationParser(TypeFactory factory) {
 		this.factory = factory;
-		this.name = "BUGGERED";
+		this.name = "Well I'll Be Buggered";
 	}
 	
 	public OperationParser(TypeFactory factory, ParserInternalTypeBase parent, String name) {

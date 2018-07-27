@@ -59,4 +59,9 @@ public class TypeFactory {
 		rv.setName(itemName);
 		return rv;
 	}
+	
+	public void reset() {
+		this.parserMap.clear();
+		this.typeMap.clear();
+	}
 }

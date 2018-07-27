@@ -171,6 +171,7 @@ public class SectionParserTest {
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
 		ParserInternalTypeBase k = this.runParser(t);
+		System.err.println(k.asString());
 		assertTrue("Expecting the result to have \"section1\", \"section1\" to have \"section2\" and \"section2\" to have \"ident2\"", k.has("section1") && k.get("section1").has("section2") && k.get("section1").get("section2").has("ident2"));
 	}
 

@@ -32,6 +32,11 @@ public class ListParser implements IStateParser {
 		this.name = name;
 		this.factory = factory;
 	}
+	
+	public ListParser(TypeFactory factory) {
+		this.factory = factory;
+		this.name = "Well I'll Be Buggered";
+	}
 
 	/* (non-Javadoc)
 	 * @see com.keildraco.config.states.IStateParser#setErrored()
@@ -71,7 +76,7 @@ public class ListParser implements IStateParser {
 					System.err.println("Error parsing at line "+tok.lineno());
 				}
 			}
-			store.stream().forEach(it -> System.err.println(it.asString()));
+//			store.stream().forEach(it -> System.err.println(it.asString()));
 		}
 		List<ParserInternalTypeBase> l = store.stream().collect(Collectors.toList());
 		Collections.reverse(l);

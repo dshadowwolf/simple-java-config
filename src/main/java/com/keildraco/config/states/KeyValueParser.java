@@ -21,6 +21,11 @@ public class KeyValueParser implements IStateParser {
 		this.factory = factory;
 	}
 
+	public KeyValueParser(TypeFactory factory) {
+		this.factory = factory;
+		this.name = "Well I'll Be Buggered";
+	}
+	
 	@Override
 	public void setErrored() {
 		this.errored = true;

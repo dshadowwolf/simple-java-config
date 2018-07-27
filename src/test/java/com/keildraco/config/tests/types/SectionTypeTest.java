@@ -27,6 +27,7 @@ public class SectionTypeTest {
 		this.root = new SectionType("ROOT");
 		this.child = new SectionType(this.root, "CHILD");
 		this.kp = new IdentifierType("blargh", "blech");
+		this.child.addItem(new IdentifierType("blargh", "foobar"));
 		this.root.addItem(this.kp);
 		this.root.addItem(this.child);
 	}
@@ -51,7 +52,7 @@ public class SectionTypeTest {
 	 */
 	@Test
 	public final void testHas() {
-		assertEquals(this.child.has("PI"), true);
+		assertEquals(true, this.child.has("blargh"));
 	}
 
 	/**
