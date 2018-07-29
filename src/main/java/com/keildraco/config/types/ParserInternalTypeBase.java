@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class ParserInternalTypeBase {
 	private final ParserInternalTypeBase parent;
 	private String name;
-	private Map<String,ParserInternalTypeBase> items;
+	protected Map<String,ParserInternalTypeBase> items;
 	public static final ParserInternalTypeBase EmptyType = new ParserInternalTypeBase("EMPTY") {
 		@Override
 		public boolean has(String itemName) { return false; }
@@ -44,11 +44,29 @@ public class ParserInternalTypeBase {
 	}
 	
     public ParserInternalTypeBase get(String itemName)  {
-    	if(this.has(itemName)) return this.items.get(itemName);
-    	else return ParserInternalTypeBase.EmptyType;
+    	String[] bits;
+    	if(itemName.indexOf('.') > 0) {
+    		bits = itemName.split("\\.");
+    		if(this.has(bits[0])) {
+    			String nameRest = itemName.substring(itemName.indexOf('.'));
+    			System.err.println(nameRest);
+    			return this.get(bits[0]).get(nameRest);
+    		}
+    	} else if(this.has(itemName)) {
+    		return this.items.get(itemName);
+    	}
+    	return ParserInternalTypeBase.EmptyType;
     }
     
-    public boolean has(String itemName) { return this.items.containsKey(itemName); } 
+    public boolean has(String itemName) {
+    	if(itemName.contains(".") && itemName.split("\\.").length > 2) return this.items.containsKey(itemName.split("\\.")[0]);
+    	if(itemName.contains(".")) {
+    		String nn = itemName.substring(0, itemName.indexOf('.'));
+    		String rest = itemName.substring(itemName.indexOf('.'));
+    		return this.items.containsKey(nn)?this.items.get(nn).has(rest):false;
+    	}
+    	return this.items.containsKey(itemName);
+    } 
     
     public enum ItemType {
         SECTION, IDENTIFIER, NUMBER, BOOLEAN, LIST, OPERATION, INVALID, EMPTY;

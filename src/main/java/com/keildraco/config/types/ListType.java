@@ -3,6 +3,7 @@ package com.keildraco.config.types;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ListType extends ParserInternalTypeBase {
@@ -38,12 +39,14 @@ public class ListType extends ParserInternalTypeBase {
 	
 	@Override
 	public boolean has(String s) {
-		return false;
+		return this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst().isPresent();
 	}
 	
 	@Override
 	public ParserInternalTypeBase get(String s) {
-		return ParserInternalTypeBase.EmptyType;
+		Optional<ParserInternalTypeBase> rv = this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst();
+		if(rv.isPresent()) return rv.get();
+		else return EmptyType;
 	}
 	
 	@Override

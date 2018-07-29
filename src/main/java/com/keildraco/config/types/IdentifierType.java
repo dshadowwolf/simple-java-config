@@ -42,4 +42,9 @@ public class IdentifierType extends ParserInternalTypeBase {
 	public ItemType getType() {
 		return ItemType.IDENTIFIER;
 	}
+	
+	@Override
+	public String getValue() {
+		return this.ident;
+	}
 }

@@ -5,6 +5,7 @@ import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.LinkedList;
 
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
@@ -27,25 +28,13 @@ public class DataQuery {
 	
 	public boolean get(String key) {
 		// find item, or "all"
-		@SuppressWarnings("unchecked")
-		Deque<String> bits = (Deque<String>)Arrays.asList(key.split("\\."));
-		String top = bits.pop();
-		String rest = String.join(".", bits);
-		if(this.baseSection.has(top) && this.baseSection.get(top).getType() == ItemType.SECTION) {
-			return new DataQuery((SectionType)this.baseSection.get(top)).create().get(rest);
-		} else if(this.baseSection.has(top)) {
-			return new ItemMatcher(this.baseSection.get(top)).matches(rest);
+		if(this.baseSection.has(key)) {
+			return true;
 		} else if(this.baseSection.has("all")) {
-			return new ItemMatcher(this.baseSection.get("all")).matches(key);
+			String term = key.substring(key.lastIndexOf('.'));
+			return new ItemMatcher(this.baseSection.get("all")).matches(term);
 		} else {
 			return false;
 		}
-	}
-	
-	/**
-	 * Walk the parse-tree and convert it to a queryable format
-	 */
-	public DataQuery create() {
-		return this;
 	}
 }

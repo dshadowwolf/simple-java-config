@@ -20,6 +20,8 @@ import com.keildraco.config.types.ParserInternalTypeBase;
 public class ParserInternalTypeBaseTest {
 	private ParserInternalTypeBase testItem;
 	private ParserInternalTypeBase testFoobar;
+	private ParserInternalTypeBase testNesting;
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -28,6 +30,8 @@ public class ParserInternalTypeBaseTest {
 		this.testItem = new ParserInternalTypeBase("blech");
 		this.testFoobar = new ParserInternalTypeBase("foobar");
 		this.testItem.addItem(this.testFoobar);
+		this.testNesting = new ParserInternalTypeBase("nesting");
+		this.testNesting.addItem(this.testFoobar);
 	}
 
 	/**
@@ -70,6 +74,7 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testGet() {
+		System.err.println("Test: "+this.testNesting.get("nesting.foobar").asString());
 		assertEquals(this.testItem.get("foobar"),this.testFoobar);
 	}
 

@@ -40,22 +40,6 @@ public class SectionTypeTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.SectionType#get(java.lang.String)}.
-	 */
-	@Test
-	public final void testGet() {
-		assertEquals((SectionType)this.root.get("CHILD"), this.child);
-	}
-
-	/**
-	 * Test method for {@link com.keildraco.config.types.SectionType#has(java.lang.String)}.
-	 */
-	@Test
-	public final void testHas() {
-		assertEquals(true, this.child.has("blargh"));
-	}
-
-	/**
 	 * Test method for {@link com.keildraco.config.types.SectionType#getType()}.
 	 */
 	@Test
