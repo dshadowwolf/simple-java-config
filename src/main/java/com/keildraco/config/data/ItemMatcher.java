@@ -3,8 +3,6 @@ package com.keildraco.config.data;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
 
-import java.util.Map.Entry;
-
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
 import com.keildraco.config.types.OperationType;
@@ -66,22 +64,25 @@ public class ItemMatcher {
 		return this.sectionMatches((SectionType)this.thisItem, name);
 	}
 
+	private boolean matchOperator(OperationType op, String itemName, String valueName) {
+		String matchName = itemName;
+		if(op.getName().equalsIgnoreCase(itemName) && valueName.length() > 0) {
+			matchName = valueName;
+		}
+		
+		if(op.getOperator() == '!') return !op.getValue().equalsIgnoreCase(matchName);
+		else if(op.getOperator() == '~') return (!op.getValue().equalsIgnoreCase(matchName))==true;
+		return true;
+	}
+	
 	private boolean operatorMatches(OperationType op, String name) {
 		if(name.indexOf('.') != -1) {
 			String in = name.substring(0, name.indexOf('.'));
 			String vn = name.substring(name.indexOf('.')+1);
-			if(op.getName().equalsIgnoreCase(in)) {
-				if(op.getOperator() == '!') return !op.getValue().equalsIgnoreCase(vn);
-				else if(op.getOperator() == '~') return !!op.getValue().equalsIgnoreCase(vn);
-				return true;
-			}
-		} else if( op.getName().equalsIgnoreCase(name) || op.getValue().equalsIgnoreCase(name) ) {
-			int oper = op.getOperator();
-			if(oper == '!') return !op.getValue().equalsIgnoreCase(name);
-			else if(op.getOperator() == '~') return !!op.getValue().equalsIgnoreCase(name);
-			return true;
+			return this.matchOperator(op, in, vn);
+		} else {
+			return this.matchOperator(op, name, "");
 		}
-		return true;
 	}
 	
 	private boolean operatorMatches(String name) {

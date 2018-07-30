@@ -38,7 +38,7 @@ public interface IStateParser {
 			k = tok.nextToken();
 		} catch (IOException e) {
 			this.setErrored();
-			e.printStackTrace();
+			e.printStackTrace(System.err);
 		} finally {
 			tok.pushBack();
 		}
@@ -51,7 +51,7 @@ public interface IStateParser {
 			k = tok.nextToken();
 		} catch (IOException e) {
 			this.setErrored();
-			e.printStackTrace();
+			e.printStackTrace(System.err);
 		}
 		return k;
 	}

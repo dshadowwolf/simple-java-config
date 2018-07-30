@@ -46,6 +46,10 @@ public class Config {
 		internalParsers.put("SECTION", SectionParser.class);
 	}
 	
+	private Config() {
+		throw new IllegalAccessError("Class not instantiable!");
+	}
+	
 	public static TypeFactory getFactory() {
 		return coreTypeFactory;
 	}
@@ -58,7 +62,7 @@ public class Config {
 				return c.newInstance(coreTypeFactory);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				System.err.println("Exception getting parser instance for "+name+": "+e.getMessage());
-				e.printStackTrace();
+				e.printStackTrace(System.err);
 				return null;
 			}
 		}, name);
@@ -72,7 +76,7 @@ public class Config {
 				return c.newInstance(parent==null?EmptyType:parent, name, value);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				System.err.println("Exception getting parser instance for "+name+": "+e.getMessage());
-				e.printStackTrace();
+				e.printStackTrace(System.err);
 				return null;
 			}
 		}, type);
