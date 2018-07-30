@@ -91,6 +91,7 @@ public class ListParser implements IStateParser {
 			this.setErrored();
 			return EmptyType;
 		}
+		return EmptyType;
 	}
 
 	@Override
