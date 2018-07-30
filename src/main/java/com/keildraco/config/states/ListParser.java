@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.*;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
@@ -61,26 +62,34 @@ public class ListParser implements IStateParser {
 		String ident;
 		while((p = this.nextToken(tok)) != StreamTokenizer.TT_EOF && p != ']') {
 			if(p=='[') continue;
- 			if(!errored() && p == StreamTokenizer.TT_WORD) {
-				if(tok.sval.matches(IDENTIFIER_PATTERN)) {
-					ident = tok.sval;
-					int n = this.peekToken(tok);
-					if(n == StreamTokenizer.TT_WORD || n == ',' || n == ']') {
-						ParserInternalTypeBase zzz = this.factory.getType(this.getParent(), ident, ident, ItemType.IDENTIFIER);
-						store.push(zzz);
-					} else if( n == '(') {
-						ParserInternalTypeBase temp = this.factory.parseTokens("OPERATION", this.getParent(), tok, ident);
-						temp.setName(ident);
-						store.push(temp);
-					}
-				} else {
-					System.err.println("Error parsing at line "+tok.lineno());
+			if(tok.sval.matches(IDENTIFIER_PATTERN)) {
+				ident = tok.sval;
+				if(!errored() && p == StreamTokenizer.TT_WORD) {
+					ParserInternalTypeBase temp = this.getToken(tok, ident);
+					temp.setName(ident);
+					store.push(temp);
 				}
 			}
 		}
+		
 		List<ParserInternalTypeBase> l = store.stream().collect(Collectors.toList());
 		Collections.reverse(l);
 		return new ListType(this.name, l);
+	}
+
+	private ParserInternalTypeBase getToken(StreamTokenizer tok, String ident) {
+		if(tok.sval.matches(IDENTIFIER_PATTERN)) {
+			int n = this.peekToken(tok);
+			if(n == StreamTokenizer.TT_WORD || n == ',' || n == ']') {
+				return this.factory.getType(this.getParent(), this.getName(), ident, ItemType.IDENTIFIER);
+			} else if( n == '(') {
+				return this.factory.parseTokens("OPERATION", this.getParent(), tok, ident);
+			}
+		} else {
+			Config.LOGGER.error("Error parsing at line "+tok.lineno());
+			this.setErrored();
+			return EmptyType;
+		}
 	}
 
 	@Override

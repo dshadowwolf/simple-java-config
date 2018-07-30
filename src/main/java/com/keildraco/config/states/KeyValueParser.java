@@ -4,6 +4,7 @@ import static java.io.StreamTokenizer.TT_WORD;
 
 import java.io.StreamTokenizer;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.*;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
@@ -47,7 +48,7 @@ public class KeyValueParser implements IStateParser {
 		} else if(!errored() && p != TT_WORD) {
 			switch(p) {
 			case StreamTokenizer.TT_EOF:
-				System.err.println(String.format("Premature End of File while parsing a key-value pair, line %d", tok.lineno()));
+				Config.LOGGER.error("Premature End of File while parsing a key-value pair, line %d", tok.lineno());
 				this.setErrored();
 				break;
 			case '[':
@@ -56,12 +57,12 @@ public class KeyValueParser implements IStateParser {
 				tok.pushBack();
 				return EmptyType;
 			default:
-				System.err.println(String.format("Token of unexpected type %s found where TT_WORD expected, line %d", ttypeToString(p), tok.lineno()));
+				Config.LOGGER.error("Token of unexpected type %s found where TT_WORD expected, line %d", ttypeToString(p), tok.lineno());
 			}
 			tok.pushBack();
 			return EmptyType;
 		} else {
-			System.err.println("ERROR! ERROR! ERROR! - Error parsing at line "+tok.lineno());
+			Config.LOGGER.error("ERROR! ERROR! ERROR! - Error parsing at line "+tok.lineno());
 			tok.pushBack();
 			return EmptyType;
 		}
