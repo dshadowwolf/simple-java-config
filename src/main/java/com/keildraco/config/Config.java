@@ -141,4 +141,5 @@ public class Config {
 		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(data, StandardCharsets.UTF_8));
 		return DataQuery.of(runParser(isr));
 	}
+	
 }

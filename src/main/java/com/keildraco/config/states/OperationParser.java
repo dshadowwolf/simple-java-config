@@ -53,6 +53,7 @@ public class OperationParser implements IStateParser {
 			int p;
 			
 			while((p = tok.nextToken()) != StreamTokenizer.TT_EOF ) {
+				System.err.println(String.format("%s -- %d (%c)", tok.sval, p, p>0&&p<127?p:'?'));
 				if(tok.ttype == '(') continue;
 				if(operator == null && (tok.ttype == '~' || tok.ttype == '!')) {
 					operator = String.format("%c", tok.ttype);

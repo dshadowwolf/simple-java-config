@@ -66,17 +66,17 @@ public class ListParser implements IStateParser {
 					ident = tok.sval;
 					int n = this.peekToken(tok);
 					if(n == StreamTokenizer.TT_WORD || n == ',' || n == ']') {
-						ParserInternalTypeBase zzz = this.factory.getType(this.getParent(), this.name, ident, ItemType.IDENTIFIER);
+						ParserInternalTypeBase zzz = this.factory.getType(this.getParent(), ident, ident, ItemType.IDENTIFIER);
 						store.push(zzz);
 					} else if( n == '(') {
-						ParserInternalTypeBase temp = this.factory.getType(this.getParent(), this.name, ident, ItemType.OPERATION);
+						ParserInternalTypeBase temp = this.factory.parseTokens("OPERATION", this.getParent(), tok, ident);
+						temp.setName(ident);
 						store.push(temp);
 					}
 				} else {
 					System.err.println("Error parsing at line "+tok.lineno());
 				}
 			}
-//			store.stream().forEach(it -> System.err.println(it.asString()));
 		}
 		List<ParserInternalTypeBase> l = store.stream().collect(Collectors.toList());
 		Collections.reverse(l);

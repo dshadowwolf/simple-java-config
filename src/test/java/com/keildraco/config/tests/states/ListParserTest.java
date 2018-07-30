@@ -102,7 +102,8 @@ public class ListParserTest {
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
 		ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
-		assertEquals("[ a_value, (null an_operator), false ]", k.asString());
+		System.err.println("asString: "+k.asString());
+		assertEquals("[ a_value, an_operator(null ), false ]", k.asString());
 	}
 
 	@Test

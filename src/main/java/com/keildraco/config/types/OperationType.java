@@ -11,19 +11,26 @@ public class OperationType extends ParserInternalTypeBase {
 
 	public OperationType(String name) {
 		super(name);
+		System.err.println("new Operation: "+name);
 	}
 
 	public OperationType(ParserInternalTypeBase parent, String name) {
 		super(parent, name);
+		System.err.println("new Operation: "+parent.toString()+", "+name);
 	}
 
 	public OperationType(ParserInternalTypeBase parent, String name, String value) {
 		super(parent, name);
 		this.ident = value;
+		if(parent!=null)
+			System.err.println("new Operation: "+parent.toString()+", "+name+", "+value);
+		else
+			System.err.println("new Operation: (null), "+name+", "+value);
 	}
 
 	public OperationType setOperation(String oper) {
-		this.operator = oper;
+		System.err.println("set operator for "+this.getName()+" :: "+ this.ident+" to \""+oper+"\"");
+		this.operator = oper.trim();
 		return this;
 	}
 	

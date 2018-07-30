@@ -4,7 +4,6 @@ import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
 
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
@@ -28,15 +27,36 @@ public class ItemMatcher {
 	}
 
 	public boolean matches(String name) {
+		boolean tn = name.contains(".");
+		String bn = tn?name.substring(0, name.indexOf('.')):name;
+		String xn = tn?name.substring(name.indexOf('.')+1):"";
+		
+		System.err.println(String.format("My Name: %s -- type: %s -- match for: %s", this.thisItem.getName(), this.thisItem.getType(), name));
+		if(tn) {
+			System.err.println(String.format("bn: %s -- xn: %s", bn, xn));
+		}
 		switch(this.thisItem.getType()) {
 			case IDENTIFIER:
-				return this.identMatches(name);
+				return tn?this.thisItem.getName().equalsIgnoreCase(bn)&&this.identMatches(name):this.identMatches(name);
 			case LIST:
-				return this.listMatchesAny(name);
+				if(tn) {
+					if(this.thisItem.has(bn)) {
+						ItemMatcher zz = new ItemMatcher(this.thisItem.get(bn)); 
+						return zz.matches(xn);
+					} else {
+						return false;
+					}
+				} else {
+					return this.listMatchesAny(name);
+				}
 			case OPERATION:
-				return this.operatorMatches(name);
+				return this.operatorMatches(tn?xn:bn);
 			case SECTION:
-				return this.sectionMatches(name);
+				if(tn) {
+					return new ItemMatcher(this.thisItem.get(bn)).matches(xn);
+				} else {
+					return this.sectionMatches(name);
+				}
 			default:
 				return false;
 		}
@@ -57,13 +77,24 @@ public class ItemMatcher {
 	}
 
 	private boolean operatorMatches(OperationType op, String name) {
-		if( op.getName().equalsIgnoreCase(name) || op.getValue().equalsIgnoreCase(name) ) {
+		System.err.println(String.format("%s(%c %s) matches %s ?", op.getName(), op.getOperator(), op.getValue(), name));
+		if(name.indexOf('.') != -1) {
+			String in = name.substring(0, name.indexOf('.'));
+			String vn = name.substring(name.indexOf('.')+1);
+			if(op.getName().equalsIgnoreCase(in)) {
+				if(op.getOperator() == '!') return !op.getValue().equalsIgnoreCase(vn);
+				else if(op.getOperator() == '~') return !!op.getValue().equalsIgnoreCase(vn);
+				return true;
+			}
+		} else if( op.getName().equalsIgnoreCase(name) || op.getValue().equalsIgnoreCase(name) ) {
 			int oper = op.getOperator();
-			if(oper == '!') return false;
+			if(oper == '!') return !op.getValue().equalsIgnoreCase(name);
+			else if(op.getOperator() == '~') return !!op.getValue().equalsIgnoreCase(name);
 			return true;
 		}
-		return false;
+		return true;
 	}
+	
 	private boolean operatorMatches(String name) {
 		return this.operatorMatches((OperationType)this.thisItem, name);
 	}
@@ -75,27 +106,9 @@ public class ItemMatcher {
 	private boolean identMatches(String name) {
 		return this.identMatches((IdentifierType)this.thisItem, name);
 	}
-
-	private boolean matches(ParserInternalTypeBase pitb, String name) {
-		switch(pitb.getType()) {
-		case IDENTIFIER:
-			return this.identMatches((IdentifierType)pitb, name);
-		case LIST:
-			return this.listMatchesAny((ListType)pitb, name);
-		case OPERATION:
-			return this.operatorMatches((OperationType)pitb, name);
-		case SECTION:
-			return this.sectionMatches((SectionType)pitb, name);
-		default:
-			return false;
-		}
-	}
 		
 	private boolean listMatchesAny(ListType theList, String name) {
-		return theList.toList().stream()
-		.map( p -> this.matches(p, name))
-		.collect(Collectors.toList())
-		.contains(Boolean.TRUE);
+		return theList.has(name);
 	}
 	
 	private boolean listMatchesAny(String name) {

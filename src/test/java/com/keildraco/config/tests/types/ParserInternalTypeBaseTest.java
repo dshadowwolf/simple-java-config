@@ -74,7 +74,6 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testGet() {
-		System.err.println("Test: "+this.testNesting.get("nesting.foobar").asString());
 		assertEquals(this.testItem.get("foobar"),this.testFoobar);
 	}
 

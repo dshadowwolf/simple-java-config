@@ -44,13 +44,13 @@ public class ParserInternalTypeBase {
 	}
 	
     public ParserInternalTypeBase get(String itemName)  {
-    	String[] bits;
     	if(itemName.indexOf('.') > 0) {
-    		bits = itemName.split("\\.");
-    		if(this.has(bits[0])) {
-    			String nameRest = itemName.substring(itemName.indexOf('.'));
-    			System.err.println(nameRest);
-    			return this.get(bits[0]).get(nameRest);
+    		String nameBits = itemName.substring(0,itemName.indexOf('.'));
+    		if(this.has(nameBits)) {
+    			String nameRest = itemName.substring(itemName.indexOf('.')+1);
+    			ParserInternalTypeBase rva = this.get(nameBits);
+    			ParserInternalTypeBase rv = rva!=null?rva.get(nameRest):EmptyType;
+    			return rv;
     		}
     	} else if(this.has(itemName)) {
     		return this.items.get(itemName);
@@ -59,12 +59,14 @@ public class ParserInternalTypeBase {
     }
     
     public boolean has(String itemName) {
-    	if(itemName.contains(".") && itemName.split("\\.").length > 2) return this.items.containsKey(itemName.split("\\.")[0]);
     	if(itemName.contains(".")) {
     		String nn = itemName.substring(0, itemName.indexOf('.'));
-    		String rest = itemName.substring(itemName.indexOf('.'));
-    		return this.items.containsKey(nn)?this.items.get(nn).has(rest):false;
+    		String rest = itemName.substring(itemName.indexOf('.')+1);
+    		boolean a = this.items.containsKey(nn);
+    		boolean b = a?this.items.get(nn).has(rest):false;
+    		return a||b;
     	}
+
     	return this.items.containsKey(itemName);
     } 
     
