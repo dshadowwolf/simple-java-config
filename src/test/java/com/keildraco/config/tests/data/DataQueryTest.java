@@ -42,7 +42,7 @@ public class DataQueryTest {
 		try {
 			dq = Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
 			assertTrue("dq.get(\"section.magic.xyzzy\") is (not) true ("+dq.get("section.magic.xyzzy")+")", dq.get("section.magic.xyzzy"));
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e) {
 			fail("dq.get() caused an exception: "+e);
 		}
 	}
