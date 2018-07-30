@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.keildraco.config.data.DataQuery;
 import com.keildraco.config.factory.TypeFactory;
@@ -38,6 +40,7 @@ public class Config {
 			new SectionType(null, "", ""), 
 			new OperationType(null, "", ""));
 	private static final Map<String, Class<? extends IStateParser>> internalParsers = new ConcurrentHashMap<>();
+	public static final Logger LOGGER = LogManager.getFormatterLogger("config");
 	
 	static {
 		internalParsers.put("KEYVALUE", KeyValueParser.class);
@@ -61,8 +64,8 @@ public class Config {
 				c = clazz.getConstructor(TypeFactory.class);
 				return c.newInstance(coreTypeFactory);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				System.err.println("Exception getting parser instance for "+name+": "+e.getMessage());
-				e.printStackTrace(System.err);
+				LOGGER.error("Exception getting parser instance for %s: %s", name, e.getMessage());
+				LOGGER.error(e.getStackTrace());
 				return null;
 			}
 		}, name);
@@ -75,8 +78,8 @@ public class Config {
 				c = clazz.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
 				return c.newInstance(parent==null?EmptyType:parent, name, value);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				System.err.println("Exception getting parser instance for "+name+": "+e.getMessage());
-				e.printStackTrace(System.err);
+				LOGGER.error("Exception getting type instance for %s: %s", name, e.getMessage());
+				LOGGER.error(e.getStackTrace());
 				return null;
 			}
 		}, type);
@@ -122,11 +125,11 @@ public class Config {
 		return DataQuery.of(res);
 	}
 	
-	public static DataQuery LoadFile(Path filePath) throws IOException, URISyntaxException {
+	public static DataQuery LoadFile(Path filePath) throws IOException {
 		return LoadFile(filePath.toUri());
 	}
 	
-	public static DataQuery LoadFile(String filePath) throws IOException, URISyntaxException {
+	public static DataQuery LoadFile(String filePath) throws IOException {
 		return LoadFile(Paths.get(filePath).toUri());
 	}
 	
