@@ -31,10 +31,6 @@ public class ItemMatcher {
 		String bn = tn?name.substring(0, name.indexOf('.')):name;
 		String xn = tn?name.substring(name.indexOf('.')+1):"";
 		
-		System.err.println(String.format("My Name: %s -- type: %s -- match for: %s", this.thisItem.getName(), this.thisItem.getType(), name));
-		if(tn) {
-			System.err.println(String.format("bn: %s -- xn: %s", bn, xn));
-		}
 		switch(this.thisItem.getType()) {
 			case IDENTIFIER:
 				return tn?this.thisItem.getName().equalsIgnoreCase(bn)&&this.identMatches(name):this.identMatches(name);
@@ -63,13 +59,7 @@ public class ItemMatcher {
 	}
 
 	private boolean sectionMatches(SectionType sec, String name) {
-		boolean rv = false;
-		for( Entry<String, ParserInternalTypeBase> ent : sec.getChildren().entrySet()) {
-			if( rv == true ) break;
-			ItemMatcher p = new ItemMatcher(ent.getValue());
-			rv = p.matches(name);
-		}
-		return rv;
+		return sec.has(name);
 	}
 	
 	private boolean sectionMatches(String name) {
@@ -77,7 +67,6 @@ public class ItemMatcher {
 	}
 
 	private boolean operatorMatches(OperationType op, String name) {
-		System.err.println(String.format("%s(%c %s) matches %s ?", op.getName(), op.getOperator(), op.getValue(), name));
 		if(name.indexOf('.') != -1) {
 			String in = name.substring(0, name.indexOf('.'));
 			String vn = name.substring(name.indexOf('.')+1);

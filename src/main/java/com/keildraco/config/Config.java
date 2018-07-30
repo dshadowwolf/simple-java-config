@@ -111,29 +111,18 @@ public class Config {
 		else return FileSystems.getDefault();
 	}
 	public static DataQuery LoadFile(URI filePath) throws IOException {
-		System.err.println(String.format("LoadFile([URI] %s)", filePath.getPath()));
-		FileSystem fs;
-		Path p;
-		if(filePath.getScheme().equalsIgnoreCase("jar")) {
-			fs = getFilesystemForURI(filePath);
-			p = fs.getPath(filePath.getPath().substring(1));
-		} else {
-			System.err.println(filePath.getPath());
-			System.err.println(filePath.getPath().substring(1));
-			p = Paths.get(filePath.getPath().substring(1));
-		}
+	    FileSystem fs = getFilesystemForURI(filePath);
+	    Path p = fs.getPath(filePath.getPath().substring(1));
 		BufferedReader br = Files.newBufferedReader(p);
 		SectionType res = runParser(br);
 		return DataQuery.of(res);
 	}
 	
 	public static DataQuery LoadFile(Path filePath) throws IOException, URISyntaxException {
-		System.err.println("LoadFile([PATH] "+filePath.toString()+")");
 		return LoadFile(filePath.toUri());
 	}
 	
 	public static DataQuery LoadFile(String filePath) throws IOException, URISyntaxException {
-		System.err.println("LoadFile([STRING] "+filePath+")");
 		return LoadFile(Paths.get(filePath).toUri());
 	}
 	

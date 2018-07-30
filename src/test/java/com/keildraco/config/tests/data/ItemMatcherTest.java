@@ -78,4 +78,10 @@ public class ItemMatcherTest {
 		ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
 		assertTrue("Operation matches bravo.hotel but not bravo.charlie", m.matches("bravo.hotel")&&!m.matches("bravo.charlie"));
 	}
+	
+	@Test
+	public final void testMatchSection() {
+		ItemMatcher m = new ItemMatcher(this.base.get("section"));
+		assertTrue("Section matches \"list\" and \"echo\"", m.matches("list")&&m.matches("echo"));
+	}
 }
