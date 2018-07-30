@@ -28,20 +28,17 @@ dependencies {
 	// Apache Commons IO
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 	
-    testImplementation(
-            'org.junit.jupiter:junit-jupiter-api:5.2.0'
-    )
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.2.0'
     
-    testRuntimeOnly(
-            'org.junit.jupiter:junit-jupiter-engine:5.2.0'
-    )
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
     
     // Use Mockito
 	testCompile "org.mockito:mockito-core:2.+"
 
     // Log4J FTW
       compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
-  compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.0'
+      annotationProcessor group:'org.apache.logging.log4j', name:'log4j-core', version: '2.11.0'
+      compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.0'
 }
 
 // In this section you declare where to find the dependencies of your project
@@ -77,6 +74,10 @@ tasks.withType(JavaCompile) {
   options.compilerArgs = [
     '-Xlint:deprecation'
   ]
+}
+
+tasks.withType(Test) {
+  compileTestJava.options.compilerArgs += '-proc:none'
 }
 
 test {
