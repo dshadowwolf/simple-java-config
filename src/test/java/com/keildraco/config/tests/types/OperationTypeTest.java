@@ -26,12 +26,12 @@ public class OperationTypeTest {
 
 	@Test
 	public final void testGetType() {
-		assertEquals(this.testItem.getType(), ItemType.OPERATION);
+		assertEquals(ItemType.OPERATION, this.testItem.getType());
 	}
 
 	@Test
 	public final void testAsString() {
-		assertEquals(this.testItem.asString(), "blargh(! foobar)");
+		assertEquals("blargh(! foobar)", this.testItem.asString());
 	}
 
 	@Test

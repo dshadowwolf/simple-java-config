@@ -41,7 +41,7 @@ public class ListTypeTest {
 	 */
 	@Test
 	public final void testGet() {
-		assertEquals(this.testItem.get("test"), ParserInternalTypeBase.EmptyType);
+		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("test"));
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class ListTypeTest {
 	 */
 	@Test
 	public final void testHas() {
-		assertEquals(this.testItem.has("test"), false);
+		assertEquals(false, this.testItem.has("test"));
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class ListTypeTest {
 	 */
 	@Test
 	public final void testGetType() {
-		assertEquals(this.testItem.getType(), ParserInternalTypeBase.ItemType.LIST);
+		assertEquals(ParserInternalTypeBase.ItemType.LIST, this.testItem.getType());
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class ListTypeTest {
 	 */
 	@Test
 	public final void testToList() {
-		assertEquals(this.testItem.toList(), Collections.emptyList());
+		assertEquals(Collections.emptyList(), this.testItem.toList());
 	}
 
 	/**

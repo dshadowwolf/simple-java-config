@@ -44,7 +44,7 @@ public class SectionTypeTest {
 	 */
 	@Test
 	public final void testGetType() {
-		assertEquals(this.root.getType(), ParserInternalTypeBase.ItemType.SECTION);
+		assertEquals(ParserInternalTypeBase.ItemType.SECTION, this.root.getType());
 	}
 
 	/**

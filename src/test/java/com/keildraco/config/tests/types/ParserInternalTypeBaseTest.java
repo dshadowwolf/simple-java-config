@@ -74,7 +74,7 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testGet() {
-		assertEquals(this.testItem.get("foobar"),this.testFoobar);
+		assertEquals(this.testFoobar, this.testItem.get("foobar"));
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testHas() {
-		assertTrue(this.testItem.has("foobar"));
+		assertTrue("Test Item has child \"foobar\"", this.testItem.has("foobar"));
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testGetType() {
-		assertEquals(this.testItem.getType(), ParserInternalTypeBase.ItemType.INVALID);
+		assertEquals(ParserInternalTypeBase.ItemType.INVALID, this.testItem.getType());
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testAsString() {
-		assertEquals(this.testItem.asString(), "BaseType()");
+		assertEquals("BaseType()", this.testItem.asString());
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testToNumber() {
-		assertEquals(this.testItem.toNumber(), Float.NaN);
+		assertEquals(Float.NaN, this.testItem.toNumber());
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testToBoolean() {
-		assertEquals(this.testItem.toBoolean(), Boolean.FALSE);
+		assertEquals(Boolean.FALSE, this.testItem.toBoolean());
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testToList() {
-		assertEquals(this.testItem.toList(), Collections.emptyList());
+		assertEquals(Collections.emptyList(), this.testItem.toList());
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class ParserInternalTypeBaseTest {
 	public final void testSetName() {
 		ParserInternalTypeBase t = new ParserInternalTypeBase("a");
 		t.setName("b");
-		assertEquals(t.getName(), "b");
+		assertEquals("b", t.getName());
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testGetName() {
-		assertEquals(this.testItem.getName(),"blech");
+		assertEquals("blech", this.testItem.getName());
 	}
 
 	/**
@@ -161,6 +161,6 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testGetParent() {
-		assertEquals(this.testItem.getParent(), ParserInternalTypeBase.EmptyType);
+		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.getParent());
 	}
 }
