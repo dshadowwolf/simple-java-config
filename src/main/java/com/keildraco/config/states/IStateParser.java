@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.io.StreamTokenizer;
 import static java.io.StreamTokenizer.*;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 public interface IStateParser {
-	public static final String identifierPattern = "^\\s*[a-zA-Z0-9_][a-zA-Z0-9_\\-]*\\s*$";
-	public static final String operatorPattern = "^\\s*[a-zA-Z0-9_][a-zA-Z0-9_\\-]*\\(\\s*[!~]\\s*[a-zA-Z0-9_][a-zA-Z0-9_\\\\-]*\\s*\\)\\s*$";
+	public static final String IDENTIFIER_PATTERN = "^\\s*[a-zA-Z0-9_][a-zA-Z0-9_\\-]*\\s*$";
 	
 	public void setFactory(TypeFactory factory);
 	public TypeFactory getFactory();
@@ -38,7 +38,7 @@ public interface IStateParser {
 			k = tok.nextToken();
 		} catch (IOException e) {
 			this.setErrored();
-			e.printStackTrace(System.err);
+			Config.LOGGER.error(e.getStackTrace());
 		} finally {
 			tok.pushBack();
 		}
@@ -51,7 +51,7 @@ public interface IStateParser {
 			k = tok.nextToken();
 		} catch (IOException e) {
 			this.setErrored();
-			e.printStackTrace(System.err);
+			Config.LOGGER.error(e.getStackTrace());
 		}
 		return k;
 	}
@@ -59,7 +59,7 @@ public interface IStateParser {
 	public ParserInternalTypeBase getState(StreamTokenizer tok);
 	public void setParent(ParserInternalTypeBase parent);
 	public ParserInternalTypeBase getParent();
-	default public void setName(String name) { return; }
+	default public void setName(String name) { /* this space intentionally blank */ }
 	public String getName();
 	public void clearErrors();
 }

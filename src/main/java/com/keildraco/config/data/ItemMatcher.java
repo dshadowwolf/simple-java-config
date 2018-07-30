@@ -1,9 +1,10 @@
 package com.keildraco.config.data;
 
 import com.keildraco.config.types.ParserInternalTypeBase;
-import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+
+import com.keildraco.config.Config;
 import com.keildraco.config.types.SectionType;
 
 import com.keildraco.config.types.IdentifierType;
@@ -39,7 +40,8 @@ public class ItemMatcher {
 	private boolean doMatch(ItemType type, String bn, String xn) {
 		switch(type) {
 		case IDENTIFIER:
-			return this.identMatches((IdentifierType)this.thisItem,xn)&&this.thisItem.getName().equalsIgnoreCase(bn);
+			if(xn.length() > 0) return this.identMatches((IdentifierType)this.thisItem,xn)&&this.thisItem.getName().equalsIgnoreCase(bn);
+			else return this.identMatches((IdentifierType)this.thisItem,bn);
 		case LIST:
 			if(this.thisItem.has(bn) && xn.length() > 0) return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
 			else return this.listMatchesAny(bn);
@@ -68,7 +70,7 @@ public class ItemMatcher {
 		}
 		
 		if(op.getOperator() == '!') return !op.getValue().equalsIgnoreCase(matchName);
-		else if(op.getOperator() == '~') return (!op.getValue().equalsIgnoreCase(matchName))==true;
+		else if(op.getOperator() == '~') return op.getValue().equalsIgnoreCase(matchName);
 		return true;
 	}
 	
@@ -87,13 +89,10 @@ public class ItemMatcher {
 	}
 
 	private boolean identMatches(IdentifierType ident, String name) {
-		if( ident.getName().equalsIgnoreCase(name) || ident.getValue().equalsIgnoreCase(name) ) return true;
-		return false;		
+		Config.LOGGER.fatal(">> %s -- %s -- %s", ident.getName(), ident.getValue(), name);
+		return (ident.getName().equalsIgnoreCase(name) || ident.getValue().equalsIgnoreCase(name));
 	}
-	private boolean identMatches(String name) {
-		return this.identMatches((IdentifierType)this.thisItem, name);
-	}
-		
+	
 	private boolean listMatchesAny(ListType theList, String name) {
 		return theList.has(name);
 	}

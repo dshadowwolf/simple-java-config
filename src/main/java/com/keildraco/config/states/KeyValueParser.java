@@ -40,7 +40,7 @@ public class KeyValueParser implements IStateParser {
 	public ParserInternalTypeBase getState(StreamTokenizer tok) {
 		int p = this.nextToken(tok);
 		
-		if(!this.errored() && p == TT_WORD && tok.sval.matches(identifierPattern)) {
+		if(!this.errored() && p == TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 			String temp = tok.sval;
 			if(this.peekToken(tok) == '(') return this.factory.parseTokens("OPERATION", null, tok, temp);
 			else return this.factory.getType(this.getParent(), this.name, temp, ItemType.IDENTIFIER);

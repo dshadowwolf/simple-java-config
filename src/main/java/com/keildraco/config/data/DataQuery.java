@@ -16,7 +16,7 @@ public class DataQuery {
 	}
 
 	public static DataQuery of(SectionType section) {
-		if(section != null && !EmptyType.equals(section))
+		if(!EmptyType.equals(section))
 			return new DataQuery(section);
 		return null;
 	}

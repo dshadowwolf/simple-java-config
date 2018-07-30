@@ -94,7 +94,7 @@ public class SectionParser implements IStateParser {
 
 	private static int getTokenType(StreamTokenizer tok) {
 		if(tok.ttype == TT_WORD) {
-			if(tok.sval.matches(identifierPattern)) return -1;
+			if(tok.sval.matches(IDENTIFIER_PATTERN)) return -1;
 			else return -4;
 		} else {
 			return tok.ttype;

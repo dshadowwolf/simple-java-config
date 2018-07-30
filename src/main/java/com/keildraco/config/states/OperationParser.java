@@ -61,7 +61,7 @@ public class OperationParser implements IStateParser {
 					System.err.println(mess);
 					return ParserInternalTypeBase.EmptyType;
 				} else if(operator != null && value == null) {
-					if(tok.sval.matches(identifierPattern)) {
+					if(tok.sval.matches(IDENTIFIER_PATTERN)) {
 						value = tok.sval;
 					} else {
 						String mess = String.format("Error parsing an operation - expected an identifier and found %s instead", tok.sval);

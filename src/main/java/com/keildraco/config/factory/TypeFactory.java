@@ -49,7 +49,7 @@ public class TypeFactory {
 		return parser.get();
 	}
 	
-	public ParserInternalTypeBase parseTokens(String parserName, ParserInternalTypeBase parent, StreamTokenizer tok, String itemName) {
+	public ParserInternalTypeBase parseTokens(String parserName, @Nullable ParserInternalTypeBase parent, StreamTokenizer tok, String itemName) {
 		IStateParser parser = this.getParser(parserName, parent);
 		if(parser==null) return ParserInternalTypeBase.EmptyType;
 		
