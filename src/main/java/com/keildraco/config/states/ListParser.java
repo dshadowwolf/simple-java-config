@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.*;
-import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
 /**
  * @author Daniel Hazelton
