@@ -15,8 +15,10 @@ import org.apache.commons.io.IOUtils;
 import com.keildraco.config.Config;
 import com.keildraco.config.data.ItemMatcher;
 import com.keildraco.config.types.IdentifierType;
+import com.keildraco.config.types.OperationType;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
+import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class ItemMatcherTest {
@@ -90,5 +92,53 @@ public class ItemMatcherTest {
 	@Test
 	public final void testAlwaysFalseMatcher() {
 		assertEquals(Boolean.FALSE, ItemMatcher.AlwaysFalse.matches("bs"));
+	}
+	
+	@Test
+	public final void testMatchOperationSpecificExclude() {
+		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		op.setOperation("!");
+		ItemMatcher m = new ItemMatcher(op);
+		assertEquals(Boolean.FALSE, m.matches("alpha"));
+	}
+	
+	@Test
+	public final void testMatchOperationSpecificIgnore() {
+		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		op.setOperation("~");
+		ItemMatcher m = new ItemMatcher(op);
+		assertEquals(Boolean.TRUE, m.matches("alpha"));
+	}
+
+	@Test
+	public final void testMatchOperationUnknownOperator() {
+		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		op.setOperation(">");
+		ItemMatcher m = new ItemMatcher(op);
+		assertEquals(Boolean.TRUE, m.matches("alpha"));
+	}
+
+	@Test
+	public final void testMatchOperationSpecificExcludeLongName() {
+		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		op.setOperation("!");
+		ItemMatcher m = new ItemMatcher(op);
+		assertEquals(Boolean.FALSE, m.matches("op.alpha"));
+	}
+	
+	@Test
+	public final void testMatchOperationSpecificIgnoreLongName() {
+		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		op.setOperation("~");
+		ItemMatcher m = new ItemMatcher(op);
+		assertEquals(Boolean.TRUE, m.matches("op.alpha"));
+	}
+
+	@Test
+	public final void testMatchOperationUnknownOperatorLongName() {
+		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		op.setOperation(">");
+		ItemMatcher m = new ItemMatcher(op);
+		assertEquals(Boolean.TRUE, m.matches("op.alpha"));
 	}
 }

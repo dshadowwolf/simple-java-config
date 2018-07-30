@@ -7,6 +7,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.types.OperationType;
+import com.keildraco.config.types.ParserInternalTypeBase;
 
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
@@ -21,6 +22,28 @@ public class OperationTypeTest {
 		this.testItem.setOperation("!");
 	}
 
+	@Test
+	public final void testOperationTypeString() {
+		try {
+			@SuppressWarnings("unused")
+			OperationType op = new OperationType("OPERATION");
+			assertTrue(true, "Expected no exception");
+		} catch(Exception e) {
+			fail("Caught exception instantiating new OperationType");
+		}
+	}
+	
+	@Test
+	public final void testOperationTypeParserInternalTypeBaseString() {
+		try {
+			@SuppressWarnings("unused")
+			OperationType op = new OperationType(ParserInternalTypeBase.EmptyType, "OPERATION");
+			assertTrue(true, "Expected no exception");
+		} catch(Exception e) {
+			fail("Caught exception instantiating new OperationType");
+		}
+	}
+	
 	@Test
 	public final void testGetType() {
 		assertEquals(ItemType.OPERATION, this.testItem.getType());
