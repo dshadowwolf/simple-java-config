@@ -70,6 +70,20 @@ public class ParserInternalTypeBaseTest {
 	}
 
 	/**
+	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#ParserInternalTypeBase(com.keildraco.config.types.ParserInternalTypeBase, java.lang.String, java.lang.String)}.
+	 */
+	@Test
+	public final void testParserInternalTypeBaseParserInternalTypeBaseStringString() {
+		try {
+			@SuppressWarnings("unused")
+			ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh", "blech");
+			assertTrue("Expected no exception", true);
+		} catch(Exception e) {
+			fail("Exception ("+e.getMessage()+") caught when not expected");
+		}
+	}
+	
+	/**
 	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#get(java.lang.String)}.
 	 */
 	@Test

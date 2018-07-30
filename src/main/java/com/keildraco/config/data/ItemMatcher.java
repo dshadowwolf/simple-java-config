@@ -3,6 +3,7 @@ package com.keildraco.config.data;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.types.SectionType;
@@ -14,16 +15,12 @@ import com.keildraco.config.types.OperationType;
 public class ItemMatcher {
 	private final ParserInternalTypeBase thisItem;
 	
-	public static final class AlwaysFalse extends ItemMatcher {
+	public static final ItemMatcher AlwaysFalse = new ItemMatcher(EmptyType) {
 		@Override
 		public boolean matches(String name) {
 			return false;
 		}
-	}
-	
-	private ItemMatcher() {
-		throw new IllegalAccessError("Cannot instantiate class this way!");
-	}
+	};
 	
 	public ItemMatcher(ParserInternalTypeBase item) {
 		this.thisItem = item;

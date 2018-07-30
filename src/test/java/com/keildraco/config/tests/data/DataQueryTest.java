@@ -45,4 +45,17 @@ public class DataQueryTest {
 			fail("dq.get() caused an exception: "+e);
 		}
 	}
+	
+	@Test
+	public final void testGetAll() {
+		Config.reset();
+		Config.registerKnownParts();
+		DataQuery dq;
+		try {
+			dq = Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
+			assertTrue("dq.get(\"section.ident3\") is (not) true ("+dq.get("section.ident3")+")", dq.get("section.ident3"));
+		} catch (IOException e) {
+			fail("dq.get() caused an exception: "+e);
+		}		
+	}
 }

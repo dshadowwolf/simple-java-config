@@ -84,4 +84,9 @@ public class ItemMatcherTest {
 		ItemMatcher m = new ItemMatcher(this.base.get("section"));
 		assertTrue("Section matches \"list\" and \"echo\"", m.matches("list")&&m.matches("echo"));
 	}
+	
+	@Test
+	public final void testAlwaysFalseMatcher() {
+		assertEquals(Boolean.FALSE, ItemMatcher.AlwaysFalse.matches("bs"));
+	}
 }
