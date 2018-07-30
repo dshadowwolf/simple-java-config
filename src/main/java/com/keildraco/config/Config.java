@@ -32,7 +32,7 @@ import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 public class Config {
 	private static final TypeFactory coreTypeFactory = new TypeFactory();
-	private static final List<ParserInternalTypeBase> internalTypes = (List<ParserInternalTypeBase>) Arrays.asList(
+	private static final List<ParserInternalTypeBase> internalTypes = Arrays.asList(
 			new IdentifierType(null, "", ""),
 			new ListType(null, "", ""), 
 			new SectionType(null, "", ""), 

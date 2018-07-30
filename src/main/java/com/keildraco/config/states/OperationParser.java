@@ -80,7 +80,7 @@ public class OperationParser implements IStateParser {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			e.printStackTrace(System.err);
 		}
 		return ParserInternalTypeBase.EmptyType;
 	}

@@ -33,7 +33,7 @@ public class TypeFactory {
 		this.typeMap.put(type, lambda);
 	}
 	
-	public ParserInternalTypeBase getType(ParserInternalTypeBase parent, String name, String value, ParserInternalTypeBase.ItemType type) {
+	public ParserInternalTypeBase getType(@Nullable ParserInternalTypeBase parent, String name, String value, ParserInternalTypeBase.ItemType type) {
 		return this.typeMap.get(type).get(parent, name, value);
 	}
 	
@@ -42,7 +42,7 @@ public class TypeFactory {
 	}
 	
 	@Nullable
-	public IStateParser getParser(String parserName, ParserInternalTypeBase parent) {
+	public IStateParser getParser(String parserName, @Nullable ParserInternalTypeBase parent) {
 		IParserState parser = this.parserMap.getOrDefault(parserName, null);
 		if(parser == null) return null;
 		
