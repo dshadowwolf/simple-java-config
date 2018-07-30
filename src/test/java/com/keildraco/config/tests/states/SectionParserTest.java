@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.IStateParser;
 import com.keildraco.config.states.SectionParser;
@@ -105,7 +106,7 @@ public class SectionParserTest {
 	}
 
 	@Test
-	public final void testParseSection() {
+	public final void testSectionParser() {
 		try {
 			@SuppressWarnings("unused")
 			SectionParser p = new SectionParser(this.factory);
@@ -116,7 +117,7 @@ public class SectionParserTest {
 	}
 
 	@Test
-	public final void testParseSectionSectionTypeString() {
+	public final void testSectionParserTypeFactorySectionTypeString() {
 		try {
 			@SuppressWarnings("unused")
 			SectionParser p = new SectionParser(this.factory, null, "ROOT");
@@ -126,6 +127,17 @@ public class SectionParserTest {
 		}		
 	}
 
+	@Test
+	public final void testSectionParserTypeFactoryString() {
+		try {
+			@SuppressWarnings("unused")
+			SectionParser p = new SectionParser(this.factory, "ROOT");
+			assertTrue(true, "Expected no exception");
+		} catch( Exception e ) {
+			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+		}		
+	}
+	
 	@Test
 	public final void testSetErrored() {
 		try {
@@ -171,13 +183,41 @@ public class SectionParserTest {
 	}
 
 	@Test
+	public final void testGetStateUnexpectedStore() {
+		String testString = "section1 {\n= false\nidentifier = false\nsection2 {\nident2 = true\n}\n}\n\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase k = this.runParser(t);
+		assertEquals(ParserInternalTypeBase.EmptyType, k, "Expecting to have k be EmptyType");
+	}
+	
+	@Test
+	public final void testGetStateUnexpectedItem() {
+		String testString = "section1 { identifier(";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase k = this.runParser(t);
+		assertEquals(ParserInternalTypeBase.EmptyType, k, "Expecting to have k be EmptyType");
+	}
+	
+	@Test
 	public final void testSetParent() {
 		try {
 			SectionParser p = new SectionParser(this.factory);
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected setParent() to not have an exception");
 		} catch( Exception e ) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+			fail("Caught exception in test: "+e.getMessage());
 		}
 	}
 
@@ -187,4 +227,34 @@ public class SectionParserTest {
 		assertNull(p.getParent(), "Fresh parser with not setParent() called returns null from getParent()");
 	}
 
+	@Test
+	public final void testSetFactory() {
+		try {
+			SectionParser p = new SectionParser(this.factory);
+			p.setFactory(Config.getFactory());
+			assertTrue(true, "Expected setFactory() to not have an exception");
+		} catch( Exception e ) {
+			fail("Caught exception calling setFactory(): "+e.getMessage());
+		}
+	}
+	
+	@Test
+	public final void testGetFactory() {
+		try {
+			SectionParser p = new SectionParser(this.factory);
+			assertEquals(this.factory, p.getFactory());
+		} catch( Exception e ) {
+			fail("Caught exception calling getFactory(): "+e.getMessage());
+		}
+	}
+	
+	@Test
+	public final void testGetName() {
+		try {
+			SectionParser p = new SectionParser(this.factory);
+			assertEquals("ROOT", p.getName());
+		} catch( Exception e ) {
+			fail("Caught exception calling getName(): "+e.getMessage());
+		}
+	}
 }

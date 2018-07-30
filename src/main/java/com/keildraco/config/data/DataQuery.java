@@ -1,6 +1,5 @@
 package com.keildraco.config.data;
 
-import com.keildraco.config.Config;
 import com.keildraco.config.types.*;
 
 public class DataQuery {

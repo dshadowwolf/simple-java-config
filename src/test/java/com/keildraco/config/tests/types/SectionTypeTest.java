@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import com.keildraco.config.Config;
 import com.keildraco.config.types.*;
+
 /**
  * @author Daniel Hazelton
  *

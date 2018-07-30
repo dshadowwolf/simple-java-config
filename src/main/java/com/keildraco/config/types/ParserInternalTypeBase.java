@@ -7,8 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
-import com.keildraco.config.Config;
-
 public class ParserInternalTypeBase {
 	private final ParserInternalTypeBase parent;
 	private String name;

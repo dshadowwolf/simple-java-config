@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.IStateParser;
 import com.keildraco.config.states.KeyValueParser;
@@ -137,4 +138,26 @@ public class KeyValueParserTest {
 		assertTrue(p.getParent()==null, "Expected p.getParent() to return null");
 	}
 
+	@Test
+	public final void testGetName() {
+		KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
+		assertEquals("KEYVALUE", p.getName());
+	}
+	
+	@Test
+	public final void testGetFactory() {
+		KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
+		assertEquals(this.factory, p.getFactory());
+	}
+
+	@Test
+	public final void testSetFactory() {
+		try {
+			KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
+			p.setFactory(Config.getFactory());
+			assertTrue(true, "Expected no exception");
+		} catch( Exception e ) {
+			fail("Caught exception calling p.setFactory(Config.getFactory()): "+e.getMessage());
+		}		
+	}	
 }

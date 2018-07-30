@@ -60,11 +60,21 @@ public class SectionParser implements IStateParser {
 					Config.LOGGER.error("Found a store operation (=) where I was expecting an identifier");
 					return EmptyType;
 				}
-				this.section.addItem(this.factory.parseTokens("KEYVALUE", this.section, tok, ident));
+				ParserInternalTypeBase kv = this.factory.parseTokens("KEYVALUE", this.section, tok, ident);
+				if(EmptyType.equals(kv)) {
+					this.setErrored();
+				} else {
+					this.section.addItem(kv);
+				}
 				ident = "";
 				break;
 			case '{':
-				this.section.addItem(this.factory.parseTokens("SECTION", this.section, tok, ident));
+				ParserInternalTypeBase sk = this.factory.parseTokens("SECTION", this.section, tok, ident);
+				if(EmptyType.equals(sk)) {
+					this.setErrored();
+				} else {
+					this.section.addItem(sk);
+				}
 				break;
 			case '}':
 				return this.section;
@@ -80,7 +90,8 @@ public class SectionParser implements IStateParser {
 				return EmptyType;
 			}
 		}
-		return this.section;
+		if(!this.errored()) return this.section;
+		return EmptyType;
 	}
 
 	private String itToString(int tt) {
