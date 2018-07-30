@@ -1,6 +1,9 @@
 package com.keildraco.config.data;
 
 import com.keildraco.config.types.ParserInternalTypeBase;
+import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+
+import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.SectionType;
 
 import com.keildraco.config.types.IdentifierType;
@@ -11,6 +14,7 @@ public class ItemMatcher {
 	private final ParserInternalTypeBase thisItem;
 	
 	public static final class AlwaysFalse extends ItemMatcher {
+		@Override
 		public boolean matches(String name) {
 			return false;
 		}
@@ -29,30 +33,23 @@ public class ItemMatcher {
 		String bn = tn?name.substring(0, name.indexOf('.')):name;
 		String xn = tn?name.substring(name.indexOf('.')+1):"";
 		
-		switch(this.thisItem.getType()) {
-			case IDENTIFIER:
-				return tn?this.thisItem.getName().equalsIgnoreCase(bn)&&this.identMatches(name):this.identMatches(name);
-			case LIST:
-				if(tn) {
-					if(this.thisItem.has(bn)) {
-						ItemMatcher zz = new ItemMatcher(this.thisItem.get(bn)); 
-						return zz.matches(xn);
-					} else {
-						return false;
-					}
-				} else {
-					return this.listMatchesAny(name);
-				}
-			case OPERATION:
-				return this.operatorMatches(tn?xn:bn);
-			case SECTION:
-				if(tn) {
-					return new ItemMatcher(this.thisItem.get(bn)).matches(xn);
-				} else {
-					return this.sectionMatches(name);
-				}
-			default:
-				return false;
+		return this.doMatch(this.thisItem.getType(),bn,xn);
+	}
+
+	private boolean doMatch(ItemType type, String bn, String xn) {
+		switch(type) {
+		case IDENTIFIER:
+			return this.identMatches((IdentifierType)this.thisItem,xn)&&this.thisItem.getName().equalsIgnoreCase(bn);
+		case LIST:
+			if(this.thisItem.has(bn) && xn.length() > 0) return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
+			else return this.listMatchesAny(bn);
+		case OPERATION:
+			return this.operatorMatches(xn.length()>0?xn:bn);
+		case SECTION:
+			if(xn.length() > 0) return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
+			return this.sectionMatches(bn);
+		default:
+			return false;
 		}
 	}
 

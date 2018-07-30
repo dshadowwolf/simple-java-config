@@ -1,11 +1,6 @@
 package com.keildraco.config.data;
 
 import com.keildraco.config.types.*;
-import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
-
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.LinkedList;
 
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
