@@ -86,7 +86,7 @@ public class ConfigAPITest {
 			c = com.keildraco.config.Config.LoadFile(p);
 			
 			assertTrue("Load Worked? ", c != null);
-		} catch (IOException | URISyntaxException | IllegalArgumentException e ) {
+		} catch (IOException | IllegalArgumentException e ) {
 			fail(String.format("Caught exception running LoadFile([PATH] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString(), e));
 		}
 	}
@@ -100,7 +100,7 @@ public class ConfigAPITest {
 			com.keildraco.config.Config.registerKnownParts();
 			c = com.keildraco.config.Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString());
 			assertTrue("Load Worked? ", c != null);
-		} catch (IOException | URISyntaxException | IllegalArgumentException e ) {
+		} catch (IOException | IllegalArgumentException e ) {
 			fail(String.format("Caught exception running LoadFile([STRING] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString(), e));
 		}
 		
