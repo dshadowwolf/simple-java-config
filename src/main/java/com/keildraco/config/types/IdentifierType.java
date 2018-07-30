@@ -1,5 +1,7 @@
 package com.keildraco.config.types;
 
+import javax.annotation.Nullable;
+
 public class IdentifierType extends ParserInternalTypeBase {
 	private String ident;
 	
@@ -12,24 +14,24 @@ public class IdentifierType extends ParserInternalTypeBase {
 	}
 	
 	
-	public IdentifierType(ParserInternalTypeBase parent, String name, String value) {
+	public IdentifierType(@Nullable ParserInternalTypeBase parent, String name, String value) {
 		super(parent, name);
 		this.ident = value;
 	}
 	
 	@Override
 	public void addItem(ParserInternalTypeBase item) {
-		return;
+		// identifiers - that is, key-value pairs - can't store more than an identifier they equal, so this method gets stubbed
 	}
 	
 	@Override
 	public boolean has(String s) {
-		return false;
+		return this.getName().equalsIgnoreCase(s)||this.ident.equalsIgnoreCase(s);
 	}
 	
 	@Override
 	public ParserInternalTypeBase get(String s) {
-		return ParserInternalTypeBase.EmptyType;
+		return this.has(s)?this:EmptyType;
 	}
 	
 	@Override

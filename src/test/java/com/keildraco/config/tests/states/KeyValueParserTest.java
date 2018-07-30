@@ -119,7 +119,7 @@ public class KeyValueParserTest {
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
 		ParserInternalTypeBase k = this.factory.parseTokens("KEYVALUE", null, t, "a_key");
-		assertEquals(k.asString(), "a_key = [  ]");
+		assertEquals("a_key = [  ]", k.asString());
 	}
 
 	@Test

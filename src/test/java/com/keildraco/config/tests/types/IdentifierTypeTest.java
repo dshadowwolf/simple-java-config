@@ -38,7 +38,7 @@ public class IdentifierTypeTest {
 	 */
 	@Test
 	public final void testGet() {
-		assertEquals(this.testItem.get("test"), ParserInternalTypeBase.EmptyType);
+		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("test"));
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class IdentifierTypeTest {
 	 */
 	@Test
 	public final void testHas() {
-		assertEquals(this.testItem.has("test"), false);
+		assertEquals(false, this.testItem.has("test"));
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class IdentifierTypeTest {
 	 */
 	@Test
 	public final void testGetType() {
-		assertEquals(this.testItem.getType(), ParserInternalTypeBase.ItemType.IDENTIFIER);
+		assertEquals(ParserInternalTypeBase.ItemType.IDENTIFIER, this.testItem.getType());
 	}
 
 	/**

@@ -2,6 +2,7 @@ package com.keildraco.config.states;
 
 import java.io.StreamTokenizer;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
@@ -56,7 +57,7 @@ public class SectionParser implements IStateParser {
 			case '=':
 				if(ident.equals("")) {
 					this.setErrored();
-					System.err.println("Found a store operation (=) where I was expecting an identifier");
+					Config.LOGGER.error("Found a store operation (=) where I was expecting an identifier");
 					return EmptyType;
 				}
 				this.section.addItem(this.factory.parseTokens("KEYVALUE", this.section, tok, ident));
@@ -74,9 +75,8 @@ public class SectionParser implements IStateParser {
 			case -3:
 			case -4:
 			default:
-				ident = "";
 				this.setErrored();
-				System.err.println(String.format("Found %s where it was not expected - this is an error", itToString(tt)));
+				Config.LOGGER.error("Found %s where it was not expected - this is an error", itToString(tt));
 				return EmptyType;
 			}
 		}
@@ -84,18 +84,14 @@ public class SectionParser implements IStateParser {
 	}
 
 	private String itToString(int tt) {
-		switch(tt) {
-		case -1:
-			return "an Identifier";
-		default:
-			return String.format("'%c'", tt);
-		}
+		if(tt == -1) return "an Identifier";
+		return String.format("'%c'", tt);
 	}
 
 	private static int getTokenType(StreamTokenizer tok) {
 		if(tok.ttype == TT_WORD) {
 			if(tok.sval.matches(IDENTIFIER_PATTERN)) return -1;
-			else return -4;
+			return -4;
 		} else {
 			return tok.ttype;
 		}

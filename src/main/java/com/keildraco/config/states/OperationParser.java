@@ -3,6 +3,7 @@ package com.keildraco.config.states;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.OperationType;
 import com.keildraco.config.types.ParserInternalTypeBase;
@@ -44,45 +45,49 @@ public class OperationParser implements IStateParser {
 	public boolean errored() {
 		return this.error;
 	}
-	
+
 	@Override
 	public ParserInternalTypeBase getState(StreamTokenizer tok) {
 		try {
 			String operator = null;
 			String value = null;
 			int p;
-			
-			while((p = tok.nextToken()) != StreamTokenizer.TT_EOF ) {
-				if(tok.ttype == '(') continue;
-				if(operator == null && (tok.ttype == '~' || tok.ttype == '!')) {
-					operator = String.format("%c", tok.ttype);
-				} else if(operator == null && !(tok.ttype == '~' || tok.ttype == '!')) {
-					String mess = String.format("Error parsing an operation - operator not found when expected, got %c instead", tok.ttype);
-					System.err.println(mess);
-					return ParserInternalTypeBase.EmptyType;
-				} else if(operator != null && value == null) {
-					if(tok.sval.matches(IDENTIFIER_PATTERN)) {
-						value = tok.sval;
-					} else {
-						String mess = String.format("Error parsing an operation - expected an identifier and found %s instead", tok.sval);
-						System.err.println(mess);
-						return ParserInternalTypeBase.EmptyType;
-					}
-				} else if(operator!=null && value!=null && p == ')') {
+
+			tok.nextToken();
+			if(tok.ttype == '(') tok.nextToken();
+
+			if(tok.ttype != StreamTokenizer.TT_EOF) {
+				operator = this.getOperator(tok);
+				value = this.getIdentifier(tok);
+				p = peekToken(tok);
+				if(p == ')') {
 					OperationType rv = (OperationType)this.factory.getType(this.getParent(), this.name, value, ItemType.OPERATION);
 					rv.setName(this.name);
 					rv.setOperation(operator);
-					return rv;
+					return rv;					
 				} else {
-					String mess = String.format("Error parsing an operation - expected to find a closing parentheses, found %s instead", tok.sval);
-					System.err.println(mess);
+					Config.LOGGER.error("Error parsing an operation - expected to find a closing parentheses, found %s instead", tok.sval);
 					return ParserInternalTypeBase.EmptyType;
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace(System.err);
+		} catch(IOException | IllegalArgumentException e) {
+			Config.LOGGER.error("Exception parsing Operation: %s", e.getMessage());
+			Config.LOGGER.error(e.getStackTrace());
+			this.setErrored();
+			return ParserInternalTypeBase.EmptyType;
 		}
 		return ParserInternalTypeBase.EmptyType;
+	}
+	
+	private String getIdentifier(StreamTokenizer tok) {
+		this.nextToken(tok);
+		if(tok.ttype == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) return tok.sval;
+		throw new IllegalArgumentException("IDENTIFIER not available in token stream");
+	}
+
+	private String getOperator(StreamTokenizer tok) {
+		if(tok.ttype=='~'||tok.ttype=='!') return String.format("%c", tok.ttype);
+		throw new IllegalArgumentException("OPERATOR not available in token stream");
 	}
 
 	@Override

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 public class ListType extends ParserInternalTypeBase {
 	private List<ParserInternalTypeBase> value;
 	
@@ -17,18 +19,18 @@ public class ListType extends ParserInternalTypeBase {
 		this(null, n, values);
 	}
 	
-	public ListType(ParserInternalTypeBase parent, String name, List<ParserInternalTypeBase> values) {
+	public ListType(@Nullable ParserInternalTypeBase parent, String name, List<ParserInternalTypeBase> values) {
 		super(parent, name);
 		this.value = new LinkedList<>();
 		this.value.addAll(values);
 	}
 	
-	public ListType(ParserInternalTypeBase parent, String name) {
+	public ListType(@Nullable ParserInternalTypeBase parent, String name) {
 		super(parent,name);
 		this.value = new LinkedList<>();
 	}
 	
-	public ListType(ParserInternalTypeBase parent, String name, String value) {
+	public ListType(@Nullable ParserInternalTypeBase parent, String name, String value) {
 		this(parent, name);
 	}
 	
@@ -39,7 +41,7 @@ public class ListType extends ParserInternalTypeBase {
 	
 	@Override
 	public boolean has(String s) {
-		return this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst().isPresent();
+		return this.value.stream().anyMatch(pitb -> pitb.getName().equalsIgnoreCase(s));
 	}
 	
 	@Override

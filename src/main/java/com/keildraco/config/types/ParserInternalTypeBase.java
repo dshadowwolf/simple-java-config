@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 public class ParserInternalTypeBase {
 	private final ParserInternalTypeBase parent;
 	private String name;
@@ -20,7 +22,7 @@ public class ParserInternalTypeBase {
 		@Override
 		public ParserInternalTypeBase get(String itemName) { return null; }
 		@Override
-		public void addItem(ParserInternalTypeBase item) { return; }
+		public void addItem(ParserInternalTypeBase item) { /* the EmptyType does not store other items */ }
 		@Override
 	    public ItemType getType() { return ItemType.EMPTY; }
 	};
@@ -33,13 +35,13 @@ public class ParserInternalTypeBase {
 		this(null, name);
 	}
 	
-	public ParserInternalTypeBase(ParserInternalTypeBase parent, String name) {
+	public ParserInternalTypeBase(@Nullable ParserInternalTypeBase parent, String name) {
 		this.name = name;
 		this.parent = parent;
 		this.items = new ConcurrentHashMap<>();
 	}
 	
-	public ParserInternalTypeBase(ParserInternalTypeBase parent, String name, String value) {
+	public ParserInternalTypeBase(@Nullable ParserInternalTypeBase parent, String name, String value) {
 		this(parent, name);
 	}
 	
@@ -48,9 +50,7 @@ public class ParserInternalTypeBase {
     		String nameBits = itemName.substring(0,itemName.indexOf('.'));
     		if(this.has(nameBits)) {
     			String nameRest = itemName.substring(itemName.indexOf('.')+1);
-    			ParserInternalTypeBase rva = this.get(nameBits);
-    			ParserInternalTypeBase rv = rva!=null?rva.get(nameRest):EmptyType;
-    			return rv;
+    			return this.get(nameBits)!=null?this.get(nameBits).get(nameRest):EmptyType;
     		}
     	} else if(this.has(itemName)) {
     		return this.items.get(itemName);
@@ -63,7 +63,7 @@ public class ParserInternalTypeBase {
     		String nn = itemName.substring(0, itemName.indexOf('.'));
     		String rest = itemName.substring(itemName.indexOf('.')+1);
     		boolean a = this.items.containsKey(nn);
-    		boolean b = a?this.items.get(nn).has(rest):false;
+    		boolean b = this.items.getOrDefault(nn,EmptyType).has(rest);
     		return a||b;
     	}
 
@@ -72,7 +72,7 @@ public class ParserInternalTypeBase {
     
     public enum ItemType {
         SECTION, IDENTIFIER, NUMBER, BOOLEAN, LIST, OPERATION, INVALID, EMPTY;
-    };
+    }
     
     public ItemType getType() { return ItemType.INVALID; }
     
@@ -110,6 +110,7 @@ public class ParserInternalTypeBase {
 
     private List<String> subWalk(Set<Entry<String, ParserInternalTypeBase>> items) {
     	List<String> blargh = new LinkedList<>();
+    	String formatBase = "%s.%s";
     	
     	items.stream().forEach( ent -> {
 			String baseName = makeName(ent.getKey(), ent.getValue().getParent());
@@ -117,17 +118,17 @@ public class ParserInternalTypeBase {
     		switch(ent.getValue().getType()) {
     		case SECTION:
     			temp = this.subWalk(ent.getValue().getChildren().entrySet());
-    			temp.stream().forEach( s -> blargh.add(String.format("%s.%s", baseName, s)));
+    			temp.stream().forEach( s -> blargh.add(String.format(formatBase, baseName, s)));
     			break;
     		case OPERATION:
-    			blargh.add(String.format("%s.%s", baseName, this.pibAsString(ent.getValue())));
+    			blargh.add(String.format(formatBase, baseName, this.pibAsString(ent.getValue())));
     			break;
     		case LIST:
     			temp = this.walkList(ent.getValue());
-    			temp.stream().forEach( s -> blargh.add(String.format("%s.%s", baseName, s)));
+    			temp.stream().forEach( s -> blargh.add(String.format(formatBase, baseName, s)));
     			break;
     		default:
-    			blargh.add(String.format("%s.%s", baseName, ent.getValue().getName()));
+    			blargh.add(String.format(formatBase, baseName, ent.getValue().getName()));
     		}
     	});
     	return blargh;    	

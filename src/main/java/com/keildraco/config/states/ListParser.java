@@ -63,14 +63,12 @@ public class ListParser implements IStateParser {
 		String ident;
 		while((p = this.nextToken(tok)) != StreamTokenizer.TT_EOF && p != ']') {
 			if(p=='[') continue;
-			if(!this.errored && p == StreamTokenizer.TT_WORD) {
-				if(tok.sval.matches(IDENTIFIER_PATTERN)) {
-					ident = tok.sval;
-					if(!errored() && p == StreamTokenizer.TT_WORD) {
-						ParserInternalTypeBase temp = this.getToken(tok, ident);
-						temp.setName(ident);
-						store.push(temp);
-					}
+			if(!this.errored && p == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
+				ident = tok.sval;
+				if(!errored() && p == StreamTokenizer.TT_WORD) {
+					ParserInternalTypeBase temp = this.getToken(tok, ident);
+					temp.setName(ident);
+					store.push(temp);
 				}
 			}
 		}

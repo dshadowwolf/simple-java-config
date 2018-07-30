@@ -4,10 +4,6 @@ package com.keildraco.config.types;
 public class OperationType extends ParserInternalTypeBase {
 	private String ident;
 	private String operator;
-	
-	public OperationType() {
-		// TODO Auto-generated constructor stub
-	}
 
 	public OperationType(String name) {
 		super(name);
