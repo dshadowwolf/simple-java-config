@@ -1,9 +1,11 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
-
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -12,9 +14,6 @@ import java.io.StreamTokenizer;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.IStateParser;
@@ -25,7 +24,7 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 public class KeyValueParserTest {
 	private TypeFactory factory;
 	
-	@Before
+	@BeforeAll
 	public void setUp() throws Exception {
 		
 		this.factory = new TypeFactory();
@@ -78,16 +77,12 @@ public class KeyValueParserTest {
 		this.factory.registerType((parent, name, value) -> new SectionType(parent, name, value), ItemType.SECTION);
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public final void testKeyValueParser() {
 		try {
 			@SuppressWarnings("unused")
 			KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch( Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
@@ -98,7 +93,7 @@ public class KeyValueParserTest {
 		try {
 			KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			p.setErrored();
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch( Exception e ) {
 			fail("Caught exception calling p.setErrored(): "+e.getMessage());
 		}
@@ -107,7 +102,7 @@ public class KeyValueParserTest {
 	@Test
 	public final void testErrored() {
 		KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-		assertTrue("Expected p.errored() to return false", p.errored()==false);
+		assertTrue(p.errored()==false, "Expected p.errored() to return false");
 	}
 
 	@Test
@@ -127,7 +122,7 @@ public class KeyValueParserTest {
 		try {
 			KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			p.setParent(ParserInternalTypeBase.EmptyType);
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch( Exception e ) {
 			fail("Caught exception calling p.setParent(ParserInternalTypeBase.EmptyType): "+e.getMessage());
 		}		
@@ -136,7 +131,7 @@ public class KeyValueParserTest {
 	@Test
 	public final void testGetParent() {
 		KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-		assertTrue("Expected p.getParent() to return null", p.getParent()==null);
+		assertTrue(p.getParent()==null, "Expected p.getParent() to return null");
 	}
 
 }

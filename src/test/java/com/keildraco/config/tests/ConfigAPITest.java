@@ -1,14 +1,11 @@
 package com.keildraco.config.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
@@ -18,14 +15,6 @@ import com.keildraco.config.states.SectionParser;
 
 public class ConfigAPITest {
 
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public final void testRegisterType() {
 		try {
@@ -34,7 +23,7 @@ public class ConfigAPITest {
 		} catch(Exception e) {
 			fail("Caught exception registering type: "+e.getMessage());
 		} finally {
-			assertTrue("Able to register a type", true);
+			assertTrue(true, "Able to register a type");
 		}
 	}
 
@@ -46,7 +35,7 @@ public class ConfigAPITest {
 		} catch(Exception e) {
 			fail("Caught exception registering parser: "+e.getMessage());
 		} finally {
-			assertTrue("Able to register a parser", true);
+			assertTrue(true, "Able to register a parser");
 		}
 	}
 
@@ -58,7 +47,7 @@ public class ConfigAPITest {
 		} catch(Exception e) {
 			fail("Caught exception calling Config.registerKnownParts(): "+e.getMessage());
 		} finally {
-			assertTrue("Able to register known types and parsers", true);
+			assertTrue(true, "Able to register known types and parsers");
 		}
 	}
 
@@ -69,7 +58,7 @@ public class ConfigAPITest {
 			com.keildraco.config.Config.reset();
 			com.keildraco.config.Config.registerKnownParts();
 			c = com.keildraco.config.Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri());
-			assertTrue("Load Worked? ", c != null);
+			assertTrue(c != null, "Load Worked? ");
 		} catch (IOException | IllegalArgumentException e ) {
 			fail(String.format("Caught exception running LoadFile([URI] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri(), e));
 		}
@@ -83,8 +72,7 @@ public class ConfigAPITest {
 			com.keildraco.config.Config.reset();
 			com.keildraco.config.Config.registerKnownParts();
 			c = com.keildraco.config.Config.LoadFile(p);
-			
-			assertTrue("Load Worked? ", c != null);
+			assertTrue(c != null, "Load Worked? ");
 		} catch (IOException | IllegalArgumentException e ) {
 			fail(String.format("Caught exception running LoadFile([PATH] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString(), e));
 		}
@@ -98,7 +86,7 @@ public class ConfigAPITest {
 			com.keildraco.config.Config.reset();
 			com.keildraco.config.Config.registerKnownParts();
 			c = com.keildraco.config.Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString());
-			assertTrue("Load Worked? ", c != null);
+			assertTrue(c != null, "Load Worked? ");
 		} catch (IOException | IllegalArgumentException e ) {
 			fail(String.format("Caught exception running LoadFile([STRING] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString(), e));
 		}
@@ -110,7 +98,7 @@ public class ConfigAPITest {
 		com.keildraco.config.Config.reset();
 		com.keildraco.config.Config.registerKnownParts();
 		DataQuery c = com.keildraco.config.Config.parseString("section {\n key = [ ident1, ident2, ident3(! ident4)\n}\n\n");
-		assertTrue(String.format("Load worked as expected (%s)", c), c != null);
+		assertTrue(c != null, String.format("Load worked as expected (%s)", c));
 	}
 
 }

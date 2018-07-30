@@ -3,11 +3,9 @@
  */
 package com.keildraco.config.tests.types;
 
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.types.*;
 /**
@@ -22,7 +20,7 @@ public class SectionTypeTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@BeforeAll
 	public void setUp() throws Exception {
 		this.root = new SectionType("ROOT");
 		this.child = new SectionType(this.root, "CHILD");
@@ -30,13 +28,6 @@ public class SectionTypeTest {
 		this.child.addItem(new IdentifierType("blargh", "foobar"));
 		this.root.addItem(this.kp);
 		this.root.addItem(this.child);
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**
@@ -55,7 +46,7 @@ public class SectionTypeTest {
 		try {
 			SectionType testItem2 = new SectionType("blargh");
 			testItem2.addItem(ParserInternalTypeBase.EmptyType);
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch(Exception e) {
 			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
 		}
@@ -68,5 +59,4 @@ public class SectionTypeTest {
 	public final void testGetParent() {
 		assertEquals(this.child.getParent(), this.root);
 	}
-
 }

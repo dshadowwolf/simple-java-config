@@ -1,26 +1,21 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/*import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.*;
-
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-*/
+
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.IStateParser;
@@ -31,7 +26,7 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 public class SectionParserTest {
 	private TypeFactory factory;
 
-	@Before
+	@BeforeAll
 	public void setUp() throws Exception {
 
 		this.factory = new TypeFactory();
@@ -106,16 +101,12 @@ public class SectionParserTest {
 		this.factory.registerType((parent, name, value) -> new SectionType(parent, name, value), ItemType.SECTION);
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public final void testParseSection() {
 		try {
 			@SuppressWarnings("unused")
 			SectionParser p = new SectionParser(this.factory);
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch( Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}		
@@ -126,7 +117,7 @@ public class SectionParserTest {
 		try {
 			@SuppressWarnings("unused")
 			SectionParser p = new SectionParser(this.factory, null, "ROOT");
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch( Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}		
@@ -137,7 +128,7 @@ public class SectionParserTest {
 		try {
 			SectionParser p = new SectionParser(this.factory, null, "ROOT");
 			p.setErrored();
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch( Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}		
@@ -147,7 +138,7 @@ public class SectionParserTest {
 	public final void testErrored() {
 		try {
 			SectionParser p = new SectionParser(this.factory, null, "ROOT");
-			assertTrue("Expected fresh parser \"erorred()\" method to return false", p.errored()==false);
+			assertFalse(p.errored(), "Expected fresh parser \"erorred()\" method to return false");
 		} catch( Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}		
@@ -171,7 +162,9 @@ public class SectionParserTest {
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
 		ParserInternalTypeBase k = this.runParser(t);
-		assertTrue("Expecting the result to have \"section1\", \"section1\" to have \"section2\" and \"section2\" to have \"ident2\"", k.has("section1") && k.get("section1").has("section2") && k.get("section1").get("section2").has("ident2"));
+		assertAll("Expecting the result to have \"section1\", \"section1\" to have \"section2\" and \"section2\" to have \"ident2\"",
+				() -> k.has("section1"),  () -> k.get("section1").has("section2"),
+				() -> k.get("section1").get("section2").has("ident2"));
 	}
 
 	@Test
@@ -179,7 +172,7 @@ public class SectionParserTest {
 		try {
 			SectionParser p = new SectionParser(this.factory);
 			p.setParent(ParserInternalTypeBase.EmptyType);
-			assertTrue("Expected setParent() to not have an exception", true);
+			assertTrue(true, "Expected setParent() to not have an exception");
 		} catch( Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
@@ -188,7 +181,7 @@ public class SectionParserTest {
 	@Test
 	public final void testGetParent() {
 		SectionParser p = new SectionParser(this.factory);
-		assertTrue("Fresh parser with not setParent() called returns null from getParent()", p.getParent()==null);
+		assertNull(p.getParent(), "Fresh parser with not setParent() called returns null from getParent()");
 	}
 
 }

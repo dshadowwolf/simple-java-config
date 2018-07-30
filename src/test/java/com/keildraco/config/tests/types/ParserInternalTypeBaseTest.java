@@ -3,13 +3,11 @@
  */
 package com.keildraco.config.tests.types;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import com.keildraco.config.types.ParserInternalTypeBase;
 
@@ -25,20 +23,13 @@ public class ParserInternalTypeBaseTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@BeforeAll
 	public void setUp() throws Exception {
 		this.testItem = new ParserInternalTypeBase("blech");
 		this.testFoobar = new ParserInternalTypeBase("foobar");
 		this.testItem.addItem(this.testFoobar);
 		this.testNesting = new ParserInternalTypeBase("nesting");
 		this.testNesting.addItem(this.testFoobar);
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**
@@ -49,7 +40,7 @@ public class ParserInternalTypeBaseTest {
 		try {
 			@SuppressWarnings("unused")
 			ParserInternalTypeBase testNoParent = new ParserInternalTypeBase("blargh");
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch(Exception e) {
 			fail("Exception ("+e.getMessage()+") caught when not expected");
 		}
@@ -63,7 +54,7 @@ public class ParserInternalTypeBaseTest {
 		try {
 			@SuppressWarnings("unused")
 			ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh");
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch(Exception e) {
 			fail("Exception ("+e.getMessage()+") caught when not expected");
 		}
@@ -77,7 +68,7 @@ public class ParserInternalTypeBaseTest {
 		try {
 			@SuppressWarnings("unused")
 			ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh", "blech");
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch(Exception e) {
 			fail("Exception ("+e.getMessage()+") caught when not expected");
 		}
@@ -96,7 +87,7 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testHas() {
-		assertTrue("Test Item has child \"foobar\"", this.testItem.has("foobar"));
+		assertTrue(this.testItem.has("foobar"), "Test Item has child \"foobar\"");
 	}
 
 	/**
@@ -164,7 +155,7 @@ public class ParserInternalTypeBaseTest {
 	public final void testAddItem() {
 		try {
 			this.testItem.addItem(ParserInternalTypeBase.EmptyType);
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch(Exception e) {
 			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
 		}

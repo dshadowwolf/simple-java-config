@@ -2,23 +2,17 @@ package com.keildraco.config.data;
 
 import com.keildraco.config.types.*;
 
-import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
-
 public class DataQuery {
 	private SectionType baseSection;
-	
-	private DataQuery() {
-		throw new IllegalAccessError("Cannot instantiate with no parameters");
-	}
 	
 	private DataQuery(SectionType section) {
 		this.baseSection = section;
 	}
 
+	// as odd as it seems, this cannot, legally, be called with anything other than a valid,
+	// non-null SectionType value - not even 'EmptyType' can be used here and be valid or compile
 	public static DataQuery of(SectionType section) {
-		if(!EmptyType.equals(section))
-			return new DataQuery(section);
-		return null;
+		return new DataQuery(section);
 	}
 	
 	public boolean get(String key) {

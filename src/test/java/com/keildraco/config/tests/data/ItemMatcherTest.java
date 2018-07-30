@@ -1,15 +1,14 @@
 package com.keildraco.config.tests.data;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.data.ItemMatcher;
@@ -20,7 +19,7 @@ import com.keildraco.config.types.SectionType;
 public class ItemMatcherTest {
 	private ParserInternalTypeBase base;
 	
-	@Before
+	@BeforeAll
 	public void setUp() throws Exception {
 		Config.registerKnownParts();
 		String testString = "section {\nlist = [ alpha, bravo(!charlie), delta]\necho {\nfoxtrot = golf\n}\n}\n\n";
@@ -34,10 +33,6 @@ public class ItemMatcherTest {
 		this.base = Config.getFactory().parseTokens("SECTION", null, t, null);
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public final void testItemMatcher() {
 		try {
@@ -48,14 +43,14 @@ public class ItemMatcherTest {
 		} catch(Exception e) {
 			fail("Caught exception instantiating an ItemMatcher: "+e);
 		}
-		assertTrue("No exceptions instantiating an ItemMatcher", true);
+		assertTrue(true, "No exceptions instantiating an ItemMatcher");
 	}
 
 	@Test
 	public final void testMatches() {
 		try {
 			ItemMatcher m = new ItemMatcher(new IdentifierType("ident"));
-			assertTrue("ItemMatcher returns true", m.matches("ident"));
+			assertTrue(m.matches("ident"), "ItemMatcher returns true");
 		} catch(Exception e) {
 			fail("Caught exception instantiating an ItemMatcher: "+e);
 		}
@@ -64,25 +59,29 @@ public class ItemMatcherTest {
 	@Test
 	public final void testMatchList() {
 		ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
-		assertTrue("list matches 'alpha'", m.matches("alpha"));
+		assertTrue(m.matches("alpha"), "list matches 'alpha'");
 	}
 
 	@Test
 	public final void testMatchIdentifier() {
 		ItemMatcher m = new ItemMatcher(this.base.get("section.echo.foxtrot"));
-		assertTrue("Identifer \"foxtrot\" matches 'golf'", m.matches("golf"));
+		assertTrue(m.matches("golf"), "Identifer \"foxtrot\" matches 'golf'");
+	}
+	
+	private final boolean noMatch(ItemMatcher m, String key) {
+		return !m.matches(key);
 	}
 	
 	@Test
 	public final void testMatchOperation() {
 		ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
-		assertTrue("Operation matches bravo.hotel but not bravo.charlie", m.matches("bravo.hotel")&&!m.matches("bravo.charlie"));
+		assertAll("Operation matches bravo.hotel but not bravo.charlie", () -> m.matches("bravo.hotel"), () -> noMatch(m, "bravo.charlie"));
 	}
 	
 	@Test
 	public final void testMatchSection() {
 		ItemMatcher m = new ItemMatcher(this.base.get("section"));
-		assertTrue("Section matches \"list\" and \"echo\"", m.matches("list")&&m.matches("echo"));
+		assertAll("Section matches \"list\" and \"echo\"", () -> m.matches("list"),() -> m.matches("echo"));
 	}
 	
 	@Test

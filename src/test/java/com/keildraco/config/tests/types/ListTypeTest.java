@@ -3,13 +3,11 @@
  */
 package com.keildraco.config.tests.types;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import com.keildraco.config.types.ListType;
 import com.keildraco.config.types.ParserInternalTypeBase;
@@ -24,16 +22,9 @@ public class ListTypeTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@BeforeAll
 	public void setUp() throws Exception {
 		this.testItem = new ListType("blank");
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**
@@ -49,7 +40,7 @@ public class ListTypeTest {
 	 */
 	@Test
 	public final void testHas() {
-		assertEquals(false, this.testItem.has("test"));
+		assertFalse(this.testItem.has("test"));
 	}
 
 	/**
@@ -76,7 +67,7 @@ public class ListTypeTest {
 		try {
 			ListType testItem2 = new ListType("blargh");
 			testItem2.addItem(ParserInternalTypeBase.EmptyType);
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch(Exception e) {
 			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
 		}

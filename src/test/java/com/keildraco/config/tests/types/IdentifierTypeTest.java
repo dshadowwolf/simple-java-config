@@ -3,11 +3,9 @@
  */
 package com.keildraco.config.tests.types;
 
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ParserInternalTypeBase;
@@ -21,16 +19,9 @@ public class IdentifierTypeTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@BeforeAll
 	public void setUp() throws Exception {
 		this.testItem = new IdentifierType("key", "value");
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**
@@ -46,7 +37,7 @@ public class IdentifierTypeTest {
 	 */
 	@Test
 	public final void testHas() {
-		assertEquals(false, this.testItem.has("test"));
+		assertFalse(this.testItem.has("test"));
 	}
 
 	/**
@@ -73,7 +64,7 @@ public class IdentifierTypeTest {
 	public final void testAddItem() {
 		try {
 			this.testItem.addItem(ParserInternalTypeBase.EmptyType);
-			assertTrue("Expected no exception", true);
+			assertTrue(true, "Expected no exception");
 		} catch(Exception e) {
 			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
 		}
