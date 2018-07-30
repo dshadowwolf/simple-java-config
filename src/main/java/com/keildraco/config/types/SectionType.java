@@ -33,7 +33,7 @@ public class SectionType extends ParserInternalTypeBase {
 		.forEach( v -> k.append(String.format(" %s%n", v.asString() )));
 
 		if(!this.getName().equals("ROOT")) {
-			k.append("}%n");
+			k.append(String.format("}%n"));
 		}
 		
 		return k.toString();

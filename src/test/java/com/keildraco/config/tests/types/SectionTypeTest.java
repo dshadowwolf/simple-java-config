@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.types.*;
 /**
  * @author Daniel Hazelton
@@ -61,5 +62,14 @@ public class SectionTypeTest {
 	@Test
 	public final void testGetParent() {
 		assertEquals(this.child.getParent(), this.root);
+	}
+	
+	@Test
+	public final void testAsString() {
+		String result = String.format("blargh = blech%n" + 
+				" CHILD {%n" + 
+				" blargh = foobar%n" + 
+				"}");
+		assertEquals(result, this.root.asString().trim());
 	}
 }
