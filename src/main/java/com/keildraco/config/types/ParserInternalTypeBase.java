@@ -57,7 +57,6 @@ public class ParserInternalTypeBase {
     		String rest = itemName.substring(itemName.indexOf('.')+1);
     		boolean a = this.items.containsKey(nn);
     		boolean b = this.items.getOrDefault(nn,EmptyType).has(rest);
-    		Config.LOGGER.fatal("asked if %s is in store, split to \"%s\" and \"%s\" result is %s (%s&&%s)", itemName, nn, rest, a&&b, a, b);
     		return a&&b;
     	}
 
