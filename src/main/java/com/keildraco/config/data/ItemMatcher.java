@@ -5,7 +5,6 @@ import com.keildraco.config.types.ParserInternalTypeBase;
 import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
-import com.keildraco.config.Config;
 import com.keildraco.config.types.SectionType;
 
 import com.keildraco.config.types.IdentifierType;
@@ -86,7 +85,6 @@ public class ItemMatcher {
 	}
 
 	private boolean identMatches(IdentifierType ident, String name) {
-		Config.LOGGER.fatal(">> %s -- %s -- %s", ident.getName(), ident.getValue(), name);
 		return (ident.getName().equalsIgnoreCase(name) || ident.getValue().equalsIgnoreCase(name));
 	}
 	

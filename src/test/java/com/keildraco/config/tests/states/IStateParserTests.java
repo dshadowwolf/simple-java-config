@@ -4,12 +4,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import java.io.StreamTokenizer;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.states.IStateParser;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class IStateParserTests {
 	private IStateParser p;
 	

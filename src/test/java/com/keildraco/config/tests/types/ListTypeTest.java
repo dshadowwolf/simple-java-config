@@ -6,6 +6,8 @@ package com.keildraco.config.tests.types;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import java.util.Collections;
 
@@ -16,6 +18,7 @@ import com.keildraco.config.types.ParserInternalTypeBase;
  * @author Daniel Hazelton
  *
  */
+@TestInstance(Lifecycle.PER_CLASS)
 public class ListTypeTest {
 	private ListType testItem;
 	

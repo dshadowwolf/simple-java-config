@@ -6,12 +6,15 @@ package com.keildraco.config.tests.types;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.types.*;
 /**
  * @author Daniel Hazelton
  *
  */
+@TestInstance(Lifecycle.PER_CLASS)
 public class SectionTypeTest {
 	private SectionType root;
 	private SectionType child;

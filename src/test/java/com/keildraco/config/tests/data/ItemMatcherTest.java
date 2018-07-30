@@ -3,6 +3,8 @@ package com.keildraco.config.tests.data;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
@@ -16,6 +18,7 @@ import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class ItemMatcherTest {
 	private ParserInternalTypeBase base;
 	

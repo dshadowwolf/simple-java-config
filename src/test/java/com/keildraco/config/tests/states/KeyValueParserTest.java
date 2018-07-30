@@ -3,6 +3,8 @@ package com.keildraco.config.tests.states;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
@@ -21,6 +23,7 @@ import com.keildraco.config.states.KeyValueParser;
 import com.keildraco.config.types.*;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class KeyValueParserTest {
 	private TypeFactory factory;
 	
