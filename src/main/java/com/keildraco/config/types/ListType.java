@@ -9,33 +9,33 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 public class ListType extends ParserInternalTypeBase {
-	private List<ParserInternalTypeBase> value;
+	private final List<ParserInternalTypeBase> value;
 	
-	public ListType(String n) {
+	public ListType(final String n) {
 		this(n, Collections.emptyList());
 	}
 
-	public ListType(String n, List<ParserInternalTypeBase> values) {
+	public ListType(final String n, final List<ParserInternalTypeBase> values) {
 		this(null, n, values);
 	}
 	
-	public ListType(@Nullable ParserInternalTypeBase parent, String name, List<ParserInternalTypeBase> values) {
+	public ListType(@Nullable final ParserInternalTypeBase parent, final String name, final List<ParserInternalTypeBase> values) {
 		super(parent, name);
 		this.value = new LinkedList<>();
 		this.value.addAll(values);
 	}
 	
-	public ListType(@Nullable ParserInternalTypeBase parent, String name) {
+	public ListType(@Nullable final ParserInternalTypeBase parent, final String name) {
 		super(parent,name);
 		this.value = new LinkedList<>();
 	}
 	
-	public ListType(@Nullable ParserInternalTypeBase parent, String name, String value) {
+	public ListType(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {
 		this(parent, name);
 	}
 	
 	@Override
-	public void addItem(ParserInternalTypeBase item) {
+	public void addItem(final ParserInternalTypeBase item) {
 		this.value.add(item);
 	}
 	
@@ -45,10 +45,10 @@ public class ListType extends ParserInternalTypeBase {
 	}
 	
 	@Override
-	public ParserInternalTypeBase get(String s) {
+	public ParserInternalTypeBase get(final String s) {
 		if(!this.has(s)) return EmptyType;
 		
-		Optional<ParserInternalTypeBase> rv = this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst();
+		final Optional<ParserInternalTypeBase> rv = this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst();
 		if(rv.isPresent()) {
 			return rv.get();
 		}

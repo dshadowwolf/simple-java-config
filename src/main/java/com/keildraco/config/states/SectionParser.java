@@ -13,24 +13,24 @@ import static java.io.StreamTokenizer.*;
 public class SectionParser implements IStateParser {
 	private boolean errored = false;
 	private String name;
-	private SectionType section;
+	private final SectionType section;
 	private ParserInternalTypeBase parent;
 	private TypeFactory factory;
 	
-	public SectionParser(TypeFactory factory) {
+	public SectionParser(final TypeFactory factory) {
 		this.name = "ROOT";
 		this.section = new SectionType(EmptyType, this.name);
 		this.factory = factory;
 	}
 
-	public SectionParser(TypeFactory factory, SectionType parent, String name) {
+	public SectionParser(final TypeFactory factory, final SectionType parent, final String name) {
 		this.name = name;
 		this.parent = parent;
 		this.factory = factory;
 		this.section = new SectionType(parent, this.name);
 	}
 	
-	public SectionParser(TypeFactory factory, String name) {
+	public SectionParser(final TypeFactory factory, final String name) {
 		this.parent = null;
 		this.factory = factory;
 		this.name = name;
@@ -48,7 +48,7 @@ public class SectionParser implements IStateParser {
 	}
 	
 	@Override
-	public ParserInternalTypeBase getState(StreamTokenizer tok) {
+	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
 		String ident = "";
 		while( this.nextToken(tok) != TT_EOF && !this.errored()) {
 			int tt = getTokenType(tok);
@@ -84,8 +84,8 @@ public class SectionParser implements IStateParser {
 		return EmptyType;
 	}
 
-	private void getSection(StreamTokenizer tok, String ident) {
-		ParserInternalTypeBase sk = this.factory.parseTokens("SECTION", this.section, tok, ident);
+	private void getSection(final StreamTokenizer tok, final String ident) {
+		final ParserInternalTypeBase sk = this.factory.parseTokens("SECTION", this.section, tok, ident);
 		if(EmptyType.equals(sk)) {
 			this.setErrored();
 		} else {
@@ -93,8 +93,8 @@ public class SectionParser implements IStateParser {
 		}
 	}
 
-	private void getKeyValue(StreamTokenizer tok, String ident) {
-		ParserInternalTypeBase kv = this.factory.parseTokens("KEYVALUE", this.section, tok, ident);
+	private void getKeyValue(final StreamTokenizer tok, final String ident) {
+		final ParserInternalTypeBase kv = this.factory.parseTokens("KEYVALUE", this.section, tok, ident);
 		if(EmptyType.equals(kv)) {
 			this.setErrored();
 		} else {
@@ -102,12 +102,12 @@ public class SectionParser implements IStateParser {
 		}
 	}
 
-	private String itToString(int tt) {
+	private String itToString(final int tt) {
 		if(tt == -1) return "an Identifier";
 		return String.format("'%c'", tt);
 	}
 
-	private static int getTokenType(StreamTokenizer tok) {
+	private static int getTokenType(final StreamTokenizer tok) {
 		if(tok.ttype == TT_WORD) {
 			if(tok.sval.matches(IDENTIFIER_PATTERN)) return -1;
 			return -4;
@@ -117,7 +117,7 @@ public class SectionParser implements IStateParser {
 	}
 
 	@Override
-	public void setParent(ParserInternalTypeBase parent) {
+	public void setParent(final ParserInternalTypeBase parent) {
 		this.parent = parent;
 	}
 
@@ -127,7 +127,7 @@ public class SectionParser implements IStateParser {
 	}
 
 	@Override
-	public void setFactory(TypeFactory factory) {
+	public void setFactory(final TypeFactory factory) {
 		this.factory = factory;
 	}
 
@@ -137,7 +137,7 @@ public class SectionParser implements IStateParser {
 	}
 
 	@Override
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 

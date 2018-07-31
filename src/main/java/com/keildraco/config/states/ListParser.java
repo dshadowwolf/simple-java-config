@@ -30,12 +30,12 @@ public class ListParser implements IStateParser {
 	/**
 	 * 
 	 */
-	public ListParser(TypeFactory factory, String name) {
+	public ListParser(final TypeFactory factory, final String name) {
 		this.name = name;
 		this.factory = factory;
 	}
 	
-	public ListParser(TypeFactory factory) {
+	public ListParser(final TypeFactory factory) {
 		this.factory = factory;
 		this.name = "Well I'll Be Buggered";
 	}
@@ -57,35 +57,35 @@ public class ListParser implements IStateParser {
 	 * @see com.keildraco.config.states.IStateParser#getState(java.io.StreamTokenizer)
 	 */
 	@Override
-	public ParserInternalTypeBase getState(StreamTokenizer tok) {
+	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
 		int p;
-		Deque<ParserInternalTypeBase> store = new LinkedList<>();
+		final Deque<ParserInternalTypeBase> store = new LinkedList<>();
 		String ident;
 		while((p = this.nextToken(tok)) != StreamTokenizer.TT_EOF && p != ']') {
-			com.keildraco.config.Config.LOGGER.fatal("%s (%c)", tok.sval, p>0&&p<127?p:'?');
+			Config.LOGGER.fatal("%s (%c)", tok.sval, p>0&&p<127?p:'?');
 			if(p=='[') continue;
 			if(!this.errored && p == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 				ident = tok.sval;
 				if(!errored() && p == StreamTokenizer.TT_WORD) {
-					ParserInternalTypeBase temp = this.getToken(tok, ident);
+					final ParserInternalTypeBase temp = this.getToken(tok, ident);
 					if(temp == EmptyType) return EmptyType;
 					temp.setName(ident);
 					store.push(temp);
 				}
 			} else if(p == StreamTokenizer.TT_WORD) {
-				com.keildraco.config.Config.LOGGER.fatal("Error loading list, did not find TT_WORD matching %s where expected (%s found)", IDENTIFIER_PATTERN, tok.sval);
+				Config.LOGGER.fatal("Error loading list, did not find TT_WORD matching %s where expected (%s found)", IDENTIFIER_PATTERN, tok.sval);
 				return EmptyType;
 			}
 		}
 
-		List<ParserInternalTypeBase> l = store.stream().collect(Collectors.toList());
+		final List<ParserInternalTypeBase> l = store.stream().collect(Collectors.toList());
 		Collections.reverse(l);
 		return new ListType(this.name, l);
 	}
 
-	private ParserInternalTypeBase getToken(StreamTokenizer tok, String ident) {
+	private ParserInternalTypeBase getToken(final StreamTokenizer tok, final String ident) {
 		if(tok.sval.matches(IDENTIFIER_PATTERN)) {
-			int n = this.peekToken(tok);
+			final int n = this.peekToken(tok);
 			if(n == StreamTokenizer.TT_WORD || n == ',' || n == ']') {
 				return this.factory.getType(this.getParent(), this.getName(), ident, ItemType.IDENTIFIER);
 			} else if( n == '(') {
@@ -100,7 +100,7 @@ public class ListParser implements IStateParser {
 	}
 
 	@Override
-	public void setParent(ParserInternalTypeBase parent) {
+	public void setParent(final ParserInternalTypeBase parent) {
 		this.parent = parent;
 	}
 
@@ -110,7 +110,7 @@ public class ListParser implements IStateParser {
 	}
 
 	@Override
-	public void setFactory(TypeFactory factory) {
+	public void setFactory(final TypeFactory factory) {
 		this.factory = factory;
 	}
 
@@ -120,7 +120,7 @@ public class ListParser implements IStateParser {
 	}
 
 	@Override
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 

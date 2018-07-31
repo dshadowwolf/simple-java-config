@@ -17,12 +17,12 @@ public class KeyValueParser implements IStateParser {
 	private ParserInternalTypeBase parent = null;
 	private TypeFactory factory;
 
-	public KeyValueParser(TypeFactory factory, String name) {
+	public KeyValueParser(final TypeFactory factory, final String name) {
 		this.name = name;
 		this.factory = factory;
 	}
 
-	public KeyValueParser(TypeFactory factory) {
+	public KeyValueParser(final TypeFactory factory) {
 		this.factory = factory;
 		this.name = "Well I'll Be Buggered";
 	}
@@ -38,11 +38,11 @@ public class KeyValueParser implements IStateParser {
 	}
 
 	@Override
-	public ParserInternalTypeBase getState(StreamTokenizer tok) {
-		int p = this.nextToken(tok);
+	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
+		final int p = this.nextToken(tok);
 		
 		if(!this.errored() && p == TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
-			String temp = tok.sval;
+			final String temp = tok.sval;
 			if(this.peekToken(tok) == '(') return this.factory.parseTokens("OPERATION", null, tok, temp);
 			else return this.factory.getType(this.getParent(), this.name, temp, ItemType.IDENTIFIER);
 		} else if(!errored() && p != TT_WORD) {
@@ -69,7 +69,7 @@ public class KeyValueParser implements IStateParser {
 	}
 
 	@Override
-	public void setParent(ParserInternalTypeBase parent) {
+	public void setParent(final ParserInternalTypeBase parent) {
 		this.parent = parent;
 	}
 
@@ -79,7 +79,7 @@ public class KeyValueParser implements IStateParser {
 	}
 
 	@Override
-	public void setFactory(TypeFactory factory) {
+	public void setFactory(final TypeFactory factory) {
 		this.factory = factory;
 	}
 
@@ -89,7 +89,7 @@ public class KeyValueParser implements IStateParser {
 	}
 
 	@Override
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
