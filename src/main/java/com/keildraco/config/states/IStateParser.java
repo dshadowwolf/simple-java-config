@@ -16,7 +16,7 @@ public interface IStateParser {
 
 	public TypeFactory getFactory();
 
-	default public String ttypeToString(final int ttype) {
+	public default String ttypeToString(final int ttype) {
 		switch (ttype) {
 		case TT_WORD:
 			return "TT_WORD";
@@ -35,7 +35,7 @@ public interface IStateParser {
 
 	public boolean errored();
 
-	default public int peekToken(final StreamTokenizer tok) {
+	public default int peekToken(final StreamTokenizer tok) {
 		int k = StreamTokenizer.TT_EOF;
 		try {
 			k = tok.nextToken();
@@ -48,7 +48,7 @@ public interface IStateParser {
 		return k;
 	}
 
-	default public int nextToken(final StreamTokenizer tok) {
+	public default int nextToken(final StreamTokenizer tok) {
 		int k = StreamTokenizer.TT_EOF;
 		try {
 			k = tok.nextToken();
@@ -65,7 +65,7 @@ public interface IStateParser {
 
 	public ParserInternalTypeBase getParent();
 
-	default public void setName(final String name) { /* this space intentionally blank */ }
+	public default void setName(final String name) { /* this space intentionally blank */ }
 	public String getName();
 
 	public void clearErrors();
