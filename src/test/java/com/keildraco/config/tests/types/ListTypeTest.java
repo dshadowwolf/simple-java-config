@@ -8,6 +8,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import java.util.Collections;
 
+import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
@@ -32,7 +33,10 @@ public class ListTypeTest {
 	 */
 	@Test
 	public final void testGet() {
-		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("test"));
+		ListType l = new ListType("blargh");
+		IdentifierType i = new IdentifierType("test", "nope");
+		l.addItem(i);
+		assertEquals(i, l.get("test"));
 	}
 
 	/**
