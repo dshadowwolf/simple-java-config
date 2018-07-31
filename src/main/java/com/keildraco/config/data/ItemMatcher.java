@@ -3,6 +3,7 @@ package com.keildraco.config.data;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
 import com.keildraco.config.types.SectionType;
@@ -42,7 +43,7 @@ public class ItemMatcher {
 			if(this.thisItem.has(bn) && xn.length() > 0) return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
 			else return this.listMatchesAny(bn);
 		case OPERATION:
-			return this.operatorMatches(xn.length()>0?xn:bn);
+			return this.operatorMatches(xn.length()>0?String.format("%s.%s", bn, xn):bn);
 		case SECTION:
 			if(xn.length() > 0) return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
 			return this.sectionMatches(bn);
@@ -71,7 +72,7 @@ public class ItemMatcher {
 	}
 	
 	private boolean operatorMatches(OperationType op, String name) {
-		if(name.indexOf('.') != -1) {
+		if(name.indexOf('.') > 0) {
 			String in = name.substring(0, name.indexOf('.'));
 			String vn = name.substring(name.indexOf('.')+1);
 			return this.matchOperator(op, in, vn);

@@ -122,4 +122,19 @@ public class ListParserTest {
 		assertNull(p.getParent(), "Expected getParent() on a fresh parser to be null");
 	}
 
+	@Test
+	public final void testGetStateError() {
+		String testString = "[ a_value, an_operator(!ident), fa-lse ]\n\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.wordChars('0', '9');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
+		assertEquals(ParserInternalTypeBase.EmptyType, k, "k should be EmptyType due to bad format of input");
+	}
+
 }

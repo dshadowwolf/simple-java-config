@@ -62,14 +62,19 @@ public class ListParser implements IStateParser {
 		Deque<ParserInternalTypeBase> store = new LinkedList<>();
 		String ident;
 		while((p = this.nextToken(tok)) != StreamTokenizer.TT_EOF && p != ']') {
+			com.keildraco.config.Config.LOGGER.fatal("%s (%c)", tok.sval, p>0&&p<127?p:'?');
 			if(p=='[') continue;
 			if(!this.errored && p == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 				ident = tok.sval;
 				if(!errored() && p == StreamTokenizer.TT_WORD) {
 					ParserInternalTypeBase temp = this.getToken(tok, ident);
+					if(temp == EmptyType) return EmptyType;
 					temp.setName(ident);
 					store.push(temp);
 				}
+			} else if(p == StreamTokenizer.TT_WORD) {
+				com.keildraco.config.Config.LOGGER.fatal("Error loading list, did not find TT_WORD matching %s where expected (%s found)", IDENTIFIER_PATTERN, tok.sval);
+				return EmptyType;
 			}
 		}
 
