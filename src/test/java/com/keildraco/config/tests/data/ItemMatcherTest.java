@@ -27,7 +27,7 @@ public class ItemMatcherTest {
 	@BeforeAll
 	public void setUp() throws Exception {
 		Config.registerKnownParts();
-		final String testString = "section {\nlist = [ alpha, bravo(!charlie), delta]\necho {\nfoxtrot = golf\n}\n}\n\n";
+		final String testString = "section {\nlist = [ alpha, bravo(!charlie), delta]\necho {\nfoxtrot = golf\n}\nhotel = hotel\n}\n\n";
 		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
@@ -68,11 +68,47 @@ public class ItemMatcherTest {
 	}
 
 	@Test
-	public final void testMatchIdentifier() {
+	public final void testMatchListLong() {
+		final ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
+		assertTrue(m.matches("list.alpha"), "list matches 'alpha'");
+	}
+
+	@Test
+	public final void testMatchIdentifierValue() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.echo.foxtrot"));
 		assertTrue(m.matches("golf"), "Identifer \"foxtrot\" matches 'golf'");
 	}
 
+	@Test
+	public final void testMatchIdentifierName() {
+		final ItemMatcher m = new ItemMatcher(this.base.get("section.echo.foxtrot"));
+		assertTrue(m.matches("foxtrot"), "Identifer \"foxtrot\" matches 'foxtrot'");
+	}
+
+	@Test
+	public final void testMatchIdentifierBoth() {
+		final ItemMatcher m = new ItemMatcher(this.base.get("section.hotel"));
+		assertTrue(m.matches("hotel"), "Identifer \"hotel\" matches 'hotel'");
+	}
+
+	@Test
+	public final void testMatchIdentifierLong() {
+		final ItemMatcher m = new ItemMatcher(this.base.get("section.hotel"));
+		assertTrue(m.matches("hotel.hotel"), "Identifer \"hotel\" matches 'hotel'");
+	}
+
+	@Test
+	public final void testMatchIdentifierLongNoMatchValue() {
+		final ItemMatcher m = new ItemMatcher(this.base.get("section.hotel"));
+		assertFalse(m.matches("hotel.lima"), "Identifer \"hotel\" matches 'hotel'");
+	}
+	
+	@Test
+	public final void testMatchIdentifierLongNoMatchName() {
+		final ItemMatcher m = new ItemMatcher(this.base.get("section.hotel"));
+		assertFalse(m.matches("golf.hotel"), "Identifer \"hotel\" matches 'hotel'");
+	}
+	
 	private final boolean noMatch(final ItemMatcher m, final String key) {
 		return !m.matches(key);
 	}
