@@ -34,3 +34,6 @@ libs/*
 
 .gradle
 .gradle/*
+
+# have SonarCloud/SonarQube stuff in this
+gradle.properties
