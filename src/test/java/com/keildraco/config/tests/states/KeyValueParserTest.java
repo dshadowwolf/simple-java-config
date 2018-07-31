@@ -159,5 +159,71 @@ public class KeyValueParserTest {
 		} catch( Exception e ) {
 			fail("Caught exception calling p.setFactory(Config.getFactory()): "+e.getMessage());
 		}		
-	}	
+	}
+	
+	@Test
+	public final void testEarlyEOF() {
+		Config.reset();
+		Config.registerKnownParts();
+		String testString = "an_ident = \n\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase k = Config.getFactory().parseTokens("SECTION", null, t, "blargh");
+		assertEquals(ParserInternalTypeBase.EmptyType, k, "expect EmptyType due to malformation");
+	}
+
+	@Test
+	public final void testEarlySectionEnd() {
+		Config.reset();
+		Config.registerKnownParts();
+		String testString = "an_ident = }\n\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase k = Config.getFactory().parseTokens("SECTION", null, t, "blargh");
+		assertEquals(ParserInternalTypeBase.EmptyType, k, "expect EmptyType due to malformation");
+	}
+
+	@Test
+	public final void testNonWordWhereIdentExpected() {
+		Config.reset();
+		Config.registerKnownParts();
+		String testString = "an_ident = ;\n\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase k = Config.getFactory().parseTokens("SECTION", null, t, "blargh");
+		assertEquals(ParserInternalTypeBase.EmptyType, k, "expect EmptyType due to malformation");
+	}
+
+	@Test
+	public final void testBadFormat() {
+		Config.reset();
+		Config.registerKnownParts();
+		String testString = "an_ident = other\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		IStateParser p = Config.getFactory().getParser("KEYVALUE", null);
+		p.setErrored();
+		ParserInternalTypeBase k = p.getState(t);
+		assertEquals(ParserInternalTypeBase.EmptyType, k, "expect EmptyType due to malformation");
+	}
 }
