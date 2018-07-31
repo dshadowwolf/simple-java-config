@@ -80,17 +80,11 @@ public class ListParser implements IStateParser {
 	}
 
 	private ParserInternalTypeBase getToken(final StreamTokenizer tok, final String ident) {
-		if(tok.sval.matches(IDENTIFIER_PATTERN)) {
-			final int n = this.peekToken(tok);
-			if(n != StreamTokenizer.TT_WORD && (n == ',' || n == ']')) {
-				return this.factory.getType(this.getParent(), this.getName(), ident, ItemType.IDENTIFIER);
-			} else if( n == '(') {
-				return this.factory.parseTokens("OPERATION", this.getParent(), tok, ident);
-			}
-		} else {
-			Config.LOGGER.error("Error parsing at line "+tok.lineno());
-			this.setErrored();
-			return EmptyType;
+		final int n = this.peekToken(tok);
+		if(n != StreamTokenizer.TT_WORD && (n == ',' || n == ']')) {
+			return this.factory.getType(this.getParent(), this.getName(), ident, ItemType.IDENTIFIER);
+		} else if( n == '(') {
+			return this.factory.parseTokens("OPERATION", this.getParent(), tok, ident);
 		}
 		this.setErrored();
 		return EmptyType;
