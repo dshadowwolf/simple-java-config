@@ -9,7 +9,7 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 public interface IStateParser {
-	public static final String IDENTIFIER_PATTERN = "^\\s*[a-zA-Z0-9_][a-zA-Z0-9_\\-]*\\s*$";
+	public static final String IDENTIFIER_PATTERN = "^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$";
 	
 	public void setFactory(TypeFactory factory);
 	public TypeFactory getFactory();
@@ -30,7 +30,7 @@ public interface IStateParser {
 	}
 	
 	public void setErrored();
-	default public boolean errored() { return false; }
+	public boolean errored();
 	
 	default public int peekToken(StreamTokenizer tok) {
 		int k = StreamTokenizer.TT_EOF;
