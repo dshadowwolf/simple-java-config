@@ -9,7 +9,10 @@ import static org.mockito.Mockito.when;
 
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeAll;
@@ -266,5 +269,49 @@ public class OperationParserTest {
 				t, "op");
 		assertEquals(ParserInternalTypeBase.EmptyType, testItem,
 				"expect failed parse to return EmptyType");
+	}
+	
+	@Test
+	public final void testTrulyBadParse() {
+		Config.reset();
+		Config.registerKnownParts();
+		final String testString = "(";
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null,
+				t, "op");
+		assertEquals(ParserInternalTypeBase.EmptyType, testItem,
+				"expect failed parse to return EmptyType");
+	}
+	
+	@Test
+	public final void testGetIdentifierErrorOne() {
+		Config.reset();
+		Config.registerKnownParts();
+		OperationParser p = new OperationParser(Config.getFactory(), null, "OPERATION");
+		Method m;
+		try {
+			m = p.getClass().getDeclaredMethod("getIdentifier", StreamTokenizer.class);
+			m.setAccessible(true);
+			final String testString = "bl-ar-gh";
+			final InputStreamReader isr = new InputStreamReader(
+					IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+			final StreamTokenizer t = new StreamTokenizer(isr);
+			t.commentChar('#');
+			t.wordChars('_', '_');
+			t.wordChars('-', '-');
+			t.slashSlashComments(true);
+			t.slashStarComments(true);
+			String z = (String)m.invoke(p, t);
+			assertEquals("", z, "blank string returned on error");
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException e) {
+			fail("Test threw an unexpected exception: "+e);
+		}
 	}
 }
