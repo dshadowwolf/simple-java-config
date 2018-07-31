@@ -45,7 +45,7 @@ repositories {
 	}
 }
 
-// Commented out due to incompatiblity with native junit-gradle
+// Commented out due to incompatibility with native junit-gradle
 //junitPlatform.enableStandardTestTask true
 
 tasks.withType(com.github.spotbugs.SpotBugsTask) {

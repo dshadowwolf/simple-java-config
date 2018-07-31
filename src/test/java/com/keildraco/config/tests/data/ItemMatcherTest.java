@@ -98,37 +98,37 @@ public class ItemMatcherTest {
 	@Test
 	public final void testMatchIdentifierValue() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.echo.foxtrot"));
-		assertTrue(m.matches("golf"), "Identifer \"foxtrot\" matches 'golf'");
+		assertTrue(m.matches("golf"), "Identifier \"foxtrot\" matches 'golf'");
 	}
 
 	@Test
 	public final void testMatchIdentifierName() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.echo.foxtrot"));
-		assertTrue(m.matches("foxtrot"), "Identifer \"foxtrot\" matches 'foxtrot'");
+		assertTrue(m.matches("foxtrot"), "Identifier \"foxtrot\" matches 'foxtrot'");
 	}
 
 	@Test
 	public final void testMatchIdentifierBoth() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.hotel"));
-		assertTrue(m.matches("hotel"), "Identifer \"hotel\" matches 'hotel'");
+		assertTrue(m.matches("hotel"), "Identifier \"hotel\" matches 'hotel'");
 	}
 
 	@Test
 	public final void testMatchIdentifierLong() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.hotel"));
-		assertTrue(m.matches("hotel.hotel"), "Identifer \"hotel\" matches 'hotel'");
+		assertTrue(m.matches("hotel.hotel"), "Identifier \"hotel\" matches 'hotel'");
 	}
 
 	@Test
 	public final void testMatchIdentifierLongNoMatchValue() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.hotel"));
-		assertFalse(m.matches("hotel.lima"), "Identifer \"hotel\" matches 'hotel'");
+		assertFalse(m.matches("hotel.lima"), "Identifier \"hotel\" matches 'hotel'");
 	}
 
 	@Test
 	public final void testMatchIdentifierLongNoMatchName() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.hotel"));
-		assertFalse(m.matches("golf.hotel"), "Identifer \"hotel\" matches 'hotel'");
+		assertFalse(m.matches("golf.hotel"), "Identifier \"hotel\" matches 'hotel'");
 	}
 
 	private boolean noMatch(final ItemMatcher m, final String key) {

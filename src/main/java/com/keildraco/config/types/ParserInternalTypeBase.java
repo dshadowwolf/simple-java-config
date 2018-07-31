@@ -95,7 +95,7 @@ public class ParserInternalTypeBase {
 	}
 
 	public enum ItemType {
-		SECTION, IDENTIFIER, NUMBER, BOOLEAN, LIST, OPERATION, INVALID, EMPTY;
+		SECTION, IDENTIFIER, NUMBER, BOOLEAN, LIST, OPERATION, INVALID, EMPTY
 	}
 
 	public ItemType getType() {

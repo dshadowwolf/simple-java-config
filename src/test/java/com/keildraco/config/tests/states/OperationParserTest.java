@@ -143,7 +143,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: " + e.getMessage());
+			fail("Caught exception instantiating a new KeyValueParser: " + e.getMessage());
 		}
 	}
 
@@ -154,7 +154,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory, null, "BUGGER");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: " + e.getMessage());
+			fail("Caught exception instantiating a new KeyValueParser: " + e.getMessage());
 		}
 	}
 

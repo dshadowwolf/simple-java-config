@@ -155,6 +155,6 @@ public class TypeFactoryTest {
 		final ParserInternalTypeBase z = Config.getFactory().parseTokens("NOSUCHPARSER", null, t,
 				"ROOT");
 		assertEquals(ParserInternalTypeBase.EmptyType, z,
-				"parseTokens with nonexistant parser should return EmptyType");
+				"parseTokens with nonexistent parser should return EmptyType");
 	}
 }

@@ -141,7 +141,7 @@ public class SectionParserTest {
 			final SectionParser p = new SectionParser(this.factory);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: " + e.getMessage());
+			fail("Caught exception instantiating a new KeyValueParser: " + e.getMessage());
 		}
 	}
 
@@ -152,7 +152,7 @@ public class SectionParserTest {
 			final SectionParser p = new SectionParser(this.factory, null, "ROOT");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: " + e.getMessage());
+			fail("Caught exception instantiating a new KeyValueParser: " + e.getMessage());
 		}
 	}
 
