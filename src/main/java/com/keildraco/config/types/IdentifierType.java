@@ -36,7 +36,7 @@ public class IdentifierType extends ParserInternalTypeBase {
 	
 	@Override
 	public String asString() {
-		if(this.getName().equals("")) return this.ident;
+		if (this.getName().equals("")) return this.ident;
 		return String.format("%s = %s", this.getName(), this.ident);
 	}
 	

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.keildraco.config.tests.types;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -14,10 +14,13 @@ public class ParserInternalTypeBase {
 	public static final ParserInternalTypeBase EmptyType = new ParserInternalTypeBase("EMPTY") {
 		@Override
 		public boolean has(final String itemName) { return false; }
+
 		@Override
 		public ParserInternalTypeBase get(final String itemName) { return null; }
+
 		@Override
 		public void addItem(final ParserInternalTypeBase item) { /* the EmptyType does not store other items */ }
+
 		@Override
 	    public ItemType getType() { return ItemType.EMPTY; }
 	};
@@ -37,20 +40,20 @@ public class ParserInternalTypeBase {
 	}
 	
     public ParserInternalTypeBase get(final String itemName)  {
-    	if(itemName.indexOf('.') > 0) {
+    	if (itemName.indexOf('.') > 0) {
     		final String nameBits = itemName.substring(0,itemName.indexOf('.'));
-    		if(this.has(nameBits)) {
+    		if (this.has(nameBits)) {
     			final String nameRest = itemName.substring(itemName.indexOf('.')+1);
     			return this.get(nameBits)!=null?this.get(nameBits).get(nameRest):EmptyType;
     		}
-    	} else if(this.has(itemName)) {
+    	} else if (this.has(itemName)) {
     		return this.items.get(itemName);
     	}
     	return ParserInternalTypeBase.EmptyType;
     }
     
     public boolean has(final String itemName) {
-    	if(itemName.contains(".")) {
+    	if (itemName.contains(".")) {
     		final String nn = itemName.substring(0, itemName.indexOf('.'));
     		final String rest = itemName.substring(itemName.indexOf('.')+1);
     		final boolean a = this.items.containsKey(nn);
@@ -83,7 +86,7 @@ public class ParserInternalTypeBase {
     	return Collections.emptyList();
     }
     
-    public void setName(String name) {
+    public void setName(final String name) {
     	this.name = name;
     }
     

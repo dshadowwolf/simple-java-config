@@ -6,6 +6,7 @@ import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
+
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
 import static java.io.StreamTokenizer.*;
@@ -50,12 +51,12 @@ public class SectionParser implements IStateParser {
 	@Override
 	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
 		String ident = "";
-		while( this.nextToken(tok) != TT_EOF && !this.errored()) {
+		while (this.nextToken(tok) != TT_EOF && !this.errored()) {
 			int tt = getTokenType(tok);
 			
-			switch(tt) {
+			switch (tt) {
 			case '=':
-				if(ident.equals("")) {
+				if (ident.equals("")) {
 					this.setErrored();
 					Config.LOGGER.error("Found a store operation (=) where I was expecting an identifier");
 					return EmptyType;
@@ -80,13 +81,13 @@ public class SectionParser implements IStateParser {
 				return EmptyType;
 			}
 		}
-		if(!this.errored()) return this.section;
+		if (!this.errored()) return this.section;
 		return EmptyType;
 	}
 
 	private void getSection(final StreamTokenizer tok, final String ident) {
 		final ParserInternalTypeBase sk = this.factory.parseTokens("SECTION", this.section, tok, ident);
-		if(EmptyType.equals(sk)) {
+		if (EmptyType.equals(sk)) {
 			this.setErrored();
 		} else {
 			this.section.addItem(sk);
@@ -95,7 +96,7 @@ public class SectionParser implements IStateParser {
 
 	private void getKeyValue(final StreamTokenizer tok, final String ident) {
 		final ParserInternalTypeBase kv = this.factory.parseTokens("KEYVALUE", this.section, tok, ident);
-		if(EmptyType.equals(kv)) {
+		if (EmptyType.equals(kv)) {
 			this.setErrored();
 		} else {
 			this.section.addItem(kv);
@@ -103,13 +104,13 @@ public class SectionParser implements IStateParser {
 	}
 
 	private String itToString(final int tt) {
-		if(tt == -1) return "an Identifier";
+		if (tt == -1) return "an Identifier";
 		return String.format("'%c'", tt);
 	}
 
 	private static int getTokenType(final StreamTokenizer tok) {
-		if(tok.ttype == TT_WORD) {
-			if(tok.sval.matches(IDENTIFIER_PATTERN)) return -1;
+		if (tok.ttype == TT_WORD) {
+			if (tok.sval.matches(IDENTIFIER_PATTERN)) return -1;
 			return -4;
 		} else {
 			return tok.ttype;

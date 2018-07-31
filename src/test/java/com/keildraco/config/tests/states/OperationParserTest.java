@@ -23,6 +23,7 @@ import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.*;
 import com.keildraco.config.types.*;
+
 import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -37,8 +38,8 @@ public class OperationParserTest {
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	final StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
-	            	while(tok.nextToken() != StreamTokenizer.TT_EOF &&
+	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
+	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != ']') System.err.println(String.format("<<<%c :: %s", tok.ttype<127?(tok.ttype>0?tok.ttype:'-'):'?', tok.sval));
 	            	
 	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.LIST);
@@ -58,11 +59,11 @@ public class OperationParserTest {
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	final StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
+	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	tok.nextToken();
 	            	
-	            	if(tok.ttype == StreamTokenizer.TT_WORD) return factory.getType(null, "", tok.sval, ParserInternalTypeBase.ItemType.IDENTIFIER);
-	            	else if(tok.ttype == '[') return factory.parseTokens("LIST", null, tok, "");
+	            	if (tok.ttype == StreamTokenizer.TT_WORD) return factory.getType(null, "", tok.sval, ParserInternalTypeBase.ItemType.IDENTIFIER);
+	            	else if (tok.ttype == '[') return factory.parseTokens("LIST", null, tok, "");
 	            	else return ParserInternalTypeBase.EmptyType;
 	            }
 	        });
@@ -80,8 +81,8 @@ public class OperationParserTest {
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	final StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
-	            	while(tok.nextToken() != StreamTokenizer.TT_EOF &&
+	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
+	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != '}') System.err.println(String.format("<<<%c :: %s", tok.ttype<127?(tok.ttype>0?tok.ttype:'-'):'?', tok.sval));
 	            	
 	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.SECTION);
@@ -109,7 +110,7 @@ public class OperationParserTest {
 			@SuppressWarnings("unused")
 			final OperationParser p = new OperationParser(this.factory);
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -120,7 +121,7 @@ public class OperationParserTest {
 			@SuppressWarnings("unused")
 			final OperationParser p = new OperationParser(this.factory, null, "BUGGER");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -131,7 +132,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			p.setFactory(this.factory);
 			assertTrue(true, "Expected no exception");
-		} catch( Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception using a parsers setFactory(TypeFactory) method: "+e.getMessage());
 		}
 	}
@@ -142,7 +143,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			final TypeFactory f = p.getFactory();
 			assertEquals(this.factory, f);
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception using a parsers getFactory() method: "+e.getMessage());
 		}
 	}
@@ -153,7 +154,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			p.setErrored();
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception calling a parsers setErrored() method: "+e.getMessage());
 		}
 	}
@@ -163,7 +164,7 @@ public class OperationParserTest {
 		try {
 			final OperationParser p = new OperationParser(this.factory);
 			assertEquals(Boolean.FALSE, p.errored());
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception calling a parsers errored() method: "+e.getMessage());
 		}
 	}
@@ -188,7 +189,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception calling a parsers setParent() method: "+e.getMessage());
 		}
 	}
@@ -198,7 +199,7 @@ public class OperationParserTest {
 		try {
 			final OperationParser p = new OperationParser(this.factory);
 			assertNull(p.getParent());
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception calling a parsers getParent() method: "+e.getMessage());
 		}
 	}
@@ -208,7 +209,7 @@ public class OperationParserTest {
 		try {
 			final OperationParser p = new OperationParser(this.factory, null, "BUGGERED");
 			assertEquals("BUGGERED", p.getName());
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception trying to get a parsers name: "+e.getMessage());
 		}
 	}
@@ -219,7 +220,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			p.clearErrors();
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception telling a parser to clear its errors: "+e.getMessage());
 		}
 	}
