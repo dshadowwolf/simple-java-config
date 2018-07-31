@@ -8,9 +8,14 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Optional;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,6 +25,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.IStateParser;
 import com.keildraco.config.states.SectionParser;
@@ -220,5 +226,79 @@ public class SectionParserTest {
 		t.slashStarComments(true);
 		final ParserInternalTypeBase k = this.runParser(t);
 		assertEquals(ParserInternalTypeBase.EmptyType, k, "Expecting to have k be EmptyType");
+	}
+	
+	@Test
+	public final void testITtoString() {
+		Config.reset();
+		Config.registerKnownParts();
+		SectionParser p = new SectionParser(Config.getFactory(), null, "SECTION");
+		Method m;
+		try {
+			Optional<Method> k = Arrays.asList(p.getClass().getDeclaredMethods()).stream()
+			.filter( meth -> meth.getName().matches("itToString"))
+			.findFirst();
+			if(k.isPresent()) m = k.get();
+			else throw new NoSuchMethodException();
+			m.setAccessible(true);
+			String rv = (String)m.invoke(p, -1);
+			assertEquals("an Identifier", rv, "token type of -1 is an identifier");
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			fail("Caught exception during test: "+e);
+		}
+	}
+
+	@Test
+	public final void testGetTokenTypeNonIdent() {
+		Config.reset();
+		Config.registerKnownParts();
+		SectionParser p = new SectionParser(Config.getFactory(), null, "SECTION");
+		final String testString = "iden-tifier";
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		Method m;
+		try {
+			t.nextToken();
+			t.pushBack();
+			m = p.getClass().getDeclaredMethod("getTokenType", StreamTokenizer.class);
+			m.setAccessible(true);
+			int rv = (Integer)m.invoke(p, t);
+			assertEquals(-4, rv, "token type of -4 expected");
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | IOException e) {
+			fail("Caught exception during test: "+e);
+		}
+	}
+
+	@Test
+	public final void testGetTokenTypeIdent() {
+		Config.reset();
+		Config.registerKnownParts();
+		SectionParser p = new SectionParser(Config.getFactory(), null, "SECTION");
+		final String testString = "identifier";
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		Method m;
+		try {
+			t.nextToken();
+			t.pushBack();
+			m = p.getClass().getDeclaredMethod("getTokenType", StreamTokenizer.class);
+			m.setAccessible(true);
+			int rv = (Integer)m.invoke(p, t);
+			assertEquals(-1, rv, "token type of -1 expected");
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | IOException e) {
+			fail("Caught exception during test: "+e);
+		}
 	}
 }
