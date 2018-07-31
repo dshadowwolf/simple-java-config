@@ -65,7 +65,7 @@ public class TypeFactoryTest {
 			TypeFactory f = new TypeFactory();
 			f.registerParser(() -> new SectionParser(f,null,""), "SECTION");
 			IStateParser g = f.getParser("SECTION", null);
-			assertTrue(g != null, "Expected no exception");
+			assertNotNull(g, "Expected no exception");
 		} catch(Exception e) {
 			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");
 		}

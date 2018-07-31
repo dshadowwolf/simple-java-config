@@ -58,7 +58,7 @@ public class ConfigAPITest {
 			com.keildraco.config.Config.reset();
 			com.keildraco.config.Config.registerKnownParts();
 			c = com.keildraco.config.Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri());
-			assertTrue(c != null, "Load Worked? ");
+			assertNotNull(c, "Load Worked? ");
 		} catch (IOException | IllegalArgumentException e ) {
 			fail(String.format("Caught exception running LoadFile([URI] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri(), e));
 		}

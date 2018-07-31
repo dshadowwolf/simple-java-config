@@ -24,7 +24,7 @@ public class DataQueryTest {
 	public final void testOf() {
 		try {
 			DataQuery dq = DataQuery.of((SectionType)new SectionType("ROOT"));
-			assertTrue(dq != null, "DataQuery.of() returned non-null");
+			assertNotNull(dq, "DataQuery.of() returned non-null");
 		} catch(Exception e) {
 			fail("Exception in call of DataQuery.of(): "+e);
 		}
