@@ -66,12 +66,9 @@ public class ListParser implements IStateParser {
 			if(p=='[') continue;
 			if(!this.errored && p == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 				ident = tok.sval;
-				if(!errored() && p == StreamTokenizer.TT_WORD) {
-					final ParserInternalTypeBase temp = this.getToken(tok, ident);
-					if(temp == EmptyType) return EmptyType;
-					temp.setName(ident);
-					store.push(temp);
-				}
+				final ParserInternalTypeBase temp = this.getToken(tok, ident);
+				temp.setName(ident);
+				store.push(temp);
 			} else if(p == StreamTokenizer.TT_WORD) {
 				Config.LOGGER.fatal("Error loading list, did not find TT_WORD matching %s where expected (%s found)", IDENTIFIER_PATTERN, tok.sval);
 				return EmptyType;
@@ -80,7 +77,8 @@ public class ListParser implements IStateParser {
 
 		final List<ParserInternalTypeBase> l = store.stream().collect(Collectors.toList());
 		Collections.reverse(l);
-		return new ListType(this.name, l);
+		
+		return l.contains(EmptyType)?EmptyType:new ListType(this.name, l);
 	}
 
 	private ParserInternalTypeBase getToken(final StreamTokenizer tok, final String ident) {
@@ -96,6 +94,7 @@ public class ListParser implements IStateParser {
 			this.setErrored();
 			return EmptyType;
 		}
+		this.setErrored();
 		return EmptyType;
 	}
 

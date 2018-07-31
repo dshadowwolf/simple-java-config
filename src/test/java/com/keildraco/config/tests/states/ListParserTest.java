@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.*;
 import com.keildraco.config.types.*;
@@ -123,7 +124,7 @@ public class ListParserTest {
 	}
 
 	@Test
-	public final void testGetStateError() {
+	public final void testGetStateErrorOne() {
 		String testString = "[ a_value, an_operator(!ident), fa-lse ]\n\n";
 		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
 		StreamTokenizer t = new StreamTokenizer(isr);
@@ -137,4 +138,35 @@ public class ListParserTest {
 		assertEquals(ParserInternalTypeBase.EmptyType, k, "k should be EmptyType due to bad format of input");
 	}
 
+	@Test
+	public final void testGetStateErrorTwo() {
+		String testString = "[ a_value, an_operator(!ident), false true ]\n\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.wordChars('0', '9');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
+		assertEquals(ParserInternalTypeBase.EmptyType, k, "k should be EmptyType due to bad format of input");
+	}
+
+	@Test
+	public final void testSetFactory() {
+		try {
+			final ListParser p = new ListParser(this.factory, "LIST");
+			p.setFactory(Config.getFactory());
+			assertTrue(true, "Expected setFactory() to not have an exception");
+		} catch(final Exception e ) {
+			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+		}
+	}
+
+	@Test
+	public final void testGetFactory() {
+		final ListParser p = new ListParser(this.factory, "LIST");
+		assertEquals(this.factory, p.getFactory(), "p.getFactory() should equal the factory for the test suite");
+	}
 }
