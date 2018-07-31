@@ -3,16 +3,16 @@ package com.keildraco.config.types;
 import javax.annotation.Nullable;
 
 public class SectionType extends ParserInternalTypeBase {
-	public SectionType(String name) {
+	public SectionType(final String name) {
 		this(null,name);
 	}
 	
-	public SectionType(@Nullable ParserInternalTypeBase parent, String name) {
+	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name) {
 		super(parent,name);
 		if(this.getName().equals("")||parent==null) this.setName("ROOT");
 	}
 	
-	public SectionType(@Nullable ParserInternalTypeBase parent, String name, String value) {
+	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {
 		this(parent,name);
 	}
 	
@@ -23,7 +23,7 @@ public class SectionType extends ParserInternalTypeBase {
 	
 	@Override
 	public String asString() {
-		StringBuilder k = new StringBuilder();
+		final StringBuilder k = new StringBuilder();
 
 		if(!this.getName().equals("ROOT")) {
 			k.append(String.format("%s {%n", this.getName()));

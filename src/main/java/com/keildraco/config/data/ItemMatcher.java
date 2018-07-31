@@ -3,7 +3,6 @@ package com.keildraco.config.data;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
-
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
 import com.keildraco.config.types.SectionType;
@@ -17,24 +16,24 @@ public class ItemMatcher {
 	
 	public static final ItemMatcher AlwaysFalse = new ItemMatcher(EmptyType) {
 		@Override
-		public boolean matches(String name) {
+		public boolean matches(final String name) {
 			return false;
 		}
 	};
 	
-	public ItemMatcher(ParserInternalTypeBase item) {
+	public ItemMatcher(final ParserInternalTypeBase item) {
 		this.thisItem = item;
 	}
 
-	public boolean matches(String name) {
-		boolean tn = name.contains(".");
-		String bn = tn?name.substring(0, name.indexOf('.')):name;
-		String xn = tn?name.substring(name.indexOf('.')+1):"";
+	public boolean matches(final String name) {
+		final boolean tn = name.contains(".");
+		final String bn = tn?name.substring(0, name.indexOf('.')):name;
+		final String xn = tn?name.substring(name.indexOf('.')+1):"";
 		
 		return this.doMatch(this.thisItem.getType(),bn,xn);
 	}
 
-	private boolean doMatch(ItemType type, String bn, String xn) {
+	private boolean doMatch(final ItemType type, final String bn, final String xn) {
 		switch(type) {
 		case IDENTIFIER:
 			if(xn.length() > 0) return this.identMatches((IdentifierType)this.thisItem,xn)&&this.thisItem.getName().equalsIgnoreCase(bn);
@@ -52,15 +51,15 @@ public class ItemMatcher {
 		}
 	}
 
-	private boolean sectionMatches(SectionType sec, String name) {
+	private boolean sectionMatches(final SectionType sec, final String name) {
 		return sec.has(name);
 	}
 	
-	private boolean sectionMatches(String name) {
+	private boolean sectionMatches(final String name) {
 		return this.sectionMatches((SectionType)this.thisItem, name);
 	}
 
-	private boolean matchOperator(OperationType op, String itemName, String valueName) {
+	private boolean matchOperator(final OperationType op, final String itemName, final String valueName) {
 		String matchName = itemName;
 		if(op.getName().equalsIgnoreCase(itemName) && valueName.length() > 0) {
 			matchName = valueName;
@@ -71,29 +70,29 @@ public class ItemMatcher {
 		return true;
 	}
 	
-	private boolean operatorMatches(OperationType op, String name) {
+	private boolean operatorMatches(final OperationType op, final String name) {
 		if(name.indexOf('.') > 0) {
-			String in = name.substring(0, name.indexOf('.'));
-			String vn = name.substring(name.indexOf('.')+1);
+			final String in = name.substring(0, name.indexOf('.'));
+			final String vn = name.substring(name.indexOf('.')+1);
 			return this.matchOperator(op, in, vn);
 		} else {
 			return this.matchOperator(op, name, "");
 		}
 	}
 	
-	private boolean operatorMatches(String name) {
+	private boolean operatorMatches(final String name) {
 		return this.operatorMatches((OperationType)this.thisItem, name);
 	}
 
-	private boolean identMatches(IdentifierType ident, String name) {
+	private boolean identMatches(final IdentifierType ident, final String name) {
 		return (ident.getName().equalsIgnoreCase(name) || ident.getValue().equalsIgnoreCase(name));
 	}
 	
-	private boolean listMatchesAny(ListType theList, String name) {
+	private boolean listMatchesAny(final ListType theList, final String name) {
 		return theList.has(name);
 	}
 	
-	private boolean listMatchesAny(String name) {
+	private boolean listMatchesAny(final String name) {
 		return this.listMatchesAny((ListType)this.thisItem,name);
 	}
 }

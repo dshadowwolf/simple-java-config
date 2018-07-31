@@ -14,7 +14,7 @@ public interface IStateParser {
 	public void setFactory(TypeFactory factory);
 	public TypeFactory getFactory();
 	
-	default public String ttypeToString(int ttype) {
+	default public String ttypeToString(final int ttype) {
 		switch(ttype) {
 		case TT_WORD:
 			return "TT_WORD";
@@ -32,11 +32,11 @@ public interface IStateParser {
 	public void setErrored();
 	public boolean errored();
 	
-	default public int peekToken(StreamTokenizer tok) {
+	default public int peekToken(final StreamTokenizer tok) {
 		int k = StreamTokenizer.TT_EOF;
 		try {
 			k = tok.nextToken();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			this.setErrored();
 			Config.LOGGER.error(e.getStackTrace());
 		} finally {
@@ -45,21 +45,21 @@ public interface IStateParser {
 		return k;
 	}
 	
-	default public int nextToken(StreamTokenizer tok) {
+	default public int nextToken(final StreamTokenizer tok) {
 		int k = StreamTokenizer.TT_EOF;
 		try {
 			k = tok.nextToken();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			this.setErrored();
 			Config.LOGGER.error(e.getStackTrace());
 		}
 		return k;
 	}
 	
-	public ParserInternalTypeBase getState(StreamTokenizer tok);
-	public void setParent(ParserInternalTypeBase parent);
+	public ParserInternalTypeBase getState(final StreamTokenizer tok);
+	public void setParent(final ParserInternalTypeBase parent);
 	public ParserInternalTypeBase getParent();
-	default public void setName(String name) { /* this space intentionally blank */ }
+	default public void setName(final String name) { /* this space intentionally blank */ }
 	public String getName();
 	public void clearErrors();
 }

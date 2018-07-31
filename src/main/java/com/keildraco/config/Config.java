@@ -56,13 +56,13 @@ public class Config {
 		return coreTypeFactory;
 	}
 	
-	private static void registerParserInternal(String name, Class<? extends IStateParser> clazz) {
+	private static void registerParserInternal(final String name, final Class<? extends IStateParser> clazz) {
 		coreTypeFactory.registerParser(() -> {
 			Constructor<? extends IStateParser> c;
 			try {
 				c = clazz.getConstructor(TypeFactory.class);
 				return c.newInstance(coreTypeFactory);
-			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			} catch (final NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				LOGGER.error("Exception getting parser instance for %s: %s", name, e.getMessage());
 				LOGGER.error(e.getStackTrace());
 				return null;
@@ -70,13 +70,13 @@ public class Config {
 		}, name);
 	}
 
-	private static void registerTypeInternal(ItemType type, Class<? extends ParserInternalTypeBase> clazz) {
+	private static void registerTypeInternal(final ItemType type, final Class<? extends ParserInternalTypeBase> clazz) {
 		coreTypeFactory.registerType((parent, name, value) -> {
 			Constructor<? extends ParserInternalTypeBase> c;
 			try {
 				c = clazz.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
 				return c.newInstance(parent==null?EmptyType:parent, name, value);
-			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			} catch (final NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				LOGGER.error("Exception getting type instance for %s: %s", name, e.getMessage());
 				LOGGER.error(e.getStackTrace());
 				return null;
@@ -84,11 +84,11 @@ public class Config {
 		}, type);
 	}
 
-	public static void registerType(ItemType type, Class<? extends ParserInternalTypeBase> clazz) {
+	public static void registerType(final ItemType type, final Class<? extends ParserInternalTypeBase> clazz) {
 		registerTypeInternal(type, clazz);
 	}
 	
-	public static void registerParser(String name, Class<? extends IStateParser> clazz) {
+	public static void registerParser(final String name, final Class<? extends IStateParser> clazz) {
 		registerParserInternal(name, clazz);
 	}
 
@@ -101,39 +101,39 @@ public class Config {
 		coreTypeFactory.reset();
 	}
 	
-	private static SectionType runParser(Reader reader) {
+	private static SectionType runParser(final Reader reader) {
 		StreamTokenizer tok = new StreamTokenizer(reader);
 		tok.commentChar('#');
 		tok.wordChars('_', '_');
 		tok.wordChars('-', '-');
 		tok.slashSlashComments(true);
 		tok.slashStarComments(true);
-		ParserInternalTypeBase root = coreTypeFactory.getType(null, "root", "", ItemType.SECTION);
+		final ParserInternalTypeBase root = coreTypeFactory.getType(null, "root", "", ItemType.SECTION);
 		return (SectionType)coreTypeFactory.getParser("SECTION", root).getState(tok);
 	}
 	
-	private static FileSystem getFilesystemForURI(URI uri) throws IOException {
+	private static FileSystem getFilesystemForURI(final URI uri) throws IOException {
 		if(uri.getScheme().equalsIgnoreCase("jar")) return FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
 		else return FileSystems.getDefault();
 	}
-	public static DataQuery LoadFile(URI filePath) throws IOException {
-	    FileSystem fs = getFilesystemForURI(filePath);
-	    Path p = fs.getPath(filePath.getPath().substring(1));
-		BufferedReader br = Files.newBufferedReader(p);
-		SectionType res = runParser(br);
+	public static DataQuery LoadFile(final URI filePath) throws IOException {
+	    final FileSystem fs = getFilesystemForURI(filePath);
+	    final Path p = fs.getPath(filePath.getPath().substring(1));
+		final BufferedReader br = Files.newBufferedReader(p);
+		final SectionType res = runParser(br);
 		return DataQuery.of(res);
 	}
 	
-	public static DataQuery LoadFile(Path filePath) throws IOException {
+	public static DataQuery LoadFile(final Path filePath) throws IOException {
 		return LoadFile(filePath.toUri());
 	}
 	
-	public static DataQuery LoadFile(String filePath) throws IOException {
+	public static DataQuery LoadFile(final String filePath) throws IOException {
 		return LoadFile(Paths.get(filePath).toUri());
 	}
 	
-	public static DataQuery parseString(String data) {
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(data, StandardCharsets.UTF_8));
+	public static DataQuery parseString(final String data) {
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(data, StandardCharsets.UTF_8));
 		return DataQuery.of(runParser(isr));
 	}
 	

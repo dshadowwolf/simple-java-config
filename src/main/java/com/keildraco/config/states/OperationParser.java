@@ -11,23 +11,23 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 public class OperationParser implements IStateParser {
 	private TypeFactory factory;
-	private String name;
+	private final String name;
 	private ParserInternalTypeBase parent;
 	private boolean error = false;
 	
-	public OperationParser(TypeFactory factory) {
+	public OperationParser(final TypeFactory factory) {
 		this.factory = factory;
 		this.name = "Well I'll Be Buggered";
 	}
 	
-	public OperationParser(TypeFactory factory, ParserInternalTypeBase parent, String name) {
+	public OperationParser(final TypeFactory factory, final ParserInternalTypeBase parent, final String name) {
 		this.factory = factory;
 		this.name = name;
 		this.parent = parent;
 	}
 	
 	@Override
-	public void setFactory(TypeFactory factory) {
+	public void setFactory(final TypeFactory factory) {
 		this.factory = factory;
 	}
 
@@ -47,21 +47,17 @@ public class OperationParser implements IStateParser {
 	}
 
 	@Override
-	public ParserInternalTypeBase getState(StreamTokenizer tok) {
+	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
 		try {
-			String operator = null;
-			String value = null;
-			int p;
-
 			tok.nextToken();
 			if(tok.ttype == '(') tok.nextToken();
 
 			if(tok.ttype != StreamTokenizer.TT_EOF) {
-				operator = this.getOperator(tok);
-				value = this.getIdentifier(tok);
-				p = peekToken(tok);
+				final String operator = this.getOperator(tok);
+				final String value = this.getIdentifier(tok);
+				final int p = peekToken(tok);
 				if(p == ')') {
-					OperationType rv = (OperationType)this.factory.getType(this.getParent(), this.name, value, ItemType.OPERATION);
+					final OperationType rv = (OperationType)this.factory.getType(this.getParent(), this.name, value, ItemType.OPERATION);
 					rv.setName(this.name);
 					rv.setOperation(operator);
 					return rv;					
@@ -70,7 +66,7 @@ public class OperationParser implements IStateParser {
 					return ParserInternalTypeBase.EmptyType;
 				}
 			}
-		} catch(IOException | IllegalArgumentException e) {
+		} catch(final IOException | IllegalArgumentException e) {
 			Config.LOGGER.error("Exception parsing Operation: %s", e.getMessage());
 			Config.LOGGER.error(e.getStackTrace());
 			this.setErrored();
@@ -79,19 +75,19 @@ public class OperationParser implements IStateParser {
 		return ParserInternalTypeBase.EmptyType;
 	}
 	
-	private String getIdentifier(StreamTokenizer tok) {
+	private String getIdentifier(final StreamTokenizer tok) {
 		this.nextToken(tok);
 		if(tok.ttype == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) return tok.sval;
 		throw new IllegalArgumentException("IDENTIFIER not available in token stream");
 	}
 
-	private String getOperator(StreamTokenizer tok) {
+	private String getOperator(final StreamTokenizer tok) {
 		if(tok.ttype=='~'||tok.ttype=='!') return String.format("%c", tok.ttype);
 		throw new IllegalArgumentException("OPERATOR not available in token stream");
 	}
 
 	@Override
-	public void setParent(ParserInternalTypeBase parent) {
+	public void setParent(final ParserInternalTypeBase parent) {
 		this.parent = parent;
 	}
 

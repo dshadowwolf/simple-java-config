@@ -3,34 +3,34 @@ package com.keildraco.config.types;
 import javax.annotation.Nullable;
 
 public class IdentifierType extends ParserInternalTypeBase {
-	private String ident;
+	private final String ident;
 	
-	public IdentifierType(String n) {
+	public IdentifierType(final String n) {
 		this(n, n);
 	}
 	
-	public IdentifierType(String n, String v) {
+	public IdentifierType(final String n, final String v) {
 		this(null,n,v);
 	}
 	
 	
-	public IdentifierType(@Nullable ParserInternalTypeBase parent, String name, String value) {
+	public IdentifierType(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {
 		super(parent, name);
 		this.ident = value;
 	}
 	
 	@Override
-	public void addItem(ParserInternalTypeBase item) {
+	public void addItem(final ParserInternalTypeBase item) {
 		// identifiers - that is, key-value pairs - can't store more than an identifier they equal, so this method gets stubbed
 	}
 	
 	@Override
-	public boolean has(String s) {
+	public boolean has(final String s) {
 		return this.getName().equalsIgnoreCase(s)||this.ident.equalsIgnoreCase(s);
 	}
 	
 	@Override
-	public ParserInternalTypeBase get(String s) {
+	public ParserInternalTypeBase get(final String s) {
 		return this.has(s)?this:EmptyType;
 	}
 	

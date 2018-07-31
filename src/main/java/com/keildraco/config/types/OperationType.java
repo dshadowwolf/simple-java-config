@@ -5,20 +5,20 @@ public class OperationType extends ParserInternalTypeBase {
 	private String ident;
 	private String operator;
 
-	public OperationType(String name) {
+	public OperationType(final String name) {
 		super(name);
 	}
 
-	public OperationType(ParserInternalTypeBase parent, String name) {
+	public OperationType(final ParserInternalTypeBase parent, final String name) {
 		super(parent, name);
 	}
 
-	public OperationType(ParserInternalTypeBase parent, String name, String value) {
+	public OperationType(final ParserInternalTypeBase parent, final String name, final String value) {
 		super(parent, name);
 		this.ident = value;
 	}
 
-	public OperationType setOperation(String oper) {
+	public OperationType setOperation(final String oper) {
 		this.operator = oper.trim();
 		return this;
 	}
