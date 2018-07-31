@@ -1,12 +1,23 @@
 package com.keildraco.config.tests.states;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
+
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
+import java.io.IOException;
 import java.io.StreamTokenizer;
 
 import com.keildraco.config.Config;
@@ -62,4 +73,33 @@ public class IStateParserTests {
 		p.clearErrors();
 		assertEquals(Boolean.FALSE, p.errored());
 	}
+	
+	@Test
+	public final void testNextTokenExceptions() {
+		p.clearErrors();
+		try {
+		StreamTokenizer tok = mock(StreamTokenizer.class);
+		doThrow(IOException.class).when(tok).nextToken();
+		@SuppressWarnings("unused")
+		int z = p.nextToken(tok);
+		} catch(Exception e) {
+		fail("unexpected exception: "+e.getMessage());
+		}
+		assertTrue(p.errored(), "parser is in an error state");
+	}
+	
+	@Test
+	public final void testPeekTokenExceptions() {
+		p.clearErrors();
+		try {
+		StreamTokenizer tok = mock(StreamTokenizer.class);
+		doThrow(IOException.class).when(tok).nextToken();
+		@SuppressWarnings("unused")
+		int z = p.peekToken(tok);
+		} catch(Exception e) {
+		fail("unexpected exception: "+e.getMessage());
+		}
+		assertTrue(p.errored(), "parser is in an error state");
+	}
+
 }
