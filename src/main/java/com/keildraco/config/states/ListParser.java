@@ -18,39 +18,18 @@ import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
  * @author Daniel Hazelton
  *
  */
-public class ListParser implements IStateParser {
-	@SuppressWarnings("unused")
-	private String name;
-	private boolean errored = false;
-	private ParserInternalTypeBase parent;
-	private TypeFactory factory;
-
+public class ListParser extends AbstractParserBase implements IStateParser {
 	/**
 	 *
 	 * @param factory
 	 * @param name
 	 */
 	public ListParser(final TypeFactory factory, final String name) {
-		this.name = name;
-		this.factory = factory;
+		super(factory, null, name);
 	}
 
 	public ListParser(final TypeFactory factory) {
-		this.factory = factory;
-		this.name = "Well I'll Be Buggered";
-	}
-
-	/* (non-Javadoc)
-	 * @see com.keildraco.config.states.IStateParser#setErrored()
-	 */
-	@Override
-	public void setErrored() {
-		this.errored = true;
-	}
-
-	@Override
-	public boolean errored() {
-		return this.errored;
+		super(factory, null, "Well I'll Be Buggered");
 	}
 
 	/* (non-Javadoc)
@@ -90,40 +69,5 @@ public class ListParser implements IStateParser {
 		}
 		this.setErrored();
 		return EmptyType;
-	}
-
-	@Override
-	public void setParent(final ParserInternalTypeBase parent) {
-		this.parent = parent;
-	}
-
-	@Override
-	public ParserInternalTypeBase getParent() {
-		return this.parent;
-	}
-
-	@Override
-	public void setFactory(final TypeFactory factory) {
-		this.factory = factory;
-	}
-
-	@Override
-	public TypeFactory getFactory() {
-		return this.factory;
-	}
-
-	@Override
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public void clearErrors() {
-		this.errored = false;
 	}
 }

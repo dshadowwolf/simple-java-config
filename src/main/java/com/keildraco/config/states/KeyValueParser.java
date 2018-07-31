@@ -11,30 +11,13 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
-public class KeyValueParser implements IStateParser {
-	private boolean errored = false;
-	private String name;
-	private ParserInternalTypeBase parent = null;
-	private TypeFactory factory;
-
+public class KeyValueParser extends AbstractParserBase implements IStateParser {
 	public KeyValueParser(final TypeFactory factory, final String name) {
-		this.name = name;
-		this.factory = factory;
+		super(factory, null, name);
 	}
 
 	public KeyValueParser(final TypeFactory factory) {
-		this.factory = factory;
-		this.name = "Well I'll Be Buggered";
-	}
-
-	@Override
-	public void setErrored() {
-		this.errored = true;
-	}
-
-	@Override
-	public boolean errored() {
-		return this.errored;
+		super(factory,null, "Well I'll Be Buggered");
 	}
 
 	@Override
@@ -48,7 +31,7 @@ public class KeyValueParser implements IStateParser {
 			} else {
 				return this.factory.getType(this.getParent(), this.name, temp, ItemType.IDENTIFIER);
 			}
-		} else if (!errored() && p != TT_WORD) {
+		} else if (!this.errored() && p != TT_WORD) {
 			switch (p) {
 			case StreamTokenizer.TT_EOF:
 				Config.LOGGER.error("Premature End of File while parsing a key-value pair, line %d", tok.lineno());
@@ -69,40 +52,5 @@ public class KeyValueParser implements IStateParser {
 			tok.pushBack();
 			return EmptyType;
 		}
-	}
-
-	@Override
-	public void setParent(final ParserInternalTypeBase parent) {
-		this.parent = parent;
-	}
-
-	@Override
-	public ParserInternalTypeBase getParent() {
-		return this.parent;
-	}
-
-	@Override
-	public void setFactory(final TypeFactory factory) {
-		this.factory = factory;
-	}
-
-	@Override
-	public TypeFactory getFactory() {
-		return this.factory;
-	}
-
-	@Override
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public void clearErrors() {
-		this.errored = false;
 	}
 }

@@ -9,41 +9,13 @@ import com.keildraco.config.types.OperationType;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
-public class OperationParser implements IStateParser {
-	private TypeFactory factory;
-	private final String name;
-	private ParserInternalTypeBase parent;
-	private boolean error = false;
-
+public class OperationParser extends AbstractParserBase implements IStateParser {
 	public OperationParser(final TypeFactory factory) {
-		this.factory = factory;
-		this.name = "Well I'll Be Buggered";
+		super(factory,null,"Well I'll Be Buggered");
 	}
 
 	public OperationParser(final TypeFactory factory, final ParserInternalTypeBase parent, final String name) {
-		this.factory = factory;
-		this.name = name;
-		this.parent = parent;
-	}
-
-	@Override
-	public void setFactory(final TypeFactory factory) {
-		this.factory = factory;
-	}
-
-	@Override
-	public TypeFactory getFactory() {
-		return this.factory;
-	}
-
-	@Override
-	public void setErrored() {
-		this.error = true;
-	}
-
-	@Override
-	public boolean errored() {
-		return this.error;
+		super(factory,parent,name);
 	}
 
 	@Override
@@ -84,25 +56,5 @@ public class OperationParser implements IStateParser {
 	private String getOperator(final StreamTokenizer tok) {
 		if (tok.ttype == '~' || tok.ttype == '!') { return String.format("%c", tok.ttype); }
 		throw new IllegalArgumentException("OPERATOR not available in token stream");
-	}
-
-	@Override
-	public void setParent(final ParserInternalTypeBase parent) {
-		this.parent = parent;
-	}
-
-	@Override
-	public ParserInternalTypeBase getParent() {
-		return this.parent;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public void clearErrors() {
-		this.error = false;
 	}
 }

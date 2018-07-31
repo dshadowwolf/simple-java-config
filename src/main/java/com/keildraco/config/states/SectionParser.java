@@ -11,41 +11,22 @@ import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
 import static java.io.StreamTokenizer.*;
 
-public class SectionParser implements IStateParser {
-	private boolean errored = false;
-	private String name;
+public class SectionParser extends AbstractParserBase implements IStateParser {
 	private final SectionType section;
-	private ParserInternalTypeBase parent;
-	private TypeFactory factory;
 
 	public SectionParser(final TypeFactory factory) {
-		this.name = "ROOT";
+		super(factory, null, "ROOT");
 		this.section = new SectionType(EmptyType, this.name);
-		this.factory = factory;
 	}
 
 	public SectionParser(final TypeFactory factory, final SectionType parent, final String name) {
-		this.name = name;
-		this.parent = parent;
-		this.factory = factory;
+		super(factory, parent, name);
 		this.section = new SectionType(parent, this.name);
 	}
 
 	public SectionParser(final TypeFactory factory, final String name) {
-		this.parent = null;
-		this.factory = factory;
-		this.name = name;
+		super(factory, null, name);
 		this.section = new SectionType(parent, this.name);
-	}
-
-	@Override
-	public void setErrored() {
-		this.errored = true;
-	}
-
-	@Override
-	public boolean errored() {
-		return this.errored;
 	}
 
 	@Override
@@ -119,40 +100,5 @@ public class SectionParser implements IStateParser {
 		} else {
 			return tok.ttype;
 		}
-	}
-
-	@Override
-	public void setParent(final ParserInternalTypeBase parent) {
-		this.parent = parent;
-	}
-
-	@Override
-	public ParserInternalTypeBase getParent() {
-		return this.parent;
-	}
-
-	@Override
-	public void setFactory(final TypeFactory factory) {
-		this.factory = factory;
-	}
-
-	@Override
-	public TypeFactory getFactory() {
-		return this.factory;
-	}
-
-	@Override
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public void clearErrors() {
-		this.errored = false;
 	}
 }
