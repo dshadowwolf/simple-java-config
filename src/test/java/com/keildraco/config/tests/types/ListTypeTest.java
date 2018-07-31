@@ -8,7 +8,6 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import java.util.Collections;
 
-import com.keildraco.config.Config;
 import com.keildraco.config.types.ListType;
 import com.keildraco.config.types.ParserInternalTypeBase;
 

@@ -30,16 +30,24 @@ public class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#get(java.lang.String)}.
 	 */
 	@Test
-	public final void testGet() {
+	public final void testGetNoItem() {
 		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("test"));
+	}
+
+	/**
+	 * Test method for {@link com.keildraco.config.types.IdentifierType#get(java.lang.String)}.
+	 */
+	@Test
+	public final void testGetHasItem() {
+		assertNotEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("value"));
 	}
 
 	/**
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#has(java.lang.String)}.
 	 */
 	@Test
-	public final void testHas() {
-		assertFalse(this.testItem.has("test"));
+	public final void testHasByName() {
+		assertTrue(this.testItem.has("key"));
 	}
 
 	/**
@@ -54,9 +62,17 @@ public class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#asString()}.
 	 */
 	@Test
-	public final void testAsString() {
+	public final void testAsStringProper() {
 		assertEquals("key = value", this.testItem.asString());
+	}
 
+	/**
+	 * Test method for {@link com.keildraco.config.types.IdentifierType#asString()}.
+	 */
+	@Test
+	public final void testAsStringEmpty() {
+		IdentifierType l = new IdentifierType("", "value");
+		assertEquals("value", l.asString());
 	}
 
 	/**
@@ -72,4 +88,8 @@ public class IdentifierTypeTest {
 		}
 	}
 
+	@Test
+	public final void testHasByIdent() {
+		assertTrue(this.testItem.has("value"));
+	}
 }

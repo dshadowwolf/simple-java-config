@@ -3,7 +3,6 @@ package com.keildraco.config.types;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -48,10 +47,7 @@ public class ListType extends ParserInternalTypeBase {
 	public ParserInternalTypeBase get(final String s) {
 		if (!this.has(s)) return EmptyType;
 
-		final Optional<ParserInternalTypeBase> rv = this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst();
-		if (rv.isPresent()) {
-			return rv.get();
-		} else return EmptyType;
+		return this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst().get();
 	}
 
 	@Override
@@ -66,8 +62,9 @@ public class ListType extends ParserInternalTypeBase {
 
 	@Override
 	public String asString() {
-		if (this.getName().equals("")) return String.format("[ %s ]", this.value.stream().map(v -> v.getType()==ItemType.OPERATION?v.asString():v.getValue()).collect(Collectors.joining(", ")));
+		String format = String.format("[ %s ]", this.value.stream().map(v -> v.getType()==ItemType.OPERATION?v.asString():v.getValue()).collect(Collectors.joining(", ")));
 
-		return String.format("%s = [ %s ]", this.getName(), this.value.stream().map(v -> v.getType()==ItemType.OPERATION?v.asString():v.getValue()).collect(Collectors.joining(", ")));
+		if(this.getName().equals("")) return format;
+		return String.format("%s = %s", this.getName(), format);
 	}
 }
