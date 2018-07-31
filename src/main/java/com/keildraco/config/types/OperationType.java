@@ -3,7 +3,9 @@ package com.keildraco.config.types;
 import javax.annotation.Nullable;
 
 public class OperationType extends ParserInternalTypeBase {
+
 	private String ident;
+
 	private String operator;
 
 	public OperationType(final String name) {
@@ -16,7 +18,8 @@ public class OperationType extends ParserInternalTypeBase {
 		this.operator = "";
 	}
 
-	public OperationType(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {
+	public OperationType(@Nullable final ParserInternalTypeBase parent, final String name,
+			final String value) {
 		this(parent, name);
 		this.ident = value;
 	}

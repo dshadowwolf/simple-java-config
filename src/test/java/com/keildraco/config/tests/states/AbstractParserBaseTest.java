@@ -1,6 +1,8 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,7 @@ import com.keildraco.config.states.ListParser;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 class AbstractParserBaseTest {
+
 	@Test
 	final void testSetFactory() {
 		try {
@@ -17,14 +20,15 @@ class AbstractParserBaseTest {
 			p.setFactory(Config.getFactory());
 			assertTrue(true, "Expected setFactory() to not have an exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+			fail("Caught exception instantiating a new KeyValueParser: " + e.getMessage());
 		}
 	}
 
 	@Test
 	final void testGetFactory() {
 		final AbstractParserBase p = new ListParser(Config.getFactory(), "LIST");
-		assertEquals(Config.getFactory(), p.getFactory(), "p.getFactory() should equal the factory for the test suite");
+		assertEquals(Config.getFactory(), p.getFactory(),
+				"p.getFactory() should equal the factory for the test suite");
 	}
 
 	@Test
@@ -34,8 +38,7 @@ class AbstractParserBaseTest {
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected setParent() to not have an exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+			fail("Caught exception instantiating a new KeyValueParser: " + e.getMessage());
 		}
 	}
-
 }

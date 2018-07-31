@@ -1,41 +1,55 @@
 package com.keildraco.config.states;
 
+import static java.io.StreamTokenizer.TT_EOF;
+import static java.io.StreamTokenizer.TT_EOL;
+import static java.io.StreamTokenizer.TT_NUMBER;
+import static java.io.StreamTokenizer.TT_WORD;
+
 import java.io.IOException;
 import java.io.StreamTokenizer;
-
-import static java.io.StreamTokenizer.*;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 public interface IStateParser {
-	public static final String IDENTIFIER_PATTERN = "^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$";
 
-	public void setFactory(TypeFactory factory);
+	String IDENTIFIER_PATTERN = "^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$";
 
-	public TypeFactory getFactory();
+	void setFactory(TypeFactory factory);
 
-	public default String ttypeToString(final int ttype) {
+	TypeFactory getFactory();
+
+	/**
+	 *
+	 * @param ttype
+	 * @return
+	 */
+	default String ttypeToString(final int ttype) {
 		switch (ttype) {
-		case TT_WORD:
-			return "TT_WORD";
-		case TT_NUMBER:
-			return "TT_NUMBER";
-		case TT_EOL:
-			return "TT_EOL";
-		case TT_EOF:
-			return "TT_EOF";
-		default:
-			return "UNKNOWN";
+			case TT_WORD:
+				return "TT_WORD";
+			case TT_NUMBER:
+				return "TT_NUMBER";
+			case TT_EOL:
+				return "TT_EOL";
+			case TT_EOF:
+				return "TT_EOF";
+			default:
+				return "UNKNOWN";
 		}
 	}
 
-	public void setErrored();
+	void setErrored();
 
-	public boolean errored();
+	boolean errored();
 
-	public default int peekToken(final StreamTokenizer tok) {
+	/**
+	 *
+	 * @param tok
+	 * @return
+	 */
+	default int peekToken(final StreamTokenizer tok) {
 		int k = StreamTokenizer.TT_EOF;
 		try {
 			k = tok.nextToken();
@@ -48,7 +62,12 @@ public interface IStateParser {
 		return k;
 	}
 
-	public default int nextToken(final StreamTokenizer tok) {
+	/**
+	 *
+	 * @param tok
+	 * @return
+	 */
+	default int nextToken(final StreamTokenizer tok) {
 		int k = StreamTokenizer.TT_EOF;
 		try {
 			k = tok.nextToken();
@@ -59,15 +78,17 @@ public interface IStateParser {
 		return k;
 	}
 
-	public ParserInternalTypeBase getState(final StreamTokenizer tok);
+	ParserInternalTypeBase getState(StreamTokenizer tok);
 
-	public void setParent(final ParserInternalTypeBase parent);
+	void setParent(ParserInternalTypeBase parent);
 
-	public ParserInternalTypeBase getParent();
+	ParserInternalTypeBase getParent();
 
-	public default void setName(final String name) { /* this space intentionally blank */ }
+	default void setName(final String name) {
+		/* this space intentionally blank */
+	}
 
-	public String getName();
+	String getName();
 
-	public void clearErrors();
+	void clearErrors();
 }

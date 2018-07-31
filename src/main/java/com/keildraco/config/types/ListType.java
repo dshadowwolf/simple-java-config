@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 public class ListType extends ParserInternalTypeBase {
+
 	private final List<ParserInternalTypeBase> value;
 
 	public ListType(final String n) {
@@ -18,7 +19,14 @@ public class ListType extends ParserInternalTypeBase {
 		this(null, n, values);
 	}
 
-	public ListType(@Nullable final ParserInternalTypeBase parent, final String name, final List<ParserInternalTypeBase> values) {
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 * @param values
+	 */
+	public ListType(@Nullable final ParserInternalTypeBase parent, final String name,
+			final List<ParserInternalTypeBase> values) {
 		super(parent, name);
 		this.value = new LinkedList<>();
 		this.value.addAll(values);
@@ -29,7 +37,8 @@ public class ListType extends ParserInternalTypeBase {
 		this.value = new LinkedList<>();
 	}
 
-	public ListType(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {
+	public ListType(@Nullable final ParserInternalTypeBase parent, final String name,
+			final String valueIn) {
 		this(parent, name);
 	}
 
@@ -49,7 +58,8 @@ public class ListType extends ParserInternalTypeBase {
 			return EmptyType;
 		}
 
-		return this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst().get();
+		return this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst()
+				.get();
 	}
 
 	@Override
@@ -64,9 +74,14 @@ public class ListType extends ParserInternalTypeBase {
 
 	@Override
 	public String asString() {
-		final String format = String.format("[ %s ]", this.value.stream().map(v -> v.getType() == ItemType.OPERATION?v.asString():v.getValue()).collect(Collectors.joining(", ")));
+		final String format = String.format("[ %s ]",
+				this.value.stream()
+						.map(v -> v.getType() == ItemType.OPERATION ? v.asString() : v.getValue())
+						.collect(Collectors.joining(", ")));
 
-		if (this.getName().equals("")) { return format; }
+		if (this.getName().equals("")) {
+			return format;
+		}
 		return String.format("%s = %s", this.getName(), format);
 	}
 }

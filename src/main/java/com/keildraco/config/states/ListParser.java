@@ -1,5 +1,7 @@
 package com.keildraco.config.states;
 
+import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
+
 import java.io.StreamTokenizer;
 import java.util.Collections;
 import java.util.Deque;
@@ -9,16 +11,16 @@ import java.util.stream.Collectors;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.types.*;
-
-import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
-import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
+import com.keildraco.config.types.ListType;
+import com.keildraco.config.types.ParserInternalTypeBase;
+import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 /**
  * @author Daniel Hazelton
  *
  */
-public class ListParser extends AbstractParserBase implements IStateParser {
+public class ListParser extends AbstractParserBase {
+
 	/**
 	 *
 	 * @param factory
@@ -32,7 +34,9 @@ public class ListParser extends AbstractParserBase implements IStateParser {
 		super(factory, null, "Well I'll Be Buggered");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see com.keildraco.config.states.IStateParser#getState(java.io.StreamTokenizer)
 	 */
 	@Override
@@ -44,26 +48,30 @@ public class ListParser extends AbstractParserBase implements IStateParser {
 			if (p == '[') {
 				continue;
 			}
-			if (!this.errored && p == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
+			if (!this.errored && p == StreamTokenizer.TT_WORD
+					&& tok.sval.matches(IDENTIFIER_PATTERN)) {
 				ident = tok.sval;
 				final ParserInternalTypeBase temp = this.getToken(tok, ident);
 				temp.setName(ident);
 				store.push(temp);
 			} else if (p == StreamTokenizer.TT_WORD) {
-				Config.LOGGER.fatal("Error loading list, did not find TT_WORD matching %s where expected (%s found)", IDENTIFIER_PATTERN, tok.sval);
+				Config.LOGGER.fatal(
+						"Error loading list, did not find TT_WORD matching %s where expected (%s found)",
+						IDENTIFIER_PATTERN, tok.sval);
 				return EmptyType;
 			}
 		}
 
 		final List<ParserInternalTypeBase> l = store.stream().collect(Collectors.toList());
 		Collections.reverse(l);
-		return l.contains(EmptyType)?EmptyType:new ListType(this.name, l);
+		return l.contains(EmptyType) ? EmptyType : new ListType(this.name, l);
 	}
 
 	private ParserInternalTypeBase getToken(final StreamTokenizer tok, final String ident) {
 		final int n = this.peekToken(tok);
 		if (n != StreamTokenizer.TT_WORD && (n == ',' || n == ']')) {
-			return this.factory.getType(this.getParent(), this.getName(), ident, ItemType.IDENTIFIER);
+			return this.factory.getType(this.getParent(), this.getName(), ident,
+					ItemType.IDENTIFIER);
 		} else if (n == '(') {
 			return this.factory.parseTokens("OPERATION", this.getParent(), tok, ident);
 		}

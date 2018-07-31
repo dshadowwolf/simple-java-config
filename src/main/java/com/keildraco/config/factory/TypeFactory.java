@@ -16,6 +16,7 @@ import com.keildraco.config.types.ParserInternalTypeBase;
 public class TypeFactory {
 
 	private final Map<ParserInternalTypeBase.ItemType, IParserType> typeMap;
+
 	private final Map<String, IParserState> parserMap;
 
 	/**
@@ -30,7 +31,8 @@ public class TypeFactory {
 		this.typeMap.put(type, lambda);
 	}
 
-	public ParserInternalTypeBase getType(@Nullable final ParserInternalTypeBase parent, final String name, final String value, final ParserInternalTypeBase.ItemType type) {
+	public ParserInternalTypeBase getType(@Nullable final ParserInternalTypeBase parent,
+			final String name, final String value, final ParserInternalTypeBase.ItemType type) {
 		return this.typeMap.get(type).get(parent, name, value);
 	}
 
@@ -38,8 +40,15 @@ public class TypeFactory {
 		this.parserMap.put(name, parser);
 	}
 
+	/**
+	 *
+	 * @param parserName
+	 * @param parent
+	 * @return
+	 */
 	@Nullable
-	public IStateParser getParser(final String parserName, @Nullable final ParserInternalTypeBase parent) {
+	public IStateParser getParser(final String parserName,
+			@Nullable final ParserInternalTypeBase parent) {
 		final IParserState parser = this.parserMap.getOrDefault(parserName, null);
 		if (parser == null) {
 			return null;
@@ -48,7 +57,17 @@ public class TypeFactory {
 		return parser.get();
 	}
 
-	public ParserInternalTypeBase parseTokens(final String parserName, @Nullable final ParserInternalTypeBase parent, final StreamTokenizer tok, final String itemName) {
+	/**
+	 *
+	 * @param parserName
+	 * @param parent
+	 * @param tok
+	 * @param itemName
+	 * @return
+	 */
+	public ParserInternalTypeBase parseTokens(final String parserName,
+			@Nullable final ParserInternalTypeBase parent, final StreamTokenizer tok,
+			final String itemName) {
 		final IStateParser parser = this.getParser(parserName, parent);
 		if (parser == null) {
 			return ParserInternalTypeBase.EmptyType;

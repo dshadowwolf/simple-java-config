@@ -6,21 +6,32 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 public abstract class AbstractParserBase implements IStateParser {
+
 	protected TypeFactory factory;
+
 	protected boolean errored;
+
 	protected ParserInternalTypeBase parent;
+
 	protected String name;
-	
-	public AbstractParserBase(@Nullable TypeFactory factory, @Nullable ParserInternalTypeBase parent, String name) {
-		this.factory = factory;
+
+	/**
+	 *
+	 * @param factoryIn
+	 * @param parentIn
+	 * @param nameIn
+	 */
+	public AbstractParserBase(@Nullable final TypeFactory factoryIn,
+			@Nullable final ParserInternalTypeBase parentIn, final String nameIn) {
+		this.factory = factoryIn;
 		this.errored = false;
-		this.parent = parent;
-		this.name = name;
+		this.parent = parentIn;
+		this.name = nameIn;
 	}
 
 	@Override
-	public void setFactory(TypeFactory factory) {
-		this.factory = factory;
+	public void setFactory(final TypeFactory factoryIn) {
+		this.factory = factoryIn;
 	}
 
 	@Override
@@ -39,8 +50,8 @@ public abstract class AbstractParserBase implements IStateParser {
 	}
 
 	@Override
-	public void setParent(ParserInternalTypeBase parent) {
-		this.parent = parent;
+	public void setParent(final ParserInternalTypeBase parentIn) {
+		this.parent = parentIn;
 	}
 
 	@Override
@@ -59,7 +70,7 @@ public abstract class AbstractParserBase implements IStateParser {
 	}
 
 	@Override
-	public void setName(final String name) {
-		this.name = name;
+	public void setName(final String nameIn) {
+		this.name = nameIn;
 	}
 }
