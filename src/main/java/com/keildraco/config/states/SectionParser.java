@@ -11,7 +11,8 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
 
-public class SectionParser extends AbstractParserBase implements IStateParser {
+public class SectionParser extends AbstractParserBase {
+
 	private final SectionType section;
 
 	public SectionParser(final TypeFactory factory) {

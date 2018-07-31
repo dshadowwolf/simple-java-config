@@ -9,7 +9,7 @@ import com.keildraco.config.types.OperationType;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
-public class OperationParser extends AbstractParserBase implements IStateParser {
+public class OperationParser extends AbstractParserBase {
 
 	public OperationParser(final TypeFactory factory) {
 		super(factory, null, "Well I'll Be Buggered");

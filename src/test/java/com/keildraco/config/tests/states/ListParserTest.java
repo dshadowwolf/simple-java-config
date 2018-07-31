@@ -31,6 +31,7 @@ import com.keildraco.config.types.SectionType;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class ListParserTest {
+
 	private TypeFactory factory;
 
 	@BeforeAll
@@ -78,7 +79,7 @@ public class ListParserTest {
 	@Test
 	public final void testGetState() {
 		final String testString = "a_value, an_operator(!ident), false ]\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -92,7 +93,7 @@ public class ListParserTest {
 	@Test
 	public final void testGetStateErrorOne() {
 		final String testString = "[ a_value, an_operator(!ident), fa-lse ]\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -107,7 +108,7 @@ public class ListParserTest {
 	@Test
 	public final void testGetStateErrorTwo() {
 		final String testString = "[ a_value, an_operator(!ident), false true ]\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');

@@ -13,6 +13,7 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 public interface IStateParser {
+
 	String IDENTIFIER_PATTERN = "^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$";
 
 	void setFactory(TypeFactory factory);

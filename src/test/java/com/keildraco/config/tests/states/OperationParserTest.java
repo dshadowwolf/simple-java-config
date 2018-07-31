@@ -32,6 +32,7 @@ import com.keildraco.config.types.SectionType;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class OperationParserTest {
+
 	private TypeFactory factory;
 
 	@BeforeAll
@@ -137,7 +138,7 @@ public class OperationParserTest {
 	@Test
 	public final void testGetState() {
 		final String testString = "(! blargh)\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -153,7 +154,7 @@ public class OperationParserTest {
 		Config.reset();
 		Config.registerKnownParts();
 		final String testString = "(! ident\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -169,7 +170,7 @@ public class OperationParserTest {
 		Config.reset();
 		Config.registerKnownParts();
 		final String testString = "(ident\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -185,7 +186,7 @@ public class OperationParserTest {
 		Config.reset();
 		Config.registerKnownParts();
 		final String testString = "(~\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -201,7 +202,7 @@ public class OperationParserTest {
 		Config.reset();
 		Config.registerKnownParts();
 		final String testString = "! ident)\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -217,7 +218,7 @@ public class OperationParserTest {
 		Config.reset();
 		Config.registerKnownParts();
 		final String testString = "(~ ..\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');

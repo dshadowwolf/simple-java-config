@@ -10,6 +10,7 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.SectionType;
 
 public class ItemMatcher {
+
 	private final ParserInternalTypeBase thisItem;
 
 	public static final ItemMatcher AlwaysFalse = new ItemMatcher(EmptyType) {

@@ -12,6 +12,7 @@ import com.keildraco.config.states.ListParser;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 class AbstractParserBaseTest {
+
 	@Test
 	final void testSetFactory() {
 		try {

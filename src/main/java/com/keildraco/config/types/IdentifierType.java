@@ -3,6 +3,7 @@ package com.keildraco.config.types;
 import javax.annotation.Nullable;
 
 public class IdentifierType extends ParserInternalTypeBase {
+
 	private final String ident;
 
 	public IdentifierType(final String n) {

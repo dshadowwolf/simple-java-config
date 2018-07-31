@@ -32,6 +32,7 @@ import com.keildraco.config.types.SectionType;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class SectionParserTest {
+
 	private TypeFactory factory;
 
 	@BeforeAll
@@ -156,7 +157,7 @@ public class SectionParserTest {
 	@Test
 	public final void testGetState() {
 		final String testString = "section1 {\nidentifier = false\nsection2 {\nident2 = true\n}\n}\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -172,7 +173,7 @@ public class SectionParserTest {
 	@Test
 	public final void testGetStateUnexpectedStore() {
 		final String testString = "section1 {\n= false\nidentifier = false\nsection2 {\nident2 = true\n}\n}\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -186,7 +187,7 @@ public class SectionParserTest {
 	@Test
 	public final void testGetStateUnexpectedItem() {
 		final String testString = "section1 { identifier(";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');

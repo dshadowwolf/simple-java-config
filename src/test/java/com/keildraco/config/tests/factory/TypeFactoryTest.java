@@ -29,6 +29,7 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.SectionType;
 
 public class TypeFactoryTest {
+
 	@Test
 	public final void testTypeFactory() {
 		try {
@@ -97,7 +98,7 @@ public class TypeFactoryTest {
 			f.registerType((parent, name, value) -> new OperationType(parent, name, value), ItemType.OPERATION);
 			f.registerType((parent, name, value) -> new SectionType(parent, name, value), ItemType.SECTION);
 			final String testString = "section1 {\nidentifier = false\nsection2 {\nident2 = true\n}\n}\n\n";
-			final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+			final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 			final StreamTokenizer t = new StreamTokenizer(isr);
 			t.commentChar('#');
 			t.wordChars('_', '_');
@@ -126,7 +127,7 @@ public class TypeFactoryTest {
 		Config.reset();
 		Config.registerKnownParts();
 		final String testString = "section1 {\nidentifier = false\nsection2 {\nident2 = true\n}\n}\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');

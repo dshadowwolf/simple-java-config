@@ -3,6 +3,7 @@ package com.keildraco.config.data;
 import com.keildraco.config.types.SectionType;
 
 public class DataQuery {
+
 	private SectionType baseSection;
 
 	private DataQuery(final SectionType section) {

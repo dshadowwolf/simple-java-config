@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 public class ListType extends ParserInternalTypeBase {
+
 	private final List<ParserInternalTypeBase> value;
 
 	public ListType(final String n) {

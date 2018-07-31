@@ -10,7 +10,7 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
-public class KeyValueParser extends AbstractParserBase implements IStateParser {
+public class KeyValueParser extends AbstractParserBase {
 
 	public KeyValueParser(final TypeFactory factory, final String name) {
 		super(factory, null, name);

@@ -26,13 +26,14 @@ import com.keildraco.config.types.SectionType;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class ItemMatcherTest {
+
 	private ParserInternalTypeBase base;
 
 	@BeforeAll
 	public void setUp() throws Exception {
 		Config.registerKnownParts();
 		final String testString = "section {\nlist = [ alpha, bravo(!charlie), delta]\necho {\nfoxtrot = golf\n}\nhotel = hotel\n}\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');

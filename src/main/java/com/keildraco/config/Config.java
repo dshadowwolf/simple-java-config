@@ -39,14 +39,19 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.SectionType;
 
 public class Config {
+
 	private static final TypeFactory coreTypeFactory = new TypeFactory();
+
 	private static final List<ParserInternalTypeBase> internalTypes = Arrays.asList(
 			new IdentifierType(null, "", ""),
 			new ListType(null, "", ""),
 			new SectionType(null, "", ""),
 			new OperationType(null, "", ""));
+
 	private static final Map<String, Class<? extends IStateParser>> internalParsers = new ConcurrentHashMap<>();
+
 	public static final Logger LOGGER = LogManager.getFormatterLogger("config");
+
 	// this is here to make sure we can have an instance for the testing...
 	public static final Config INSTANCE = new Config();
 
@@ -123,7 +128,7 @@ public class Config {
 		tok.slashSlashComments(true);
 		tok.slashStarComments(true);
 		final ParserInternalTypeBase root = coreTypeFactory.getType(null, "root", "", ItemType.SECTION);
-		return SectionType.class.cast(coreTypeFactory.getParser("SECTION", root).getState(tok));
+		return SectionType.class.cast(coreTypeFactory.getParser("SECTION", (SectionType) root).getState(tok));
 	}
 
 	private static FileSystem getFilesystemForURI(final URI uri) throws IOException {

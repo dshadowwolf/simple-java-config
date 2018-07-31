@@ -16,6 +16,7 @@ import com.keildraco.config.types.ParserInternalTypeBase;
 public class TypeFactory {
 
 	private final Map<ParserInternalTypeBase.ItemType, IParserType> typeMap;
+
 	private final Map<String, IParserState> parserMap;
 
 	/**

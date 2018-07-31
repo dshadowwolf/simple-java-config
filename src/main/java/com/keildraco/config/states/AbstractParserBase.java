@@ -6,9 +6,13 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 public abstract class AbstractParserBase implements IStateParser {
+
 	protected TypeFactory factory;
+
 	protected boolean errored;
+
 	protected ParserInternalTypeBase parent;
+
 	protected String name;
 
 	public AbstractParserBase(@Nullable final TypeFactory factory, @Nullable final ParserInternalTypeBase parent, final String name) {

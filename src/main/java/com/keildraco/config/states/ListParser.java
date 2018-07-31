@@ -19,7 +19,7 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
  * @author Daniel Hazelton
  *
  */
-public class ListParser extends AbstractParserBase implements IStateParser {
+public class ListParser extends AbstractParserBase {
 
 	/**
 	 *
