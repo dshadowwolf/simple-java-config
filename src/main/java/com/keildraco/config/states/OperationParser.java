@@ -54,7 +54,7 @@ public class OperationParser extends AbstractParserBase {
 		return ParserInternalTypeBase.EmptyType;
 	}
 
-	private String getIdentifier(final StreamTokenizer tok) throws IllegalArgumentException {
+	private String getIdentifier(final StreamTokenizer tok) {
 		this.nextToken(tok);
 		if (tok.ttype == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 			return tok.sval;
