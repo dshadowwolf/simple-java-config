@@ -82,7 +82,7 @@ public class ItemMatcherTest {
 	@Test
 	public final void testMatchListLongAlternateTwo() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
-		assertFalse(m.matches("charlie.echo"), "list does not match 'charlie.echo'");
+		assertFalse(m.matches("list"), "list does not match 'list'");
 	}
 
 	@Test
@@ -136,6 +136,12 @@ public class ItemMatcherTest {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section"));
 		assertAll("Section matches \"list\" and \"echo\"", () -> m.matches("list"),() -> m.matches("echo"));
 	}
+	
+	@Test
+	public final void testMatchSectionLong() {
+		final ItemMatcher m = new ItemMatcher(this.base.get("section"));
+		assertTrue(m.matches("echo.foxtrot"));
+	}
 
 	@Test
 	public final void testAlwaysFalseMatcher() {
@@ -188,5 +194,11 @@ public class ItemMatcherTest {
 		op.setOperation(">");
 		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.TRUE, m.matches("op.alpha"));
+	}
+	
+	@Test
+	public final void testItemMatchDoMatchDefault() {
+		final ItemMatcher m = new ItemMatcher(ParserInternalTypeBase.EmptyType);
+		assertFalse(m.matches("foobar"));
 	}
 }
