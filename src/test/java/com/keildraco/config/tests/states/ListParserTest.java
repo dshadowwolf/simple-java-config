@@ -34,6 +34,10 @@ public class ListParserTest {
 
 	private TypeFactory factory;
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@BeforeAll
 	public void setUp() throws Exception {
 		this.factory = new TypeFactory();

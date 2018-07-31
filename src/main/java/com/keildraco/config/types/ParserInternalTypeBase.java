@@ -40,6 +40,11 @@ public class ParserInternalTypeBase {
 		this(null, name);
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 */
 	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parent, final String name) {
 		this.name = name;
 		this.parent = parent;
@@ -50,6 +55,11 @@ public class ParserInternalTypeBase {
 		this(parent, name);
 	}
 
+	/**
+	 *
+	 * @param itemName
+	 * @return
+	 */
     public ParserInternalTypeBase get(final String itemName)  {
     	if (itemName.indexOf('.') > 0) {
     		final String nameBits = itemName.substring(0, itemName.indexOf('.'));
@@ -63,6 +73,11 @@ public class ParserInternalTypeBase {
     	return ParserInternalTypeBase.EmptyType;
     }
 
+    /**
+     *
+     * @param itemName
+     * @return
+     */
     public boolean has(final String itemName) {
     	if (itemName.contains(".")) {
     		final String nn = itemName.substring(0, itemName.indexOf('.'));

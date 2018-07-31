@@ -20,6 +20,11 @@ public interface IStateParser {
 
 	TypeFactory getFactory();
 
+	/**
+	 *
+	 * @param ttype
+	 * @return
+	 */
 	default String ttypeToString(final int ttype) {
 		switch (ttype) {
 		case TT_WORD:
@@ -39,6 +44,11 @@ public interface IStateParser {
 
 	boolean errored();
 
+	/**
+	 *
+	 * @param tok
+	 * @return
+	 */
 	default int peekToken(final StreamTokenizer tok) {
 		int k = StreamTokenizer.TT_EOF;
 		try {
@@ -52,6 +62,11 @@ public interface IStateParser {
 		return k;
 	}
 
+	/**
+	 *
+	 * @param tok
+	 * @return
+	 */
 	default int nextToken(final StreamTokenizer tok) {
 		int k = StreamTokenizer.TT_EOF;
 		try {

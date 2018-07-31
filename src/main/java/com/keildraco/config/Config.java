@@ -139,6 +139,12 @@ public class Config {
 		}
 	}
 
+	/**
+	 *
+	 * @param filePath
+	 * @return
+	 * @throws IOException
+	 */
 	public static DataQuery loadFile(final URI filePath) throws IOException {
 	    final FileSystem fs = getFilesystemForURI(filePath);
 	    final Path p = fs.getPath(filePath.getPath().substring(1));

@@ -36,6 +36,10 @@ public class KeyValueParserTest {
 
 	private TypeFactory factory;
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@BeforeAll
 	public void setUp() throws Exception {
 

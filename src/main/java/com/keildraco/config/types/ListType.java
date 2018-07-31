@@ -19,6 +19,12 @@ public class ListType extends ParserInternalTypeBase {
 		this(null, n, values);
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 * @param values
+	 */
 	public ListType(@Nullable final ParserInternalTypeBase parent, final String name, final List<ParserInternalTypeBase> values) {
 		super(parent, name);
 		this.value = new LinkedList<>();

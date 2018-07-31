@@ -35,6 +35,10 @@ public class SectionParserTest {
 
 	private TypeFactory factory;
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@BeforeAll
 	public void setUp() throws Exception {
 

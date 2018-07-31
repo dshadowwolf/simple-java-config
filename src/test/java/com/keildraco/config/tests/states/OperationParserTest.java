@@ -35,6 +35,10 @@ public class OperationParserTest {
 
 	private TypeFactory factory;
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@BeforeAll
 	public void setUp() throws Exception {
 		this.factory = new TypeFactory();

@@ -39,6 +39,12 @@ public class TypeFactory {
 		this.parserMap.put(name, parser);
 	}
 
+	/**
+	 *
+	 * @param parserName
+	 * @param parent
+	 * @return
+	 */
 	@Nullable
 	public IStateParser getParser(final String parserName, @Nullable final ParserInternalTypeBase parent) {
 		final IParserState parser = this.parserMap.getOrDefault(parserName, null);
@@ -49,6 +55,14 @@ public class TypeFactory {
 		return parser.get();
 	}
 
+	/**
+	 *
+	 * @param parserName
+	 * @param parent
+	 * @param tok
+	 * @param itemName
+	 * @return
+	 */
 	public ParserInternalTypeBase parseTokens(final String parserName, @Nullable final ParserInternalTypeBase parent, final StreamTokenizer tok, final String itemName) {
 		final IStateParser parser = this.getParser(parserName, parent);
 		if (parser == null) {

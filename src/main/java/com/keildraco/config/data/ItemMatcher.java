@@ -24,6 +24,11 @@ public class ItemMatcher {
 		this.thisItem = item;
 	}
 
+	/**
+	 *
+	 * @param name
+	 * @return
+	 */
 	public boolean matches(final String name) {
 		final boolean tn = name.contains(".");
 		final String bn = tn ? name.substring(0, name.indexOf('.')) : name;

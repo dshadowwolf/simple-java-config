@@ -16,6 +16,11 @@ public class DataQuery {
 		return new DataQuery(section);
 	}
 
+	/**
+	 *
+	 * @param key
+	 * @return
+	 */
 	public boolean get(final String key) {
 		// find item, or "all"
 		if (this.baseSection.has(key)) {

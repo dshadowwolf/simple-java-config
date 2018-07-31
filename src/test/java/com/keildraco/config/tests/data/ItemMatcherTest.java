@@ -29,6 +29,10 @@ public class ItemMatcherTest {
 
 	private ParserInternalTypeBase base;
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@BeforeAll
 	public void setUp() throws Exception {
 		Config.registerKnownParts();

@@ -8,6 +8,11 @@ public class SectionType extends ParserInternalTypeBase {
 		this(null, name);
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 */
 	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name) {
 		super(parent, name);
 		if (this.getName().equals("") || parent == null) {

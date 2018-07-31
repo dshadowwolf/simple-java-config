@@ -15,6 +15,12 @@ public abstract class AbstractParserBase implements IStateParser {
 
 	protected String name;
 
+	/**
+	 *
+	 * @param factory
+	 * @param parent
+	 * @param name
+	 */
 	public AbstractParserBase(@Nullable final TypeFactory factory, @Nullable final ParserInternalTypeBase parent, final String name) {
 		this.factory = factory;
 		this.errored = false;
