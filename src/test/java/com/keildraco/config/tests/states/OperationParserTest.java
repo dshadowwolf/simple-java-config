@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.*;
 import com.keildraco.config.types.*;
@@ -224,4 +225,83 @@ public class OperationParserTest {
 		}		
 	}
 
+	@Test
+	public final void testBadParseNoClose() {
+		Config.reset();
+		Config.registerKnownParts();
+		String testString = "(! ident\n\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
+		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
+	}
+
+	@Test
+	public final void testBadParseNoOper() {
+		Config.reset();
+		Config.registerKnownParts();
+		String testString = "(ident\n\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
+		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
+	}
+
+	@Test
+	public final void testBadParseNoIdent() {
+		Config.reset();
+		Config.registerKnownParts();
+		String testString = "(~\n\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
+		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
+	}
+	
+	@Test
+	public final void testParseStartsAfterParens() {
+		Config.reset();
+		Config.registerKnownParts();
+		String testString = "! ident)\n\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
+		assertEquals("ident", testItem.getValue(), "expect parse item to have \"ident\" as the value");
+	}
+
+	@Test
+	public final void testBadParseIdentBad() {
+		Config.reset();
+		Config.registerKnownParts();
+		String testString = "(~ ..\n\n";
+		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
+		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
+	}
 }
