@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 
-import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.IStateParser;
 import com.keildraco.config.states.SectionParser;
@@ -141,27 +140,6 @@ public class SectionParserTest {
 		}
 	}
 
-	@Test
-	public final void testSetErrored() {
-		try {
-			final SectionParser p = new SectionParser(this.factory, null, "ROOT");
-			p.setErrored();
-			assertTrue(true, "Expected no exception");
-		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testErrored() {
-		try {
-			final SectionParser p = new SectionParser(this.factory, null, "ROOT");
-			assertFalse(p.errored(), "Expected fresh parser \"erorred()\" method to return false");
-		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
-		}
-	}
-
 	private ParserInternalTypeBase runParser(final StreamTokenizer tok) {
 		final IStateParser k = this.factory.getParser("SECTION", null);
 		k.setName("ROOT");
@@ -211,53 +189,5 @@ public class SectionParserTest {
 		t.slashStarComments(true);
 		final ParserInternalTypeBase k = this.runParser(t);
 		assertEquals(ParserInternalTypeBase.EmptyType, k, "Expecting to have k be EmptyType");
-	}
-
-	@Test
-	public final void testSetParent() {
-		try {
-			final SectionParser p = new SectionParser(this.factory);
-			p.setParent(ParserInternalTypeBase.EmptyType);
-			assertTrue(true, "Expected setParent() to not have an exception");
-		} catch (final Exception e) {
-			fail("Caught exception in test: "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testGetParent() {
-		final SectionParser p = new SectionParser(this.factory);
-		assertNull(p.getParent(), "Fresh parser with not setParent() called returns null from getParent()");
-	}
-
-	@Test
-	public final void testSetFactory() {
-		try {
-			final SectionParser p = new SectionParser(this.factory);
-			p.setFactory(Config.getFactory());
-			assertTrue(true, "Expected setFactory() to not have an exception");
-		} catch (final Exception e) {
-			fail("Caught exception calling setFactory(): "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testGetFactory() {
-		try {
-			final SectionParser p = new SectionParser(this.factory);
-			assertEquals(this.factory, p.getFactory());
-		} catch (final Exception e) {
-			fail("Caught exception calling getFactory(): "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testGetName() {
-		try {
-			final SectionParser p = new SectionParser(this.factory);
-			assertEquals("ROOT", p.getName());
-		} catch (final Exception e) {
-			fail("Caught exception calling getName(): "+e.getMessage());
-		}
 	}
 }

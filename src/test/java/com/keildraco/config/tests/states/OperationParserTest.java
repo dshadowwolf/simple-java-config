@@ -131,49 +131,6 @@ public class OperationParserTest {
 	}
 
 	@Test
-	public final void testSetFactory() {
-		try {
-			final OperationParser p = new OperationParser(this.factory);
-			p.setFactory(this.factory);
-			assertTrue(true, "Expected no exception");
-		} catch (final Exception e) {
-			fail("Caught exception using a parsers setFactory(TypeFactory) method: "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testGetFactory() {
-		try {
-			final OperationParser p = new OperationParser(this.factory);
-			final TypeFactory f = p.getFactory();
-			assertEquals(this.factory, f);
-		} catch (final Exception e) {
-			fail("Caught exception using a parsers getFactory() method: "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testSetErrored() {
-		try {
-			final OperationParser p = new OperationParser(this.factory);
-			p.setErrored();
-			assertTrue(true, "Expected no exception");
-		} catch (final Exception e) {
-			fail("Caught exception calling a parsers setErrored() method: "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testErrored() {
-		try {
-			final OperationParser p = new OperationParser(this.factory);
-			assertEquals(Boolean.FALSE, p.errored());
-		} catch (final Exception e) {
-			fail("Caught exception calling a parsers errored() method: "+e.getMessage());
-		}
-	}
-
-	@Test
 	public final void testGetState() {
 		final String testString = "(! blargh)\n\n";
 		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
@@ -185,48 +142,6 @@ public class OperationParserTest {
 		t.slashStarComments(true);
 		final ParserInternalTypeBase k = this.factory.parseTokens("OPERATION", null, t, "blech");
 		assertEquals("blech(! blargh)", k.asString().trim());
-	}
-
-	@Test
-	public final void testSetParent() {
-		try {
-			final OperationParser p = new OperationParser(this.factory);
-			p.setParent(ParserInternalTypeBase.EmptyType);
-			assertTrue(true, "Expected no exception");
-		} catch (final Exception e) {
-			fail("Caught exception calling a parsers setParent() method: "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testGetParent() {
-		try {
-			final OperationParser p = new OperationParser(this.factory);
-			assertNull(p.getParent());
-		} catch (final Exception e) {
-			fail("Caught exception calling a parsers getParent() method: "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testGetName() {
-		try {
-			final OperationParser p = new OperationParser(this.factory, null, "BUGGERED");
-			assertEquals("BUGGERED", p.getName());
-		} catch (final Exception e) {
-			fail("Caught exception trying to get a parsers name: "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testClearErrors() {
-		try {
-			final OperationParser p = new OperationParser(this.factory);
-			p.clearErrors();
-			assertTrue(true, "Expected no exception");
-		} catch (final Exception e) {
-			fail("Caught exception telling a parser to clear its errors: "+e.getMessage());
-		}
 	}
 
 	@Test

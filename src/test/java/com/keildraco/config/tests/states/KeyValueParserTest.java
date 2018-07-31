@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
 
 import com.keildraco.config.Config;
+import com.keildraco.config.data.ItemMatcher;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.IStateParser;
 import com.keildraco.config.states.KeyValueParser;
@@ -93,23 +94,6 @@ public class KeyValueParserTest {
 	}
 
 	@Test
-	public final void testSetErrored() {
-		try {
-			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-			p.setErrored();
-			assertTrue(true, "Expected no exception");
-		} catch (final Exception e) {
-			fail("Caught exception calling p.setErrored(): "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testErrored() {
-		final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-		assertFalse(p.errored(), "Expected p.errored() to return false");
-	}
-
-	@Test
 	public final void testGetState() {
 		final String testString = "[ a_value, another_value, a_third_value ]\n\n";
 		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
@@ -119,46 +103,6 @@ public class KeyValueParserTest {
 		t.slashStarComments(true);
 		final ParserInternalTypeBase k = this.factory.parseTokens("KEYVALUE", null, t, "a_key");
 		assertEquals("a_key = [  ]", k.asString());
-	}
-
-	@Test
-	public final void testSetParent() {
-		try {
-			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-			p.setParent(ParserInternalTypeBase.EmptyType);
-			assertTrue(true, "Expected no exception");
-		} catch (final Exception e) {
-			fail("Caught exception calling p.setParent(ParserInternalTypeBase.EmptyType): "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testGetParent() {
-		final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-		assertNull(p.getParent(), "Expected p.getParent() to return null");
-	}
-
-	@Test
-	public final void testGetName() {
-		final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-		assertEquals("KEYVALUE", p.getName());
-	}
-
-	@Test
-	public final void testGetFactory() {
-		final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-		assertEquals(this.factory, p.getFactory());
-	}
-
-	@Test
-	public final void testSetFactory() {
-		try {
-			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-			p.setFactory(Config.getFactory());
-			assertTrue(true, "Expected no exception");
-		} catch (final Exception e) {
-			fail("Caught exception calling p.setFactory(Config.getFactory()): "+e.getMessage());
-		}
 	}
 
 	@Test
@@ -225,5 +169,21 @@ public class KeyValueParserTest {
 		p.setErrored();
 		final ParserInternalTypeBase k = p.getState(t);
 		assertEquals(ParserInternalTypeBase.EmptyType, k, "expect EmptyType due to malformation");
+	}
+
+	@Test
+	public final void testFindsOperation() {
+		Config.reset();
+		Config.registerKnownParts();
+		final String testString = "other(!misc)\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		final ParserInternalTypeBase k = Config.getFactory().parseTokens("KEYVALUE", null, t, "other");
+		assertTrue((new ItemMatcher(k)).matches("other.etc"), "expect value match");
 	}
 }

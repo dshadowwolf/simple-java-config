@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.*;
 import com.keildraco.config.types.*;
@@ -98,4 +99,29 @@ public class TypeFactoryTest {
 			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");
 		}
 	}
+	
+	@Test
+	public final void testRequestMissingParser() {
+		Config.reset();
+		Config.registerKnownParts();
+		IStateParser p = Config.getFactory().getParser("NOSUCHPARSER", null);
+		assertNull(p, "parser with name \"NOSUCHPARSER\" was never registered, should return null");
+	}
+
+	@Test
+	public final void testMissingParserParseTokens() {
+		Config.reset();
+		Config.registerKnownParts();
+		final String testString = "section1 {\nidentifier = false\nsection2 {\nident2 = true\n}\n}\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		final ParserInternalTypeBase z = Config.getFactory().parseTokens("NOSUCHPARSER", null, t, "ROOT");
+		assertEquals(ParserInternalTypeBase.EmptyType, z, "parseTokens with nonexistant parser should return EmptyType");
+	}
+
 }

@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 
-import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.*;
 import com.keildraco.config.types.*;
@@ -73,27 +72,6 @@ public class ListParserTest {
 	}
 
 	@Test
-	public final void testSetErrored() {
-		try {
-			final ListParser p = new ListParser(this.factory, "LIST");
-			p.setErrored();
-			assertTrue(true, "Expected to not get an exception");
-		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testErrored() {
-		try {
-			final ListParser p = new ListParser(this.factory, "LIST");
-			assertFalse(p.errored(), "Expected new parser instance to return false from the errored() method");
-		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
-		}
-	}
-
-	@Test
 	public final void testGetState() {
 		final String testString = "a_value, an_operator(!ident), false ]\n\n";
 		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
@@ -107,22 +85,6 @@ public class ListParserTest {
 		assertEquals("[ a_value, an_operator( ), false ]", k.asString());
 	}
 
-	@Test
-	public final void testSetParent() {
-		try {
-			final ListParser p = new ListParser(this.factory, "LIST");
-			p.setParent(ParserInternalTypeBase.EmptyType);
-			assertTrue(true, "Expected setParent() to not have an exception");
-		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testGetParent() {
-		final ListParser p = new ListParser(this.factory, "LIST");
-		assertNull(p.getParent(), "Expected getParent() on a fresh parser to be null");
-	}
 
 	@Test
 	public final void testGetStateErrorOne() {
@@ -152,22 +114,5 @@ public class ListParserTest {
 		t.slashStarComments(true);
 		final ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
 		assertEquals(ParserInternalTypeBase.EmptyType, k, "k should be EmptyType due to bad format of input");
-	}
-
-	@Test
-	public final void testSetFactory() {
-		try {
-			final ListParser p = new ListParser(this.factory, "LIST");
-			p.setFactory(Config.getFactory());
-			assertTrue(true, "Expected setFactory() to not have an exception");
-		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testGetFactory() {
-		final ListParser p = new ListParser(this.factory, "LIST");
-		assertEquals(this.factory, p.getFactory(), "p.getFactory() should equal the factory for the test suite");
 	}
 }
