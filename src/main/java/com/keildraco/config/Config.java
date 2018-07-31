@@ -49,10 +49,6 @@ public class Config {
 		internalParsers.put("SECTION", SectionParser.class);
 	}
 
-	private Config() {
-		throw new IllegalAccessError("Class not instantiable!");
-	}
-
 	public static TypeFactory getFactory() {
 		return coreTypeFactory;
 	}
@@ -110,7 +106,8 @@ public class Config {
 		tok.slashSlashComments(true);
 		tok.slashStarComments(true);
 		final ParserInternalTypeBase root = coreTypeFactory.getType(null, "root", "", ItemType.SECTION);
-		return (SectionType) coreTypeFactory.getParser("SECTION", root).getState(tok);
+		if(!(root instanceof SectionType)) throw new IllegalStateException("should have gotten a SectionType value back but didn't");
+		else return SectionType.class.cast(coreTypeFactory.getParser("SECTION", root).getState(tok));
 	}
 
 	private static FileSystem getFilesystemForURI(final URI uri) throws IOException {
@@ -135,7 +132,7 @@ public class Config {
 	}
 
 	public static DataQuery parseString(final String data) {
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(data, StandardCharsets.UTF_8));
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(data, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		return DataQuery.of(runParser(isr));
 	}
 }

@@ -104,7 +104,7 @@ public class ListParserTest {
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
 		final ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
-		assertEquals("[ a_value, an_operator(null ), false ]", k.asString());
+		assertEquals("[ a_value, an_operator( ), false ]", k.asString());
 	}
 
 	@Test
