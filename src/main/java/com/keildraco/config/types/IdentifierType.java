@@ -14,14 +14,16 @@ public class IdentifierType extends ParserInternalTypeBase {
 		this(null, n, v);
 	}
 
-	public IdentifierType(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {
+	public IdentifierType(@Nullable final ParserInternalTypeBase parent, final String name,
+			final String value) {
 		super(parent, name);
 		this.ident = value;
 	}
 
 	@Override
 	public void addItem(final ParserInternalTypeBase item) {
-		// identifiers - that is, key-value pairs - can't store more than an identifier they equal, so this method gets stubbed
+		// identifiers - that is, key-value pairs - can't store more than an identifier they equal,
+		// so this method gets stubbed
 	}
 
 	@Override

@@ -40,7 +40,8 @@ public class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#ParserInternalTypeBase(java.lang.String)}.
+	 * Test method for
+	 * {@link com.keildraco.config.types.ParserInternalTypeBase#ParserInternalTypeBase(java.lang.String)}.
 	 */
 	@Test
 	public final void testParserInternalTypeBaseString() {
@@ -54,13 +55,15 @@ public class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#ParserInternalTypeBase(com.keildraco.config.types.ParserInternalTypeBase, java.lang.String)}.
+	 * Test method for
+	 * {@link com.keildraco.config.types.ParserInternalTypeBase#ParserInternalTypeBase(com.keildraco.config.types.ParserInternalTypeBase, java.lang.String)}.
 	 */
 	@Test
 	public final void testParserInternalTypeBaseParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
-			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh");
+			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(
+					ParserInternalTypeBase.EmptyType, "blargh");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
@@ -68,13 +71,15 @@ public class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#ParserInternalTypeBase(com.keildraco.config.types.ParserInternalTypeBase, java.lang.String, java.lang.String)}.
+	 * Test method for
+	 * {@link com.keildraco.config.types.ParserInternalTypeBase#ParserInternalTypeBase(com.keildraco.config.types.ParserInternalTypeBase, java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public final void testParserInternalTypeBaseParserInternalTypeBaseStringString() {
 		try {
 			@SuppressWarnings("unused")
-			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh", "blech");
+			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(
+					ParserInternalTypeBase.EmptyType, "blargh", "blech");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
@@ -82,7 +87,8 @@ public class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#get(java.lang.String)}.
+	 * Test method for
+	 * {@link com.keildraco.config.types.ParserInternalTypeBase#get(java.lang.String)}.
 	 */
 	@Test
 	public final void testGet() {
@@ -90,7 +96,8 @@ public class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#has(java.lang.String)}.
+	 * Test method for
+	 * {@link com.keildraco.config.types.ParserInternalTypeBase#has(java.lang.String)}.
 	 */
 	@Test
 	public final void testHas() {
@@ -138,7 +145,8 @@ public class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#setName(java.lang.String)}.
+	 * Test method for
+	 * {@link com.keildraco.config.types.ParserInternalTypeBase#setName(java.lang.String)}.
 	 */
 	@Test
 	public final void testSetName() {
@@ -156,7 +164,8 @@ public class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
+	 * Test method for
+	 * {@link com.keildraco.config.types.ParserInternalTypeBase#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
 	 */
 	@Test
 	public final void testAddItem() {
@@ -183,7 +192,8 @@ public class ParserInternalTypeBaseTest {
 
 	@Test
 	public final void testEmptyTypeGetType() {
-		assertEquals(ParserInternalTypeBase.ItemType.EMPTY, ParserInternalTypeBase.EmptyType.getType());
+		assertEquals(ParserInternalTypeBase.ItemType.EMPTY,
+				ParserInternalTypeBase.EmptyType.getType());
 	}
 
 	@Test

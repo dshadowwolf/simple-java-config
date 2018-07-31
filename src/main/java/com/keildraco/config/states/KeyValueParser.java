@@ -33,17 +33,21 @@ public class KeyValueParser extends AbstractParserBase {
 			}
 		} else if (!this.errored() && p != TT_WORD) {
 			switch (p) {
-			case StreamTokenizer.TT_EOF:
-				Config.LOGGER.error("Premature End of File while parsing a key-value pair, line %d", tok.lineno());
-				this.setErrored();
-				break;
-			case '[':
-				return this.factory.parseTokens("LIST", this.parent, tok, this.name);
-			case '}':
-				tok.pushBack();
-				return EmptyType;
-			default:
-				Config.LOGGER.error("Token of unexpected type %s found where TT_WORD expected, line %d", ttypeToString(p), tok.lineno());
+				case StreamTokenizer.TT_EOF:
+					Config.LOGGER.error(
+							"Premature End of File while parsing a key-value pair, line %d",
+							tok.lineno());
+					this.setErrored();
+					break;
+				case '[':
+					return this.factory.parseTokens("LIST", this.parent, tok, this.name);
+				case '}':
+					tok.pushBack();
+					return EmptyType;
+				default:
+					Config.LOGGER.error(
+							"Token of unexpected type %s found where TT_WORD expected, line %d",
+							ttypeToString(p), tok.lineno());
 			}
 			tok.pushBack();
 			return EmptyType;

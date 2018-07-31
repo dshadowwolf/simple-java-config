@@ -80,7 +80,8 @@ public class IdentifierTypeTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.IdentifierType#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
+	 * Test method for
+	 * {@link com.keildraco.config.types.IdentifierType#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
 	 */
 	@Test
 	public final void testAddItem() {

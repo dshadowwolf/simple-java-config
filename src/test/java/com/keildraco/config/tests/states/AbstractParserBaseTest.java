@@ -27,7 +27,8 @@ class AbstractParserBaseTest {
 	@Test
 	final void testGetFactory() {
 		final AbstractParserBase p = new ListParser(Config.getFactory(), "LIST");
-		assertEquals(Config.getFactory(), p.getFactory(), "p.getFactory() should equal the factory for the test suite");
+		assertEquals(Config.getFactory(), p.getFactory(),
+				"p.getFactory() should equal the factory for the test suite");
 	}
 
 	@Test

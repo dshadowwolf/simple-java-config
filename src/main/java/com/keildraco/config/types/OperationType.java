@@ -18,7 +18,8 @@ public class OperationType extends ParserInternalTypeBase {
 		this.operator = "";
 	}
 
-	public OperationType(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {
+	public OperationType(@Nullable final ParserInternalTypeBase parent, final String name,
+			final String value) {
 		this(parent, name);
 		this.ident = value;
 	}

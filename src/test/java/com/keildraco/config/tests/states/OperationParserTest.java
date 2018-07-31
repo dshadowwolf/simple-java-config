@@ -44,77 +44,94 @@ public class OperationParserTest {
 		this.factory = new TypeFactory();
 		this.factory.registerParser(() -> {
 			IStateParser p = mock(IStateParser.class);
-			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
+			when(p.getState(isA(StreamTokenizer.class)))
+					.thenAnswer(new Answer<ParserInternalTypeBase>() {
 
-	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-	            	while (tok.nextToken() != StreamTokenizer.TT_EOF
-	            			&& tok.ttype != ']') System.err.println(String.format("<<<%c :: %s", tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype : '-') : '?', tok.sval));
+						public ParserInternalTypeBase answer(final InvocationOnMock invocation)
+								throws Throwable {
+							final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
+							while (tok.nextToken() != StreamTokenizer.TT_EOF && tok.ttype != ']')
+								System.err.println(String.format("<<<%c :: %s",
+										tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype : '-') : '?',
+										tok.sval));
 
-	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.LIST);
-	            }
-	        });
+							return factory.getType(null, "", "",
+									ParserInternalTypeBase.ItemType.LIST);
+						}
+					});
 
 			when(p.getName()).thenAnswer(new Answer<String>() {
 
-	            public String answer(final InvocationOnMock invocation) throws Throwable {
-	                return "MockListType";
-	            }
-	        });
+				public String answer(final InvocationOnMock invocation) throws Throwable {
+					return "MockListType";
+				}
+			});
 			return p;
 		}, "LIST");
 		this.factory.registerParser(() -> {
 			final IStateParser p = mock(IStateParser.class);
-			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
+			when(p.getState(isA(StreamTokenizer.class)))
+					.thenAnswer(new Answer<ParserInternalTypeBase>() {
 
-	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-	            	tok.nextToken();
+						public ParserInternalTypeBase answer(final InvocationOnMock invocation)
+								throws Throwable {
+							final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
+							tok.nextToken();
 
-	            	if (tok.ttype == StreamTokenizer.TT_WORD) {
-	            		return factory.getType(null, "", tok.sval, ParserInternalTypeBase.ItemType.IDENTIFIER);
-	            	} else if (tok.ttype == '[') {
-	            		return factory.parseTokens("LIST", null, tok, "");
-	            	} else {
-	            		return ParserInternalTypeBase.EmptyType;
-	            	}
-            	}
-	        });
+							if (tok.ttype == StreamTokenizer.TT_WORD) {
+								return factory.getType(null, "", tok.sval,
+										ParserInternalTypeBase.ItemType.IDENTIFIER);
+							} else if (tok.ttype == '[') {
+								return factory.parseTokens("LIST", null, tok, "");
+							} else {
+								return ParserInternalTypeBase.EmptyType;
+							}
+						}
+					});
 
 			when(p.getName()).thenAnswer(new Answer<String>() {
 
-	            public String answer(final InvocationOnMock invocation) throws Throwable {
-	                return "MockIdentifierType";
-	            }
-	        });
+				public String answer(final InvocationOnMock invocation) throws Throwable {
+					return "MockIdentifierType";
+				}
+			});
 			return p;
 		}, "KEYVALUE");
 		this.factory.registerParser(() -> {
 			final IStateParser p = mock(IStateParser.class);
-			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
+			when(p.getState(isA(StreamTokenizer.class)))
+					.thenAnswer(new Answer<ParserInternalTypeBase>() {
 
-	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-	            	while (tok.nextToken() != StreamTokenizer.TT_EOF
-	            			&& tok.ttype != '}') System.err.println(String.format("<<<%c :: %s", tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype : '-') : '?', tok.sval));
+						public ParserInternalTypeBase answer(final InvocationOnMock invocation)
+								throws Throwable {
+							final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
+							while (tok.nextToken() != StreamTokenizer.TT_EOF && tok.ttype != '}')
+								System.err.println(String.format("<<<%c :: %s",
+										tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype : '-') : '?',
+										tok.sval));
 
-	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.SECTION);
-	            }
-	        });
+							return factory.getType(null, "", "",
+									ParserInternalTypeBase.ItemType.SECTION);
+						}
+					});
 
 			when(p.getName()).thenAnswer(new Answer<String>() {
 
-	            public String answer(final InvocationOnMock invocation) throws Throwable {
-	                return "MockSectionType";
-	            }
-	        });
+				public String answer(final InvocationOnMock invocation) throws Throwable {
+					return "MockSectionType";
+				}
+			});
 			return p;
 		}, "SECTION");
 		this.factory.registerParser(() -> new OperationParser(factory), "OPERATION");
-		this.factory.registerType((parent, name, value) -> new IdentifierType(parent, name, value), ItemType.IDENTIFIER);
-		this.factory.registerType((parent, name, value) -> new ListType(parent, name, value), ItemType.LIST);
-		this.factory.registerType((parent, name, value) -> new OperationType(parent, name, value), ItemType.OPERATION);
-		this.factory.registerType((parent, name, value) -> new SectionType(parent, name, value), ItemType.SECTION);
+		this.factory.registerType((parent, name, value) -> new IdentifierType(parent, name, value),
+				ItemType.IDENTIFIER);
+		this.factory.registerType((parent, name, value) -> new ListType(parent, name, value),
+				ItemType.LIST);
+		this.factory.registerType((parent, name, value) -> new OperationType(parent, name, value),
+				ItemType.OPERATION);
+		this.factory.registerType((parent, name, value) -> new SectionType(parent, name, value),
+				ItemType.SECTION);
 	}
 
 	@Test
@@ -142,7 +159,8 @@ public class OperationParserTest {
 	@Test
 	public final void testGetState() {
 		final String testString = "(! blargh)\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -158,15 +176,18 @@ public class OperationParserTest {
 		Config.reset();
 		Config.registerKnownParts();
 		final String testString = "(! ident\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
-		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
+		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t,
+				"op");
+		assertEquals(ParserInternalTypeBase.EmptyType, testItem,
+				"expect failed parse to return EmptyType");
 	}
 
 	@Test
@@ -174,15 +195,18 @@ public class OperationParserTest {
 		Config.reset();
 		Config.registerKnownParts();
 		final String testString = "(ident\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
-		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
+		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null,
+				t, "op");
+		assertEquals(ParserInternalTypeBase.EmptyType, testItem,
+				"expect failed parse to return EmptyType");
 	}
 
 	@Test
@@ -190,15 +214,18 @@ public class OperationParserTest {
 		Config.reset();
 		Config.registerKnownParts();
 		final String testString = "(~\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
-		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
+		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null,
+				t, "op");
+		assertEquals(ParserInternalTypeBase.EmptyType, testItem,
+				"expect failed parse to return EmptyType");
 	}
 
 	@Test
@@ -206,15 +233,18 @@ public class OperationParserTest {
 		Config.reset();
 		Config.registerKnownParts();
 		final String testString = "! ident)\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
-		assertEquals("ident", testItem.getValue(), "expect parse item to have \"ident\" as the value");
+		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null,
+				t, "op");
+		assertEquals("ident", testItem.getValue(),
+				"expect parse item to have \"ident\" as the value");
 	}
 
 	@Test
@@ -222,14 +252,17 @@ public class OperationParserTest {
 		Config.reset();
 		Config.registerKnownParts();
 		final String testString = "(~ ..\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
-		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
+		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null,
+				t, "op");
+		assertEquals(ParserInternalTypeBase.EmptyType, testItem,
+				"expect failed parse to return EmptyType");
 	}
 }

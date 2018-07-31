@@ -69,7 +69,8 @@ public class ListTypeTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ListType#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
+	 * Test method for
+	 * {@link com.keildraco.config.types.ListType#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
 	 */
 	@Test
 	public final void testAddItem() {
@@ -92,12 +93,14 @@ public class ListTypeTest {
 
 	@Test
 	public final void testGetNotThere() {
-		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("no_such_item"), "item doesn't exist");
+		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("no_such_item"),
+				"item doesn't exist");
 	}
 
 	@Test
 	public final void testOtherAsString() {
 		final ListType lt = new ListType("");
-		assertEquals("[  ]", lt.asString().trim(), "ListType with blank name should return \"[  ]\"");
+		assertEquals("[  ]", lt.asString().trim(),
+				"ListType with blank name should return \"[  ]\"");
 	}
 }

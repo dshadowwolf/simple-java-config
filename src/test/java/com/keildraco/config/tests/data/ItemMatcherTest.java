@@ -37,7 +37,8 @@ public class ItemMatcherTest {
 	public void setUp() throws Exception {
 		Config.registerKnownParts();
 		final String testString = "section {\nlist = [ alpha, bravo(!charlie), delta]\necho {\nfoxtrot = golf\n}\nhotel = hotel\n}\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -137,13 +138,15 @@ public class ItemMatcherTest {
 	@Test
 	public final void testMatchOperation() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
-		assertAll("Operation matches bravo.hotel but not bravo.charlie", () -> m.matches("bravo.hotel"), () -> noMatch(m, "bravo.charlie"));
+		assertAll("Operation matches bravo.hotel but not bravo.charlie",
+				() -> m.matches("bravo.hotel"), () -> noMatch(m, "bravo.charlie"));
 	}
 
 	@Test
 	public final void testMatchSection() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section"));
-		assertAll("Section matches \"list\" and \"echo\"", () -> m.matches("list"), () -> m.matches("echo"));
+		assertAll("Section matches \"list\" and \"echo\"", () -> m.matches("list"),
+				() -> m.matches("echo"));
 	}
 
 	@Test
@@ -159,7 +162,8 @@ public class ItemMatcherTest {
 
 	@Test
 	public final void testMatchOperationSpecificExclude() {
-		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha",
+				ItemType.OPERATION);
 		op.setOperation("!");
 		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.FALSE, m.matches("alpha"));
@@ -167,7 +171,8 @@ public class ItemMatcherTest {
 
 	@Test
 	public final void testMatchOperationSpecificIgnore() {
-		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha",
+				ItemType.OPERATION);
 		op.setOperation("~");
 		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.TRUE, m.matches("alpha"));
@@ -175,7 +180,8 @@ public class ItemMatcherTest {
 
 	@Test
 	public final void testMatchOperationUnknownOperator() {
-		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha",
+				ItemType.OPERATION);
 		op.setOperation(">");
 		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.TRUE, m.matches("alpha"));
@@ -183,7 +189,8 @@ public class ItemMatcherTest {
 
 	@Test
 	public final void testMatchOperationSpecificExcludeLongName() {
-		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha",
+				ItemType.OPERATION);
 		op.setOperation("!");
 		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.FALSE, m.matches("op.alpha"));
@@ -191,7 +198,8 @@ public class ItemMatcherTest {
 
 	@Test
 	public final void testMatchOperationSpecificIgnoreLongName() {
-		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha",
+				ItemType.OPERATION);
 		op.setOperation("~");
 		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.TRUE, m.matches("op.alpha"));
@@ -199,7 +207,8 @@ public class ItemMatcherTest {
 
 	@Test
 	public final void testMatchOperationUnknownOperatorLongName() {
-		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha",
+				ItemType.OPERATION);
 		op.setOperation(">");
 		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.TRUE, m.matches("op.alpha"));

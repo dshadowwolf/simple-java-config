@@ -43,10 +43,8 @@ public class Config {
 	private static final TypeFactory coreTypeFactory = new TypeFactory();
 
 	private static final List<ParserInternalTypeBase> internalTypes = Arrays.asList(
-			new IdentifierType(null, "", ""),
-			new ListType(null, "", ""),
-			new SectionType(null, "", ""),
-			new OperationType(null, "", ""));
+			new IdentifierType(null, "", ""), new ListType(null, "", ""),
+			new SectionType(null, "", ""), new OperationType(null, "", ""));
 
 	private static final Map<String, Class<? extends IStateParser>> internalParsers = new ConcurrentHashMap<>();
 
@@ -70,50 +68,60 @@ public class Config {
 		return coreTypeFactory;
 	}
 
-	private static IStateParser registerParserGenerator(final String name, final Class<? extends IStateParser> clazz) {
+	private static IStateParser registerParserGenerator(final String name,
+			final Class<? extends IStateParser> clazz) {
 		Constructor<? extends IStateParser> c;
 		try {
 			c = clazz.getConstructor(TypeFactory.class);
 			return c.newInstance(coreTypeFactory);
-		} catch (final NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (final NoSuchMethodException | SecurityException | InstantiationException
+				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			LOGGER.error("Exception getting parser instance for %s: %s", name, e.getMessage());
 			LOGGER.error(e.getStackTrace());
 			return null;
 		}
 	}
 
-	private static void registerParserInternal(final String name, final Class<? extends IStateParser> clazz) {
+	private static void registerParserInternal(final String name,
+			final Class<? extends IStateParser> clazz) {
 		coreTypeFactory.registerParser(() -> registerParserGenerator(name, clazz), name);
 	}
 
-	private static ParserInternalTypeBase registerTypeGenerator(final ParserInternalTypeBase parent, final String name, final String value,
+	private static ParserInternalTypeBase registerTypeGenerator(final ParserInternalTypeBase parent,
+			final String name, final String value,
 			final Class<? extends ParserInternalTypeBase> clazz) {
 		Constructor<? extends ParserInternalTypeBase> c;
 		try {
 			c = clazz.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
 			return c.newInstance(parent, name, value);
-		} catch (final NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (final NoSuchMethodException | SecurityException | InstantiationException
+				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			LOGGER.error("Exception getting type instance for %s: %s", name, e.getMessage());
 			LOGGER.error(e.getStackTrace());
 			return null;
 		}
 	}
 
-	private static void registerTypeInternal(final ItemType type, final Class<? extends ParserInternalTypeBase> clazz) {
-		coreTypeFactory.registerType((parent, name, value) -> registerTypeGenerator(parent, name, value, clazz), type);
+	private static void registerTypeInternal(final ItemType type,
+			final Class<? extends ParserInternalTypeBase> clazz) {
+		coreTypeFactory.registerType(
+				(parent, name, value) -> registerTypeGenerator(parent, name, value, clazz), type);
 	}
 
-	public static void registerType(final ItemType type, final Class<? extends ParserInternalTypeBase> clazz) {
+	public static void registerType(final ItemType type,
+			final Class<? extends ParserInternalTypeBase> clazz) {
 		registerTypeInternal(type, clazz);
 	}
 
-	public static void registerParser(final String name, final Class<? extends IStateParser> clazz) {
+	public static void registerParser(final String name,
+			final Class<? extends IStateParser> clazz) {
 		registerParserInternal(name, clazz);
 	}
 
 	public static void registerKnownParts() {
 		internalTypes.stream().forEach(type -> registerType(type.getType(), type.getClass()));
-		internalParsers.entrySet().stream().forEach(ent -> registerParser(ent.getKey(), ent.getValue()));
+		internalParsers.entrySet().stream()
+				.forEach(ent -> registerParser(ent.getKey(), ent.getValue()));
 	}
 
 	public static void reset() {
@@ -127,8 +135,10 @@ public class Config {
 		tok.wordChars('-', '-');
 		tok.slashSlashComments(true);
 		tok.slashStarComments(true);
-		final ParserInternalTypeBase root = coreTypeFactory.getType(null, "root", "", ItemType.SECTION);
-		return SectionType.class.cast(coreTypeFactory.getParser("SECTION", (SectionType) root).getState(tok));
+		final ParserInternalTypeBase root = coreTypeFactory.getType(null, "root", "",
+				ItemType.SECTION);
+		return SectionType.class
+				.cast(coreTypeFactory.getParser("SECTION", (SectionType) root).getState(tok));
 	}
 
 	private static FileSystem getFilesystemForURI(final URI uri) throws IOException {
@@ -146,8 +156,8 @@ public class Config {
 	 * @throws IOException
 	 */
 	public static DataQuery loadFile(final URI filePath) throws IOException {
-	    final FileSystem fs = getFilesystemForURI(filePath);
-	    final Path p = fs.getPath(filePath.getPath().substring(1));
+		final FileSystem fs = getFilesystemForURI(filePath);
+		final Path p = fs.getPath(filePath.getPath().substring(1));
 		final BufferedReader br = Files.newBufferedReader(p);
 		final SectionType res = runParser(br);
 		return DataQuery.of(res);
@@ -162,7 +172,8 @@ public class Config {
 	}
 
 	public static DataQuery parseString(final String data) {
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(data, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(data, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		return DataQuery.of(runParser(isr));
 	}
 }

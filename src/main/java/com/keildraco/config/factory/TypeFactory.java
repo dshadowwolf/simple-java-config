@@ -31,7 +31,8 @@ public class TypeFactory {
 		this.typeMap.put(type, lambda);
 	}
 
-	public ParserInternalTypeBase getType(@Nullable final ParserInternalTypeBase parent, final String name, final String value, final ParserInternalTypeBase.ItemType type) {
+	public ParserInternalTypeBase getType(@Nullable final ParserInternalTypeBase parent,
+			final String name, final String value, final ParserInternalTypeBase.ItemType type) {
 		return this.typeMap.get(type).get(parent, name, value);
 	}
 
@@ -46,7 +47,8 @@ public class TypeFactory {
 	 * @return
 	 */
 	@Nullable
-	public IStateParser getParser(final String parserName, @Nullable final ParserInternalTypeBase parent) {
+	public IStateParser getParser(final String parserName,
+			@Nullable final ParserInternalTypeBase parent) {
 		final IParserState parser = this.parserMap.getOrDefault(parserName, null);
 		if (parser == null) {
 			return null;
@@ -63,7 +65,9 @@ public class TypeFactory {
 	 * @param itemName
 	 * @return
 	 */
-	public ParserInternalTypeBase parseTokens(final String parserName, @Nullable final ParserInternalTypeBase parent, final StreamTokenizer tok, final String itemName) {
+	public ParserInternalTypeBase parseTokens(final String parserName,
+			@Nullable final ParserInternalTypeBase parent, final StreamTokenizer tok,
+			final String itemName) {
 		final IStateParser parser = this.getParser(parserName, parent);
 		if (parser == null) {
 			return ParserInternalTypeBase.EmptyType;

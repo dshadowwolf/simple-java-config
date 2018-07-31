@@ -14,6 +14,7 @@ public class ItemMatcher {
 	private final ParserInternalTypeBase thisItem;
 
 	public static final ItemMatcher AlwaysFalse = new ItemMatcher(EmptyType) {
+
 		@Override
 		public boolean matches(final String name) {
 			return false;
@@ -39,27 +40,28 @@ public class ItemMatcher {
 
 	private boolean doMatch(final ItemType type, final String bn, final String xn) {
 		switch (type) {
-		case IDENTIFIER:
-			if (xn.length() > 0) {
-				return this.identMatches((IdentifierType) this.thisItem, xn) && this.thisItem.getName().equalsIgnoreCase(bn);
-			} else {
-				return this.identMatches((IdentifierType) this.thisItem, bn);
-			}
-		case LIST:
-			String matchN = bn;
-			if (this.thisItem.getName().equalsIgnoreCase(bn) && xn.length() > 0) {
-				matchN = xn;
-			}
+			case IDENTIFIER:
+				if (xn.length() > 0) {
+					return this.identMatches((IdentifierType) this.thisItem, xn)
+							&& this.thisItem.getName().equalsIgnoreCase(bn);
+				} else {
+					return this.identMatches((IdentifierType) this.thisItem, bn);
+				}
+			case LIST:
+				String matchN = bn;
+				if (this.thisItem.getName().equalsIgnoreCase(bn) && xn.length() > 0) {
+					matchN = xn;
+				}
 				return this.listMatchesAny(matchN);
-		case OPERATION:
-			return this.operatorMatches(xn.length() > 0 ? String.format("%s.%s", bn, xn) : bn);
-		case SECTION:
-			if (xn.length() > 0) {
-				return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
-			}
-			return this.sectionMatches(bn);
-		default:
-			return false;
+			case OPERATION:
+				return this.operatorMatches(xn.length() > 0 ? String.format("%s.%s", bn, xn) : bn);
+			case SECTION:
+				if (xn.length() > 0) {
+					return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
+				}
+				return this.sectionMatches(bn);
+			default:
+				return false;
 		}
 	}
 
@@ -71,7 +73,8 @@ public class ItemMatcher {
 		return this.sectionMatches((SectionType) this.thisItem, name);
 	}
 
-	private boolean matchOperator(final OperationType op, final String itemName, final String valueName) {
+	private boolean matchOperator(final OperationType op, final String itemName,
+			final String valueName) {
 		String matchName = itemName;
 		if (op.getName().equalsIgnoreCase(itemName) && valueName.length() > 0) {
 			matchName = valueName;

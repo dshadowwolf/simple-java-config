@@ -74,12 +74,12 @@ public class IStateParserTests {
 	public final void testNextTokenExceptions() {
 		p.clearErrors();
 		try {
-		final StreamTokenizer tok = mock(StreamTokenizer.class);
-		doThrow(IOException.class).when(tok).nextToken();
-		@SuppressWarnings("unused")
-		final int z = p.nextToken(tok);
+			final StreamTokenizer tok = mock(StreamTokenizer.class);
+			doThrow(IOException.class).when(tok).nextToken();
+			@SuppressWarnings("unused")
+			final int z = p.nextToken(tok);
 		} catch (final Exception e) {
-		fail("unexpected exception: " + e.getMessage());
+			fail("unexpected exception: " + e.getMessage());
 		}
 		assertTrue(p.errored(), "parser is in an error state");
 	}
@@ -88,12 +88,12 @@ public class IStateParserTests {
 	public final void testPeekTokenExceptions() {
 		p.clearErrors();
 		try {
-		final StreamTokenizer tok = mock(StreamTokenizer.class);
-		doThrow(IOException.class).when(tok).nextToken();
-		@SuppressWarnings("unused")
-		final int z = p.peekToken(tok);
+			final StreamTokenizer tok = mock(StreamTokenizer.class);
+			doThrow(IOException.class).when(tok).nextToken();
+			@SuppressWarnings("unused")
+			final int z = p.peekToken(tok);
 		} catch (final Exception e) {
-		fail("unexpected exception: " + e.getMessage());
+			fail("unexpected exception: " + e.getMessage());
 		}
 		assertTrue(p.errored(), "parser is in an error state");
 	}

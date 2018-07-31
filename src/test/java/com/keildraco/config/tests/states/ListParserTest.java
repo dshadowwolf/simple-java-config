@@ -43,30 +43,36 @@ public class ListParserTest {
 		this.factory = new TypeFactory();
 		this.factory.registerParser(() -> {
 			final IStateParser p = mock(IStateParser.class);
-			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
+			when(p.getState(isA(StreamTokenizer.class)))
+					.thenAnswer(new Answer<ParserInternalTypeBase>() {
 
-	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-	            	while (tok.nextToken() != StreamTokenizer.TT_EOF
-	            			&& tok.ttype != ')') ;
+						public ParserInternalTypeBase answer(final InvocationOnMock invocation)
+								throws Throwable {
+							final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
+							while (tok.nextToken() != StreamTokenizer.TT_EOF && tok.ttype != ')')
+								;
 
-	                return factory.getType(null, "", "", ItemType.OPERATION);
-	            }
-	        });
+							return factory.getType(null, "", "", ItemType.OPERATION);
+						}
+					});
 
 			when(p.getName()).thenAnswer(new Answer<String>() {
 
-	            public String answer(final InvocationOnMock invocation) throws Throwable {
-	                return "MockOperationType";
-	            }
-	        });
+				public String answer(final InvocationOnMock invocation) throws Throwable {
+					return "MockOperationType";
+				}
+			});
 			return p;
 		}, "OPERATION");
 		this.factory.registerParser(() -> new ListParser(this.factory, "LIST"), "LIST");
-		this.factory.registerType((parent, name, value) -> new IdentifierType(parent, name, value), ItemType.IDENTIFIER);
-		this.factory.registerType((parent, name, value) -> new ListType(parent, name, value), ItemType.LIST);
-		this.factory.registerType((parent, name, value) -> new OperationType(parent, name, value), ItemType.OPERATION);
-		this.factory.registerType((parent, name, value) -> new SectionType(parent, name, value), ItemType.SECTION);
+		this.factory.registerType((parent, name, value) -> new IdentifierType(parent, name, value),
+				ItemType.IDENTIFIER);
+		this.factory.registerType((parent, name, value) -> new ListType(parent, name, value),
+				ItemType.LIST);
+		this.factory.registerType((parent, name, value) -> new OperationType(parent, name, value),
+				ItemType.OPERATION);
+		this.factory.registerType((parent, name, value) -> new SectionType(parent, name, value),
+				ItemType.SECTION);
 	}
 
 	@Test
@@ -83,7 +89,8 @@ public class ListParserTest {
 	@Test
 	public final void testGetState() {
 		final String testString = "a_value, an_operator(!ident), false ]\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -97,7 +104,8 @@ public class ListParserTest {
 	@Test
 	public final void testGetStateErrorOne() {
 		final String testString = "[ a_value, an_operator(!ident), fa-lse ]\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -106,13 +114,15 @@ public class ListParserTest {
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
 		final ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
-		assertEquals(ParserInternalTypeBase.EmptyType, k, "k should be EmptyType due to bad format of input");
+		assertEquals(ParserInternalTypeBase.EmptyType, k,
+				"k should be EmptyType due to bad format of input");
 	}
 
 	@Test
 	public final void testGetStateErrorTwo() {
 		final String testString = "[ a_value, an_operator(!ident), false true ]\n\n";
-		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
@@ -121,6 +131,7 @@ public class ListParserTest {
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
 		final ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
-		assertEquals(ParserInternalTypeBase.EmptyType, k, "k should be EmptyType due to bad format of input");
+		assertEquals(ParserInternalTypeBase.EmptyType, k,
+				"k should be EmptyType due to bad format of input");
 	}
 }

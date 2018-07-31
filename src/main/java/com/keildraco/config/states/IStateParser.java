@@ -27,16 +27,16 @@ public interface IStateParser {
 	 */
 	default String ttypeToString(final int ttype) {
 		switch (ttype) {
-		case TT_WORD:
-			return "TT_WORD";
-		case TT_NUMBER:
-			return "TT_NUMBER";
-		case TT_EOL:
-			return "TT_EOL";
-		case TT_EOF:
-			return "TT_EOF";
-		default:
-			return "UNKNOWN";
+			case TT_WORD:
+				return "TT_WORD";
+			case TT_NUMBER:
+				return "TT_NUMBER";
+			case TT_EOL:
+				return "TT_EOL";
+			case TT_EOF:
+				return "TT_EOF";
+			default:
+				return "UNKNOWN";
 		}
 	}
 
@@ -84,7 +84,9 @@ public interface IStateParser {
 
 	ParserInternalTypeBase getParent();
 
-	default void setName(final String name) { /* this space intentionally blank */ }
+	default void setName(final String name) {
+		/* this space intentionally blank */
+	}
 
 	String getName();
 

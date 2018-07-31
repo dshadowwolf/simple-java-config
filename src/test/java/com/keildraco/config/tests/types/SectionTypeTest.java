@@ -46,7 +46,8 @@ public class SectionTypeTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.SectionType#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
+	 * Test method for
+	 * {@link com.keildraco.config.types.SectionType#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
 	 */
 	@Test
 	public final void testAddItem() {
@@ -69,10 +70,8 @@ public class SectionTypeTest {
 
 	@Test
 	public final void testAsString() {
-		final String result = String.format("blargh = blech%n"
-				+ " CHILD {%n"
-				+ " blargh = foobar%n"
-				+ "}");
+		final String result = String
+				.format("blargh = blech%n" + " CHILD {%n" + " blargh = foobar%n" + "}");
 		assertEquals(result, this.root.asString().trim());
 	}
 }

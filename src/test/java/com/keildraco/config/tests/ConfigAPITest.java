@@ -67,10 +67,13 @@ public class ConfigAPITest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			c = com.keildraco.config.Config.loadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri());
+			c = com.keildraco.config.Config.loadFile(Paths
+					.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri());
 			assertNotNull(c, "Load Worked? ");
 		} catch (final IOException | IllegalArgumentException e) {
-			fail(String.format("Caught exception running LoadFile([URI] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri(), e));
+			fail(String.format("Caught exception running LoadFile([URI] %s)\n---> %s", Paths
+					.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri(),
+					e));
 		}
 	}
 
@@ -84,7 +87,10 @@ public class ConfigAPITest {
 			c = com.keildraco.config.Config.loadFile(p);
 			assertNotNull(c, "Load Worked? ");
 		} catch (final IOException | IllegalArgumentException e) {
-			fail(String.format("Caught exception running LoadFile([PATH] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString(), e));
+			fail(String.format("Caught exception running LoadFile([PATH] %s)\n---> %s",
+					Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg")
+							.toString(),
+					e));
 		}
 	}
 
@@ -95,10 +101,15 @@ public class ConfigAPITest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			c = com.keildraco.config.Config.loadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString());
+			c = com.keildraco.config.Config.loadFile(
+					Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg")
+							.toString());
 			assertNotNull(c, "Load Worked? ");
 		} catch (final IOException | IllegalArgumentException e) {
-			fail(String.format("Caught exception running LoadFile([STRING] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString(), e));
+			fail(String.format("Caught exception running LoadFile([STRING] %s)\n---> %s",
+					Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg")
+							.toString(),
+					e));
 		}
 	}
 
@@ -106,18 +117,21 @@ public class ConfigAPITest {
 	public final void testParseString() {
 		Config.reset();
 		Config.registerKnownParts();
-		final DataQuery c = com.keildraco.config.Config.parseString("section {\n key = [ ident1, ident2, ident3(! ident4)\n}\n\n");
+		final DataQuery c = com.keildraco.config.Config
+				.parseString("section {\n key = [ ident1, ident2, ident3(! ident4)\n}\n\n");
 		assertNotNull(c, String.format("Load worked as expected (%s)", c));
 	}
 
 	@Test
 	public final void testRegisterParserError() {
 		try {
-			final Method m = Config.class.getDeclaredMethod("registerParserGenerator", String.class, Class.class);
+			final Method m = Config.class.getDeclaredMethod("registerParserGenerator", String.class,
+					Class.class);
 			m.setAccessible(true);
 			final Object p = m.invoke(Config.INSTANCE, "BROKEN", BrokenParser.class);
 			assertNull(p, "broken parser should return null from generator");
-		} catch (final NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (final NoSuchMethodException | SecurityException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception: %s\nMessage: %s\nStack Dump:", e, e.getMessage());
 			for (final StackTraceElement elem : e.getStackTrace()) {
 				Config.LOGGER.fatal("%s", elem);
@@ -129,11 +143,14 @@ public class ConfigAPITest {
 	@Test
 	public final void testRegisterTypeError() {
 		try {
-			final Method m = Config.class.getDeclaredMethod("registerTypeGenerator", ParserInternalTypeBase.class, String.class, String.class, Class.class);
+			final Method m = Config.class.getDeclaredMethod("registerTypeGenerator",
+					ParserInternalTypeBase.class, String.class, String.class, Class.class);
 			m.setAccessible(true);
-			final Object p = m.invoke(Config.INSTANCE, ParserInternalTypeBase.EmptyType, "BROKEN", "BROKEN", BrokenType.class);
+			final Object p = m.invoke(Config.INSTANCE, ParserInternalTypeBase.EmptyType, "BROKEN",
+					"BROKEN", BrokenType.class);
 			assertNull(p, "broken type should return null from generator");
-		} catch (final NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (final NoSuchMethodException | SecurityException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception: %s\nMessage: %s\nStack Dump:", e, e.getMessage());
 			for (final StackTraceElement elem : e.getStackTrace()) {
 				Config.LOGGER.fatal("%s", elem);
@@ -150,6 +167,7 @@ public class ConfigAPITest {
 	}
 
 	protected class BrokenParser implements IStateParser {
+
 		public BrokenParser(final String blargh) {
 		}
 

@@ -37,30 +37,32 @@ public class SectionParser extends AbstractParserBase {
 			int tt = getTokenType(tok);
 
 			switch (tt) {
-			case '=':
-				if (ident.equals("")) {
+				case '=':
+					if (ident.equals("")) {
+						this.setErrored();
+						Config.LOGGER.error(
+								"Found a store operation (=) where I was expecting an identifier");
+						return EmptyType;
+					}
+					this.getKeyValue(tok, ident);
+					ident = "";
+					break;
+				case '{':
+					this.getSection(tok, ident);
+					break;
+				case '}':
+					return this.section;
+				case -1:
+					ident = tok.sval.trim();
+					break;
+				case -2:
+				case -3:
+				case -4:
+				default:
 					this.setErrored();
-					Config.LOGGER.error("Found a store operation (=) where I was expecting an identifier");
+					Config.LOGGER.error("Found %s where it was not expected - this is an error",
+							itToString(tt));
 					return EmptyType;
-				}
-				this.getKeyValue(tok, ident);
-				ident = "";
-				break;
-			case '{':
-				this.getSection(tok, ident);
-				break;
-			case '}':
-				return this.section;
-			case -1:
-				ident = tok.sval.trim();
-				break;
-			case -2:
-			case -3:
-			case -4:
-			default:
-				this.setErrored();
-				Config.LOGGER.error("Found %s where it was not expected - this is an error", itToString(tt));
-				return EmptyType;
 			}
 		}
 		if (!this.errored()) {
@@ -70,7 +72,8 @@ public class SectionParser extends AbstractParserBase {
 	}
 
 	private void getSection(final StreamTokenizer tok, final String ident) {
-		final ParserInternalTypeBase sk = this.factory.parseTokens("SECTION", this.section, tok, ident);
+		final ParserInternalTypeBase sk = this.factory.parseTokens("SECTION", this.section, tok,
+				ident);
 		if (EmptyType.equals(sk)) {
 			this.setErrored();
 		} else {
@@ -79,7 +82,8 @@ public class SectionParser extends AbstractParserBase {
 	}
 
 	private void getKeyValue(final StreamTokenizer tok, final String ident) {
-		final ParserInternalTypeBase kv = this.factory.parseTokens("KEYVALUE", this.section, tok, ident);
+		final ParserInternalTypeBase kv = this.factory.parseTokens("KEYVALUE", this.section, tok,
+				ident);
 		if (EmptyType.equals(kv)) {
 			this.setErrored();
 		} else {

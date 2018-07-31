@@ -20,7 +20,8 @@ public class SectionType extends ParserInternalTypeBase {
 		}
 	}
 
-	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {
+	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name,
+			final String value) {
 		this(parent, name);
 	}
 
@@ -37,8 +38,7 @@ public class SectionType extends ParserInternalTypeBase {
 			k.append(String.format("%s {%n", this.getName()));
 		}
 
-		this.items.values().stream()
-		.forEach(v -> k.append(String.format(" %s%n", v.asString())));
+		this.items.values().stream().forEach(v -> k.append(String.format(" %s%n", v.asString())));
 
 		if (!this.getName().equals("ROOT")) {
 			k.append(String.format("}%n"));

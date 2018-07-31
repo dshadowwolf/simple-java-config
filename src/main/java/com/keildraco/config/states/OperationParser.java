@@ -15,7 +15,8 @@ public class OperationParser extends AbstractParserBase {
 		super(factory, null, "Well I'll Be Buggered");
 	}
 
-	public OperationParser(final TypeFactory factory, final ParserInternalTypeBase parent, final String name) {
+	public OperationParser(final TypeFactory factory, final ParserInternalTypeBase parent,
+			final String name) {
 		super(factory, parent, name);
 	}
 
@@ -32,12 +33,15 @@ public class OperationParser extends AbstractParserBase {
 				final String value = this.getIdentifier(tok);
 				final int p = peekToken(tok);
 				if (p == ')') {
-					final OperationType rv = (OperationType) this.factory.getType(this.getParent(), this.name, value, ItemType.OPERATION);
+					final OperationType rv = (OperationType) this.factory.getType(this.getParent(),
+							this.name, value, ItemType.OPERATION);
 					rv.setName(this.name);
 					rv.setOperation(operator);
 					return rv;
 				} else {
-					Config.LOGGER.error("Error parsing an operation - expected to find a closing parentheses, found %s instead", tok.sval);
+					Config.LOGGER.error(
+							"Error parsing an operation - expected to find a closing parentheses, found %s instead",
+							tok.sval);
 					return ParserInternalTypeBase.EmptyType;
 				}
 			}

@@ -40,7 +40,8 @@ public class OperationTypeTest {
 	public final void testOperationTypeParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
-			final OperationType op = new OperationType(ParserInternalTypeBase.EmptyType, "OPERATION");
+			final OperationType op = new OperationType(ParserInternalTypeBase.EmptyType,
+					"OPERATION");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Caught exception instantiating new OperationType");
