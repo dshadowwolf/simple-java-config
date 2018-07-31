@@ -36,7 +36,7 @@ public class ListParser extends AbstractParserBase {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.keildraco.config.states.IStateParser#getState(java.io.StreamTokenizer)
 	 */
 	@Override
