@@ -4,14 +4,20 @@ import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Enumeration;
 
 import org.junit.jupiter.api.Test;
 
@@ -67,30 +73,25 @@ public class ConfigAPITest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			c = com.keildraco.config.Config.loadFile(Paths
-					.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri());
+			URI t = Config.class.getClassLoader().getResource("assets/base-config-test.cfg").toURI();
+			c = Config.loadFile(t);
 			assertNotNull(c, "Load Worked? ");
-		} catch (final IOException | IllegalArgumentException e) {
-			fail(String.format("Caught exception running LoadFile([URI] %s)\n---> %s", Paths
-					.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri(),
-					e));
+		} catch (final IOException | IllegalArgumentException | URISyntaxException e) {
+			fail("Caught exception running loadFile: "+e);
 		}
 	}
 
 	@Test
 	public final void testLoadFilePath() {
-		Path p = Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg");
+		Path p = Paths.get("assets", "base-config-test.cfg");
 		DataQuery c = null;
 		try {
 			Config.reset();
 			Config.registerKnownParts();
 			c = com.keildraco.config.Config.loadFile(p);
 			assertNotNull(c, "Load Worked? ");
-		} catch (final IOException | IllegalArgumentException e) {
-			fail(String.format("Caught exception running LoadFile([PATH] %s)\n---> %s",
-					Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg")
-							.toString(),
-					e));
+		} catch (final IOException | IllegalArgumentException | URISyntaxException e) {
+			fail("Caught exception running loadFile: "+e);
 		}
 	}
 
@@ -101,15 +102,12 @@ public class ConfigAPITest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			c = com.keildraco.config.Config.loadFile(
-					Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg")
-							.toString());
+			Path p = Paths.get("assets", "base-config-test.cfg");
+			String fp = String.join("/", p.toString().split("\\\\"));
+			c = com.keildraco.config.Config.loadFile(fp);
 			assertNotNull(c, "Load Worked? ");
-		} catch (final IOException | IllegalArgumentException e) {
-			fail(String.format("Caught exception running LoadFile([STRING] %s)\n---> %s",
-					Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg")
-							.toString(),
-					e));
+		} catch (final IOException | IllegalArgumentException | URISyntaxException e) {
+			fail("Caught exception running loadFile: "+e);
 		}
 	}
 
@@ -158,7 +156,7 @@ public class ConfigAPITest {
 			fail("test broken, exception caught: " + e.getMessage());
 		}
 	}
-
+	
 	protected class BrokenType extends ParserInternalTypeBase {
 
 		public BrokenType(final ParserInternalTypeBase parent, final String name) {

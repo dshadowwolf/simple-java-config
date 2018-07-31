@@ -8,12 +8,14 @@ import java.io.StreamTokenizer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
+import java.nio.file.FileSystemAlreadyExistsException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -144,14 +146,6 @@ public class Config {
 				.cast(coreTypeFactory.getParser("SECTION", (SectionType) root).getState(tok));
 	}
 
-	private static FileSystem getFilesystemForURI(final URI uri) throws IOException {
-		if (uri.getScheme().equalsIgnoreCase("jar")) {
-			return FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
-		} else {
-			return FileSystems.getDefault();
-		}
-	}
-
 	/**
 	 *
 	 * @param filePath
@@ -159,19 +153,33 @@ public class Config {
 	 * @throws IOException
 	 */
 	public static DataQuery loadFile(final URI filePath) throws IOException {
-		final FileSystem fs = getFilesystemForURI(filePath);
-		final Path p = fs.getPath(filePath.getPath().substring(1));
-		final BufferedReader br = Files.newBufferedReader(p);
+		Config.LOGGER.fatal("(loadFile(URI) Asked to load %s", filePath);
+		FileSystem fs;
+		try {
+			fs = FileSystems.newFileSystem(filePath, Collections.<String,  Object>emptyMap());
+		} catch(FileSystemAlreadyExistsException e) {
+			fs = FileSystems.getFileSystem(filePath);
+		}
+		Config.LOGGER.fatal("FS is: %s", fs);
+		InputStreamReader br = new InputStreamReader(filePath.toURL().openStream());
+		Config.LOGGER.fatal("br: %s", br.toString());
 		final SectionType res = runParser(br);
 		return DataQuery.of(res);
 	}
 
-	public static DataQuery loadFile(final Path filePath) throws IOException {
-		return loadFile(filePath.toUri());
+	public static DataQuery loadFile(final Path filePath) throws IOException, URISyntaxException {
+		String ts = String.join("/", filePath.toString().split("\\\\"));
+		URL tu = Config.class.getClassLoader().getResource(ts);
+		Config.LOGGER.fatal("(loadFile(Path) Asked to load %s (%s -- %s??)\n%s", filePath, filePath.toString(), ts, tu);
+		URI temp = Config.class.getClassLoader().getResource(ts).toURI();
+		return loadFile(temp);
 	}
 
-	public static DataQuery loadFile(final String filePath) throws IOException {
-		return loadFile(Paths.get(filePath).toUri());
+	public static DataQuery loadFile(final String filePath) throws IOException, URISyntaxException {
+		URL tu = Config.class.getClassLoader().getResource(filePath);
+		Config.LOGGER.fatal("(loadFile(String) Asked to load %s (%s ?)", filePath, tu);
+		URI temp = tu.toURI();
+		return loadFile(temp);
 	}
 
 	/**

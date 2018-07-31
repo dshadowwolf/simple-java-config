@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -38,11 +39,11 @@ public class DataQueryTest {
 		DataQuery dq;
 		try {
 			dq = Config.loadFile(
-					Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
+					Paths.get("assets", "base-config-test.cfg"));
 			assertTrue(dq.get("section.magic.xyzzy"),
 					"dq.get(\"section.magic.xyzzy\") is (not) true ("
 							+ dq.get("section.magic.xyzzy") + ")");
-		} catch (final IOException e) {
+		} catch (final IOException | URISyntaxException e) {
 			fail("dq.get() caused an exception: " + e);
 		}
 	}
@@ -52,10 +53,10 @@ public class DataQueryTest {
 		DataQuery dq;
 		try {
 			dq = Config.loadFile(
-					Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
+					Paths.get("assets", "base-config-test.cfg"));
 			assertTrue(dq.get("section.ident3"),
 					"dq.get(\"section.ident3\") is (not) true (" + dq.get("section.ident3") + ")");
-		} catch (final IOException e) {
+		} catch (final IOException | URISyntaxException e) {
 			fail("dq.get() caused an exception: " + e);
 		}
 	}
@@ -65,11 +66,11 @@ public class DataQueryTest {
 		DataQuery dq;
 		try {
 			dq = Config.loadFile(
-					Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
+					Paths.get("assets", "base-config-test.cfg"));
 			assertFalse(dq.get("section.blech.ident4"),
 					"dq.get(\"section.blech.ident4\") is (not) false ("
 							+ dq.get("section.blech.ident4") + ")");
-		} catch (final IOException e) {
+		} catch (final IOException | URISyntaxException e) {
 			fail("dq.get() caused an exception: " + e);
 		}
 	}
@@ -79,11 +80,11 @@ public class DataQueryTest {
 		DataQuery dq;
 		try {
 			dq = Config.loadFile(
-					Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
+					Paths.get("assets", "base-config-test.cfg"));
 			assertFalse(dq.get(".section.blech.ident4"),
 					"dq.get(\".section.blech.ident4\") is (not) false ("
 							+ dq.get(".section.blech.ident4") + ")");
-		} catch (final IOException e) {
+		} catch (final IOException | URISyntaxException e) {
 			fail("dq.get() caused an exception: " + e);
 		}
 	}
