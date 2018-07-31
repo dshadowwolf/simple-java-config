@@ -1,79 +1,67 @@
 buildscript {
-
-    dependencies {
-       // dependency needed to run junit 5 tests
-       classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
-   }
+	dependencies {
+		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.2.0'
+	}
 }
 
 plugins {
-    // Apply the java plugin to add support for Java
-    id 'java'
-
-    // Apply the application plugin to add support for building an application
-    id 'application'
-
-    // sonarcloud
-    id "org.sonarqube" version "2.6"
+	id 'java'
+	id 'application'
+	id 'org.sonarqube' version '2.6.2'
 }
 
-// Define the main class for the application
 mainClassName = 'App'
-apply plugin: "jacoco"
+apply plugin: 'jacoco'
 apply plugin: 'org.junit.platform.gradle.plugin'
 
 dependencies {
-    // This dependency is found on compile classpath of this component and consumers.
-    compile 'com.google.guava:guava:23.0'
+	// This dependency is found on compile classpath of this component and consumers.
+	compile 'com.google.guava:guava:23.0'
 	// Apache Commons IO
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
-	
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.2.0'
-    
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
-    
-    // Use Mockito
+
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.2.0'
+
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
+
 	testCompile "org.mockito:mockito-core:2.+"
 
-    // Log4J FTW
-      compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
-      annotationProcessor group:'org.apache.logging.log4j', name:'log4j-core', version: '2.11.0'
-      compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.0'
+	// Log4J FTW
+	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
+	annotationProcessor group:'org.apache.logging.log4j', name:'log4j-core', version: '2.11.0'
+	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.0'
 }
 
-// In this section you declare where to find the dependencies of your project
 repositories {
-    // Use jcenter for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
-    maven {
-      name = 'gradle'
-      url 'https://plugins.gradle.org/m2/'
-    }
-    mavenLocal()
-    mavenCentral()
+	mavenLocal()
+	mavenCentral()
+	jcenter()
+	maven {
+		name = 'gradle'
+		url 'https://plugins.gradle.org/m2/'
+	}
 }
 
 junitPlatform.enableStandardTestTask true
 
 project.afterEvaluate {
-  jacoco {
-    toolVersion = '0.8.1'
-  }
+	jacoco {
+		toolVersion = '0.8.1'
+	}
 
-  // create junit platform jacoco task
-  project.task(type: JacocoReport, "junitPlatformJacocoReport",
-  {
-    sourceDirectories = files("./src/main")
-    classDirectories = files("${project.buildDir}/classes/main")
-  })
+	// create junit platform jacoco task
+	project.task(type: JacocoReport, "junitPlatformJacocoReport",
+	{
+		sourceDirectories = files("./src/main")
+		classDirectories = files("${project.buildDir}/classes/main")
+ 	})
 }
 
 tasks.withType(JavaCompile) {
-  options.encoding = 'UTF-8'
-  options.compilerArgs = [
-    '-Xlint:deprecation'
-  ]
+	options.encoding = 'UTF-8'
+	options.compilerArgs = [
+		'-Xlint:deprecation'
+	]
 }
 
 tasks.withType(Test) {
