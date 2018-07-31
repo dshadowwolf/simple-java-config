@@ -62,7 +62,6 @@ public class ListParser implements IStateParser {
 		final Deque<ParserInternalTypeBase> store = new LinkedList<>();
 		String ident;
 		while((p = this.nextToken(tok)) != StreamTokenizer.TT_EOF && p != ']') {
-			Config.LOGGER.fatal("%s (%c)", tok.sval, p>0&&p<127?p:'?');
 			if(p=='[') continue;
 			if(!this.errored && p == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 				ident = tok.sval;
@@ -77,14 +76,13 @@ public class ListParser implements IStateParser {
 
 		final List<ParserInternalTypeBase> l = store.stream().collect(Collectors.toList());
 		Collections.reverse(l);
-		
 		return l.contains(EmptyType)?EmptyType:new ListType(this.name, l);
 	}
 
 	private ParserInternalTypeBase getToken(final StreamTokenizer tok, final String ident) {
 		if(tok.sval.matches(IDENTIFIER_PATTERN)) {
 			final int n = this.peekToken(tok);
-			if(n == StreamTokenizer.TT_WORD || n == ',' || n == ']') {
+			if(n != StreamTokenizer.TT_WORD && (n == ',' || n == ']')) {
 				return this.factory.getType(this.getParent(), this.getName(), ident, ItemType.IDENTIFIER);
 			} else if( n == '(') {
 				return this.factory.parseTokens("OPERATION", this.getParent(), tok, ident);
