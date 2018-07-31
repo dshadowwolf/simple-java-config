@@ -38,7 +38,7 @@ public class ListType extends ParserInternalTypeBase {
 	}
 
 	public ListType(@Nullable final ParserInternalTypeBase parent, final String name,
-			final String value) {
+			final String valueIn) {
 		this(parent, name);
 	}
 

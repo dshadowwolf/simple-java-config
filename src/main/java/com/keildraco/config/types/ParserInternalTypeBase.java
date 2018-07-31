@@ -29,7 +29,8 @@ public class ParserInternalTypeBase {
 
 		@Override
 		public void addItem(final ParserInternalTypeBase item) {
-			/* the EmptyType does not store other items */ }
+			/* the EmptyType does not store other items */
+		}
 
 		@Override
 		public ItemType getType() {
@@ -37,25 +38,25 @@ public class ParserInternalTypeBase {
 		}
 	};
 
-	public ParserInternalTypeBase(final String name) {
-		this(null, name);
+	public ParserInternalTypeBase(final String nameIn) {
+		this(null, nameIn);
 	}
 
 	/**
 	 *
-	 * @param parent
-	 * @param name
+	 * @param parentIn
+	 * @param nameIn
 	 */
-	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parent,
-			final String name) {
-		this.name = name;
-		this.parent = parent;
+	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
+			final String nameIn) {
+		this.name = nameIn;
+		this.parent = parentIn;
 		this.items = new ConcurrentHashMap<>();
 	}
 
-	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parent, final String name,
-			@SuppressWarnings("unused") final String value) {
-		this(parent, name);
+	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn, final String nameIn,
+			@SuppressWarnings("unused") final String valueIn) {
+		this(parentIn, nameIn);
 	}
 
 	/**
@@ -117,8 +118,8 @@ public class ParserInternalTypeBase {
 		return Collections.emptyList();
 	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setName(final String nameIn) {
+		this.name = nameIn;
 	}
 
 	public String getName() {

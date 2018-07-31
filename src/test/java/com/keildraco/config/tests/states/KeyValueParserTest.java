@@ -53,8 +53,9 @@ public class KeyValueParserTest {
 								throws Throwable {
 							while (((StreamTokenizer) invocation.getArgument(0))
 									.nextToken() != StreamTokenizer.TT_EOF
-									&& ((StreamTokenizer) invocation.getArgument(0)).ttype != ']')
+									&& ((StreamTokenizer) invocation.getArgument(0)).ttype != ']') {
 								;
+							}
 
 							if (((StreamTokenizer) invocation.getArgument(0)).ttype == ']') {
 								((StreamTokenizer) invocation.getArgument(0)).nextToken();
@@ -79,8 +80,9 @@ public class KeyValueParserTest {
 						public ParserInternalTypeBase answer(final InvocationOnMock invocation)
 								throws Throwable {
 							final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-							while (tok.nextToken() != StreamTokenizer.TT_EOF && tok.ttype != ')')
+							while (tok.nextToken() != StreamTokenizer.TT_EOF && tok.ttype != ')') {
 								;
+							}
 
 							return factory.getType(null, "", "", ItemType.OPERATION);
 						}

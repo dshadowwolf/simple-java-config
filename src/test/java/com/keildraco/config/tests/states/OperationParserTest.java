@@ -50,10 +50,11 @@ public class OperationParserTest {
 						public ParserInternalTypeBase answer(final InvocationOnMock invocation)
 								throws Throwable {
 							final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-							while (tok.nextToken() != StreamTokenizer.TT_EOF && tok.ttype != ']')
+							while (tok.nextToken() != StreamTokenizer.TT_EOF && tok.ttype != ']') {
 								System.err.println(String.format("<<<%c :: %s",
 										tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype : '-') : '?',
 										tok.sval));
+							}
 
 							return factory.getType(null, "", "",
 									ParserInternalTypeBase.ItemType.LIST);
@@ -105,10 +106,11 @@ public class OperationParserTest {
 						public ParserInternalTypeBase answer(final InvocationOnMock invocation)
 								throws Throwable {
 							final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-							while (tok.nextToken() != StreamTokenizer.TT_EOF && tok.ttype != '}')
+							while (tok.nextToken() != StreamTokenizer.TT_EOF && tok.ttype != '}') {
 								System.err.println(String.format("<<<%c :: %s",
 										tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype : '-') : '?',
 										tok.sval));
+							}
 
 							return factory.getType(null, "", "",
 									ParserInternalTypeBase.ItemType.SECTION);

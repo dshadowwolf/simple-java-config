@@ -118,6 +118,9 @@ public class Config {
 		registerParserInternal(name, clazz);
 	}
 
+	/**
+	 *
+	 */
 	public static void registerKnownParts() {
 		internalTypes.stream().forEach(type -> registerType(type.getType(), type.getClass()));
 		internalParsers.entrySet().stream()
@@ -171,6 +174,11 @@ public class Config {
 		return loadFile(Paths.get(filePath).toUri());
 	}
 
+	/**
+	 *
+	 * @param data
+	 * @return
+	 */
 	public static DataQuery parseString(final String data) {
 		final InputStreamReader isr = new InputStreamReader(
 				IOUtils.toInputStream(data, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
