@@ -34,7 +34,7 @@ public class DataQueryTest {
 	public final void testGet() {
 		DataQuery dq;
 		try {
-			dq = Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
+			dq = Config.loadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
 			assertTrue(dq.get("section.magic.xyzzy"), "dq.get(\"section.magic.xyzzy\") is (not) true ("+dq.get("section.magic.xyzzy")+")");
 		} catch (final IOException e) {
 			fail("dq.get() caused an exception: "+e);
@@ -45,7 +45,7 @@ public class DataQueryTest {
 	public final void testGetAll() {
 		DataQuery dq;
 		try {
-			dq = Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
+			dq = Config.loadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
 			assertTrue(dq.get("section.ident3"), "dq.get(\"section.ident3\") is (not) true ("+dq.get("section.ident3")+")");
 		} catch (final IOException e) {
 			fail("dq.get() caused an exception: "+e);
@@ -56,8 +56,19 @@ public class DataQueryTest {
 	public final void testGetNoKey() {
 		DataQuery dq;
 		try {
-			dq = Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
+			dq = Config.loadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
 			assertFalse(dq.get("section.blech.ident4"), "dq.get(\"section.blech.ident4\") is (not) false ("+dq.get("section.blech.ident4")+")");
+		} catch (final IOException e) {
+			fail("dq.get() caused an exception: "+e);
+		}
+	}
+	
+	@Test
+	public final void testGetBadKey() {
+		DataQuery dq;
+		try {
+			dq = Config.loadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg"));
+			assertFalse(dq.get(".section.blech.ident4"), "dq.get(\".section.blech.ident4\") is (not) false ("+dq.get(".section.blech.ident4")+")");
 		} catch (final IOException e) {
 			fail("dq.get() caused an exception: "+e);
 		}

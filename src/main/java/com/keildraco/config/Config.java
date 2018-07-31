@@ -118,20 +118,20 @@ public class Config {
 		else return FileSystems.getDefault();
 	}
 
-	public static DataQuery LoadFile(final URI filePath) throws IOException {
+	public static DataQuery loadFile(final URI filePath) throws IOException {
 	    final FileSystem fs = getFilesystemForURI(filePath);
 	    final Path p = fs.getPath(filePath.getPath().substring(1));
 		final BufferedReader br = Files.newBufferedReader(p);
 		final SectionType res = runParser(br);
 		return DataQuery.of(res);
 	}
-
-	public static DataQuery LoadFile(final Path filePath) throws IOException {
-		return LoadFile(filePath.toUri());
+	
+	public static DataQuery loadFile(final Path filePath) throws IOException {
+		return loadFile(filePath.toUri());
 	}
-
-	public static DataQuery LoadFile(final String filePath) throws IOException {
-		return LoadFile(Paths.get(filePath).toUri());
+	
+	public static DataQuery loadFile(final String filePath) throws IOException {
+		return loadFile(Paths.get(filePath).toUri());
 	}
 
 	public static DataQuery parseString(final String data) {
