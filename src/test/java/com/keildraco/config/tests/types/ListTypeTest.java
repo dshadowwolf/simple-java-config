@@ -19,7 +19,7 @@ import com.keildraco.config.types.ParserInternalTypeBase;
 @TestInstance(Lifecycle.PER_CLASS)
 public class ListTypeTest {
 	private ListType testItem;
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */

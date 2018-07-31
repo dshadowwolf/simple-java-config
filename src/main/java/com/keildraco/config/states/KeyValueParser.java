@@ -26,12 +26,12 @@ public class KeyValueParser implements IStateParser {
 		this.factory = factory;
 		this.name = "Well I'll Be Buggered";
 	}
-	
+
 	@Override
 	public void setErrored() {
 		this.errored = true;
 	}
-	
+
 	@Override
 	public boolean errored() {
 		return this.errored;
@@ -40,7 +40,7 @@ public class KeyValueParser implements IStateParser {
 	@Override
 	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
 		final int p = this.nextToken(tok);
-		
+
 		if (!this.errored() && p == TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 			final String temp = tok.sval;
 			if (this.peekToken(tok) == '(') return this.factory.parseTokens("OPERATION", null, tok, temp);
@@ -97,7 +97,7 @@ public class KeyValueParser implements IStateParser {
 	public String getName() {
 		return this.name;
 	}
-	
+
 	@Override
 	public void clearErrors() {
 		this.errored = false;

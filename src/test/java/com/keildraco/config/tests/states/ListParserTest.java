@@ -29,25 +29,25 @@ import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 @TestInstance(Lifecycle.PER_CLASS)
 public class ListParserTest {
 	private TypeFactory factory;
-	
+
 	@BeforeAll
 	public void setUp() throws Exception {
 		this.factory = new TypeFactory();
 		this.factory.registerParser(() -> {
 			final IStateParser p = mock(IStateParser.class);
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
-	 
+
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != ')') ;
-	            	
+
 	                return factory.getType(null, "", "", ItemType.OPERATION);
 	            }
 	        });
-			
+
 			when(p.getName()).thenAnswer(new Answer<String>() {
-	 
+
 	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockOperationType";
 	            }

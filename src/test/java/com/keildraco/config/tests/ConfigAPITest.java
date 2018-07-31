@@ -83,7 +83,7 @@ public class ConfigAPITest {
 	@Test
 	public final void testLoadFileString() {
 		DataQuery c = null;
-		
+
 		try {
 			Config.reset();
 			Config.registerKnownParts();
@@ -92,7 +92,6 @@ public class ConfigAPITest {
 		} catch (final IOException | IllegalArgumentException e) {
 			fail(String.format("Caught exception running LoadFile([STRING] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString(), e));
 		}
-		
 	}
 
 	@Test

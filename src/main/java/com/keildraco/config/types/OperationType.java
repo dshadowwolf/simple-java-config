@@ -22,21 +22,21 @@ public class OperationType extends ParserInternalTypeBase {
 		this.operator = oper.trim();
 		return this;
 	}
-	
+
 	public int getOperator() {
 		return this.operator.charAt(0);
 	}
-	
+
 	@Override
 	public String asString() {
 		return String.format("%s(%s %s)", this.getName(), this.operator, this.ident);
 	}
-	
+
 	@Override
 	public ItemType getType() {
 		return ItemType.OPERATION;
 	}
-	
+
 	@Override
 	public String getValue() {
 		return String.format("%s", this.ident); // force a copy, period

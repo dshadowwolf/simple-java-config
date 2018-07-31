@@ -24,15 +24,15 @@ public class ListParser implements IStateParser {
 	private boolean errored = false;
 	private ParserInternalTypeBase parent;
 	private TypeFactory factory;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public ListParser(final TypeFactory factory, final String name) {
 		this.name = name;
 		this.factory = factory;
 	}
-	
+
 	public ListParser(final TypeFactory factory) {
 		this.factory = factory;
 		this.name = "Well I'll Be Buggered";
@@ -50,7 +50,7 @@ public class ListParser implements IStateParser {
 	public boolean errored() {
 		return this.errored;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.keildraco.config.states.IStateParser#getState(java.io.StreamTokenizer)
 	 */

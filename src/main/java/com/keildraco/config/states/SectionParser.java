@@ -17,7 +17,7 @@ public class SectionParser implements IStateParser {
 	private final SectionType section;
 	private ParserInternalTypeBase parent;
 	private TypeFactory factory;
-	
+
 	public SectionParser(final TypeFactory factory) {
 		this.name = "ROOT";
 		this.section = new SectionType(EmptyType, this.name);
@@ -30,30 +30,30 @@ public class SectionParser implements IStateParser {
 		this.factory = factory;
 		this.section = new SectionType(parent, this.name);
 	}
-	
+
 	public SectionParser(final TypeFactory factory, final String name) {
 		this.parent = null;
 		this.factory = factory;
 		this.name = name;
 		this.section = new SectionType(parent, this.name);
 	}
-	
+
 	@Override
 	public void setErrored() {
 		this.errored = true;
 	}
-	
+
 	@Override
 	public boolean errored() {
 		return this.errored;
 	}
-	
+
 	@Override
 	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
 		String ident = "";
 		while (this.nextToken(tok) != TT_EOF && !this.errored()) {
 			int tt = getTokenType(tok);
-			
+
 			switch (tt) {
 			case '=':
 				if (ident.equals("")) {

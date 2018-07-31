@@ -14,18 +14,18 @@ public class OperationParser implements IStateParser {
 	private final String name;
 	private ParserInternalTypeBase parent;
 	private boolean error = false;
-	
+
 	public OperationParser(final TypeFactory factory) {
 		this.factory = factory;
 		this.name = "Well I'll Be Buggered";
 	}
-	
+
 	public OperationParser(final TypeFactory factory, final ParserInternalTypeBase parent, final String name) {
 		this.factory = factory;
 		this.name = name;
 		this.parent = parent;
 	}
-	
+
 	@Override
 	public void setFactory(final TypeFactory factory) {
 		this.factory = factory;
@@ -60,7 +60,7 @@ public class OperationParser implements IStateParser {
 					final OperationType rv = (OperationType) this.factory.getType(this.getParent(), this.name, value, ItemType.OPERATION);
 					rv.setName(this.name);
 					rv.setOperation(operator);
-					return rv;					
+					return rv;
 				} else {
 					Config.LOGGER.error("Error parsing an operation - expected to find a closing parentheses, found %s instead", tok.sval);
 					return ParserInternalTypeBase.EmptyType;
@@ -74,7 +74,7 @@ public class OperationParser implements IStateParser {
 		}
 		return ParserInternalTypeBase.EmptyType;
 	}
-	
+
 	private String getIdentifier(final StreamTokenizer tok) {
 		this.nextToken(tok);
 		if (tok.ttype == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) return tok.sval;

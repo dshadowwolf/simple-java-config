@@ -19,7 +19,7 @@ public class DataQueryTest {
 		Config.reset();
 		Config.registerKnownParts();
 	}
-	
+
 	@Test
 	public final void testOf() {
 		try {

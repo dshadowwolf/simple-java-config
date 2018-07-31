@@ -17,7 +17,7 @@ public class SectionTypeTest {
 	private SectionType root;
 	private SectionType child;
 	private IdentifierType kp;
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -60,12 +60,12 @@ public class SectionTypeTest {
 	public final void testGetParent() {
 		assertEquals(this.child.getParent(), this.root);
 	}
-	
+
 	@Test
 	public final void testAsString() {
-		final String result = String.format("blargh = blech%n" + 
-				" CHILD {%n" + 
-				" blargh = foobar%n" + 
+		final String result = String.format("blargh = blech%n" +
+				" CHILD {%n" +
+				" blargh = foobar%n" +
 				"}");
 		assertEquals(result, this.root.asString().trim());
 	}

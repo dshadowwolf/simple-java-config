@@ -19,7 +19,7 @@ public class ParserInternalTypeBaseTest {
 	private ParserInternalTypeBase testItem;
 	private ParserInternalTypeBase testFoobar;
 	private ParserInternalTypeBase testNesting;
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -73,7 +73,7 @@ public class ParserInternalTypeBaseTest {
 			fail("Exception ("+e.getMessage()+") caught when not expected");
 		}
 	}
-	
+
 	/**
 	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#get(java.lang.String)}.
 	 */

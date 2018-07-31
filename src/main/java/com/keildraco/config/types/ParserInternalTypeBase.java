@@ -24,11 +24,11 @@ public class ParserInternalTypeBase {
 		@Override
 	    public ItemType getType() { return ItemType.EMPTY; }
 	};
-	
+
 	public ParserInternalTypeBase(final String name) {
 		this(null, name);
 	}
-	
+
 	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parent, final String name) {
 		this.name = name;
 		this.parent = parent;
@@ -38,7 +38,7 @@ public class ParserInternalTypeBase {
 	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parent, final String name, @SuppressWarnings("unused") final String value) {
 		this(parent, name);
 	}
-	
+
     public ParserInternalTypeBase get(final String itemName)  {
     	if (itemName.indexOf('.') > 0) {
     		final String nameBits = itemName.substring(0,itemName.indexOf('.'));
@@ -51,7 +51,7 @@ public class ParserInternalTypeBase {
     	}
     	return ParserInternalTypeBase.EmptyType;
     }
-    
+
     public boolean has(final String itemName) {
     	if (itemName.contains(".")) {
     		final String nn = itemName.substring(0, itemName.indexOf('.'));
@@ -62,52 +62,51 @@ public class ParserInternalTypeBase {
     	}
 
     	return this.items.containsKey(itemName);
-    } 
-    
+    }
+
     public enum ItemType {
         SECTION, IDENTIFIER, NUMBER, BOOLEAN, LIST, OPERATION, INVALID, EMPTY;
     }
-    
+
     public ItemType getType() { return ItemType.INVALID; }
-    
+
     public String asString() {
     	return "BaseType()";
     }
-    
+
     public Number toNumber()  {
     	return Float.NaN;
     }
-    
+
     public boolean toBoolean()  {
     	return Boolean.FALSE;
     }
-    
+
     public List<ParserInternalTypeBase> toList() {
     	return Collections.emptyList();
     }
-    
+
     public void setName(final String name) {
     	this.name = name;
     }
-    
+
     public String getName() {
     	return this.name;
     }
-    
+
     public void addItem(final ParserInternalTypeBase item) {
     	this.items.put(item.getName(),item);
     }
-    
+
     public Map<String, ParserInternalTypeBase> getChildren() {
     	return Collections.unmodifiableMap(this.items);
     }
-    
+
     public ParserInternalTypeBase getParent() {
     	return this.parent!=null?this.parent:EmptyType;
     }
-    
+
     public String getValue() {
     	return "";
     }
-    
 }

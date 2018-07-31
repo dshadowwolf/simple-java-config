@@ -16,7 +16,7 @@ import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 @TestInstance(Lifecycle.PER_CLASS)
 public class OperationTypeTest {
 	private OperationType testItem;
-	
+
 	@BeforeAll
 	public void setUp() throws Exception {
 		this.testItem = new OperationType(EmptyType, "blargh", "foobar");
@@ -33,7 +33,7 @@ public class OperationTypeTest {
 			fail("Caught exception instantiating new OperationType");
 		}
 	}
-	
+
 	@Test
 	public final void testOperationTypeParserInternalTypeBaseString() {
 		try {
@@ -44,7 +44,7 @@ public class OperationTypeTest {
 			fail("Caught exception instantiating new OperationType");
 		}
 	}
-	
+
 	@Test
 	public final void testGetType() {
 		assertEquals(ItemType.OPERATION, this.testItem.getType());

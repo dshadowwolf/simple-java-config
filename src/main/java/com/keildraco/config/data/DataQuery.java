@@ -4,7 +4,7 @@ import com.keildraco.config.types.*;
 
 public class DataQuery {
 	private SectionType baseSection;
-	
+
 	private DataQuery(final SectionType section) {
 		this.baseSection = section;
 	}
@@ -14,7 +14,7 @@ public class DataQuery {
 	public static DataQuery of(final SectionType section) {
 		return new DataQuery(section);
 	}
-	
+
 	public boolean get(final String key) {
 		// find item, or "all"
 		if (this.baseSection.has(key)) {
