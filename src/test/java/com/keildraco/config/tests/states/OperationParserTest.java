@@ -40,7 +40,7 @@ public class OperationParserTest {
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
-	            			tok.ttype != ']') System.err.println(String.format("<<<%c :: %s", tok.ttype<127?(tok.ttype>0?tok.ttype:'-'):'?', tok.sval));
+	            			tok.ttype != ']') System.err.println(String.format("<<<%c :: %s", tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype : '-') : '?', tok.sval));
 
 	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.LIST);
 	            }
@@ -62,10 +62,14 @@ public class OperationParserTest {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	tok.nextToken();
 
-	            	if (tok.ttype == StreamTokenizer.TT_WORD) return factory.getType(null, "", tok.sval, ParserInternalTypeBase.ItemType.IDENTIFIER);
-	            	else if (tok.ttype == '[') return factory.parseTokens("LIST", null, tok, "");
-	            	else return ParserInternalTypeBase.EmptyType;
-	            }
+	            	if (tok.ttype == StreamTokenizer.TT_WORD) {
+	            		return factory.getType(null, "", tok.sval, ParserInternalTypeBase.ItemType.IDENTIFIER);
+	            	} else if (tok.ttype == '[') {
+	            		return factory.parseTokens("LIST", null, tok, "");
+	            	} else {
+	            		return ParserInternalTypeBase.EmptyType;
+	            	}
+            	}
 	        });
 
 			when(p.getName()).thenAnswer(new Answer<String>() {
@@ -83,7 +87,7 @@ public class OperationParserTest {
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
-	            			tok.ttype != '}') System.err.println(String.format("<<<%c :: %s", tok.ttype<127?(tok.ttype>0?tok.ttype:'-'):'?', tok.sval));
+	            			tok.ttype != '}') System.err.println(String.format("<<<%c :: %s", tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype:'-'):'?', tok.sval));
 
 	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.SECTION);
 	            }
@@ -261,15 +265,15 @@ public class OperationParserTest {
 	public final void testBadParseNoIdent() {
 		Config.reset();
 		Config.registerKnownParts();
-		String testString = "(~\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "(~\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
+		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
 		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
 	}
 

@@ -35,31 +35,31 @@ public class IStateParserTests {
 
 	@Test
 	public final void testTT_WORD() {
-		String ttword = p.ttypeToString(StreamTokenizer.TT_WORD);
+		final String ttword = p.ttypeToString(StreamTokenizer.TT_WORD);
 		assertEquals("TT_WORD", ttword);
 	}
 
 	@Test
 	public final void testTT_EOF() {
-		String tteof = p.ttypeToString(StreamTokenizer.TT_EOF);
+		final String tteof = p.ttypeToString(StreamTokenizer.TT_EOF);
 		assertEquals("TT_EOF", tteof);
 	}
 
 	@Test
 	public final void testTT_EOL() {
-		String tteol = p.ttypeToString(StreamTokenizer.TT_EOL);
+		final String tteol = p.ttypeToString(StreamTokenizer.TT_EOL);
 		assertEquals("TT_EOL", tteol);
 	}
 
 	@Test
 	public final void testTT_NUMBER() {
-		String ttnumber = p.ttypeToString(StreamTokenizer.TT_NUMBER);
+		final String ttnumber = p.ttypeToString(StreamTokenizer.TT_NUMBER);
 		assertEquals("TT_NUMBER", ttnumber);
 	}
 
 	@Test
 	public final void testUNKNOWN() {
-		String unknown = p.ttypeToString(33);
+		final String unknown = p.ttypeToString(33);
 		assertEquals("UNKNOWN", unknown);
 	}
 
@@ -73,11 +73,11 @@ public class IStateParserTests {
 	public final void testNextTokenExceptions() {
 		p.clearErrors();
 		try {
-		StreamTokenizer tok = mock(StreamTokenizer.class);
+		final StreamTokenizer tok = mock(StreamTokenizer.class);
 		doThrow(IOException.class).when(tok).nextToken();
 		@SuppressWarnings("unused")
-		int z = p.nextToken(tok);
-		} catch (Exception e) {
+		final int z = p.nextToken(tok);
+		} catch (final Exception e) {
 		fail("unexpected exception: "+e.getMessage());
 		}
 		assertTrue(p.errored(), "parser is in an error state");
@@ -87,14 +87,13 @@ public class IStateParserTests {
 	public final void testPeekTokenExceptions() {
 		p.clearErrors();
 		try {
-		StreamTokenizer tok = mock(StreamTokenizer.class);
+		final StreamTokenizer tok = mock(StreamTokenizer.class);
 		doThrow(IOException.class).when(tok).nextToken();
 		@SuppressWarnings("unused")
-		int z = p.peekToken(tok);
-		} catch (Exception e) {
+		final int z = p.peekToken(tok);
+		} catch (final Exception e) {
 		fail("unexpected exception: "+e.getMessage());
 		}
 		assertTrue(p.errored(), "parser is in an error state");
 	}
-
 }

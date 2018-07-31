@@ -10,7 +10,7 @@ public class IdentifierType extends ParserInternalTypeBase {
 	}
 
 	public IdentifierType(final String n, final String v) {
-		this(null,n,v);
+		this(null, n, v);
 	}
 
 	public IdentifierType(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {
@@ -35,7 +35,7 @@ public class IdentifierType extends ParserInternalTypeBase {
 
 	@Override
 	public String asString() {
-		if (this.getName().equals("")) return this.ident;
+		if (this.getName().equals("")) { return this.ident; }
 		return String.format("%s = %s", this.getName(), this.ident);
 	}
 

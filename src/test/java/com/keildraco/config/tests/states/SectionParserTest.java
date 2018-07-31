@@ -41,7 +41,7 @@ public class SectionParserTest {
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
-	            			tok.ttype != ']') System.err.println(String.format("<<<%c :: %s", tok.ttype<127?(tok.ttype>0?tok.ttype:'-'):'?', tok.sval));
+	            			tok.ttype != ']') System.err.println(String.format("<<<%c :: %s", tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype:'-'):'?', tok.sval));
 
 	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.LIST);
 	            }
@@ -63,9 +63,12 @@ public class SectionParserTest {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	tok.nextToken();
 
-	            	if (tok.ttype == StreamTokenizer.TT_WORD) return factory.getType(null, "", tok.sval, ParserInternalTypeBase.ItemType.IDENTIFIER);
-	            	else if (tok.ttype == '[') return factory.parseTokens("LIST", null, tok, "");
-	            	else return ParserInternalTypeBase.EmptyType;
+	            	if (tok.ttype == StreamTokenizer.TT_WORD) {
+	            		return factory.getType(null, "", tok.sval, ParserInternalTypeBase.ItemType.IDENTIFIER);
+	            	} else if (tok.ttype == '[') { return factory.parseTokens("LIST", null, tok, "");
+	            	} else {
+	            		return ParserInternalTypeBase.EmptyType;
+	            	}
 	            }
 	        });
 
@@ -82,7 +85,7 @@ public class SectionParserTest {
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
+	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != ')');
 

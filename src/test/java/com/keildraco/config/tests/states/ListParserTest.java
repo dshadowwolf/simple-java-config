@@ -38,7 +38,7 @@ public class ListParserTest {
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
+	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != ')') ;
 

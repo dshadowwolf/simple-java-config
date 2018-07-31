@@ -66,6 +66,7 @@ public interface IStateParser {
 	public ParserInternalTypeBase getParent();
 
 	public default void setName(final String name) { /* this space intentionally blank */ }
+
 	public String getName();
 
 	public void clearErrors();

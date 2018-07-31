@@ -50,7 +50,7 @@ public class OperationParser implements IStateParser {
 	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
 		try {
 			tok.nextToken();
-			if (tok.ttype == '(') tok.nextToken();
+			if (tok.ttype == '(') { tok.nextToken(); }
 
 			if (tok.ttype != StreamTokenizer.TT_EOF) {
 				final String operator = this.getOperator(tok);
@@ -77,12 +77,12 @@ public class OperationParser implements IStateParser {
 
 	private String getIdentifier(final StreamTokenizer tok) {
 		this.nextToken(tok);
-		if (tok.ttype == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) return tok.sval;
+		if (tok.ttype == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) { return tok.sval; }
 		throw new IllegalArgumentException("IDENTIFIER not available in token stream");
 	}
 
 	private String getOperator(final StreamTokenizer tok) {
-		if (tok.ttype=='~' || tok.ttype=='!') return String.format("%c", tok.ttype);
+		if (tok.ttype == '~' || tok.ttype == '!') { return String.format("%c", tok.ttype); }
 		throw new IllegalArgumentException("OPERATOR not available in token stream");
 	}
 

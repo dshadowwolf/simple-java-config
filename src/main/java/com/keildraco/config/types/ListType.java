@@ -25,7 +25,7 @@ public class ListType extends ParserInternalTypeBase {
 	}
 
 	public ListType(@Nullable final ParserInternalTypeBase parent, final String name) {
-		super(parent,name);
+		super(parent, name);
 		this.value = new LinkedList<>();
 	}
 
@@ -45,7 +45,9 @@ public class ListType extends ParserInternalTypeBase {
 
 	@Override
 	public ParserInternalTypeBase get(final String s) {
-		if (!this.has(s)) return EmptyType;
+		if (!this.has(s)) {
+			return EmptyType;
+		}
 
 		return this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst().get();
 	}
@@ -62,9 +64,9 @@ public class ListType extends ParserInternalTypeBase {
 
 	@Override
 	public String asString() {
-		String format = String.format("[ %s ]", this.value.stream().map(v -> v.getType()==ItemType.OPERATION?v.asString():v.getValue()).collect(Collectors.joining(", ")));
+		final String format = String.format("[ %s ]", this.value.stream().map(v -> v.getType() == ItemType.OPERATION?v.asString():v.getValue()).collect(Collectors.joining(", ")));
 
-		if(this.getName().equals("")) return format;
+		if (this.getName().equals("")) { return format; }
 		return String.format("%s = %s", this.getName(), format);
 	}
 }

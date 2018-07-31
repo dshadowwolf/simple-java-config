@@ -43,8 +43,11 @@ public class KeyValueParser implements IStateParser {
 
 		if (!this.errored() && p == TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 			final String temp = tok.sval;
-			if (this.peekToken(tok) == '(') return this.factory.parseTokens("OPERATION", null, tok, temp);
-			else return this.factory.getType(this.getParent(), this.name, temp, ItemType.IDENTIFIER);
+			if (this.peekToken(tok) == '(') {
+				return this.factory.parseTokens("OPERATION", null, tok, temp);
+			} else {
+				return this.factory.getType(this.getParent(), this.name, temp, ItemType.IDENTIFIER);
+			}
 		} else if (!errored() && p != TT_WORD) {
 			switch (p) {
 			case StreamTokenizer.TT_EOF:
