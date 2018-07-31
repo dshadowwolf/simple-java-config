@@ -261,15 +261,15 @@ public class OperationParserTest {
 	public final void testBadParseNoIdent() {
 		Config.reset();
 		Config.registerKnownParts();
-		String testString = "(~\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "(~\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
+		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
 		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
 	}
 
