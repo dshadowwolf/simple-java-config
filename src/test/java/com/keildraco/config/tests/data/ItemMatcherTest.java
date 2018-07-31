@@ -74,6 +74,18 @@ public class ItemMatcherTest {
 	}
 
 	@Test
+	public final void testMatchListLongAlternateOne() {
+		final ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
+		assertTrue(m.matches("bravo.epsilon"), "list matches 'bravo.epsilon'");
+	}
+
+	@Test
+	public final void testMatchListLongAlternateTwo() {
+		final ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
+		assertFalse(m.matches("charlie.echo"), "list does not match 'charlie.echo'");
+	}
+
+	@Test
 	public final void testMatchIdentifierValue() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.echo.foxtrot"));
 		assertTrue(m.matches("golf"), "Identifer \"foxtrot\" matches 'golf'");
