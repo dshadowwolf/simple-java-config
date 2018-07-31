@@ -42,7 +42,7 @@ public class Config {
 	public static final Logger LOGGER = LogManager.getFormatterLogger("config");
 	// this is here to make sure we can have an instance for the testing...
 	public static final Config INSTANCE = new Config();
-	
+
 	static {
 		internalParsers.put("KEYVALUE", KeyValueParser.class);
 		internalParsers.put("LIST", ListParser.class);
@@ -53,7 +53,7 @@ public class Config {
 	private Config() {
 		// do nothing, not even throw
 	}
-	
+
 	public static TypeFactory getFactory() {
 		return coreTypeFactory;
 	}
@@ -67,15 +67,15 @@ public class Config {
 			LOGGER.error("Exception getting parser instance for %s: %s", name, e.getMessage());
 			LOGGER.error(e.getStackTrace());
 			return null;
-		}		
+		}
 	}
-	
+
 	private static void registerParserInternal(final String name, final Class<? extends IStateParser> clazz) {
 		coreTypeFactory.registerParser(() -> registerParserGenerator(name, clazz), name);
 	}
 
-	private static ParserInternalTypeBase registerTypeGenerator(ParserInternalTypeBase parent, String name, String value,
-			Class<? extends ParserInternalTypeBase> clazz) {
+	private static ParserInternalTypeBase registerTypeGenerator(final ParserInternalTypeBase parent, final String name, final String value,
+			final Class<? extends ParserInternalTypeBase> clazz) {
 		Constructor<? extends ParserInternalTypeBase> c;
 		try {
 			c = clazz.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
@@ -84,9 +84,9 @@ public class Config {
 			LOGGER.error("Exception getting type instance for %s: %s", name, e.getMessage());
 			LOGGER.error(e.getStackTrace());
 			return null;
-		}		
+		}
 	}
-	
+
 	private static void registerTypeInternal(final ItemType type, final Class<? extends ParserInternalTypeBase> clazz) {
 		coreTypeFactory.registerType((parent, name, value) -> registerTypeGenerator(parent, name, value, clazz), type);
 	}
@@ -120,8 +120,11 @@ public class Config {
 	}
 
 	private static FileSystem getFilesystemForURI(final URI uri) throws IOException {
-		if (uri.getScheme().equalsIgnoreCase("jar")) return FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
-		else return FileSystems.getDefault();
+		if (uri.getScheme().equalsIgnoreCase("jar")) {
+			return FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
+		} else {
+			return FileSystems.getDefault();
+		}
 	}
 
 	public static DataQuery loadFile(final URI filePath) throws IOException {

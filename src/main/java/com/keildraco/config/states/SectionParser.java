@@ -81,7 +81,9 @@ public class SectionParser implements IStateParser {
 				return EmptyType;
 			}
 		}
-		if (!this.errored()) return this.section;
+		if (!this.errored()) {
+			return this.section;
+		}
 		return EmptyType;
 	}
 
@@ -104,13 +106,15 @@ public class SectionParser implements IStateParser {
 	}
 
 	private String itToString(final int tt) {
-		if (tt == -1) return "an Identifier";
+		if (tt == -1) {
+			return "an Identifier";
+		}
 		return String.format("'%c'", tt);
 	}
 
 	private static int getTokenType(final StreamTokenizer tok) {
 		if (tok.ttype == TT_WORD) {
-			if (tok.sval.matches(IDENTIFIER_PATTERN)) return -1;
+			if (tok.sval.matches(IDENTIFIER_PATTERN)) { return -1; }
 			return -4;
 		} else {
 			return tok.ttype;

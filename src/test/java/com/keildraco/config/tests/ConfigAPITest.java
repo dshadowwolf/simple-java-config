@@ -29,7 +29,7 @@ public class ConfigAPITest {
 			Config.reset();
 			Config.registerType(ItemType.EMPTY, EmptyType.getClass());
 		} catch (final Exception e) {
-			fail("Caught exception registering type: "+e.getMessage());
+			fail("Caught exception registering type: " + e.getMessage());
 		} finally {
 			assertTrue(true, "Able to register a type");
 		}
@@ -41,7 +41,7 @@ public class ConfigAPITest {
 			Config.reset();
 			Config.registerParser("SECTION", SectionParser.class);
 		} catch (final Exception e) {
-			fail("Caught exception registering parser: "+e.getMessage());
+			fail("Caught exception registering parser: " + e.getMessage());
 		} finally {
 			assertTrue(true, "Able to register a parser");
 		}
@@ -53,7 +53,7 @@ public class ConfigAPITest {
 			Config.reset();
 			Config.registerKnownParts();
 		} catch (final Exception e) {
-			fail("Caught exception calling Config.registerKnownParts(): "+e.getMessage());
+			fail("Caught exception calling Config.registerKnownParts(): " + e.getMessage());
 		} finally {
 			assertTrue(true, "Able to register known types and parsers");
 		}
@@ -111,54 +111,51 @@ public class ConfigAPITest {
 	@Test
 	public final void testRegisterParserError() {
 		try {
-			Method m = Config.class.getDeclaredMethod("registerParserGenerator", String.class, Class.class);
+			final Method m = Config.class.getDeclaredMethod("registerParserGenerator", String.class, Class.class);
 			m.setAccessible(true);
-			Object p = m.invoke(Config.INSTANCE, "BROKEN", BrokenParser.class);
-			assertNull(p, "broken parser should return null from generator");			
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			final Object p = m.invoke(Config.INSTANCE, "BROKEN", BrokenParser.class);
+			assertNull(p, "broken parser should return null from generator");
+		} catch (final NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception: %s\nMessage: %s\nStack Dump:", e, e.getMessage());
-			for(StackTraceElement elem : e.getStackTrace()) {
+			for (final StackTraceElement elem : e.getStackTrace()) {
 				Config.LOGGER.fatal("%s", elem);
 			}
-			fail("test broken, exception caught: "+e.getMessage());
+			fail("test broken, exception caught: " + e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public final void testRegisterTypeError() {
 		try {
-			Method m = Config.class.getDeclaredMethod("registerTypeGenerator", ParserInternalTypeBase.class, String.class, String.class, Class.class);
+			final Method m = Config.class.getDeclaredMethod("registerTypeGenerator", ParserInternalTypeBase.class, String.class, String.class, Class.class);
 			m.setAccessible(true);
-			Object p = m.invoke(Config.INSTANCE, ParserInternalTypeBase.EmptyType, "BROKEN", "BROKEN", BrokenType.class);
-			assertNull(p, "broken type should return null from generator");			
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			final Object p = m.invoke(Config.INSTANCE, ParserInternalTypeBase.EmptyType, "BROKEN", "BROKEN", BrokenType.class);
+			assertNull(p, "broken type should return null from generator");
+		} catch (final NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception: %s\nMessage: %s\nStack Dump:", e, e.getMessage());
-			for(StackTraceElement elem : e.getStackTrace()) {
+			for (final StackTraceElement elem : e.getStackTrace()) {
 				Config.LOGGER.fatal("%s", elem);
 			}
-			fail("test broken, exception caught: "+e.getMessage());
+			fail("test broken, exception caught: " + e.getMessage());
 		}
 	}
 
 	protected class BrokenType extends ParserInternalTypeBase {
 
-		public BrokenType(ParserInternalTypeBase parent, String name) {
+		public BrokenType(final ParserInternalTypeBase parent, final String name) {
 			super(parent, name);
 		}
-		
 	}
 	protected class BrokenParser implements IStateParser {
-		public BrokenParser(String blargh) {
-			
+		public BrokenParser(final String blargh) {
 		}
-		
+
 		@SuppressWarnings("unused")
-		private BrokenParser(TypeFactory factory) {
-			
+		private BrokenParser(final TypeFactory factory) {
 		}
-		
+
 		@Override
-		public void setFactory(TypeFactory factory) {
+		public void setFactory(final TypeFactory factory) {
 			// blank, not needed
 		}
 
@@ -178,12 +175,12 @@ public class ConfigAPITest {
 		}
 
 		@Override
-		public ParserInternalTypeBase getState(StreamTokenizer tok) {
+		public ParserInternalTypeBase getState(final StreamTokenizer tok) {
 			return null;
 		}
 
 		@Override
-		public void setParent(ParserInternalTypeBase parent) {
+		public void setParent(final ParserInternalTypeBase parent) {
 			// blank, not needed
 		}
 
@@ -201,6 +198,5 @@ public class ConfigAPITest {
 		public void clearErrors() {
 			// blank, not needed
 		}
-		
 	}
 }

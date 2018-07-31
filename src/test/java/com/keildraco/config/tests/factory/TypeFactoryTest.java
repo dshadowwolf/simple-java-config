@@ -52,7 +52,7 @@ public class TypeFactoryTest {
 	public final void testRegisterParser() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			f.registerParser(() -> new SectionParser(f,null,""), "SECTION");
+			f.registerParser(() -> new SectionParser(f, null, ""), "SECTION");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");
@@ -63,7 +63,7 @@ public class TypeFactoryTest {
 	public final void testGetParser() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			f.registerParser(() -> new SectionParser(f,null,""), "SECTION");
+			f.registerParser(() -> new SectionParser(f, null, ""), "SECTION");
 			final IStateParser g = f.getParser("SECTION", null);
 			assertNotNull(g, "Expected no exception");
 		} catch (final Exception e) {

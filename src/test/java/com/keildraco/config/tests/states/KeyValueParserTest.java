@@ -40,7 +40,7 @@ public class KeyValueParserTest {
 	            	while (((StreamTokenizer) invocation.getArgument(0)).nextToken() != StreamTokenizer.TT_EOF &&
 	            			((StreamTokenizer) invocation.getArgument(0)).ttype != ']');
 
-	            	if (((StreamTokenizer) invocation.getArgument(0)).ttype == ']') ((StreamTokenizer) invocation.getArgument(0)).nextToken();
+	            	if (((StreamTokenizer) invocation.getArgument(0)).ttype == ']') { ((StreamTokenizer) invocation.getArgument(0)).nextToken(); }
 	                return new ListType(null, "", "");
 	            }
 	        });

@@ -27,6 +27,8 @@ public class ListParser implements IStateParser {
 
 	/**
 	 *
+	 * @param factory
+	 * @param name
 	 */
 	public ListParser(final TypeFactory factory, final String name) {
 		this.name = name;
@@ -60,7 +62,9 @@ public class ListParser implements IStateParser {
 		final Deque<ParserInternalTypeBase> store = new LinkedList<>();
 		String ident;
 		while ((p = this.nextToken(tok)) != StreamTokenizer.TT_EOF && p != ']') {
-			if (p=='[') continue;
+			if (p == '[') {
+				continue;
+			}
 			if (!this.errored && p == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 				ident = tok.sval;
 				final ParserInternalTypeBase temp = this.getToken(tok, ident);

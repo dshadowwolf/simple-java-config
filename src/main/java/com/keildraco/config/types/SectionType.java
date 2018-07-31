@@ -4,16 +4,16 @@ import javax.annotation.Nullable;
 
 public class SectionType extends ParserInternalTypeBase {
 	public SectionType(final String name) {
-		this(null,name);
+		this(null, name);
 	}
 
 	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name) {
-		super(parent,name);
-		if (this.getName().equals("") || parent==null) this.setName("ROOT");
+		super(parent, name);
+		if (this.getName().equals("") || parent == null) { this.setName("ROOT"); }
 	}
 
 	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {
-		this(parent,name);
+		this(parent, name);
 	}
 
 	@Override

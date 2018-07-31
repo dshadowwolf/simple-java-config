@@ -99,7 +99,7 @@ public class ParserInternalTypeBase {
     }
 
     public Map<String, ParserInternalTypeBase> getChildren() {
-    	return Collections.unmodifiableMap(this.items);
+    	return this.items.isEmpty()?Collections.emptyMap():Collections.unmodifiableMap(this.items);
     }
 
     public ParserInternalTypeBase getParent() {

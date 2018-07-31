@@ -39,8 +39,9 @@ public class ItemMatcher {
 			if (xn.length() > 0) return this.identMatches((IdentifierType) this.thisItem,xn) && this.thisItem.getName().equalsIgnoreCase(bn);
 			else return this.identMatches((IdentifierType) this.thisItem,bn);
 		case LIST:
-			if (this.thisItem.has(bn) && xn.length() > 0) return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
-			else return this.listMatchesAny(bn);
+			String matchN = bn;
+			if (this.thisItem.getName().equalsIgnoreCase(bn) && xn.length() > 0) matchN = xn;
+			return this.listMatchesAny(matchN);
 		case OPERATION:
 			return this.operatorMatches(xn.length()>0?String.format("%s.%s", bn, xn):bn);
 		case SECTION:
@@ -85,7 +86,7 @@ public class ItemMatcher {
 	}
 
 	private boolean identMatches(final IdentifierType ident, final String name) {
-		return (ident.getName().equalsIgnoreCase(name) || ident.getValue().equalsIgnoreCase(name));
+		return ident.getName().equalsIgnoreCase(name) || ident.getValue().equalsIgnoreCase(name);
 	}
 
 	private boolean listMatchesAny(final ListType theList, final String name) {
