@@ -25,7 +25,7 @@ public class DataQueryTest {
 		try {
 			final DataQuery dq = DataQuery.of((SectionType) new SectionType("ROOT"));
 			assertNotNull(dq, "DataQuery.of() returned non-null");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Exception in call of DataQuery.of(): "+e);
 		}
 	}
@@ -62,7 +62,7 @@ public class DataQueryTest {
 			fail("dq.get() caused an exception: "+e);
 		}
 	}
-	
+
 	@Test
 	public final void testGetBadKey() {
 		DataQuery dq;

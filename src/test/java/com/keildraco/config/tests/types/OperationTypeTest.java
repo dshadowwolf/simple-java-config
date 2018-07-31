@@ -29,7 +29,7 @@ public class OperationTypeTest {
 			@SuppressWarnings("unused")
 			final OperationType op = new OperationType("OPERATION");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instantiating new OperationType");
 		}
 	}
@@ -40,7 +40,7 @@ public class OperationTypeTest {
 			@SuppressWarnings("unused")
 			final OperationType op = new OperationType(ParserInternalTypeBase.EmptyType, "OPERATION");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instantiating new OperationType");
 		}
 	}
@@ -60,7 +60,7 @@ public class OperationTypeTest {
 		try {
 			this.testItem.setOperation("!");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
 		}
 	}

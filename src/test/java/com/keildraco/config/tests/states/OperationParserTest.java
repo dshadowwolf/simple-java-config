@@ -110,7 +110,7 @@ public class OperationParserTest {
 			@SuppressWarnings("unused")
 			final OperationParser p = new OperationParser(this.factory);
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -121,7 +121,7 @@ public class OperationParserTest {
 			@SuppressWarnings("unused")
 			final OperationParser p = new OperationParser(this.factory, null, "BUGGER");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -132,7 +132,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			p.setFactory(this.factory);
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception using a parsers setFactory(TypeFactory) method: "+e.getMessage());
 		}
 	}
@@ -143,7 +143,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			final TypeFactory f = p.getFactory();
 			assertEquals(this.factory, f);
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception using a parsers getFactory() method: "+e.getMessage());
 		}
 	}
@@ -154,7 +154,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			p.setErrored();
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception calling a parsers setErrored() method: "+e.getMessage());
 		}
 	}
@@ -164,7 +164,7 @@ public class OperationParserTest {
 		try {
 			final OperationParser p = new OperationParser(this.factory);
 			assertEquals(Boolean.FALSE, p.errored());
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception calling a parsers errored() method: "+e.getMessage());
 		}
 	}
@@ -189,7 +189,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception calling a parsers setParent() method: "+e.getMessage());
 		}
 	}
@@ -199,7 +199,7 @@ public class OperationParserTest {
 		try {
 			final OperationParser p = new OperationParser(this.factory);
 			assertNull(p.getParent());
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception calling a parsers getParent() method: "+e.getMessage());
 		}
 	}
@@ -209,7 +209,7 @@ public class OperationParserTest {
 		try {
 			final OperationParser p = new OperationParser(this.factory, null, "BUGGERED");
 			assertEquals("BUGGERED", p.getName());
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception trying to get a parsers name: "+e.getMessage());
 		}
 	}
@@ -220,7 +220,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			p.clearErrors();
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception telling a parser to clear its errors: "+e.getMessage());
 		}
 	}

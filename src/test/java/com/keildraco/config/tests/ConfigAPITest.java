@@ -22,7 +22,7 @@ public class ConfigAPITest {
 		try {
 			Config.reset();
 			Config.registerType(ItemType.EMPTY, EmptyType.getClass());
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception registering type: "+e.getMessage());
 		} finally {
 			assertTrue(true, "Able to register a type");
@@ -34,7 +34,7 @@ public class ConfigAPITest {
 		try {
 			Config.reset();
 			Config.registerParser("SECTION", SectionParser.class);
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception registering parser: "+e.getMessage());
 		} finally {
 			assertTrue(true, "Able to register a parser");
@@ -46,7 +46,7 @@ public class ConfigAPITest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception calling Config.registerKnownParts(): "+e.getMessage());
 		} finally {
 			assertTrue(true, "Able to register known types and parsers");

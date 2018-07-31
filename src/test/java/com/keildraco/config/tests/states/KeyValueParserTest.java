@@ -87,7 +87,7 @@ public class KeyValueParserTest {
 			@SuppressWarnings("unused")
 			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -98,7 +98,7 @@ public class KeyValueParserTest {
 			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			p.setErrored();
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception calling p.setErrored(): "+e.getMessage());
 		}
 	}
@@ -127,7 +127,7 @@ public class KeyValueParserTest {
 			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception calling p.setParent(ParserInternalTypeBase.EmptyType): "+e.getMessage());
 		}
 	}
@@ -156,7 +156,7 @@ public class KeyValueParserTest {
 			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			p.setFactory(Config.getFactory());
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception calling p.setFactory(Config.getFactory()): "+e.getMessage());
 		}
 	}

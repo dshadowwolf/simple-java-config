@@ -67,7 +67,7 @@ public class ListParserTest {
 			@SuppressWarnings("unused")
 			final ListParser p = new ListParser(this.factory, "LIST");
 			assertTrue(true, "Expected to not get an exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -78,7 +78,7 @@ public class ListParserTest {
 			final ListParser p = new ListParser(this.factory, "LIST");
 			p.setErrored();
 			assertTrue(true, "Expected to not get an exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -88,7 +88,7 @@ public class ListParserTest {
 		try {
 			final ListParser p = new ListParser(this.factory, "LIST");
 			assertFalse(p.errored(), "Expected new parser instance to return false from the errored() method");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -113,7 +113,7 @@ public class ListParserTest {
 			final ListParser p = new ListParser(this.factory, "LIST");
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected setParent() to not have an exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -160,7 +160,7 @@ public class ListParserTest {
 			final ListParser p = new ListParser(this.factory, "LIST");
 			p.setFactory(Config.getFactory());
 			assertTrue(true, "Expected setFactory() to not have an exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}

@@ -9,7 +9,7 @@ public class SectionType extends ParserInternalTypeBase {
 
 	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name) {
 		super(parent,name);
-		if (this.getName().equals("")||parent==null) this.setName("ROOT");
+		if (this.getName().equals("") || parent==null) this.setName("ROOT");
 	}
 
 	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {

@@ -48,7 +48,7 @@ public class SectionTypeTest {
 			final SectionType testItem2 = new SectionType("blargh");
 			testItem2.addItem(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
 		}
 	}
