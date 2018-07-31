@@ -35,7 +35,7 @@ public class ParserInternalTypeBase {
 		this.items = new ConcurrentHashMap<>();
 	}
 	
-	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parent, final String name, final String value) {
+	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parent, final String name, @SuppressWarnings("unused") final String value) {
 		this(parent, name);
 	}
 	

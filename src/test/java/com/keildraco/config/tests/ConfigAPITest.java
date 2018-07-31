@@ -59,7 +59,7 @@ public class ConfigAPITest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			c = com.keildraco.config.Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri());
+			c = com.keildraco.config.Config.loadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri());
 			assertNotNull(c, "Load Worked? ");
 		} catch (final IOException | IllegalArgumentException e) {
 			fail(String.format("Caught exception running LoadFile([URI] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri(), e));
@@ -73,7 +73,7 @@ public class ConfigAPITest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			c = com.keildraco.config.Config.LoadFile(p);
+			c = com.keildraco.config.Config.loadFile(p);
 			assertNotNull(c, "Load Worked? ");
 		} catch (final IOException | IllegalArgumentException e) {
 			fail(String.format("Caught exception running LoadFile([PATH] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString(), e));
@@ -87,7 +87,7 @@ public class ConfigAPITest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			c = com.keildraco.config.Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString());
+			c = com.keildraco.config.Config.loadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString());
 			assertNotNull(c, "Load Worked? ");
 		} catch (final IOException | IllegalArgumentException e) {
 			fail(String.format("Caught exception running LoadFile([STRING] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString(), e));

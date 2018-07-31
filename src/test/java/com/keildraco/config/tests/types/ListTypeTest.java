@@ -8,6 +8,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import java.util.Collections;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.types.ListType;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
@@ -81,4 +82,14 @@ public class ListTypeTest {
 		assertEquals("blank = [  ]", this.testItem.asString());
 	}
 
+	@Test
+	public final void testGetNotThere() {
+		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("no_such_item"), "item doesn't exist");
+	}
+	
+	@Test
+	public final void testOtherAsString() {
+		ListType lt = new ListType("");
+		assertEquals("[  ]", lt.asString().trim(), "ListType with blank name should return \"[  ]\"");
+	}
 }
