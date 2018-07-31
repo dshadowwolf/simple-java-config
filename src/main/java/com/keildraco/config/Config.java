@@ -28,6 +28,7 @@ import com.keildraco.config.data.DataQuery;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.*;
 import com.keildraco.config.states.*;
+
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
@@ -93,8 +94,8 @@ public class Config {
 	}
 
 	public static void registerKnownParts() {
-		internalTypes.stream().forEach( type -> registerType(type.getType(), type.getClass()));
-		internalParsers.entrySet().stream().forEach( ent -> registerParser(ent.getKey(), ent.getValue()));
+		internalTypes.stream().forEach(type -> registerType(type.getType(), type.getClass()));
+		internalParsers.entrySet().stream().forEach(ent -> registerParser(ent.getKey(), ent.getValue()));
 	}
 	
 	public static void reset() {
@@ -109,13 +110,14 @@ public class Config {
 		tok.slashSlashComments(true);
 		tok.slashStarComments(true);
 		final ParserInternalTypeBase root = coreTypeFactory.getType(null, "root", "", ItemType.SECTION);
-		return (SectionType)coreTypeFactory.getParser("SECTION", root).getState(tok);
+		return (SectionType) coreTypeFactory.getParser("SECTION", root).getState(tok);
 	}
 	
 	private static FileSystem getFilesystemForURI(final URI uri) throws IOException {
-		if(uri.getScheme().equalsIgnoreCase("jar")) return FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
+		if (uri.getScheme().equalsIgnoreCase("jar")) return FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
 		else return FileSystems.getDefault();
 	}
+
 	public static DataQuery LoadFile(final URI filePath) throws IOException {
 	    final FileSystem fs = getFilesystemForURI(filePath);
 	    final Path p = fs.getPath(filePath.getPath().substring(1));

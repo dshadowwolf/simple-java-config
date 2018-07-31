@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
 import com.keildraco.config.data.DataQuery;
@@ -60,7 +61,7 @@ public class ConfigAPITest {
 			Config.registerKnownParts();
 			c = com.keildraco.config.Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri());
 			assertNotNull(c, "Load Worked? ");
-		} catch (final IOException | IllegalArgumentException e ) {
+		} catch (final IOException | IllegalArgumentException e) {
 			fail(String.format("Caught exception running LoadFile([URI] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toUri(), e));
 		}
 	}
@@ -74,7 +75,7 @@ public class ConfigAPITest {
 			Config.registerKnownParts();
 			c = com.keildraco.config.Config.LoadFile(p);
 			assertNotNull(c, "Load Worked? ");
-		} catch (final IOException | IllegalArgumentException e ) {
+		} catch (final IOException | IllegalArgumentException e) {
 			fail(String.format("Caught exception running LoadFile([PATH] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString(), e));
 		}
 	}
@@ -88,7 +89,7 @@ public class ConfigAPITest {
 			Config.registerKnownParts();
 			c = com.keildraco.config.Config.LoadFile(Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString());
 			assertNotNull(c, "Load Worked? ");
-		} catch (final IOException | IllegalArgumentException e ) {
+		} catch (final IOException | IllegalArgumentException e) {
 			fail(String.format("Caught exception running LoadFile([STRING] %s)\n---> %s", Paths.get("src", "main", "resources", "testassets", "base-config-test.cfg").toString(), e));
 		}
 		

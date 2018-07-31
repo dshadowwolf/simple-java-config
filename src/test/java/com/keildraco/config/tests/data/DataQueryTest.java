@@ -23,7 +23,7 @@ public class DataQueryTest {
 	@Test
 	public final void testOf() {
 		try {
-			final DataQuery dq = DataQuery.of((SectionType)new SectionType("ROOT"));
+			final DataQuery dq = DataQuery.of((SectionType) new SectionType("ROOT"));
 			assertNotNull(dq, "DataQuery.of() returned non-null");
 		} catch(final Exception e) {
 			fail("Exception in call of DataQuery.of(): "+e);

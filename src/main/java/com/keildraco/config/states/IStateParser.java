@@ -2,6 +2,7 @@ package com.keildraco.config.states;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
+
 import static java.io.StreamTokenizer.*;
 
 import com.keildraco.config.Config;
@@ -12,10 +13,11 @@ public interface IStateParser {
 	public static final String IDENTIFIER_PATTERN = "^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$";
 	
 	public void setFactory(TypeFactory factory);
+
 	public TypeFactory getFactory();
 	
 	default public String ttypeToString(final int ttype) {
-		switch(ttype) {
+		switch (ttype) {
 		case TT_WORD:
 			return "TT_WORD";
 		case TT_NUMBER:
@@ -30,6 +32,7 @@ public interface IStateParser {
 	}
 	
 	public void setErrored();
+
 	public boolean errored();
 	
 	default public int peekToken(final StreamTokenizer tok) {
@@ -57,9 +60,13 @@ public interface IStateParser {
 	}
 	
 	public ParserInternalTypeBase getState(final StreamTokenizer tok);
+
 	public void setParent(final ParserInternalTypeBase parent);
+
 	public ParserInternalTypeBase getParent();
+
 	default public void setName(final String name) { /* this space intentionally blank */ }
 	public String getName();
+
 	public void clearErrors();
 }

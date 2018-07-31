@@ -41,12 +41,12 @@ public class KeyValueParser implements IStateParser {
 	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
 		final int p = this.nextToken(tok);
 		
-		if(!this.errored() && p == TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
+		if (!this.errored() && p == TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 			final String temp = tok.sval;
-			if(this.peekToken(tok) == '(') return this.factory.parseTokens("OPERATION", null, tok, temp);
+			if (this.peekToken(tok) == '(') return this.factory.parseTokens("OPERATION", null, tok, temp);
 			else return this.factory.getType(this.getParent(), this.name, temp, ItemType.IDENTIFIER);
-		} else if(!errored() && p != TT_WORD) {
-			switch(p) {
+		} else if (!errored() && p != TT_WORD) {
+			switch (p) {
 			case StreamTokenizer.TT_EOF:
 				Config.LOGGER.error("Premature End of File while parsing a key-value pair, line %d", tok.lineno());
 				this.setErrored();

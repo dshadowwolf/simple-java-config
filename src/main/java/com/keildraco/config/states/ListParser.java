@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.keildraco.config.states;
 
 import java.io.StreamTokenizer;
@@ -13,6 +10,7 @@ import java.util.stream.Collectors;
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.*;
+
 import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 
@@ -61,14 +59,14 @@ public class ListParser implements IStateParser {
 		int p;
 		final Deque<ParserInternalTypeBase> store = new LinkedList<>();
 		String ident;
-		while((p = this.nextToken(tok)) != StreamTokenizer.TT_EOF && p != ']') {
-			if(p=='[') continue;
-			if(!this.errored && p == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
+		while ((p = this.nextToken(tok)) != StreamTokenizer.TT_EOF && p != ']') {
+			if (p=='[') continue;
+			if (!this.errored && p == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 				ident = tok.sval;
 				final ParserInternalTypeBase temp = this.getToken(tok, ident);
 				temp.setName(ident);
 				store.push(temp);
-			} else if(p == StreamTokenizer.TT_WORD) {
+			} else if (p == StreamTokenizer.TT_WORD) {
 				Config.LOGGER.fatal("Error loading list, did not find TT_WORD matching %s where expected (%s found)", IDENTIFIER_PATTERN, tok.sval);
 				return EmptyType;
 			}
@@ -81,9 +79,9 @@ public class ListParser implements IStateParser {
 
 	private ParserInternalTypeBase getToken(final StreamTokenizer tok, final String ident) {
 		final int n = this.peekToken(tok);
-		if(n != StreamTokenizer.TT_WORD && (n == ',' || n == ']')) {
+		if (n != StreamTokenizer.TT_WORD && (n == ',' || n == ']')) {
 			return this.factory.getType(this.getParent(), this.getName(), ident, ItemType.IDENTIFIER);
-		} else if( n == '(') {
+		} else if (n == '(') {
 			return this.factory.parseTokens("OPERATION", this.getParent(), tok, ident);
 		}
 		this.setErrored();

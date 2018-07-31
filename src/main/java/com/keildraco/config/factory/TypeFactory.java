@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.keildraco.config.factory;
 
 import java.io.StreamTokenizer;
@@ -22,7 +19,7 @@ public class TypeFactory {
 	private final Map<String, IParserState> parserMap;
 	
 	/**
-	 * Private default constructor
+	 * Private default constructor.
 	 */
 	public TypeFactory() {
 		this.typeMap = new ConcurrentHashMap<>();
@@ -44,14 +41,14 @@ public class TypeFactory {
 	@Nullable
 	public IStateParser getParser(final String parserName, @Nullable final ParserInternalTypeBase parent) {
 		final IParserState parser = this.parserMap.getOrDefault(parserName, null);
-		if(parser == null) return null;
+		if (parser == null) return null;
 		
 		return parser.get();
 	}
 	
-	public ParserInternalTypeBase parseTokens(String parserName, @Nullable final ParserInternalTypeBase parent, final StreamTokenizer tok, final String itemName) {
+	public ParserInternalTypeBase parseTokens(final String parserName, @Nullable final ParserInternalTypeBase parent, final StreamTokenizer tok, final String itemName) {
 		final IStateParser parser = this.getParser(parserName, parent);
-		if(parser==null) return ParserInternalTypeBase.EmptyType;
+		if (parser==null) return ParserInternalTypeBase.EmptyType;
 		
 		parser.clearErrors();
 		parser.setName(itemName);

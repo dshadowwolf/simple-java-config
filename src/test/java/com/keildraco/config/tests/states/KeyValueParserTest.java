@@ -37,10 +37,10 @@ public class KeyValueParserTest {
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	while(((StreamTokenizer)invocation.getArgument(0)).nextToken() != StreamTokenizer.TT_EOF &&
-	            			((StreamTokenizer)invocation.getArgument(0)).ttype != ']') ;
+	            	while (((StreamTokenizer)  invocation.getArgument(0)).nextToken() != StreamTokenizer.TT_EOF &&
+	            			((StreamTokenizer)  invocation.getArgument(0)).ttype != ']') ;
 	            	
-	            	if(((StreamTokenizer)invocation.getArgument(0)).ttype == ']') ((StreamTokenizer)invocation.getArgument(0)).nextToken();
+	            	if (((StreamTokenizer) invocation.getArgument(0)).ttype == ']') ((StreamTokenizer) invocation.getArgument(0)).nextToken();
 	                return new ListType(null, "", "");
 	            }
 	        });
@@ -58,14 +58,14 @@ public class KeyValueParserTest {
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
-	            	while(tok.nextToken() != StreamTokenizer.TT_EOF &&
-	            			tok.ttype != ')') ;
-	            	
+	            	StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
+	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
+	            			tok.ttype != ')');
+
 	                return factory.getType(null, "", "", ItemType.OPERATION);
 	            }
 	        });
-			
+
 			when(p.getName()).thenAnswer(new Answer<String>() {
 	 
 	            public String answer(final InvocationOnMock invocation) throws Throwable {
@@ -87,7 +87,7 @@ public class KeyValueParserTest {
 			@SuppressWarnings("unused")
 			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -98,7 +98,7 @@ public class KeyValueParserTest {
 			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			p.setErrored();
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception calling p.setErrored(): "+e.getMessage());
 		}
 	}
@@ -127,7 +127,7 @@ public class KeyValueParserTest {
 			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception calling p.setParent(ParserInternalTypeBase.EmptyType): "+e.getMessage());
 		}
 	}
@@ -156,7 +156,7 @@ public class KeyValueParserTest {
 			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			p.setFactory(Config.getFactory());
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception calling p.setFactory(Config.getFactory()): "+e.getMessage());
 		}		
 	}

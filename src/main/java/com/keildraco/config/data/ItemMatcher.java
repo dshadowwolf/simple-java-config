@@ -34,17 +34,17 @@ public class ItemMatcher {
 	}
 
 	private boolean doMatch(final ItemType type, final String bn, final String xn) {
-		switch(type) {
+		switch (type) {
 		case IDENTIFIER:
-			if(xn.length() > 0) return this.identMatches((IdentifierType)this.thisItem,xn)&&this.thisItem.getName().equalsIgnoreCase(bn);
-			else return this.identMatches((IdentifierType)this.thisItem,bn);
+			if (xn.length() > 0) return this.identMatches((IdentifierType) this.thisItem,xn)&&this.thisItem.getName().equalsIgnoreCase(bn);
+			else return this.identMatches((IdentifierType) this.thisItem,bn);
 		case LIST:
-			if(this.thisItem.has(bn) && xn.length() > 0) return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
+			if (this.thisItem.has(bn) && xn.length() > 0) return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
 			else return this.listMatchesAny(bn);
 		case OPERATION:
 			return this.operatorMatches(xn.length()>0?String.format("%s.%s", bn, xn):bn);
 		case SECTION:
-			if(xn.length() > 0) return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
+			if (xn.length() > 0) return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
 			return this.sectionMatches(bn);
 		default:
 			return false;
@@ -56,22 +56,22 @@ public class ItemMatcher {
 	}
 	
 	private boolean sectionMatches(final String name) {
-		return this.sectionMatches((SectionType)this.thisItem, name);
+		return this.sectionMatches((SectionType) this.thisItem, name);
 	}
 
 	private boolean matchOperator(final OperationType op, final String itemName, final String valueName) {
 		String matchName = itemName;
-		if(op.getName().equalsIgnoreCase(itemName) && valueName.length() > 0) {
+		if (op.getName().equalsIgnoreCase(itemName) && valueName.length() > 0) {
 			matchName = valueName;
 		}
 		
-		if(op.getOperator() == '!') return !op.getValue().equalsIgnoreCase(matchName);
-		else if(op.getOperator() == '~') return op.getValue().equalsIgnoreCase(matchName);
+		if (op.getOperator() == '!') return !op.getValue().equalsIgnoreCase(matchName);
+		else if (op.getOperator() == '~') return op.getValue().equalsIgnoreCase(matchName);
 		return true;
 	}
 	
 	private boolean operatorMatches(final OperationType op, final String name) {
-		if(name.indexOf('.') > 0) {
+		if (name.indexOf('.') > 0) {
 			final String in = name.substring(0, name.indexOf('.'));
 			final String vn = name.substring(name.indexOf('.')+1);
 			return this.matchOperator(op, in, vn);
@@ -81,7 +81,7 @@ public class ItemMatcher {
 	}
 	
 	private boolean operatorMatches(final String name) {
-		return this.operatorMatches((OperationType)this.thisItem, name);
+		return this.operatorMatches((OperationType) this.thisItem, name);
 	}
 
 	private boolean identMatches(final IdentifierType ident, final String name) {
@@ -93,6 +93,6 @@ public class ItemMatcher {
 	}
 	
 	private boolean listMatchesAny(final String name) {
-		return this.listMatchesAny((ListType)this.thisItem,name);
+		return this.listMatchesAny((ListType) this.thisItem,name);
 	}
 }

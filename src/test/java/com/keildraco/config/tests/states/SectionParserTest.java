@@ -39,8 +39,8 @@ public class SectionParserTest {
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	final StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
-	            	while(tok.nextToken() != StreamTokenizer.TT_EOF &&
+	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
+	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != ']') System.err.println(String.format("<<<%c :: %s", tok.ttype<127?(tok.ttype>0?tok.ttype:'-'):'?', tok.sval));
 	            	
 	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.LIST);
@@ -60,11 +60,11 @@ public class SectionParserTest {
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	final StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
+	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	tok.nextToken();
 	            	
-	            	if(tok.ttype == StreamTokenizer.TT_WORD) return factory.getType(null, "", tok.sval, ParserInternalTypeBase.ItemType.IDENTIFIER);
-	            	else if(tok.ttype == '[') return factory.parseTokens("LIST", null, tok, "");
+	            	if (tok.ttype == StreamTokenizer.TT_WORD) return factory.getType(null, "", tok.sval, ParserInternalTypeBase.ItemType.IDENTIFIER);
+	            	else if (tok.ttype == '[') return factory.parseTokens("LIST", null, tok, "");
 	            	else return ParserInternalTypeBase.EmptyType;
 	            }
 	        });
@@ -82,8 +82,8 @@ public class SectionParserTest {
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
-	            	while(tok.nextToken() != StreamTokenizer.TT_EOF &&
+	            	StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
+	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != ')') ;
 	            	
 	                return factory.getType(null, "", "", ItemType.OPERATION);
@@ -111,7 +111,7 @@ public class SectionParserTest {
 			@SuppressWarnings("unused")
 			final SectionParser p = new SectionParser(this.factory);
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -122,7 +122,7 @@ public class SectionParserTest {
 			@SuppressWarnings("unused")
 			final SectionParser p = new SectionParser(this.factory, null, "ROOT");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -133,7 +133,7 @@ public class SectionParserTest {
 			@SuppressWarnings("unused")
 			final SectionParser p = new SectionParser(this.factory, "ROOT");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -144,7 +144,7 @@ public class SectionParserTest {
 			final SectionParser p = new SectionParser(this.factory, null, "ROOT");
 			p.setErrored();
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -154,7 +154,7 @@ public class SectionParserTest {
 		try {
 			final SectionParser p = new SectionParser(this.factory, null, "ROOT");
 			assertFalse(p.errored(), "Expected fresh parser \"erorred()\" method to return false");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -216,7 +216,7 @@ public class SectionParserTest {
 			final SectionParser p = new SectionParser(this.factory);
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected setParent() to not have an exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception in test: "+e.getMessage());
 		}
 	}
@@ -233,7 +233,7 @@ public class SectionParserTest {
 			final SectionParser p = new SectionParser(this.factory);
 			p.setFactory(Config.getFactory());
 			assertTrue(true, "Expected setFactory() to not have an exception");
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception calling setFactory(): "+e.getMessage());
 		}
 	}
@@ -243,7 +243,7 @@ public class SectionParserTest {
 		try {
 			final SectionParser p = new SectionParser(this.factory);
 			assertEquals(this.factory, p.getFactory());
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception calling getFactory(): "+e.getMessage());
 		}
 	}
@@ -253,7 +253,7 @@ public class SectionParserTest {
 		try {
 			final SectionParser p = new SectionParser(this.factory);
 			assertEquals("ROOT", p.getName());
-		} catch(final Exception e ) {
+		} catch(final Exception e) {
 			fail("Caught exception calling getName(): "+e.getMessage());
 		}
 	}
