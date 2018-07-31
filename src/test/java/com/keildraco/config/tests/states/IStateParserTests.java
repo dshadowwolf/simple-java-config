@@ -77,7 +77,7 @@ public class IStateParserTests {
 		doThrow(IOException.class).when(tok).nextToken();
 		@SuppressWarnings("unused")
 		int z = p.nextToken(tok);
-		} catch(Exception e) {
+		} catch (Exception e) {
 		fail("unexpected exception: "+e.getMessage());
 		}
 		assertTrue(p.errored(), "parser is in an error state");
@@ -91,7 +91,7 @@ public class IStateParserTests {
 		doThrow(IOException.class).when(tok).nextToken();
 		@SuppressWarnings("unused")
 		int z = p.peekToken(tok);
-		} catch(Exception e) {
+		} catch (Exception e) {
 		fail("unexpected exception: "+e.getMessage());
 		}
 		assertTrue(p.errored(), "parser is in an error state");

@@ -68,7 +68,7 @@ public class ListTypeTest {
 			final ListType testItem2 = new ListType("blargh");
 			testItem2.addItem(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
 		}
 	}
@@ -85,7 +85,7 @@ public class ListTypeTest {
 	public final void testGetNotThere() {
 		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("no_such_item"), "item doesn't exist");
 	}
-	
+
 	@Test
 	public final void testOtherAsString() {
 		ListType lt = new ListType("");

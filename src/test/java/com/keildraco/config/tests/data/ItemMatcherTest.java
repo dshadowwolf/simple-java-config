@@ -45,7 +45,7 @@ public class ItemMatcherTest {
 			s.addItem(new IdentifierType("ident", "value"));
 			@SuppressWarnings("unused")
 			final ItemMatcher m = new ItemMatcher(s);
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instantiating an ItemMatcher: "+e);
 		}
 		assertTrue(true, "No exceptions instantiating an ItemMatcher");
@@ -56,7 +56,7 @@ public class ItemMatcherTest {
 		try {
 			final ItemMatcher m = new ItemMatcher(new IdentifierType("ident"));
 			assertTrue(m.matches("ident"), "ItemMatcher returns true");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Caught exception instantiating an ItemMatcher: "+e);
 		}
 	}

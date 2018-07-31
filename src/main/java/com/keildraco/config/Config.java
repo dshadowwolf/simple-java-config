@@ -125,11 +125,11 @@ public class Config {
 		final SectionType res = runParser(br);
 		return DataQuery.of(res);
 	}
-	
+
 	public static DataQuery loadFile(final Path filePath) throws IOException {
 		return loadFile(filePath.toUri());
 	}
-	
+
 	public static DataQuery loadFile(final String filePath) throws IOException {
 		return loadFile(Paths.get(filePath).toUri());
 	}

@@ -66,7 +66,7 @@ public class OperationParser implements IStateParser {
 					return ParserInternalTypeBase.EmptyType;
 				}
 			}
-		} catch(final IOException | IllegalArgumentException e) {
+		} catch (final IOException | IllegalArgumentException e) {
 			Config.LOGGER.error("Exception parsing Operation: %s", e.getMessage());
 			Config.LOGGER.error(e.getStackTrace());
 			this.setErrored();
@@ -82,7 +82,7 @@ public class OperationParser implements IStateParser {
 	}
 
 	private String getOperator(final StreamTokenizer tok) {
-		if (tok.ttype=='~'||tok.ttype=='!') return String.format("%c", tok.ttype);
+		if (tok.ttype=='~' || tok.ttype=='!') return String.format("%c", tok.ttype);
 		throw new IllegalArgumentException("OPERATOR not available in token stream");
 	}
 

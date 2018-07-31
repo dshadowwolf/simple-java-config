@@ -41,7 +41,7 @@ public class ParserInternalTypeBaseTest {
 			@SuppressWarnings("unused")
 			final ParserInternalTypeBase testNoParent = new ParserInternalTypeBase("blargh");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Exception ("+e.getMessage()+") caught when not expected");
 		}
 	}
@@ -55,7 +55,7 @@ public class ParserInternalTypeBaseTest {
 			@SuppressWarnings("unused")
 			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Exception ("+e.getMessage()+") caught when not expected");
 		}
 	}
@@ -69,7 +69,7 @@ public class ParserInternalTypeBaseTest {
 			@SuppressWarnings("unused")
 			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh", "blech");
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Exception ("+e.getMessage()+") caught when not expected");
 		}
 	}
@@ -156,7 +156,7 @@ public class ParserInternalTypeBaseTest {
 		try {
 			this.testItem.addItem(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch(final Exception e) {
+		} catch (final Exception e) {
 			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
 		}
 	}

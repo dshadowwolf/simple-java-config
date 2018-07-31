@@ -25,7 +25,7 @@ public class IdentifierType extends ParserInternalTypeBase {
 
 	@Override
 	public boolean has(final String s) {
-		return this.getName().equalsIgnoreCase(s)||this.ident.equalsIgnoreCase(s);
+		return this.getName().equalsIgnoreCase(s) || this.ident.equalsIgnoreCase(s);
 	}
 
 	@Override

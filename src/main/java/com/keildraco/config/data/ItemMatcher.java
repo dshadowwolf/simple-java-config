@@ -36,7 +36,7 @@ public class ItemMatcher {
 	private boolean doMatch(final ItemType type, final String bn, final String xn) {
 		switch (type) {
 		case IDENTIFIER:
-			if (xn.length() > 0) return this.identMatches((IdentifierType) this.thisItem,xn)&&this.thisItem.getName().equalsIgnoreCase(bn);
+			if (xn.length() > 0) return this.identMatches((IdentifierType) this.thisItem,xn) && this.thisItem.getName().equalsIgnoreCase(bn);
 			else return this.identMatches((IdentifierType) this.thisItem,bn);
 		case LIST:
 			if (this.thisItem.has(bn) && xn.length() > 0) return (new ItemMatcher(this.thisItem.get(bn))).matches(xn);
