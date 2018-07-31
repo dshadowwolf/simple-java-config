@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.keildraco.config.tests.types;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +15,9 @@ import com.keildraco.config.types.ParserInternalTypeBase;
  */
 @TestInstance(Lifecycle.PER_CLASS)
 public class IdentifierTypeTest {
+
 	private IdentifierType testItem;
+
 	/**
 	 * @throws java.lang.Exception
 	 */

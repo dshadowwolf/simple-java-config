@@ -17,11 +17,11 @@ public class DataQuery {
 	
 	public boolean get(final String key) {
 		// find item, or "all"
-		if(this.baseSection.has(key)) {
+		if (this.baseSection.has(key)) {
 			return true;
-		} else if(key.indexOf('.') > 0) {
+		} else if (key.indexOf('.') > 0) {
 			final String base = String.format("%s.all", key.substring(0, key.lastIndexOf('.')));
-			if(this.baseSection.has(base)) {
+			if (this.baseSection.has(base)) {
 				final String term = key.substring(key.lastIndexOf('.')+1);
 				return new ItemMatcher(this.baseSection.get(base)).matches(term);
 			} else {
