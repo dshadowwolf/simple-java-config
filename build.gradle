@@ -55,14 +55,16 @@ tasks.withType(com.github.spotbugs.SpotBugsTask) {
   }
 }
 spotbugs {
-  ignoreFailures = true
-  toolVersion = '3.1.6'
+	ignoreFailures = true
+	toolVersion = '3.1.6'
+	effort = 'max'
+	reportLevel = 'low'
 }
 
 /*
 checkstyle {
-  ignoreFailures = true
-  toolVersion = '8.11'
+	ignoreFailures = true
+	toolVersion = '8.11'
 }
 */
 
