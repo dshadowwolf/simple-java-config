@@ -2,7 +2,7 @@ buildscript {
 
     dependencies {
        // dependency needed to run junit 5 tests
-       classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
+       classpath 'org.junit.platform:junit-platform-gradle-plugin:1.2.0'
    }
 }
 
@@ -14,7 +14,7 @@ plugins {
     id 'application'
 
     // sonarcloud
-    id "org.sonarqube" version "2.6"
+    id "org.sonarqube" version "2.6.2"
 }
 
 // Define the main class for the application
