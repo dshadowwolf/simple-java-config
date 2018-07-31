@@ -54,13 +54,12 @@ public class OperationParser extends AbstractParserBase {
 		return ParserInternalTypeBase.EmptyType;
 	}
 
-	private String getIdentifier(final StreamTokenizer tok) {
+	private String getIdentifier(final StreamTokenizer tok) throws IllegalArgumentException {
 		this.nextToken(tok);
 		if (tok.ttype == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
 			return tok.sval;
 		}
-		
-		return "";
+		throw new IllegalArgumentException("IDENTIFIER not available in token stream");
 	}
 
 	private String getOperator(final StreamTokenizer tok) {

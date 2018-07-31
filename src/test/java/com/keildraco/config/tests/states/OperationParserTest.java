@@ -2,6 +2,7 @@ package com.keildraco.config.tests.states;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
@@ -12,13 +13,13 @@ import java.io.StreamTokenizer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -295,10 +296,6 @@ public class OperationParserTest {
 		Config.reset();
 		Config.registerKnownParts();
 		OperationParser p = new OperationParser(Config.getFactory(), null, "OPERATION");
-		Method m;
-		try {
-			m = p.getClass().getDeclaredMethod("getIdentifier", StreamTokenizer.class);
-			m.setAccessible(true);
 			final String testString = "bl-ar-gh";
 			final InputStreamReader isr = new InputStreamReader(
 					IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
@@ -308,10 +305,16 @@ public class OperationParserTest {
 			t.wordChars('-', '-');
 			t.slashSlashComments(true);
 			t.slashStarComments(true);
-			String z = (String)m.invoke(p, t);
-			assertEquals("", z, "blank string returned on error");
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException e) {
-			fail("Test threw an unexpected exception: "+e);
-		}
+			Executable blargh = () -> {
+				Method m;
+				try {
+					m = p.getClass().getDeclaredMethod("getIdentifier", StreamTokenizer.class);
+					m.setAccessible(true);
+					m.invoke(p,t);
+				} catch (NoSuchMethodException | SecurityException e) {
+					Config.LOGGER.fatal("%s", e);
+				}
+			};
+			assertThrows(InvocationTargetException.class, blargh, "Expected an exception on an error");
 	}
 }
