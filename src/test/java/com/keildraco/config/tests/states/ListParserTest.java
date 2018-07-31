@@ -119,37 +119,37 @@ public class ListParserTest {
 
 	@Test
 	public final void testGetParent() {
-		ListParser p = new ListParser(this.factory, "LIST");
+		final ListParser p = new ListParser(this.factory, "LIST");
 		assertNull(p.getParent(), "Expected getParent() on a fresh parser to be null");
 	}
 
 	@Test
 	public final void testGetStateErrorOne() {
-		String testString = "[ a_value, an_operator(!ident), fa-lse ]\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "[ a_value, an_operator(!ident), fa-lse ]\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.wordChars('0', '9');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
+		final ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
 		assertEquals(ParserInternalTypeBase.EmptyType, k, "k should be EmptyType due to bad format of input");
 	}
 
 	@Test
 	public final void testGetStateErrorTwo() {
-		String testString = "[ a_value, an_operator(!ident), false true ]\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "[ a_value, an_operator(!ident), false true ]\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.wordChars('0', '9');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
+		final ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
 		assertEquals(ParserInternalTypeBase.EmptyType, k, "k should be EmptyType due to bad format of input");
 	}
 
