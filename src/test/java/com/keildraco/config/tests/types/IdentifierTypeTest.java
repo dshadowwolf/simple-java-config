@@ -68,7 +68,7 @@ public class IdentifierTypeTest {
 		try {
 			this.testItem.addItem(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch(Exception e) {
+		} catch(final Exception e) {
 			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
 		}
 	}

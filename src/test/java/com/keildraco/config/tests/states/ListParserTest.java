@@ -32,10 +32,10 @@ public class ListParserTest {
 	public void setUp() throws Exception {
 		this.factory = new TypeFactory();
 		this.factory.registerParser(() -> {
-			IStateParser p = mock(IStateParser.class);
+			final IStateParser p = mock(IStateParser.class);
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
-	            public ParserInternalTypeBase answer(InvocationOnMock invocation) throws Throwable {
+	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
 	            	while(tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != ')') ;
@@ -46,7 +46,7 @@ public class ListParserTest {
 			
 			when(p.getName()).thenAnswer(new Answer<String>() {
 	 
-	            public String answer(InvocationOnMock invocation) throws Throwable {
+	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockOperationType";
 	            }
 	        });
@@ -63,9 +63,9 @@ public class ListParserTest {
 	public final void testListParser() {
 		try {
 			@SuppressWarnings("unused")
-			ListParser p = new ListParser(this.factory, "LIST");
+			final ListParser p = new ListParser(this.factory, "LIST");
 			assertTrue(true, "Expected to not get an exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -73,10 +73,10 @@ public class ListParserTest {
 	@Test
 	public final void testSetErrored() {
 		try {
-			ListParser p = new ListParser(this.factory, "LIST");
+			final ListParser p = new ListParser(this.factory, "LIST");
 			p.setErrored();
 			assertTrue(true, "Expected to not get an exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -84,34 +84,34 @@ public class ListParserTest {
 	@Test
 	public final void testErrored() {
 		try {
-			ListParser p = new ListParser(this.factory, "LIST");
+			final ListParser p = new ListParser(this.factory, "LIST");
 			assertFalse(p.errored(), "Expected new parser instance to return false from the errored() method");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
 
 	@Test
 	public final void testGetState() {
-		String testString = "a_value, an_operator(!ident), false ]\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "a_value, an_operator(!ident), false ]\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
+		final ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
 		assertEquals("[ a_value, an_operator(null ), false ]", k.asString());
 	}
 
 	@Test
 	public final void testSetParent() {
 		try {
-			ListParser p = new ListParser(this.factory, "LIST");
+			final ListParser p = new ListParser(this.factory, "LIST");
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected setParent() to not have an exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}

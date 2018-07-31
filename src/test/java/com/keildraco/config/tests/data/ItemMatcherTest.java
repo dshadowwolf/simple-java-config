@@ -27,9 +27,9 @@ public class ItemMatcherTest {
 	@BeforeAll
 	public void setUp() throws Exception {
 		Config.registerKnownParts();
-		String testString = "section {\nlist = [ alpha, bravo(!charlie), delta]\necho {\nfoxtrot = golf\n}\n}\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "section {\nlist = [ alpha, bravo(!charlie), delta]\necho {\nfoxtrot = golf\n}\n}\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
@@ -41,11 +41,11 @@ public class ItemMatcherTest {
 	@Test
 	public final void testItemMatcher() {
 		try {
-			SectionType s = new SectionType("ROOT");
+			final SectionType s = new SectionType("ROOT");
 			s.addItem(new IdentifierType("ident", "value"));
 			@SuppressWarnings("unused")
-			ItemMatcher m = new ItemMatcher(s);
-		} catch(Exception e) {
+			final ItemMatcher m = new ItemMatcher(s);
+		} catch(final Exception e) {
 			fail("Caught exception instantiating an ItemMatcher: "+e);
 		}
 		assertTrue(true, "No exceptions instantiating an ItemMatcher");
@@ -54,38 +54,38 @@ public class ItemMatcherTest {
 	@Test
 	public final void testMatches() {
 		try {
-			ItemMatcher m = new ItemMatcher(new IdentifierType("ident"));
+			final ItemMatcher m = new ItemMatcher(new IdentifierType("ident"));
 			assertTrue(m.matches("ident"), "ItemMatcher returns true");
-		} catch(Exception e) {
+		} catch(final Exception e) {
 			fail("Caught exception instantiating an ItemMatcher: "+e);
 		}
 	}
 
 	@Test
 	public final void testMatchList() {
-		ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
+		final ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
 		assertTrue(m.matches("alpha"), "list matches 'alpha'");
 	}
 
 	@Test
 	public final void testMatchIdentifier() {
-		ItemMatcher m = new ItemMatcher(this.base.get("section.echo.foxtrot"));
+		final ItemMatcher m = new ItemMatcher(this.base.get("section.echo.foxtrot"));
 		assertTrue(m.matches("golf"), "Identifer \"foxtrot\" matches 'golf'");
 	}
 	
-	private final boolean noMatch(ItemMatcher m, String key) {
+	private final boolean noMatch(final ItemMatcher m, final String key) {
 		return !m.matches(key);
 	}
 	
 	@Test
 	public final void testMatchOperation() {
-		ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
+		final ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
 		assertAll("Operation matches bravo.hotel but not bravo.charlie", () -> m.matches("bravo.hotel"), () -> noMatch(m, "bravo.charlie"));
 	}
 	
 	@Test
 	public final void testMatchSection() {
-		ItemMatcher m = new ItemMatcher(this.base.get("section"));
+		final ItemMatcher m = new ItemMatcher(this.base.get("section"));
 		assertAll("Section matches \"list\" and \"echo\"", () -> m.matches("list"),() -> m.matches("echo"));
 	}
 	
@@ -96,49 +96,49 @@ public class ItemMatcherTest {
 	
 	@Test
 	public final void testMatchOperationSpecificExclude() {
-		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
 		op.setOperation("!");
-		ItemMatcher m = new ItemMatcher(op);
+		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.FALSE, m.matches("alpha"));
 	}
 	
 	@Test
 	public final void testMatchOperationSpecificIgnore() {
-		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
 		op.setOperation("~");
-		ItemMatcher m = new ItemMatcher(op);
+		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.TRUE, m.matches("alpha"));
 	}
 
 	@Test
 	public final void testMatchOperationUnknownOperator() {
-		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
 		op.setOperation(">");
-		ItemMatcher m = new ItemMatcher(op);
+		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.TRUE, m.matches("alpha"));
 	}
 
 	@Test
 	public final void testMatchOperationSpecificExcludeLongName() {
-		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
 		op.setOperation("!");
-		ItemMatcher m = new ItemMatcher(op);
+		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.FALSE, m.matches("op.alpha"));
 	}
 	
 	@Test
 	public final void testMatchOperationSpecificIgnoreLongName() {
-		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
 		op.setOperation("~");
-		ItemMatcher m = new ItemMatcher(op);
+		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.TRUE, m.matches("op.alpha"));
 	}
 
 	@Test
 	public final void testMatchOperationUnknownOperatorLongName() {
-		OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
 		op.setOperation(">");
-		ItemMatcher m = new ItemMatcher(op);
+		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.TRUE, m.matches("op.alpha"));
 	}
 }

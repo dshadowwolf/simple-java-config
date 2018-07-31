@@ -48,10 +48,10 @@ public class SectionTypeTest {
 	@Test
 	public final void testAddItem() {
 		try {
-			SectionType testItem2 = new SectionType("blargh");
+			final SectionType testItem2 = new SectionType("blargh");
 			testItem2.addItem(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch(Exception e) {
+		} catch(final Exception e) {
 			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
 		}
 	}
@@ -66,7 +66,7 @@ public class SectionTypeTest {
 	
 	@Test
 	public final void testAsString() {
-		String result = String.format("blargh = blech%n" + 
+		final String result = String.format("blargh = blech%n" + 
 				" CHILD {%n" + 
 				" blargh = foobar%n" + 
 				"}");
