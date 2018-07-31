@@ -25,7 +25,6 @@ import com.keildraco.config.states.*;
 import com.keildraco.config.types.*;
 import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
-
 @TestInstance(Lifecycle.PER_CLASS)
 public class OperationParserTest {
 	private TypeFactory factory;
@@ -37,8 +36,8 @@ public class OperationParserTest {
 			IStateParser p = mock(IStateParser.class);
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
-	            public ParserInternalTypeBase answer(InvocationOnMock invocation) throws Throwable {
-	            	StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
+	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
+	            	final StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
 	            	while(tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != ']') System.err.println(String.format("<<<%c :: %s", tok.ttype<127?(tok.ttype>0?tok.ttype:'-'):'?', tok.sval));
 	            	
@@ -48,18 +47,18 @@ public class OperationParserTest {
 			
 			when(p.getName()).thenAnswer(new Answer<String>() {
 	 
-	            public String answer(InvocationOnMock invocation) throws Throwable {
+	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockListType";
 	            }
 	        });
 			return p;
 		}, "LIST");
 		this.factory.registerParser(() -> {
-			IStateParser p = mock(IStateParser.class);
+			final IStateParser p = mock(IStateParser.class);
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
-	            public ParserInternalTypeBase answer(InvocationOnMock invocation) throws Throwable {
-	            	StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
+	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
+	            	final StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
 	            	tok.nextToken();
 	            	
 	            	if(tok.ttype == StreamTokenizer.TT_WORD) return factory.getType(null, "", tok.sval, ParserInternalTypeBase.ItemType.IDENTIFIER);
@@ -70,18 +69,18 @@ public class OperationParserTest {
 			
 			when(p.getName()).thenAnswer(new Answer<String>() {
 	 
-	            public String answer(InvocationOnMock invocation) throws Throwable {
+	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockIdentifierType";
 	            }
 	        });
 			return p;
 		}, "KEYVALUE");
 		this.factory.registerParser(() -> {
-			IStateParser p = mock(IStateParser.class);
+			final IStateParser p = mock(IStateParser.class);
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
-	            public ParserInternalTypeBase answer(InvocationOnMock invocation) throws Throwable {
-	            	StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
+	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
+	            	final StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
 	            	while(tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != '}') System.err.println(String.format("<<<%c :: %s", tok.ttype<127?(tok.ttype>0?tok.ttype:'-'):'?', tok.sval));
 	            	
@@ -91,7 +90,7 @@ public class OperationParserTest {
 			
 			when(p.getName()).thenAnswer(new Answer<String>() {
 	 
-	            public String answer(InvocationOnMock invocation) throws Throwable {
+	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockSectionType";
 	            }
 	        });
@@ -108,130 +107,130 @@ public class OperationParserTest {
 	public final void testOperationParserTypeFactory() {
 		try {
 			@SuppressWarnings("unused")
-			OperationParser p = new OperationParser(this.factory);
+			final OperationParser p = new OperationParser(this.factory);
 			assertTrue(true, "Expected no exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test
 	public final void testOperationParserTypeFactoryParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
-			OperationParser p = new OperationParser(this.factory, null, "BUGGER");
+			final OperationParser p = new OperationParser(this.factory, null, "BUGGER");
 			assertTrue(true, "Expected no exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test
 	public final void testSetFactory() {
 		try {
-			OperationParser p = new OperationParser(this.factory);
+			final OperationParser p = new OperationParser(this.factory);
 			p.setFactory(this.factory);
 			assertTrue(true, "Expected no exception");
 		} catch( Exception e ) {
 			fail("Caught exception using a parsers setFactory(TypeFactory) method: "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test
 	public final void testGetFactory() {
 		try {
-			OperationParser p = new OperationParser(this.factory);
-			TypeFactory f = p.getFactory();
+			final OperationParser p = new OperationParser(this.factory);
+			final TypeFactory f = p.getFactory();
 			assertEquals(this.factory, f);
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception using a parsers getFactory() method: "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test
 	public final void testSetErrored() {
 		try {
-			OperationParser p = new OperationParser(this.factory);
+			final OperationParser p = new OperationParser(this.factory);
 			p.setErrored();
 			assertTrue(true, "Expected no exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception calling a parsers setErrored() method: "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test
 	public final void testErrored() {
 		try {
-			OperationParser p = new OperationParser(this.factory);
+			final OperationParser p = new OperationParser(this.factory);
 			assertEquals(Boolean.FALSE, p.errored());
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception calling a parsers errored() method: "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test
 	public final void testGetState() {
-		String testString = "(! blargh)\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "(! blargh)\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase k = this.factory.parseTokens("OPERATION", null, t, "blech");
+		final ParserInternalTypeBase k = this.factory.parseTokens("OPERATION", null, t, "blech");
 		assertEquals("blech(! blargh)", k.asString().trim());
 	}
 
 	@Test
 	public final void testSetParent() {
 		try {
-			OperationParser p = new OperationParser(this.factory);
+			final OperationParser p = new OperationParser(this.factory);
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception calling a parsers setParent() method: "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test
 	public final void testGetParent() {
 		try {
-			OperationParser p = new OperationParser(this.factory);
+			final OperationParser p = new OperationParser(this.factory);
 			assertNull(p.getParent());
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception calling a parsers getParent() method: "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test
 	public final void testGetName() {
 		try {
-			OperationParser p = new OperationParser(this.factory, null, "BUGGERED");
+			final OperationParser p = new OperationParser(this.factory, null, "BUGGERED");
 			assertEquals("BUGGERED", p.getName());
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception trying to get a parsers name: "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test
 	public final void testClearErrors() {
 		try {
-			OperationParser p = new OperationParser(this.factory);
+			final OperationParser p = new OperationParser(this.factory);
 			p.clearErrors();
 			assertTrue(true, "Expected no exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception telling a parser to clear its errors: "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test
 	public final void testBadParseNoClose() {
 		Config.reset();
 		Config.registerKnownParts();
-		String testString = "(! ident\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "(! ident\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
@@ -245,15 +244,15 @@ public class OperationParserTest {
 	public final void testBadParseNoOper() {
 		Config.reset();
 		Config.registerKnownParts();
-		String testString = "(ident\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "(ident\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
+		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
 		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
 	}
 
@@ -277,15 +276,15 @@ public class OperationParserTest {
 	public final void testParseStartsAfterParens() {
 		Config.reset();
 		Config.registerKnownParts();
-		String testString = "! ident)\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "! ident)\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
+		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
 		assertEquals("ident", testItem.getValue(), "expect parse item to have \"ident\" as the value");
 	}
 
@@ -293,15 +292,15 @@ public class OperationParserTest {
 	public final void testBadParseIdentBad() {
 		Config.reset();
 		Config.registerKnownParts();
-		String testString = "(~ ..\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "(~ ..\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
+		final ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
 		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
 	}
 }

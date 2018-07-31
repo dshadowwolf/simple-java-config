@@ -42,9 +42,9 @@ public class ParserInternalTypeBaseTest {
 	public final void testParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
-			ParserInternalTypeBase testNoParent = new ParserInternalTypeBase("blargh");
+			final ParserInternalTypeBase testNoParent = new ParserInternalTypeBase("blargh");
 			assertTrue(true, "Expected no exception");
-		} catch(Exception e) {
+		} catch(final Exception e) {
 			fail("Exception ("+e.getMessage()+") caught when not expected");
 		}
 	}
@@ -56,9 +56,9 @@ public class ParserInternalTypeBaseTest {
 	public final void testParserInternalTypeBaseParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
-			ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh");
+			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh");
 			assertTrue(true, "Expected no exception");
-		} catch(Exception e) {
+		} catch(final Exception e) {
 			fail("Exception ("+e.getMessage()+") caught when not expected");
 		}
 	}
@@ -70,9 +70,9 @@ public class ParserInternalTypeBaseTest {
 	public final void testParserInternalTypeBaseParserInternalTypeBaseStringString() {
 		try {
 			@SuppressWarnings("unused")
-			ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh", "blech");
+			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh", "blech");
 			assertTrue(true, "Expected no exception");
-		} catch(Exception e) {
+		} catch(final Exception e) {
 			fail("Exception ("+e.getMessage()+") caught when not expected");
 		}
 	}
@@ -138,7 +138,7 @@ public class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testSetName() {
-		ParserInternalTypeBase t = new ParserInternalTypeBase("a");
+		final ParserInternalTypeBase t = new ParserInternalTypeBase("a");
 		t.setName("b");
 		assertEquals("b", t.getName());
 	}
@@ -159,7 +159,7 @@ public class ParserInternalTypeBaseTest {
 		try {
 			this.testItem.addItem(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch(Exception e) {
+		} catch(final Exception e) {
 			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
 		}
 	}

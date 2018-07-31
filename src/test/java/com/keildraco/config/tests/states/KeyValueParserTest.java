@@ -33,10 +33,10 @@ public class KeyValueParserTest {
 		
 		this.factory = new TypeFactory();
 		this.factory.registerParser(() -> {
-			IStateParser p = mock(IStateParser.class);
+			final IStateParser p = mock(IStateParser.class);
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
-	 
-	            public ParserInternalTypeBase answer(InvocationOnMock invocation) throws Throwable {
+
+	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	while(((StreamTokenizer)invocation.getArgument(0)).nextToken() != StreamTokenizer.TT_EOF &&
 	            			((StreamTokenizer)invocation.getArgument(0)).ttype != ']') ;
 	            	
@@ -47,17 +47,17 @@ public class KeyValueParserTest {
 			
 			when(p.getName()).thenAnswer(new Answer<String>() {
 	 
-	            public String answer(InvocationOnMock invocation) throws Throwable {
+	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockType";
 	            }
 	        });
 			return p;
 		}, "LIST");
 		this.factory.registerParser(() -> {
-			IStateParser p = mock(IStateParser.class);
+			final IStateParser p = mock(IStateParser.class);
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 	 
-	            public ParserInternalTypeBase answer(InvocationOnMock invocation) throws Throwable {
+	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	StreamTokenizer tok = (StreamTokenizer)invocation.getArgument(0);
 	            	while(tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != ')') ;
@@ -68,7 +68,7 @@ public class KeyValueParserTest {
 			
 			when(p.getName()).thenAnswer(new Answer<String>() {
 	 
-	            public String answer(InvocationOnMock invocation) throws Throwable {
+	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockOperationType";
 	            }
 	        });
@@ -85,9 +85,9 @@ public class KeyValueParserTest {
 	public final void testKeyValueParser() {
 		try {
 			@SuppressWarnings("unused")
-			KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
+			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			assertTrue(true, "Expected no exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}
 	}
@@ -95,85 +95,85 @@ public class KeyValueParserTest {
 	@Test
 	public final void testSetErrored() {
 		try {
-			KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
+			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			p.setErrored();
 			assertTrue(true, "Expected no exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception calling p.setErrored(): "+e.getMessage());
 		}
 	}
 
 	@Test
 	public final void testErrored() {
-		KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
+		final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 		assertFalse(p.errored(), "Expected p.errored() to return false");
 	}
 
 	@Test
 	public final void testGetState() {
-		String testString = "[ a_value, another_value, a_third_value ]\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "[ a_value, another_value, a_third_value ]\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase k = this.factory.parseTokens("KEYVALUE", null, t, "a_key");
+		final ParserInternalTypeBase k = this.factory.parseTokens("KEYVALUE", null, t, "a_key");
 		assertEquals("a_key = [  ]", k.asString());
 	}
 
 	@Test
 	public final void testSetParent() {
 		try {
-			KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
+			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception calling p.setParent(ParserInternalTypeBase.EmptyType): "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test
 	public final void testGetParent() {
-		KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
+		final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 		assertNull(p.getParent(), "Expected p.getParent() to return null");
 	}
 
 	@Test
 	public final void testGetName() {
-		KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
+		final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 		assertEquals("KEYVALUE", p.getName());
 	}
 	
 	@Test
 	public final void testGetFactory() {
-		KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
+		final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 		assertEquals(this.factory, p.getFactory());
 	}
 
 	@Test
 	public final void testSetFactory() {
 		try {
-			KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
+			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			p.setFactory(Config.getFactory());
 			assertTrue(true, "Expected no exception");
-		} catch( Exception e ) {
+		} catch(final Exception e ) {
 			fail("Caught exception calling p.setFactory(Config.getFactory()): "+e.getMessage());
 		}		
 	}
-	
+
 	@Test
 	public final void testEarlyEOF() {
 		Config.reset();
 		Config.registerKnownParts();
-		String testString = "an_ident = \n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "an_ident = \n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase k = Config.getFactory().parseTokens("SECTION", null, t, "blargh");
+		final ParserInternalTypeBase k = Config.getFactory().parseTokens("SECTION", null, t, "blargh");
 		assertEquals(ParserInternalTypeBase.EmptyType, k, "expect EmptyType due to malformation");
 	}
 
@@ -181,15 +181,15 @@ public class KeyValueParserTest {
 	public final void testEarlySectionEnd() {
 		Config.reset();
 		Config.registerKnownParts();
-		String testString = "an_ident = }\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "an_ident = }\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase k = Config.getFactory().parseTokens("SECTION", null, t, "blargh");
+		final ParserInternalTypeBase k = Config.getFactory().parseTokens("SECTION", null, t, "blargh");
 		assertEquals(ParserInternalTypeBase.EmptyType, k, "expect EmptyType due to malformation");
 	}
 
@@ -197,15 +197,15 @@ public class KeyValueParserTest {
 	public final void testNonWordWhereIdentExpected() {
 		Config.reset();
 		Config.registerKnownParts();
-		String testString = "an_ident = ;\n\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "an_ident = ;\n\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		ParserInternalTypeBase k = Config.getFactory().parseTokens("SECTION", null, t, "blargh");
+		final ParserInternalTypeBase k = Config.getFactory().parseTokens("SECTION", null, t, "blargh");
 		assertEquals(ParserInternalTypeBase.EmptyType, k, "expect EmptyType due to malformation");
 	}
 
@@ -213,17 +213,17 @@ public class KeyValueParserTest {
 	public final void testBadFormat() {
 		Config.reset();
 		Config.registerKnownParts();
-		String testString = "an_ident = other\n";
-		InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
-		StreamTokenizer t = new StreamTokenizer(isr);
+		final String testString = "an_ident = other\n";
+		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(testString, StandardCharsets.UTF_8));
+		final StreamTokenizer t = new StreamTokenizer(isr);
 		t.commentChar('#');
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
 		t.slashStarComments(true);
-		IStateParser p = Config.getFactory().getParser("KEYVALUE", null);
+		final IStateParser p = Config.getFactory().getParser("KEYVALUE", null);
 		p.setErrored();
-		ParserInternalTypeBase k = p.getState(t);
+		final ParserInternalTypeBase k = p.getState(t);
 		assertEquals(ParserInternalTypeBase.EmptyType, k, "expect EmptyType due to malformation");
 	}
 }
