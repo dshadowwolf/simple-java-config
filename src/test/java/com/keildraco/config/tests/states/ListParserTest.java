@@ -85,7 +85,7 @@ public class ListParserTest {
 	public final void testErrored() {
 		try {
 			ListParser p = new ListParser(this.factory, "LIST");
-			assertTrue(p.errored()==false, "Expected new parser instance to return false from the errored() method");
+			assertFalse(p.errored(), "Expected new parser instance to return false from the errored() method");
 		} catch( Exception e ) {
 			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
 		}

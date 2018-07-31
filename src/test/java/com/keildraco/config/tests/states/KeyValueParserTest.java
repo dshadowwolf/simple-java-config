@@ -106,7 +106,7 @@ public class KeyValueParserTest {
 	@Test
 	public final void testErrored() {
 		KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-		assertTrue(p.errored()==false, "Expected p.errored() to return false");
+		assertFalse(p.errored(), "Expected p.errored() to return false");
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class KeyValueParserTest {
 	@Test
 	public final void testGetParent() {
 		KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
-		assertTrue(p.getParent()==null, "Expected p.getParent() to return null");
+		assertNull(p.getParent(), "Expected p.getParent() to return null");
 	}
 
 	@Test
