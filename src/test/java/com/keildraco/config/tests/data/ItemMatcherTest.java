@@ -23,7 +23,7 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 @TestInstance(Lifecycle.PER_CLASS)
 public class ItemMatcherTest {
 	private ParserInternalTypeBase base;
-	
+
 	@BeforeAll
 	public void setUp() throws Exception {
 		Config.registerKnownParts();
@@ -34,7 +34,7 @@ public class ItemMatcherTest {
 		t.wordChars('_', '_');
 		t.wordChars('-', '-');
 		t.slashSlashComments(true);
-		t.slashStarComments(true);		
+		t.slashStarComments(true);
 		this.base = Config.getFactory().parseTokens("SECTION", null, t, null);
 	}
 
@@ -72,28 +72,28 @@ public class ItemMatcherTest {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.echo.foxtrot"));
 		assertTrue(m.matches("golf"), "Identifer \"foxtrot\" matches 'golf'");
 	}
-	
+
 	private final boolean noMatch(final ItemMatcher m, final String key) {
 		return !m.matches(key);
 	}
-	
+
 	@Test
 	public final void testMatchOperation() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.list"));
 		assertAll("Operation matches bravo.hotel but not bravo.charlie", () -> m.matches("bravo.hotel"), () -> noMatch(m, "bravo.charlie"));
 	}
-	
+
 	@Test
 	public final void testMatchSection() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section"));
 		assertAll("Section matches \"list\" and \"echo\"", () -> m.matches("list"),() -> m.matches("echo"));
 	}
-	
+
 	@Test
 	public final void testAlwaysFalseMatcher() {
 		assertEquals(Boolean.FALSE, ItemMatcher.AlwaysFalse.matches("bs"));
 	}
-	
+
 	@Test
 	public final void testMatchOperationSpecificExclude() {
 		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
@@ -101,7 +101,7 @@ public class ItemMatcherTest {
 		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.FALSE, m.matches("alpha"));
 	}
-	
+
 	@Test
 	public final void testMatchOperationSpecificIgnore() {
 		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);
@@ -125,7 +125,7 @@ public class ItemMatcherTest {
 		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.FALSE, m.matches("op.alpha"));
 	}
-	
+
 	@Test
 	public final void testMatchOperationSpecificIgnoreLongName() {
 		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "alpha", ItemType.OPERATION);

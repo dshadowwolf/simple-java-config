@@ -26,7 +26,7 @@ import com.keildraco.config.states.IStateParser;
 @TestInstance(Lifecycle.PER_CLASS)
 public class IStateParserTests {
 	private IStateParser p;
-	
+
 	@BeforeAll
 	public void setUp() throws Exception {
 		this.p = Config.getFactory().getParser("SECTION", null);
@@ -37,7 +37,7 @@ public class IStateParserTests {
 		Config.reset();
 		Config.registerKnownParts();
 	}
-	
+
 	@Test
 	public final void testTT_WORD() {
 		String ttword = p.ttypeToString(StreamTokenizer.TT_WORD);
@@ -55,7 +55,7 @@ public class IStateParserTests {
 		String tteol = p.ttypeToString(StreamTokenizer.TT_EOL);
 		assertEquals("TT_EOL", tteol);
 	}
-	
+
 	@Test
 	public final void testTT_NUMBER() {
 		String ttnumber = p.ttypeToString(StreamTokenizer.TT_NUMBER);
@@ -67,13 +67,13 @@ public class IStateParserTests {
 		String unknown = p.ttypeToString(33);
 		assertEquals("UNKNOWN", unknown);
 	}
-	
+
 	@Test
 	public final void testErrored() {
 		p.clearErrors();
 		assertEquals(Boolean.FALSE, p.errored());
 	}
-	
+
 	@Test
 	public final void testNextTokenExceptions() {
 		p.clearErrors();
@@ -87,7 +87,7 @@ public class IStateParserTests {
 		}
 		assertTrue(p.errored(), "parser is in an error state");
 	}
-	
+
 	@Test
 	public final void testPeekTokenExceptions() {
 		p.clearErrors();

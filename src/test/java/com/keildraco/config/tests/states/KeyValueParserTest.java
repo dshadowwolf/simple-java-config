@@ -27,10 +27,10 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 @TestInstance(Lifecycle.PER_CLASS)
 public class KeyValueParserTest {
 	private TypeFactory factory;
-	
+
 	@BeforeAll
 	public void setUp() throws Exception {
-		
+
 		this.factory = new TypeFactory();
 		this.factory.registerParser(() -> {
 			final IStateParser p = mock(IStateParser.class);
@@ -38,15 +38,15 @@ public class KeyValueParserTest {
 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	while (((StreamTokenizer)  invocation.getArgument(0)).nextToken() != StreamTokenizer.TT_EOF &&
-	            			((StreamTokenizer)  invocation.getArgument(0)).ttype != ']') ;
-	            	
+	            			((StreamTokenizer)  invocation.getArgument(0)).ttype != ']');
+
 	            	if (((StreamTokenizer) invocation.getArgument(0)).ttype == ']') ((StreamTokenizer) invocation.getArgument(0)).nextToken();
 	                return new ListType(null, "", "");
 	            }
 	        });
-			
+
 			when(p.getName()).thenAnswer(new Answer<String>() {
-	 
+
 	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockType";
 	            }
@@ -56,7 +56,7 @@ public class KeyValueParserTest {
 		this.factory.registerParser(() -> {
 			final IStateParser p = mock(IStateParser.class);
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
-	 
+
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
@@ -67,7 +67,7 @@ public class KeyValueParserTest {
 	        });
 
 			when(p.getName()).thenAnswer(new Answer<String>() {
-	 
+
 	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockOperationType";
 	            }
@@ -143,7 +143,7 @@ public class KeyValueParserTest {
 		final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 		assertEquals("KEYVALUE", p.getName());
 	}
-	
+
 	@Test
 	public final void testGetFactory() {
 		final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
@@ -158,7 +158,7 @@ public class KeyValueParserTest {
 			assertTrue(true, "Expected no exception");
 		} catch(final Exception e) {
 			fail("Caught exception calling p.setFactory(Config.getFactory()): "+e.getMessage());
-		}		
+		}
 	}
 
 	@Test

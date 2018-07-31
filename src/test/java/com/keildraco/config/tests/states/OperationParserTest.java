@@ -29,25 +29,25 @@ import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 @TestInstance(Lifecycle.PER_CLASS)
 public class OperationParserTest {
 	private TypeFactory factory;
-	
+
 	@BeforeAll
 	public void setUp() throws Exception {
 		this.factory = new TypeFactory();
 		this.factory.registerParser(() -> {
 			IStateParser p = mock(IStateParser.class);
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
-	 
+
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != ']') System.err.println(String.format("<<<%c :: %s", tok.ttype<127?(tok.ttype>0?tok.ttype:'-'):'?', tok.sval));
-	            	
+
 	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.LIST);
 	            }
 	        });
-			
+
 			when(p.getName()).thenAnswer(new Answer<String>() {
-	 
+
 	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockListType";
 	            }
@@ -57,19 +57,19 @@ public class OperationParserTest {
 		this.factory.registerParser(() -> {
 			final IStateParser p = mock(IStateParser.class);
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
-	 
+
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	tok.nextToken();
-	            	
+
 	            	if (tok.ttype == StreamTokenizer.TT_WORD) return factory.getType(null, "", tok.sval, ParserInternalTypeBase.ItemType.IDENTIFIER);
 	            	else if (tok.ttype == '[') return factory.parseTokens("LIST", null, tok, "");
 	            	else return ParserInternalTypeBase.EmptyType;
 	            }
 	        });
-			
+
 			when(p.getName()).thenAnswer(new Answer<String>() {
-	 
+
 	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockIdentifierType";
 	            }
@@ -79,18 +79,18 @@ public class OperationParserTest {
 		this.factory.registerParser(() -> {
 			final IStateParser p = mock(IStateParser.class);
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
-	 
+
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
 	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
 	            			tok.ttype != '}') System.err.println(String.format("<<<%c :: %s", tok.ttype<127?(tok.ttype>0?tok.ttype:'-'):'?', tok.sval));
-	            	
+
 	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.SECTION);
 	            }
 	        });
-			
+
 			when(p.getName()).thenAnswer(new Answer<String>() {
-	 
+
 	            public String answer(final InvocationOnMock invocation) throws Throwable {
 	                return "MockSectionType";
 	            }
@@ -272,7 +272,7 @@ public class OperationParserTest {
 		ParserInternalTypeBase testItem = Config.getFactory().parseTokens("OPERATION", null, t, "op");
 		assertEquals(ParserInternalTypeBase.EmptyType, testItem, "expect failed parse to return EmptyType");
 	}
-	
+
 	@Test
 	public final void testParseStartsAfterParens() {
 		Config.reset();

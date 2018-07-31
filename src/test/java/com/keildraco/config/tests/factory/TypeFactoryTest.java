@@ -92,7 +92,7 @@ public class TypeFactoryTest {
 			t.slashStarComments(true);
 			final ParserInternalTypeBase z = f.parseTokens("SECTION", null, t, "ROOT");
 			assertAll("Expect result to have a \"section1\" containing a \"section2\" and an \"identifier\" and for \"section2\" to have \"ident2\"",
-					() -> z.has("section1"), () -> z.get("section1").has("section2"), 
+					() -> z.has("section1"), () -> z.get("section1").has("section2"),
 					() -> z.get("section1").has("identifier"), () -> z.get("section1").get("section2").has("ident2"));
 		} catch(final Exception e) {
 			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");

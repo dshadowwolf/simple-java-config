@@ -36,27 +36,27 @@ public class Config {
 	private static final TypeFactory coreTypeFactory = new TypeFactory();
 	private static final List<ParserInternalTypeBase> internalTypes = Arrays.asList(
 			new IdentifierType(null, "", ""),
-			new ListType(null, "", ""), 
-			new SectionType(null, "", ""), 
+			new ListType(null, "", ""),
+			new SectionType(null, "", ""),
 			new OperationType(null, "", ""));
 	private static final Map<String, Class<? extends IStateParser>> internalParsers = new ConcurrentHashMap<>();
 	public static final Logger LOGGER = LogManager.getFormatterLogger("config");
-	
+
 	static {
 		internalParsers.put("KEYVALUE", KeyValueParser.class);
 		internalParsers.put("LIST", ListParser.class);
 		internalParsers.put("OPERATION", OperationParser.class);
 		internalParsers.put("SECTION", SectionParser.class);
 	}
-	
+
 	private Config() {
 		throw new IllegalAccessError("Class not instantiable!");
 	}
-	
+
 	public static TypeFactory getFactory() {
 		return coreTypeFactory;
 	}
-	
+
 	private static void registerParserInternal(final String name, final Class<? extends IStateParser> clazz) {
 		coreTypeFactory.registerParser(() -> {
 			Constructor<? extends IStateParser> c;
@@ -88,7 +88,7 @@ public class Config {
 	public static void registerType(final ItemType type, final Class<? extends ParserInternalTypeBase> clazz) {
 		registerTypeInternal(type, clazz);
 	}
-	
+
 	public static void registerParser(final String name, final Class<? extends IStateParser> clazz) {
 		registerParserInternal(name, clazz);
 	}
@@ -97,11 +97,11 @@ public class Config {
 		internalTypes.stream().forEach(type -> registerType(type.getType(), type.getClass()));
 		internalParsers.entrySet().stream().forEach(ent -> registerParser(ent.getKey(), ent.getValue()));
 	}
-	
+
 	public static void reset() {
 		coreTypeFactory.reset();
 	}
-	
+
 	private static SectionType runParser(final Reader reader) {
 		StreamTokenizer tok = new StreamTokenizer(reader);
 		tok.commentChar('#');
@@ -112,7 +112,7 @@ public class Config {
 		final ParserInternalTypeBase root = coreTypeFactory.getType(null, "root", "", ItemType.SECTION);
 		return (SectionType) coreTypeFactory.getParser("SECTION", root).getState(tok);
 	}
-	
+
 	private static FileSystem getFilesystemForURI(final URI uri) throws IOException {
 		if (uri.getScheme().equalsIgnoreCase("jar")) return FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
 		else return FileSystems.getDefault();
@@ -125,18 +125,17 @@ public class Config {
 		final SectionType res = runParser(br);
 		return DataQuery.of(res);
 	}
-	
+
 	public static DataQuery LoadFile(final Path filePath) throws IOException {
 		return LoadFile(filePath.toUri());
 	}
-	
+
 	public static DataQuery LoadFile(final String filePath) throws IOException {
 		return LoadFile(Paths.get(filePath).toUri());
 	}
-	
+
 	public static DataQuery parseString(final String data) {
 		final InputStreamReader isr = new InputStreamReader(IOUtils.toInputStream(data, StandardCharsets.UTF_8));
 		return DataQuery.of(runParser(isr));
 	}
-	
 }
