@@ -1,6 +1,6 @@
 package com.keildraco.config.data;
 
-import com.keildraco.config.types.*;
+import com.keildraco.config.types.SectionType;
 
 public class DataQuery {
 	private SectionType baseSection;
@@ -22,7 +22,7 @@ public class DataQuery {
 		} else if (key.indexOf('.') > 0) {
 			final String base = String.format("%s.all", key.substring(0, key.lastIndexOf('.')));
 			if (this.baseSection.has(base)) {
-				final String term = key.substring(key.lastIndexOf('.')+1);
+				final String term = key.substring(key.lastIndexOf('.') + 1);
 				return new ItemMatcher(this.baseSection.get(base)).matches(term);
 			} else {
 				return false;

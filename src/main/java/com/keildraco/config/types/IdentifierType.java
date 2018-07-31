@@ -30,12 +30,14 @@ public class IdentifierType extends ParserInternalTypeBase {
 
 	@Override
 	public ParserInternalTypeBase get(final String s) {
-		return this.has(s)?this:EmptyType;
+		return this.has(s) ? this : EmptyType;
 	}
 
 	@Override
 	public String asString() {
-		if (this.getName().equals("")) { return this.ident; }
+		if (this.getName().equals("")) {
+			return this.ident;
+		}
 		return String.format("%s = %s", this.getName(), this.ident);
 	}
 

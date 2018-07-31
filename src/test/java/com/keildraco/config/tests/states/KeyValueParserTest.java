@@ -1,29 +1,35 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.*;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.data.ItemMatcher;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.IStateParser;
 import com.keildraco.config.states.KeyValueParser;
-import com.keildraco.config.types.*;
+import com.keildraco.config.types.IdentifierType;
+import com.keildraco.config.types.ListType;
+import com.keildraco.config.types.OperationType;
+import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.types.SectionType;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class KeyValueParserTest {
@@ -38,10 +44,12 @@ public class KeyValueParserTest {
 			when(p.getState(isA(StreamTokenizer.class))).thenAnswer(new Answer<ParserInternalTypeBase>() {
 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
-	            	while (((StreamTokenizer) invocation.getArgument(0)).nextToken() != StreamTokenizer.TT_EOF &&
-	            			((StreamTokenizer) invocation.getArgument(0)).ttype != ']');
+	            	while (((StreamTokenizer) invocation.getArgument(0)).nextToken() != StreamTokenizer.TT_EOF
+	            			&& ((StreamTokenizer) invocation.getArgument(0)).ttype != ']');
 
-	            	if (((StreamTokenizer) invocation.getArgument(0)).ttype == ']') { ((StreamTokenizer) invocation.getArgument(0)).nextToken(); }
+	            	if (((StreamTokenizer) invocation.getArgument(0)).ttype == ']') {
+						((StreamTokenizer) invocation.getArgument(0)).nextToken();
+					}
 	                return new ListType(null, "", "");
 	            }
 	        });
@@ -60,8 +68,8 @@ public class KeyValueParserTest {
 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
-	            			tok.ttype != ')');
+	            	while (tok.nextToken() != StreamTokenizer.TT_EOF
+	            			&& tok.ttype != ')');
 
 	                return factory.getType(null, "", "", ItemType.OPERATION);
 	            }
@@ -89,7 +97,7 @@ public class KeyValueParserTest {
 			final KeyValueParser p = new KeyValueParser(this.factory, "KEYVALUE");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+			fail("Caught exception instanting a new KeyValueParser: " + e.getMessage());
 		}
 	}
 

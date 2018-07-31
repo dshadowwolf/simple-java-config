@@ -10,19 +10,22 @@ import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 public class OperationParser extends AbstractParserBase implements IStateParser {
+
 	public OperationParser(final TypeFactory factory) {
-		super(factory,null,"Well I'll Be Buggered");
+		super(factory, null, "Well I'll Be Buggered");
 	}
 
 	public OperationParser(final TypeFactory factory, final ParserInternalTypeBase parent, final String name) {
-		super(factory,parent,name);
+		super(factory, parent, name);
 	}
 
 	@Override
 	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
 		try {
 			tok.nextToken();
-			if (tok.ttype == '(') { tok.nextToken(); }
+			if (tok.ttype == '(') {
+				tok.nextToken();
+			}
 
 			if (tok.ttype != StreamTokenizer.TT_EOF) {
 				final String operator = this.getOperator(tok);
@@ -49,12 +52,16 @@ public class OperationParser extends AbstractParserBase implements IStateParser 
 
 	private String getIdentifier(final StreamTokenizer tok) {
 		this.nextToken(tok);
-		if (tok.ttype == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) { return tok.sval; }
+		if (tok.ttype == StreamTokenizer.TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
+			return tok.sval;
+		}
 		throw new IllegalArgumentException("IDENTIFIER not available in token stream");
 	}
 
 	private String getOperator(final StreamTokenizer tok) {
-		if (tok.ttype == '~' || tok.ttype == '!') { return String.format("%c", tok.ttype); }
+		if (tok.ttype == '~' || tok.ttype == '!') {
+			return String.format("%c", tok.ttype);
+		}
 		throw new IllegalArgumentException("OPERATOR not available in token stream");
 	}
 }

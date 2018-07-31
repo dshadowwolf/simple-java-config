@@ -10,8 +10,8 @@ public abstract class AbstractParserBase implements IStateParser {
 	protected boolean errored;
 	protected ParserInternalTypeBase parent;
 	protected String name;
-	
-	public AbstractParserBase(@Nullable TypeFactory factory, @Nullable ParserInternalTypeBase parent, String name) {
+
+	public AbstractParserBase(@Nullable final TypeFactory factory, @Nullable final ParserInternalTypeBase parent, final String name) {
 		this.factory = factory;
 		this.errored = false;
 		this.parent = parent;
@@ -19,7 +19,7 @@ public abstract class AbstractParserBase implements IStateParser {
 	}
 
 	@Override
-	public void setFactory(TypeFactory factory) {
+	public void setFactory(final TypeFactory factory) {
 		this.factory = factory;
 	}
 
@@ -39,7 +39,7 @@ public abstract class AbstractParserBase implements IStateParser {
 	}
 
 	@Override
-	public void setParent(ParserInternalTypeBase parent) {
+	public void setParent(final ParserInternalTypeBase parent) {
 		this.parent = parent;
 	}
 

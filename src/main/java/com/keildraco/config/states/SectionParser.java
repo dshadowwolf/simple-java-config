@@ -1,15 +1,15 @@
 package com.keildraco.config.states;
 
+import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
+import static java.io.StreamTokenizer.TT_EOF;
+import static java.io.StreamTokenizer.TT_WORD;
+
 import java.io.StreamTokenizer;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
-
-import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
-
-import static java.io.StreamTokenizer.*;
 
 public class SectionParser extends AbstractParserBase implements IStateParser {
 	private final SectionType section;
@@ -95,7 +95,9 @@ public class SectionParser extends AbstractParserBase implements IStateParser {
 
 	private static int getTokenType(final StreamTokenizer tok) {
 		if (tok.ttype == TT_WORD) {
-			if (tok.sval.matches(IDENTIFIER_PATTERN)) { return -1; }
+			if (tok.sval.matches(IDENTIFIER_PATTERN)) {
+				return -1;
+			}
 			return -4;
 		} else {
 			return tok.ttype;

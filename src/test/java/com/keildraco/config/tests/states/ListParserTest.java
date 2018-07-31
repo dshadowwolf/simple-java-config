@@ -1,29 +1,33 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.states.*;
-import com.keildraco.config.types.*;
-
-import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.states.IStateParser;
+import com.keildraco.config.states.ListParser;
+import com.keildraco.config.types.IdentifierType;
+import com.keildraco.config.types.ListType;
+import com.keildraco.config.types.OperationType;
+import com.keildraco.config.types.ParserInternalTypeBase;
+import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.types.SectionType;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class ListParserTest {
@@ -38,8 +42,8 @@ public class ListParserTest {
 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
-	            			tok.ttype != ')') ;
+	            	while (tok.nextToken() != StreamTokenizer.TT_EOF
+	            			&& tok.ttype != ')') ;
 
 	                return factory.getType(null, "", "", ItemType.OPERATION);
 	            }
@@ -67,7 +71,7 @@ public class ListParserTest {
 			final ListParser p = new ListParser(this.factory, "LIST");
 			assertTrue(true, "Expected to not get an exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+			fail("Caught exception instanting a new KeyValueParser: " + e.getMessage());
 		}
 	}
 
@@ -84,7 +88,6 @@ public class ListParserTest {
 		final ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
 		assertEquals("[ a_value, an_operator( ), false ]", k.asString());
 	}
-
 
 	@Test
 	public final void testGetStateErrorOne() {

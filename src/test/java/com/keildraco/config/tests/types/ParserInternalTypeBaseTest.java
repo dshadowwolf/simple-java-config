@@ -1,14 +1,18 @@
 package com.keildraco.config.tests.types;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.types.ParserInternalTypeBase;
 
@@ -44,7 +48,7 @@ public class ParserInternalTypeBaseTest {
 			final ParserInternalTypeBase testNoParent = new ParserInternalTypeBase("blargh");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Exception ("+e.getMessage()+") caught when not expected");
+			fail("Exception (" + e.getMessage() + ") caught when not expected");
 		}
 	}
 
@@ -58,7 +62,7 @@ public class ParserInternalTypeBaseTest {
 			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Exception ("+e.getMessage()+") caught when not expected");
+			fail("Exception (" + e.getMessage() + ") caught when not expected");
 		}
 	}
 
@@ -72,7 +76,7 @@ public class ParserInternalTypeBaseTest {
 			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(ParserInternalTypeBase.EmptyType, "blargh", "blech");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Exception ("+e.getMessage()+") caught when not expected");
+			fail("Exception (" + e.getMessage() + ") caught when not expected");
 		}
 	}
 
@@ -159,7 +163,7 @@ public class ParserInternalTypeBaseTest {
 			this.testItem.addItem(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
+			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
 	}
 
@@ -170,51 +174,51 @@ public class ParserInternalTypeBaseTest {
 	public final void testGetParent() {
 		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.getParent());
 	}
-	
+
 	@Test
 	public final void testEmptyTypeGet() {
 		assertNull(ParserInternalTypeBase.EmptyType.get("blargh"));
 	}
-	
+
 	@Test
 	public final void testEmptyTypeGetType() {
 		assertEquals(ParserInternalTypeBase.ItemType.EMPTY, ParserInternalTypeBase.EmptyType.getType());
 	}
-	
+
 	@Test
 	public final void testEmptyTypeAddItem() {
 		try {
 			ParserInternalTypeBase.EmptyType.addItem(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
+			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
 	}
-	
+
 	@Test
 	public final void testParserInternalTypeBaseGetNoMember() {
-		ParserInternalTypeBase p = new ParserInternalTypeBase("z");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("z");
 		assertEquals(ParserInternalTypeBase.EmptyType, p.get("blargh"));
 	}
-	
+
 	@Test
 	public final void testParserInternalTypeBaseGetValue() {
-		ParserInternalTypeBase p = new ParserInternalTypeBase("ZZTOP");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("ZZTOP");
 		assertEquals("", p.getValue());
 	}
 
 	@Test
 	public final void testParserInternalTypeBaseGetChildrenEmpty() {
-		ParserInternalTypeBase p = new ParserInternalTypeBase("ZZTOP");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("ZZTOP");
 		assertEquals(Collections.emptyMap(), p.getChildren());
 	}
 
 	@Test
 	public final void testParserInternalTypeBaseGetChildrenMembers() {
-		ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
-		ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
 		p.addItem(q);
-		Map<String, ParserInternalTypeBase> expectBase = new ConcurrentHashMap<>();
+		final Map<String, ParserInternalTypeBase> expectBase = new ConcurrentHashMap<>();
 		expectBase.put("ZZTOP", q);
 		assertEquals(Collections.unmodifiableMap(expectBase), p.getChildren());
 	}

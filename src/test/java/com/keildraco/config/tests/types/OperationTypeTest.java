@@ -1,6 +1,9 @@
 package com.keildraco.config.tests.types;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,9 +12,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.types.OperationType;
 import com.keildraco.config.types.ParserInternalTypeBase;
-
-import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
-import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class OperationTypeTest {
@@ -61,7 +62,7 @@ public class OperationTypeTest {
 			this.testItem.setOperation("!");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
+			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
 	}
 }

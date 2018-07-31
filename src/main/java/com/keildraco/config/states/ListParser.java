@@ -1,5 +1,7 @@
 package com.keildraco.config.states;
 
+import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
+
 import java.io.StreamTokenizer;
 import java.util.Collections;
 import java.util.Deque;
@@ -9,16 +11,16 @@ import java.util.stream.Collectors;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.types.*;
-
-import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
-import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
+import com.keildraco.config.types.ListType;
+import com.keildraco.config.types.ParserInternalTypeBase;
+import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 /**
  * @author Daniel Hazelton
  *
  */
 public class ListParser extends AbstractParserBase implements IStateParser {
+
 	/**
 	 *
 	 * @param factory
@@ -57,7 +59,7 @@ public class ListParser extends AbstractParserBase implements IStateParser {
 
 		final List<ParserInternalTypeBase> l = store.stream().collect(Collectors.toList());
 		Collections.reverse(l);
-		return l.contains(EmptyType)?EmptyType:new ListType(this.name, l);
+		return l.contains(EmptyType) ? EmptyType : new ListType(this.name, l);
 	}
 
 	private ParserInternalTypeBase getToken(final StreamTokenizer tok, final String ident) {

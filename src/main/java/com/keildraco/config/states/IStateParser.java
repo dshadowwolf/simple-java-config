@@ -1,22 +1,25 @@
 package com.keildraco.config.states;
 
+import static java.io.StreamTokenizer.TT_EOF;
+import static java.io.StreamTokenizer.TT_EOL;
+import static java.io.StreamTokenizer.TT_NUMBER;
+import static java.io.StreamTokenizer.TT_WORD;
+
 import java.io.IOException;
 import java.io.StreamTokenizer;
-
-import static java.io.StreamTokenizer.*;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
 public interface IStateParser {
-	public static final String IDENTIFIER_PATTERN = "^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$";
+	String IDENTIFIER_PATTERN = "^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$";
 
-	public void setFactory(TypeFactory factory);
+	void setFactory(TypeFactory factory);
 
-	public TypeFactory getFactory();
+	TypeFactory getFactory();
 
-	public default String ttypeToString(final int ttype) {
+	default String ttypeToString(final int ttype) {
 		switch (ttype) {
 		case TT_WORD:
 			return "TT_WORD";
@@ -31,11 +34,11 @@ public interface IStateParser {
 		}
 	}
 
-	public void setErrored();
+	void setErrored();
 
-	public boolean errored();
+	boolean errored();
 
-	public default int peekToken(final StreamTokenizer tok) {
+	default int peekToken(final StreamTokenizer tok) {
 		int k = StreamTokenizer.TT_EOF;
 		try {
 			k = tok.nextToken();
@@ -48,7 +51,7 @@ public interface IStateParser {
 		return k;
 	}
 
-	public default int nextToken(final StreamTokenizer tok) {
+	default int nextToken(final StreamTokenizer tok) {
 		int k = StreamTokenizer.TT_EOF;
 		try {
 			k = tok.nextToken();
@@ -59,15 +62,15 @@ public interface IStateParser {
 		return k;
 	}
 
-	public ParserInternalTypeBase getState(final StreamTokenizer tok);
+	ParserInternalTypeBase getState(StreamTokenizer tok);
 
-	public void setParent(final ParserInternalTypeBase parent);
+	void setParent(ParserInternalTypeBase parent);
 
-	public ParserInternalTypeBase getParent();
+	ParserInternalTypeBase getParent();
 
-	public default void setName(final String name) { /* this space intentionally blank */ }
+	default void setName(final String name) { /* this space intentionally blank */ }
 
-	public String getName();
+	String getName();
 
-	public void clearErrors();
+	void clearErrors();
 }

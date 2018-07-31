@@ -8,21 +8,32 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nullable;
 
 public class ParserInternalTypeBase {
+
 	private final ParserInternalTypeBase parent;
+
 	private String name;
-	protected final Map<String,ParserInternalTypeBase> items;
+
+	protected final Map<String, ParserInternalTypeBase> items;
+
 	public static final ParserInternalTypeBase EmptyType = new ParserInternalTypeBase("EMPTY") {
-		@Override
-		public boolean has(final String itemName) { return false; }
 
 		@Override
-		public ParserInternalTypeBase get(final String itemName) { return null; }
+		public boolean has(final String itemName) {
+			return false;
+		}
+
+		@Override
+		public ParserInternalTypeBase get(final String itemName) {
+			return null;
+		}
 
 		@Override
 		public void addItem(final ParserInternalTypeBase item) { /* the EmptyType does not store other items */ }
 
 		@Override
-	    public ItemType getType() { return ItemType.EMPTY; }
+	    public ItemType getType() {
+			return ItemType.EMPTY;
+		}
 	};
 
 	public ParserInternalTypeBase(final String name) {
@@ -41,10 +52,10 @@ public class ParserInternalTypeBase {
 
     public ParserInternalTypeBase get(final String itemName)  {
     	if (itemName.indexOf('.') > 0) {
-    		final String nameBits = itemName.substring(0,itemName.indexOf('.'));
+    		final String nameBits = itemName.substring(0, itemName.indexOf('.'));
     		if (this.has(nameBits)) {
-    			final String nameRest = itemName.substring(itemName.indexOf('.')+1);
-    			return this.get(nameBits)!=null?this.get(nameBits).get(nameRest):EmptyType;
+    			final String nameRest = itemName.substring(itemName.indexOf('.') + 1);
+    			return this.get(nameBits) != null ? this.get(nameBits).get(nameRest) : EmptyType;
     		}
     	} else if (this.has(itemName)) {
     		return this.items.get(itemName);
@@ -55,10 +66,10 @@ public class ParserInternalTypeBase {
     public boolean has(final String itemName) {
     	if (itemName.contains(".")) {
     		final String nn = itemName.substring(0, itemName.indexOf('.'));
-    		final String rest = itemName.substring(itemName.indexOf('.')+1);
+    		final String rest = itemName.substring(itemName.indexOf('.') + 1);
     		final boolean a = this.items.containsKey(nn);
-    		final boolean b = this.items.getOrDefault(nn,EmptyType).has(rest);
-    		return a&&b;
+    		final boolean b = this.items.getOrDefault(nn, EmptyType).has(rest);
+    		return a && b;
     	}
 
     	return this.items.containsKey(itemName);
@@ -68,7 +79,9 @@ public class ParserInternalTypeBase {
         SECTION, IDENTIFIER, NUMBER, BOOLEAN, LIST, OPERATION, INVALID, EMPTY;
     }
 
-    public ItemType getType() { return ItemType.INVALID; }
+    public ItemType getType() {
+    	return ItemType.INVALID;
+    }
 
     public String asString() {
     	return "BaseType()";
@@ -95,15 +108,15 @@ public class ParserInternalTypeBase {
     }
 
     public void addItem(final ParserInternalTypeBase item) {
-    	this.items.put(item.getName(),item);
+    	this.items.put(item.getName(), item);
     }
 
     public Map<String, ParserInternalTypeBase> getChildren() {
-    	return this.items.isEmpty()?Collections.emptyMap():Collections.unmodifiableMap(this.items);
+    	return this.items.isEmpty() ? Collections.emptyMap() : Collections.unmodifiableMap(this.items);
     }
 
     public ParserInternalTypeBase getParent() {
-    	return this.parent!=null?this.parent:EmptyType;
+    	return this.parent != null ? this.parent : EmptyType;
     }
 
     public String getValue() {

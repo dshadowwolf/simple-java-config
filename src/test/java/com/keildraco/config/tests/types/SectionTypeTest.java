@@ -1,12 +1,17 @@
 package com.keildraco.config.tests.types;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import com.keildraco.config.types.*;
+import com.keildraco.config.types.IdentifierType;
+import com.keildraco.config.types.ParserInternalTypeBase;
+import com.keildraco.config.types.SectionType;
 
 /**
  * @author Daniel Hazelton
@@ -49,7 +54,7 @@ public class SectionTypeTest {
 			testItem2.addItem(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
+			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
 	}
 
@@ -63,10 +68,10 @@ public class SectionTypeTest {
 
 	@Test
 	public final void testAsString() {
-		final String result = String.format("blargh = blech%n" +
-				" CHILD {%n" +
-				" blargh = foobar%n" +
-				"}");
+		final String result = String.format("blargh = blech%n"
+				+ " CHILD {%n"
+				+ " blargh = foobar%n"
+				+ "}");
 		assertEquals(result, this.root.asString().trim());
 	}
 }

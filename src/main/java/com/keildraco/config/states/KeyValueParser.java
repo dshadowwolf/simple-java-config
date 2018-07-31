@@ -1,23 +1,23 @@
 package com.keildraco.config.states;
 
+import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
 import static java.io.StreamTokenizer.TT_WORD;
 
 import java.io.StreamTokenizer;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.types.*;
+import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
-import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
-
 public class KeyValueParser extends AbstractParserBase implements IStateParser {
+
 	public KeyValueParser(final TypeFactory factory, final String name) {
 		super(factory, null, name);
 	}
 
 	public KeyValueParser(final TypeFactory factory) {
-		super(factory,null, "Well I'll Be Buggered");
+		super(factory, null, "Well I'll Be Buggered");
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class KeyValueParser extends AbstractParserBase implements IStateParser {
 			tok.pushBack();
 			return EmptyType;
 		} else {
-			Config.LOGGER.error("ERROR! ERROR! ERROR! - Error parsing at line "+tok.lineno());
+			Config.LOGGER.error("ERROR! ERROR! ERROR! - Error parsing at line " + tok.lineno());
 			tok.pushBack();
 			return EmptyType;
 		}

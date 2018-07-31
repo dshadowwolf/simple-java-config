@@ -1,7 +1,10 @@
 package com.keildraco.config.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
+import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
@@ -10,16 +13,15 @@ import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.Test;
+
 import com.keildraco.config.Config;
-import com.keildraco.config.types.ParserInternalTypeBase;
-import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
-
-import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
-
 import com.keildraco.config.data.DataQuery;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.IStateParser;
 import com.keildraco.config.states.SectionParser;
+import com.keildraco.config.types.ParserInternalTypeBase;
+import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 public class ConfigAPITest {
 
@@ -146,6 +148,7 @@ public class ConfigAPITest {
 			super(parent, name);
 		}
 	}
+
 	protected class BrokenParser implements IStateParser {
 		public BrokenParser(final String blargh) {
 		}

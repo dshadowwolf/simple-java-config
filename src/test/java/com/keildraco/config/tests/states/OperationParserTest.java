@@ -1,30 +1,34 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.states.*;
-import com.keildraco.config.types.*;
-
-import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.states.IStateParser;
+import com.keildraco.config.states.OperationParser;
+import com.keildraco.config.types.IdentifierType;
+import com.keildraco.config.types.ListType;
+import com.keildraco.config.types.OperationType;
+import com.keildraco.config.types.ParserInternalTypeBase;
+import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.types.SectionType;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class OperationParserTest {
@@ -39,8 +43,8 @@ public class OperationParserTest {
 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
-	            			tok.ttype != ']') System.err.println(String.format("<<<%c :: %s", tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype : '-') : '?', tok.sval));
+	            	while (tok.nextToken() != StreamTokenizer.TT_EOF
+	            			&& tok.ttype != ']') System.err.println(String.format("<<<%c :: %s", tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype : '-') : '?', tok.sval));
 
 	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.LIST);
 	            }
@@ -86,8 +90,8 @@ public class OperationParserTest {
 
 	            public ParserInternalTypeBase answer(final InvocationOnMock invocation) throws Throwable {
 	            	final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-	            	while (tok.nextToken() != StreamTokenizer.TT_EOF &&
-	            			tok.ttype != '}') System.err.println(String.format("<<<%c :: %s", tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype:'-'):'?', tok.sval));
+	            	while (tok.nextToken() != StreamTokenizer.TT_EOF
+	            			&& tok.ttype != '}') System.err.println(String.format("<<<%c :: %s", tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype : '-') : '?', tok.sval));
 
 	                return factory.getType(null, "", "", ParserInternalTypeBase.ItemType.SECTION);
 	            }
@@ -115,7 +119,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+			fail("Caught exception instanting a new KeyValueParser: " + e.getMessage());
 		}
 	}
 
@@ -126,7 +130,7 @@ public class OperationParserTest {
 			final OperationParser p = new OperationParser(this.factory, null, "BUGGER");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+			fail("Caught exception instanting a new KeyValueParser: " + e.getMessage());
 		}
 	}
 

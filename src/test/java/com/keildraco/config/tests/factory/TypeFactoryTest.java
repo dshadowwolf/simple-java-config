@@ -1,19 +1,32 @@
 package com.keildraco.config.tests.factory;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.states.*;
-import com.keildraco.config.types.*;
+import com.keildraco.config.states.IStateParser;
+import com.keildraco.config.states.KeyValueParser;
+import com.keildraco.config.states.ListParser;
+import com.keildraco.config.states.SectionParser;
+import com.keildraco.config.types.IdentifierType;
+import com.keildraco.config.types.ListType;
+import com.keildraco.config.types.OperationType;
+import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.types.SectionType;
 
 public class TypeFactoryTest {
 	@Test
@@ -23,7 +36,7 @@ public class TypeFactoryTest {
 			final TypeFactory f = new TypeFactory();
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");
+			fail("Caught exception " + e.getMessage() + " when trying to instantiate a TypeFactory");
 		}
 	}
 
@@ -34,7 +47,7 @@ public class TypeFactoryTest {
 			f.registerType((parent, name, value) -> new IdentifierType(parent, name, value), ItemType.BOOLEAN);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");
+			fail("Caught exception " + e.getMessage() + " when trying to instantiate a TypeFactory");
 		}
 	}
 
@@ -45,7 +58,7 @@ public class TypeFactoryTest {
 			f.registerType((parent, name, value) -> new IdentifierType(parent, name, value), ItemType.BOOLEAN);
 			assertNotEquals(ParserInternalTypeBase.EmptyType, f.getType(null, "", "", ItemType.BOOLEAN));
 		} catch (final Exception e) {
-			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");
+			fail("Caught exception " + e.getMessage() + " when trying to instantiate a TypeFactory");
 		}
 	}
 
@@ -56,7 +69,7 @@ public class TypeFactoryTest {
 			f.registerParser(() -> new SectionParser(f, null, ""), "SECTION");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");
+			fail("Caught exception " + e.getMessage() + " when trying to instantiate a TypeFactory");
 		}
 	}
 
@@ -68,7 +81,7 @@ public class TypeFactoryTest {
 			final IStateParser g = f.getParser("SECTION", null);
 			assertNotNull(g, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");
+			fail("Caught exception " + e.getMessage() + " when trying to instantiate a TypeFactory");
 		}
 	}
 
@@ -96,15 +109,15 @@ public class TypeFactoryTest {
 					() -> z.has("section1"), () -> z.get("section1").has("section2"),
 					() -> z.get("section1").has("identifier"), () -> z.get("section1").get("section2").has("ident2"));
 		} catch (final Exception e) {
-			fail("Caught exception "+e.getMessage()+" when trying to instantiate a TypeFactory");
+			fail("Caught exception " + e.getMessage() + " when trying to instantiate a TypeFactory");
 		}
 	}
-	
+
 	@Test
 	public final void testRequestMissingParser() {
 		Config.reset();
 		Config.registerKnownParts();
-		IStateParser p = Config.getFactory().getParser("NOSUCHPARSER", null);
+		final IStateParser p = Config.getFactory().getParser("NOSUCHPARSER", null);
 		assertNull(p, "parser with name \"NOSUCHPARSER\" was never registered, should return null");
 	}
 
@@ -123,5 +136,4 @@ public class TypeFactoryTest {
 		final ParserInternalTypeBase z = Config.getFactory().parseTokens("NOSUCHPARSER", null, t, "ROOT");
 		assertEquals(ParserInternalTypeBase.EmptyType, z, "parseTokens with nonexistant parser should return EmptyType");
 	}
-
 }

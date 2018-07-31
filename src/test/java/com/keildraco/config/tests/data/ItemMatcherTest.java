@@ -1,24 +1,28 @@
 package com.keildraco.config.tests.data;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.data.ItemMatcher;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.OperationType;
 import com.keildraco.config.types.ParserInternalTypeBase;
-import com.keildraco.config.types.SectionType;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.types.SectionType;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class ItemMatcherTest {
@@ -46,7 +50,7 @@ public class ItemMatcherTest {
 			@SuppressWarnings("unused")
 			final ItemMatcher m = new ItemMatcher(s);
 		} catch (final Exception e) {
-			fail("Caught exception instantiating an ItemMatcher: "+e);
+			fail("Caught exception instantiating an ItemMatcher: " + e);
 		}
 		assertTrue(true, "No exceptions instantiating an ItemMatcher");
 	}
@@ -57,7 +61,7 @@ public class ItemMatcherTest {
 			final ItemMatcher m = new ItemMatcher(new IdentifierType("ident"));
 			assertTrue(m.matches("ident"), "ItemMatcher returns true");
 		} catch (final Exception e) {
-			fail("Caught exception instantiating an ItemMatcher: "+e);
+			fail("Caught exception instantiating an ItemMatcher: " + e);
 		}
 	}
 
@@ -114,14 +118,14 @@ public class ItemMatcherTest {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.hotel"));
 		assertFalse(m.matches("hotel.lima"), "Identifer \"hotel\" matches 'hotel'");
 	}
-	
+
 	@Test
 	public final void testMatchIdentifierLongNoMatchName() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section.hotel"));
 		assertFalse(m.matches("golf.hotel"), "Identifer \"hotel\" matches 'hotel'");
 	}
-	
-	private final boolean noMatch(final ItemMatcher m, final String key) {
+
+	private boolean noMatch(final ItemMatcher m, final String key) {
 		return !m.matches(key);
 	}
 
@@ -134,9 +138,9 @@ public class ItemMatcherTest {
 	@Test
 	public final void testMatchSection() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section"));
-		assertAll("Section matches \"list\" and \"echo\"", () -> m.matches("list"),() -> m.matches("echo"));
+		assertAll("Section matches \"list\" and \"echo\"", () -> m.matches("list"), () -> m.matches("echo"));
 	}
-	
+
 	@Test
 	public final void testMatchSectionLong() {
 		final ItemMatcher m = new ItemMatcher(this.base.get("section"));
@@ -195,7 +199,7 @@ public class ItemMatcherTest {
 		final ItemMatcher m = new ItemMatcher(op);
 		assertEquals(Boolean.TRUE, m.matches("op.alpha"));
 	}
-	
+
 	@Test
 	public final void testItemMatchDoMatchDefault() {
 		final ItemMatcher m = new ItemMatcher(ParserInternalTypeBase.EmptyType);

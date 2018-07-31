@@ -1,19 +1,19 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+
+import java.io.IOException;
+import java.io.StreamTokenizer;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.doThrow;
-
-
-import java.io.IOException;
-import java.io.StreamTokenizer;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.states.IStateParser;
@@ -78,7 +78,7 @@ public class IStateParserTests {
 		@SuppressWarnings("unused")
 		final int z = p.nextToken(tok);
 		} catch (final Exception e) {
-		fail("unexpected exception: "+e.getMessage());
+		fail("unexpected exception: " + e.getMessage());
 		}
 		assertTrue(p.errored(), "parser is in an error state");
 	}
@@ -92,7 +92,7 @@ public class IStateParserTests {
 		@SuppressWarnings("unused")
 		final int z = p.peekToken(tok);
 		} catch (final Exception e) {
-		fail("unexpected exception: "+e.getMessage());
+		fail("unexpected exception: " + e.getMessage());
 		}
 		assertTrue(p.errored(), "parser is in an error state");
 	}

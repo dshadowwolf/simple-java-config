@@ -21,15 +21,22 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.keildraco.config.data.DataQuery;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.types.*;
-import com.keildraco.config.states.*;
-
-import static com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.states.IStateParser;
+import com.keildraco.config.states.KeyValueParser;
+import com.keildraco.config.states.ListParser;
+import com.keildraco.config.states.OperationParser;
+import com.keildraco.config.states.SectionParser;
+import com.keildraco.config.types.IdentifierType;
+import com.keildraco.config.types.ListType;
+import com.keildraco.config.types.OperationType;
+import com.keildraco.config.types.ParserInternalTypeBase;
+import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.types.SectionType;
 
 public class Config {
 	private static final TypeFactory coreTypeFactory = new TypeFactory();

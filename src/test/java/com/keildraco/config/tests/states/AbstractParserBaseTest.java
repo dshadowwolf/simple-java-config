@@ -1,6 +1,8 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +19,7 @@ class AbstractParserBaseTest {
 			p.setFactory(Config.getFactory());
 			assertTrue(true, "Expected setFactory() to not have an exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+			fail("Caught exception instanting a new KeyValueParser: " + e.getMessage());
 		}
 	}
 
@@ -34,8 +36,7 @@ class AbstractParserBaseTest {
 			p.setParent(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected setParent() to not have an exception");
 		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: "+e.getMessage());
+			fail("Caught exception instanting a new KeyValueParser: " + e.getMessage());
 		}
 	}
-
 }

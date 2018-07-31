@@ -1,6 +1,10 @@
 package com.keildraco.config.tests.types;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -84,7 +88,7 @@ public class IdentifierTypeTest {
 			this.testItem.addItem(ParserInternalTypeBase.EmptyType);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
-			fail("Exception ("+e.getMessage()+" :: "+e+") caught when not expected");
+			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
 	}
 
