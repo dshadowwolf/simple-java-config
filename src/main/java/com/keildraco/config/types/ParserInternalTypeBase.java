@@ -67,9 +67,12 @@ public class ParserInternalTypeBase {
 	public ParserInternalTypeBase get(final String itemName) {
 		if (itemName.indexOf('.') > 0) {
 			final String nameBits = itemName.substring(0, itemName.indexOf('.'));
+			final String nameRest = itemName.substring(itemName.indexOf('.') + 1);
 			if (this.has(nameBits)) {
-				final String nameRest = itemName.substring(itemName.indexOf('.') + 1);
-				return this.get(nameBits) != null ? this.get(nameBits).get(nameRest) : EmptyType;
+				/* this had an extraneous null check originally... if 'this.has()' returns true, then this.get() should not be null */
+				return this.get(nameBits).get(nameRest);
+			} else if(this.getName().equalsIgnoreCase(nameBits) && this.has(nameRest)) {
+				return this.items.get(nameRest);
 			}
 		} else if (this.has(itemName)) {
 			return this.items.get(itemName);

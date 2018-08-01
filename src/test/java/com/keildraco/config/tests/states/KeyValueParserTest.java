@@ -221,4 +221,23 @@ public class KeyValueParserTest {
 				"other");
 		assertTrue((new ItemMatcher(k)).matches("other.etc"), "expect value match");
 	}
+	
+	@Test
+	public final void testNonIdentifier() {
+		Config.reset();
+		Config.registerKnownParts();
+		final String testString = "a-n_ident = other\n";
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		final IStateParser p = Config.getFactory().getParser("KEYVALUE", null);
+		final ParserInternalTypeBase k = p.getState(t);
+		assertEquals(ParserInternalTypeBase.EmptyType, k, "expect EmptyType due to malformation");
+	}
+
 }

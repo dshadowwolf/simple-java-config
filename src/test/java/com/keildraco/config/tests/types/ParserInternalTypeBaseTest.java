@@ -233,4 +233,45 @@ public class ParserInternalTypeBaseTest {
 		expectBase.put("ZZTOP", q);
 		assertEquals(Collections.unmodifiableMap(expectBase), p.getChildren());
 	}
+	
+	@Test
+	public final void testParserInternalTypeBaseGetItemLongNone() {
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		p.addItem(q);
+		assertEquals(ParserInternalTypeBase.EmptyType, p.get("ZZTOP.MUZAK"));
+	}
+
+	@Test
+	public final void testParserInternalTypeBaseGetItemLongValid() {
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		p.addItem(q);
+		assertEquals(q, p.get("MUZAK.ZZTOP"));
+	}
+
+	@Test
+	public final void testParserInternalTypeBaseGetItemLongCondTestOne() {
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		p.addItem(q);
+		assertEquals(ParserInternalTypeBase.EmptyType, p.get("ZZTOP.ZZTOP"));
+	}
+	
+	@Test
+	public final void testParserInternalTypeBaseGetItemLongCondTestTwo() {
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		p.addItem(q);
+		assertEquals(ParserInternalTypeBase.EmptyType, p.get("MUZAK.MUZAK"));
+	}
+
+	@Test
+	public final void testParserInternalTypeBaseGetItemLongCondTestThree() {
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		p.addItem(q);
+		assertEquals(ParserInternalTypeBase.EmptyType, p.get("BLARGH.BLECH"));
+	}
+
 }
