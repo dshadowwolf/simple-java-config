@@ -174,6 +174,11 @@ public class ConfigAPITest {
 		}
 
 		@Override
+		public void setName(final String name) {
+			// intentionally blank
+		}
+		
+		@Override
 		public void setFactory(final TypeFactory factory) {
 			// blank, not needed
 		}

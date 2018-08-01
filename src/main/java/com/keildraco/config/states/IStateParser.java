@@ -84,10 +84,7 @@ public interface IStateParser {
 
 	ParserInternalTypeBase getParent();
 
-	default void setName(final String name) {
-		/* this space intentionally blank */
-	}
-
+	void setName(final String name);
 	String getName();
 
 	void clearErrors();
