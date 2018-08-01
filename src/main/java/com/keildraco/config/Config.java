@@ -1,6 +1,7 @@
 package com.keildraco.config;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
@@ -10,12 +11,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystemAlreadyExistsException;
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -144,6 +141,11 @@ public final class Config {
 				.cast(coreTypeFactory.getParser("SECTION", (SectionType) root).getState(tok));
 	}
 
+	public static DataQuery parseStream(InputStream is) {
+		InputStreamReader br = new InputStreamReader(is);
+		final SectionType res = runParser(br);
+		return DataQuery.of(res);
+	}
 	/**
 	 *
 	 * @param filePath
@@ -151,18 +153,7 @@ public final class Config {
 	 * @throws IOException
 	 */
 	public static DataQuery loadFile(final URI filePath) throws IOException {
-		Config.LOGGER.fatal("(loadFile(URI) Asked to load %s", filePath);
-		FileSystem fs;
-		try {
-			fs = FileSystems.newFileSystem(filePath, Collections.<String,  Object>emptyMap());
-		} catch(FileSystemAlreadyExistsException e) {
-			fs = FileSystems.getFileSystem(filePath);
-		}
-		Config.LOGGER.fatal("FS is: %s", fs);
-		InputStreamReader br = new InputStreamReader(filePath.toURL().openStream());
-		Config.LOGGER.fatal("br: %s", br.toString());
-		final SectionType res = runParser(br);
-		return DataQuery.of(res);
+		return parseStream(filePath.toURL().openStream());
 	}
 
 	public static DataQuery loadFile(final Path filePath) throws IOException, URISyntaxException {
@@ -186,8 +177,6 @@ public final class Config {
 	 * @return
 	 */
 	public static DataQuery parseString(final String data) {
-		final InputStreamReader isr = new InputStreamReader(
-				IOUtils.toInputStream(data, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-		return DataQuery.of(runParser(isr));
+		return parseStream(IOUtils.toInputStream(data, StandardCharsets.UTF_8));
 	}
 }
