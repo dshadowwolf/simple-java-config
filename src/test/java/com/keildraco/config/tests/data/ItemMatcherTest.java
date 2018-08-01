@@ -219,4 +219,13 @@ public class ItemMatcherTest {
 		final ItemMatcher m = new ItemMatcher(ParserInternalTypeBase.EmptyType);
 		assertFalse(m.matches("foobar"));
 	}
+	
+	@Test
+	public final void testItemMatchOperatorNameMatchNoValueLength() {
+		final OperationType op = (OperationType) Config.getFactory().getType(null, "op", "op",
+				ItemType.OPERATION);
+		op.setOperation("~");
+		final ItemMatcher m = new ItemMatcher(op);
+		assertEquals(Boolean.TRUE, m.matches("op"));
+	}
 }

@@ -48,13 +48,13 @@ public class ListParser extends AbstractParserBase {
 			if (p == '[') {
 				continue;
 			}
-			if (!this.errored && p == StreamTokenizer.TT_WORD
+			if (!this.errored() && p == StreamTokenizer.TT_WORD
 					&& tok.sval.matches(IDENTIFIER_PATTERN)) {
 				ident = tok.sval;
 				final ParserInternalTypeBase temp = this.getToken(tok, ident);
 				temp.setName(ident);
 				store.push(temp);
-			} else if (p == StreamTokenizer.TT_WORD) {
+			} else if (p == StreamTokenizer.TT_WORD && !this.errored()) {
 				Config.LOGGER.fatal(
 						"Error loading list, did not find TT_WORD matching %s where expected (%s found)",
 						IDENTIFIER_PATTERN, tok.sval);

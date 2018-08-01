@@ -135,4 +135,21 @@ public class ListParserTest {
 		assertEquals(ParserInternalTypeBase.EmptyType, k,
 				"k should be EmptyType due to bad format of input");
 	}
+
+	@Test
+	public final void testGetStateErrorThree() {
+		final String testString = "[ a_value, ?, an_operator(!ident), false true ]\n\n";
+		final InputStreamReader isr = new InputStreamReader(
+				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+		final StreamTokenizer t = new StreamTokenizer(isr);
+		t.commentChar('#');
+		t.wordChars('_', '_');
+		t.wordChars('-', '-');
+		t.wordChars('0', '9');
+		t.slashSlashComments(true);
+		t.slashStarComments(true);
+		final ParserInternalTypeBase k = this.factory.parseTokens("LIST", null, t, "");
+		assertEquals(ParserInternalTypeBase.EmptyType, k,
+				"k should be EmptyType due to bad format of input");
+	}
 }
