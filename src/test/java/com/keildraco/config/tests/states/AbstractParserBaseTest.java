@@ -5,13 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.states.AbstractParserBase;
 import com.keildraco.config.states.ListParser;
 import com.keildraco.config.types.ParserInternalTypeBase;
 
-class AbstractParserBaseTest {
+@TestInstance(Lifecycle.PER_CLASS)
+public final class AbstractParserBaseTest {
 
 	@Test
 	final void testSetFactory() {

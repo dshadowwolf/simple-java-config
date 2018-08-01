@@ -20,6 +20,8 @@ import java.nio.file.Paths;
 import java.util.Enumeration;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.data.DataQuery;
@@ -29,7 +31,7 @@ import com.keildraco.config.states.SectionParser;
 import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
-public class ConfigAPITest {
+public final class ConfigAPITest {
 
 	@Test
 	public final void testRegisterType() {
@@ -164,7 +166,7 @@ public class ConfigAPITest {
 		}
 	}
 
-	protected class BrokenParser implements IStateParser {
+	protected final class BrokenParser implements IStateParser {
 
 		public BrokenParser(final String blargh) {
 		}

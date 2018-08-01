@@ -38,7 +38,7 @@ import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.SectionType;
 
-public class Config {
+public final class Config {
 
 	private static final TypeFactory coreTypeFactory = new TypeFactory();
 

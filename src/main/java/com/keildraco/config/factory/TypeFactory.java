@@ -13,7 +13,7 @@ import com.keildraco.config.types.ParserInternalTypeBase;
  * @author Daniel Hazelton
  *
  */
-public class TypeFactory {
+public final class TypeFactory {
 
 	private final Map<ParserInternalTypeBase.ItemType, IParserType> typeMap;
 

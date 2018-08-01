@@ -2,7 +2,7 @@ package com.keildraco.config.types;
 
 import javax.annotation.Nullable;
 
-public class SectionType extends ParserInternalTypeBase {
+public final class SectionType extends ParserInternalTypeBase {
 
 	public SectionType(final String name) {
 		this(null, name);

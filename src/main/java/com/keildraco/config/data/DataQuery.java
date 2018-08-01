@@ -2,7 +2,7 @@ package com.keildraco.config.data;
 
 import com.keildraco.config.types.SectionType;
 
-public class DataQuery {
+public final class DataQuery {
 
 	private SectionType baseSection;
 
