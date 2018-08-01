@@ -18,7 +18,7 @@ import com.keildraco.config.types.SectionType;
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-public class SectionTypeTest {
+public final class SectionTypeTest {
 
 	private SectionType root;
 	private SectionType child;

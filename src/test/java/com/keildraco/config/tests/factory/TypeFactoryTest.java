@@ -28,7 +28,7 @@ import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.SectionType;
 
-public class TypeFactoryTest {
+public final class TypeFactoryTest {
 
 	@Test
 	public final void testTypeFactory() {

@@ -37,7 +37,7 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.SectionType;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class SectionParserTest {
+public final class SectionParserTest {
 
 	private TypeFactory factory;
 

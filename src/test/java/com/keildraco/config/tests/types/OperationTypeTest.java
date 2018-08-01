@@ -15,7 +15,7 @@ import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class OperationTypeTest {
+public final class OperationTypeTest {
 
 	private OperationType testItem;
 

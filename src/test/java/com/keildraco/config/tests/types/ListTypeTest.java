@@ -21,7 +21,7 @@ import com.keildraco.config.types.ParserInternalTypeBase;
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-public class ListTypeTest {
+public final class ListTypeTest {
 
 	private ListType testItem;
 

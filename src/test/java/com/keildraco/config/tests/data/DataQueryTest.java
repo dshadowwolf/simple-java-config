@@ -16,7 +16,7 @@ import com.keildraco.config.Config;
 import com.keildraco.config.data.DataQuery;
 import com.keildraco.config.types.SectionType;
 
-public class DataQueryTest {
+public final class DataQueryTest {
 
 	@BeforeEach
 	public final void cleanup() {

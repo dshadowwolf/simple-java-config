@@ -19,7 +19,7 @@ import com.keildraco.config.Config;
 import com.keildraco.config.states.IStateParser;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class IStateParserTests {
+public final class IStateParserTests {
 
 	private IStateParser p;
 

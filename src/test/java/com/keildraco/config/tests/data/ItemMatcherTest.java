@@ -25,7 +25,7 @@ import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.SectionType;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class ItemMatcherTest {
+public final class ItemMatcherTest {
 
 	private ParserInternalTypeBase base;
 

@@ -18,7 +18,7 @@ import com.keildraco.config.types.ParserInternalTypeBase;
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-public class IdentifierTypeTest {
+public final class IdentifierTypeTest {
 
 	private IdentifierType testItem;
 

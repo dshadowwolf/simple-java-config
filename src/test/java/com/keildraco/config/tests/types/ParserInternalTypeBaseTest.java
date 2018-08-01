@@ -21,7 +21,7 @@ import com.keildraco.config.types.ParserInternalTypeBase;
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-public class ParserInternalTypeBaseTest {
+public final class ParserInternalTypeBaseTest {
 
 	private ParserInternalTypeBase testItem;
 	private ParserInternalTypeBase testFoobar;
