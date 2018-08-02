@@ -9,8 +9,8 @@ public class Tokenizer {
 	private final StreamTokenizer baseTokenizer;
 	private final Deque<Token> tokens;
 
-	public enum TokenType {
-		IDENTIFIER, STORE, OPEN_BRACE, CLOSE_BRACE, OPEN_PARENS, CLOSE_PARENS, TILDE, NOT, OPEN_LIST, CLOSE_LIST, LIST_SEPER, UNKNOWN;
+	enum TokenType {
+		IDENTIFIER, STORE, OPEN_BRACE, CLOSE_BRACE, OPEN_PARENS, CLOSE_PARENS, TILDE, NOT, UNKNOWN;
 	}
 
 	public class Token {
@@ -44,15 +44,6 @@ public class Tokenizer {
 				case "!":
 					this.type = TokenType.NOT;
 					break;
-				case "[":
-					this.type = TokenType.OPEN_LIST;
-					break;
-				case "]":
-					this.type = TokenType.CLOSE_LIST;
-					break;
-				case ",":
-					this.type = TokenType.LIST_SEPER;
-					break;
 				default:
 					this.type = TokenType.UNKNOWN;
 					break;
@@ -81,8 +72,8 @@ public class Tokenizer {
 		int p;
 		while((p = this.baseTokenizer.nextToken()) != StreamTokenizer.TT_EOF) {
 			if(p == StreamTokenizer.TT_WORD) this.tokens.addLast(new Token(this.baseTokenizer.sval));
-			else this.tokens.addLast(new Token(String.format("%c", p)));
-
+			else if(p != StreamTokenizer.TT_NUMBER && p != StreamTokenizer.TT_EOL) this.tokens.addLast(new Token(String.format("%c", p)));
+			else this.tokens.addLast(new Token(String.format("-%s-%c-", this.baseTokenizer.sval, p>0&&p<127?p:0x01)));
 		}
 	}
 
@@ -91,7 +82,7 @@ public class Tokenizer {
 	}
 	
 	public boolean hasNext() {
-		return !this.tokens.isEmpty();
+		return this.tokens.isEmpty();
 	}
 	
 	public Token peekToken() {
