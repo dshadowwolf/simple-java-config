@@ -1,304 +1,76 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Optional;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import com.keildraco.config.Config;
+import com.keildraco.config.exceptions.GenericParseException;
+import com.keildraco.config.exceptions.IllegalParserStateException;
+import com.keildraco.config.exceptions.UnknownStateException;
+import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.states.IStateParser;
+import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.SectionParser;
-import com.keildraco.config.types.IdentifierType;
-import com.keildraco.config.types.ListType;
-import com.keildraco.config.types.OperationType;
-import com.keildraco.config.types.ParserInternalTypeBase;
-import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
-import com.keildraco.config.types.SectionType;
 
-@TestInstance(Lifecycle.PER_CLASS)
-public final class SectionParserTest {
-
-	private TypeFactory factory;
-
-	/**
-	 *
-	 * @throws Exception
-	 */
-	@BeforeAll
-	public void setUp() throws Exception {
-
-		this.factory = new TypeFactory();
-		this.factory.registerParser(() -> {
-			final IStateParser p = mock(IStateParser.class);
-			when(p.getState(isA(StreamTokenizer.class)))
-					.thenAnswer(new Answer<ParserInternalTypeBase>() {
-
-						public ParserInternalTypeBase answer(final InvocationOnMock invocation)
-								throws Throwable {
-							final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-							while (tok.nextToken() != StreamTokenizer.TT_EOF && tok.ttype != ']') {
-								System.err.println(String.format("<<<%c :: %s",
-										tok.ttype < 127 ? (tok.ttype > 0 ? tok.ttype : '-') : '?',
-										tok.sval));
-							}
-
-							return factory.getType(null, "", "",
-									ParserInternalTypeBase.ItemType.LIST);
-						}
-					});
-
-			when(p.getName()).thenAnswer(new Answer<String>() {
-
-				public String answer(final InvocationOnMock invocation) throws Throwable {
-					return "MockListType";
-				}
-			});
-			return p;
-		}, "LIST");
-		this.factory.registerParser(() -> {
-			final IStateParser p = mock(IStateParser.class);
-			when(p.getState(isA(StreamTokenizer.class)))
-					.thenAnswer(new Answer<ParserInternalTypeBase>() {
-
-						public ParserInternalTypeBase answer(final InvocationOnMock invocation)
-								throws Throwable {
-							final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-							tok.nextToken();
-
-							if (tok.ttype == StreamTokenizer.TT_WORD) {
-								return factory.getType(null, "", tok.sval,
-										ParserInternalTypeBase.ItemType.IDENTIFIER);
-							} else if (tok.ttype == '[') {
-								return factory.parseTokens("LIST", null, tok, "");
-							} else {
-								return ParserInternalTypeBase.EmptyType;
-							}
-						}
-					});
-
-			when(p.getName()).thenAnswer(new Answer<String>() {
-
-				public String answer(final InvocationOnMock invocation) throws Throwable {
-					return "MockIdentifierType";
-				}
-			});
-			return p;
-		}, "KEYVALUE");
-		this.factory.registerParser(() -> {
-			final IStateParser p = mock(IStateParser.class);
-			when(p.getState(isA(StreamTokenizer.class)))
-					.thenAnswer(new Answer<ParserInternalTypeBase>() {
-
-						public ParserInternalTypeBase answer(final InvocationOnMock invocation)
-								throws Throwable {
-							final StreamTokenizer tok = (StreamTokenizer) invocation.getArgument(0);
-							while (tok.nextToken() != StreamTokenizer.TT_EOF && tok.ttype != ')') {
-								;
-							}
-
-							return factory.getType(null, "", "", ItemType.OPERATION);
-						}
-					});
-
-			when(p.getName()).thenAnswer(new Answer<String>() {
-
-				public String answer(final InvocationOnMock invocation) throws Throwable {
-					return "MockOperationType";
-				}
-			});
-			return p;
-		}, "OPERATION");
-		this.factory.registerParser(() -> new SectionParser(this.factory, null, ""), "SECTION");
-		this.factory.registerType((parent, name, value) -> new IdentifierType(parent, name, value),
-				ItemType.IDENTIFIER);
-		this.factory.registerType((parent, name, value) -> new ListType(parent, name, value),
-				ItemType.LIST);
-		this.factory.registerType((parent, name, value) -> new OperationType(parent, name, value),
-				ItemType.OPERATION);
-		this.factory.registerType((parent, name, value) -> new SectionType(parent, name, value),
-				ItemType.SECTION);
-	}
-
-	@Test
-	public final void testSectionParser() {
-		try {
-			@SuppressWarnings("unused")
-			final SectionParser p = new SectionParser(this.factory);
-			assertTrue(true, "Expected no exception");
-		} catch (final Exception e) {
-			fail("Caught exception instantiating a new KeyValueParser: " + e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testSectionParserTypeFactorySectionTypeString() {
-		try {
-			@SuppressWarnings("unused")
-			final SectionParser p = new SectionParser(this.factory, null, "ROOT");
-			assertTrue(true, "Expected no exception");
-		} catch (final Exception e) {
-			fail("Caught exception instantiating a new KeyValueParser: " + e.getMessage());
-		}
-	}
-
-	@Test
-	public final void testSectionParserTypeFactoryString() {
-		try {
-			@SuppressWarnings("unused")
-			final SectionParser p = new SectionParser(this.factory, "ROOT");
-			assertTrue(true, "Expected no exception");
-		} catch (final Exception e) {
-			fail("Caught exception instanting a new KeyValueParser: " + e.getMessage());
-		}
-	}
-
-	private ParserInternalTypeBase runParser(final StreamTokenizer tok) {
-		final IStateParser k = this.factory.getParser("SECTION", null);
-		k.setName("ROOT");
-		final ParserInternalTypeBase j = k.getState(tok);
-		return j;
-	}
-
-	@Test
-	public final void testGetState() {
-		final String testString = "section1 {\nidentifier = false\nsection2 {\nident2 = true\n}\n}\n\n";
-		final InputStreamReader isr = new InputStreamReader(
-				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-		final StreamTokenizer t = new StreamTokenizer(isr);
-		t.commentChar('#');
-		t.wordChars('_', '_');
-		t.wordChars('-', '-');
-		t.slashSlashComments(true);
-		t.slashStarComments(true);
-		final ParserInternalTypeBase k = this.runParser(t);
-		assertAll(
-				"Expecting the result to have \"section1\", \"section1\" to have \"section2\" and \"section2\" to have \"ident2\"",
-				() -> k.has("section1"), () -> k.get("section1").has("section2"),
-				() -> k.get("section1").get("section2").has("ident2"));
-	}
-
-	@Test
-	public final void testGetStateUnexpectedStore() {
-		final String testString = "section1 {\n= false\nidentifier = false\nsection2 {\nident2 = true\n}\n}\n\n";
-		final InputStreamReader isr = new InputStreamReader(
-				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-		final StreamTokenizer t = new StreamTokenizer(isr);
-		t.commentChar('#');
-		t.wordChars('_', '_');
-		t.wordChars('-', '-');
-		t.slashSlashComments(true);
-		t.slashStarComments(true);
-		final ParserInternalTypeBase k = this.runParser(t);
-		assertEquals(ParserInternalTypeBase.EmptyType, k, "Expecting to have k be EmptyType");
-	}
-
-	@Test
-	public final void testGetStateUnexpectedItem() {
-		final String testString = "section1 { identifier(";
-		final InputStreamReader isr = new InputStreamReader(
-				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-		final StreamTokenizer t = new StreamTokenizer(isr);
-		t.commentChar('#');
-		t.wordChars('_', '_');
-		t.wordChars('-', '-');
-		t.slashSlashComments(true);
-		t.slashStarComments(true);
-		final ParserInternalTypeBase k = this.runParser(t);
-		assertEquals(ParserInternalTypeBase.EmptyType, k, "Expecting to have k be EmptyType");
-	}
-	
-	@Test
-	public final void testITtoString() {
+class SectionParserTest {
+	private ParserInternalTypeBase doParse(String data) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IOException, IllegalParserStateException, UnknownStateException, GenericParseException {
 		Config.reset();
 		Config.registerKnownParts();
-		SectionParser p = new SectionParser(Config.getFactory(), null, "SECTION");
-		Method m;
+		IStateParser parser = Config.getFactory().getParser("SECTION", null);
+		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+		InputStreamReader br = new InputStreamReader(is);
+		StreamTokenizer tok = new StreamTokenizer(br);
+		Tokenizer t = new Tokenizer(tok);
+		return parser.getState(t);		
+	}
+
+	@Test
+	final void testGetState() {
+			String validData = "section { item = value }";
+			String earlyExit = "section { item = value";
+			String noData = "";
+			String badData = "section { [ item ] }";
+			
+			assertAll(() -> assertTrue(doParse(validData)!=ParserInternalTypeBase.EmptyType, "standard parse works"),
+					() -> assertThrows(GenericParseException.class, () -> doParse(earlyExit)),
+					() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
+					() -> assertThrows(UnknownStateException.class, () -> doParse(badData)));
+	}
+
+	@Test
+	final void testSectionParser() {
 		try {
-			Optional<Method> k = Arrays.asList(p.getClass().getDeclaredMethods()).stream()
-			.filter( meth -> meth.getName().matches("itToString"))
-			.findFirst();
-			if(k.isPresent()) m = k.get();
-			else throw new NoSuchMethodException();
-			m.setAccessible(true);
-			String rv = (String)m.invoke(p, -1);
-			assertEquals("an Identifier", rv, "token type of -1 is an identifier");
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			fail("Caught exception during test: "+e);
+			TypeFactory f = new TypeFactory();
+			SectionParser sp = new SectionParser(f, null);
+			assertTrue(sp!=null, "Able to instantiate a SectionParser");
+		} catch (Exception e) {
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			fail("Caught exception running loadFile: "+e);
 		}
 	}
 
 	@Test
-	public final void testGetTokenTypeNonIdent() {
-		Config.reset();
-		Config.registerKnownParts();
-		SectionParser p = new SectionParser(Config.getFactory(), null, "SECTION");
-		final String testString = "iden-tifier";
-		final InputStreamReader isr = new InputStreamReader(
-				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-		final StreamTokenizer t = new StreamTokenizer(isr);
-		t.commentChar('#');
-		t.wordChars('_', '_');
-		t.wordChars('-', '-');
-		t.slashSlashComments(true);
-		t.slashStarComments(true);
-		Method m;
+	final void testRegisterTransitions() {
 		try {
-			t.nextToken();
-			t.pushBack();
-			m = p.getClass().getDeclaredMethod("getTokenType", StreamTokenizer.class);
-			m.setAccessible(true);
-			int rv = (Integer)m.invoke(p, t);
-			assertEquals(-4, rv, "token type of -4 expected");
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | IOException e) {
-			fail("Caught exception during test: "+e);
-		}
-	}
-
-	@Test
-	public final void testGetTokenTypeIdent() {
-		Config.reset();
-		Config.registerKnownParts();
-		SectionParser p = new SectionParser(Config.getFactory(), null, "SECTION");
-		final String testString = "identifier";
-		final InputStreamReader isr = new InputStreamReader(
-				IOUtils.toInputStream(testString, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-		final StreamTokenizer t = new StreamTokenizer(isr);
-		t.commentChar('#');
-		t.wordChars('_', '_');
-		t.wordChars('-', '-');
-		t.slashSlashComments(true);
-		t.slashStarComments(true);
-		Method m;
-		try {
-			t.nextToken();
-			t.pushBack();
-			m = p.getClass().getDeclaredMethod("getTokenType", StreamTokenizer.class);
-			m.setAccessible(true);
-			int rv = (Integer)m.invoke(p, t);
-			assertEquals(-1, rv, "token type of -1 expected");
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | IOException e) {
-			fail("Caught exception during test: "+e);
+			TypeFactory f = new TypeFactory();
+			SectionParser sp = new SectionParser(f, null);
+			sp.registerTransitions(f);
+			assertTrue(true, "was able to register transitions");
+		} catch (Exception e) {
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			fail("Caught exception running loadFile: "+e);
 		}
 	}
 }

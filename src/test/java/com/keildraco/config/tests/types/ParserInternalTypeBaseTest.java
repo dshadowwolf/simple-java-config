@@ -1,8 +1,10 @@
 package com.keildraco.config.tests.types;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Collections;
@@ -14,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import com.keildraco.config.types.ParserInternalTypeBase;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
 /**
  * @author Daniel Hazelton
@@ -41,7 +43,7 @@ public final class ParserInternalTypeBaseTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.ParserInternalTypeBase#ParserInternalTypeBase(java.lang.String)}.
+	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#ParserInternalTypeBase(java.lang.String)}.
 	 */
 	@Test
 	public final void testParserInternalTypeBaseString() {
@@ -56,7 +58,7 @@ public final class ParserInternalTypeBaseTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.ParserInternalTypeBase#ParserInternalTypeBase(com.keildraco.config.types.ParserInternalTypeBase, java.lang.String)}.
+	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#ParserInternalTypeBase(com.keildraco.config.interfaces.ParserInternalTypeBase, java.lang.String)}.
 	 */
 	@Test
 	public final void testParserInternalTypeBaseParserInternalTypeBaseString() {
@@ -72,7 +74,7 @@ public final class ParserInternalTypeBaseTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.ParserInternalTypeBase#ParserInternalTypeBase(com.keildraco.config.types.ParserInternalTypeBase, java.lang.String, java.lang.String)}.
+	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#ParserInternalTypeBase(com.keildraco.config.interfaces.ParserInternalTypeBase, java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public final void testParserInternalTypeBaseParserInternalTypeBaseStringString() {
@@ -88,7 +90,7 @@ public final class ParserInternalTypeBaseTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.ParserInternalTypeBase#get(java.lang.String)}.
+	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#get(java.lang.String)}.
 	 */
 	@Test
 	public final void testGet() {
@@ -97,15 +99,21 @@ public final class ParserInternalTypeBaseTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.ParserInternalTypeBase#has(java.lang.String)}.
+	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#has(java.lang.String)}.
 	 */
 	@Test
 	public final void testHas() {
-		assertTrue(this.testItem.has("foobar"), "Test Item has child \"foobar\"");
+		this.testFoobar.addItem(new ParserInternalTypeBase("blargh"));
+		assertAll( () -> assertTrue(this.testItem.has("foobar"), "Test Item has child \"foobar\""),
+				() -> assertFalse(this.testItem.has("foobar.baz"), "Test Item's child \"foobar\" doesn't have child \"baz\""),
+				() -> assertTrue(this.testItem.has("foobar.blargh"), "Test Item's child \"foobar\" has child \"blargh\""),
+				() -> assertFalse(this.testItem.has("blargh"), "Test Item doesn't have child \"blargh\""),
+				() -> assertFalse(this.testItem.has("blargh.blech"), "Test Item doesn't have child \"blargh\" with child \"blech\""),
+				() -> assertFalse(ParserInternalTypeBase.EmptyType.has("Blargh"), "EmptyType always fails has() checks"));
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#getType()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getType()}.
 	 */
 	@Test
 	public final void testGetType() {
@@ -113,7 +121,7 @@ public final class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#asString()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#asString()}.
 	 */
 	@Test
 	public final void testAsString() {
@@ -121,7 +129,7 @@ public final class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#toNumber()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#toNumber()}.
 	 */
 	@Test
 	public final void testToNumber() {
@@ -129,7 +137,7 @@ public final class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#toBoolean()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#toBoolean()}.
 	 */
 	@Test
 	public final void testToBoolean() {
@@ -137,7 +145,7 @@ public final class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#toList()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#toList()}.
 	 */
 	@Test
 	public final void testToList() {
@@ -146,7 +154,7 @@ public final class ParserInternalTypeBaseTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.ParserInternalTypeBase#setName(java.lang.String)}.
+	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#setName(java.lang.String)}.
 	 */
 	@Test
 	public final void testSetName() {
@@ -156,7 +164,7 @@ public final class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#getName()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getName()}.
 	 */
 	@Test
 	public final void testGetName() {
@@ -165,7 +173,7 @@ public final class ParserInternalTypeBaseTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.ParserInternalTypeBase#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
+	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
 	public final void testAddItem() {
@@ -178,7 +186,7 @@ public final class ParserInternalTypeBaseTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#getParent()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getParent()}.
 	 */
 	@Test
 	public final void testGetParent() {

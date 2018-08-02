@@ -1,5 +1,6 @@
 package com.keildraco.config.tests.types;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -9,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.IdentifierType;
-import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
 
 /**
@@ -47,7 +48,7 @@ public final class SectionTypeTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.SectionType#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
+	 * {@link com.keildraco.config.types.SectionType#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
 	public final void testAddItem() {
@@ -61,7 +62,7 @@ public final class SectionTypeTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#getParent()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getParent()}.
 	 */
 	@Test
 	public final void testGetParent() {
@@ -74,4 +75,19 @@ public final class SectionTypeTest {
 				.format("blargh = blech%n" + " CHILD {%n" + " blargh = foobar%n" + "}");
 		assertEquals(result, this.root.asString().trim());
 	}
+	
+	@Test
+	public final void testSectionTypeParentNameValue() {
+		try {
+			final SectionType stOne = new SectionType(ParserInternalTypeBase.EmptyType, "blargh", "blech");
+			final SectionType stTwo = new SectionType(null, "blargh");
+			final SectionType stThree = new SectionType(ParserInternalTypeBase.EmptyType, "");
+			assertAll( () -> assertEquals("blargh", stOne.getName()),
+					() -> assertEquals("ROOT", stTwo.getName()),
+					() -> assertEquals("ROOT", stThree.getName()));
+		} catch (final Exception e) {
+			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
+		}		
+	}
+
 }

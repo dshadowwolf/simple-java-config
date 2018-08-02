@@ -5,16 +5,29 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StreamTokenizer;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import com.keildraco.config.Config;
+import com.keildraco.config.exceptions.GenericParseException;
+import com.keildraco.config.exceptions.IllegalParserStateException;
+import com.keildraco.config.exceptions.UnknownStateException;
+import com.keildraco.config.factory.Tokenizer;
+import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
-import com.keildraco.config.types.ParserInternalTypeBase;
 
 /**
  * @author Daniel Hazelton
@@ -70,7 +83,7 @@ public final class ListTypeTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.ListType#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
+	 * {@link com.keildraco.config.types.ListType#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
 	public final void testAddItem() {
@@ -84,7 +97,7 @@ public final class ListTypeTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#asString()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#asString()}.
 	 */
 	@Test
 	public final void testAsString() {
@@ -103,4 +116,44 @@ public final class ListTypeTest {
 		assertEquals("[  ]", lt.asString().trim(),
 				"ListType with blank name should return \"[  ]\"");
 	}
+	
+	@Test
+	public final void testListTypeParentName() {
+		try {
+			ListType lt = new ListType(ParserInternalTypeBase.EmptyType, "blargh");
+			assertTrue(lt!=null, "constructor works");
+		} catch(Exception e) {
+			fail("caught exception: "+e);
+		}
+	}
+	
+	@Test
+	public final void testListTypeParentNameValue() {
+		try {
+			ListType lt = new ListType(ParserInternalTypeBase.EmptyType, "foo", "bar");
+			assertTrue(lt!=null, "constructor works");
+		} catch(Exception e) {
+			fail("caught exception: "+e);
+		}
+	}
+
+	@Test
+	public final void fullAsString() {
+		try {
+		Config.reset();
+		Config.registerKnownParts();
+		String data = "[ a, b, c, d, e(! f) ]";
+		IStateParser parser = Config.getFactory().getParser("LIST", null);
+		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+		InputStreamReader br = new InputStreamReader(is);
+		StreamTokenizer tok = new StreamTokenizer(br);
+		Tokenizer t = new Tokenizer(tok);
+		ParserInternalTypeBase pitb = parser.getState(t);
+		pitb.setName("foobar");
+		assertEquals("foobar = [ a, b, c, d, e(! f) ]", pitb.asString());
+		} catch(UnknownStateException | IllegalParserStateException | GenericParseException | IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+			fail("caught exception: "+e);
+		}
+	}
+
 }

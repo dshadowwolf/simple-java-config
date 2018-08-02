@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.IdentifierType;
-import com.keildraco.config.types.ParserInternalTypeBase;
 
 /**
  * @author Daniel Hazelton
@@ -81,7 +81,7 @@ public final class IdentifierTypeTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.IdentifierType#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
+	 * {@link com.keildraco.config.types.IdentifierType#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
 	public final void testAddItem() {

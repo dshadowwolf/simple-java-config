@@ -1,12 +1,15 @@
 package com.keildraco.config.tests.data;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StreamTokenizer;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,78 +17,59 @@ import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.data.DataQuery;
-import com.keildraco.config.types.SectionType;
+import com.keildraco.config.exceptions.GenericParseException;
+import com.keildraco.config.exceptions.IllegalParserStateException;
+import com.keildraco.config.exceptions.UnknownStateException;
+import com.keildraco.config.factory.Tokenizer;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
-public final class DataQueryTest {
+class DataQueryTest {
 
 	@BeforeEach
-	public final void cleanup() {
+	void setUp() throws Exception {
 		Config.reset();
 		Config.registerKnownParts();
 	}
 
 	@Test
-	public final void testOf() {
+	final void testOf() {
 		try {
-			final DataQuery dq = DataQuery.of((SectionType) new SectionType("ROOT"));
-			assertNotNull(dq, "DataQuery.of() returned non-null");
-		} catch (final Exception e) {
-			fail("Exception in call of DataQuery.of(): " + e);
+			Path p = Paths.get("assets", "base-config-test.cfg");
+			String ts = String.join("/", p.toString().split("\\\\"));
+			URL tu = Config.class.getClassLoader().getResource(ts);
+			URI temp = tu.toURI();
+			InputStream is = temp.toURL().openStream();
+			InputStreamReader br = new InputStreamReader(is);
+			StreamTokenizer tok = new StreamTokenizer(br);
+			Tokenizer t = new Tokenizer(tok);
+			ParserInternalTypeBase pb = Config.getFactory().getParser("ROOT", null).getState(t);
+			DataQuery c = DataQuery.of(pb);
+			assertNotNull(c, "Load Worked? ");
+		} catch (final IOException | IllegalArgumentException | URISyntaxException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			fail("Caught exception running loadFile: "+e);
 		}
 	}
 
 	@Test
-	public final void testGet() {
-		DataQuery dq;
+	final void testGet() {
+		Path p = Paths.get("assets", "base-config-test.cfg");
+		DataQuery c;
 		try {
-			dq = Config.loadFile(
-					Paths.get("assets", "base-config-test.cfg"));
-			assertTrue(dq.get("section.magic.xyzzy"),
-					"dq.get(\"section.magic.xyzzy\") is (not) true ("
-							+ dq.get("section.magic.xyzzy") + ")");
-		} catch (final IOException | URISyntaxException e) {
-			fail("dq.get() caused an exception: " + e);
+			c = com.keildraco.config.Config.loadFile(p);
+			assertAll(
+					() -> assertTrue(c.get("section.magic"), "basic test"),
+					() -> assertFalse(c.get("section.dead"), "incorrect key"),
+					() -> assertTrue(c.get("section"), "variant"),
+					() -> assertTrue(c.get("section.magic.xyzzy"), "long test"),
+					() -> assertFalse(c.get("nope"), "nonexistent bit, short"),
+					() -> assertFalse(c.get("section.blech.dead"), "buried dead key"));
+		} catch (final IOException | IllegalArgumentException | URISyntaxException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
+			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(), e.getMessage());
+			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			fail("Caught exception running loadFile: "+e);
 		}
 	}
 
-	@Test
-	public final void testGetAll() {
-		DataQuery dq;
-		try {
-			dq = Config.loadFile(
-					Paths.get("assets", "base-config-test.cfg"));
-			assertTrue(dq.get("section.ident3"),
-					"dq.get(\"section.ident3\") is (not) true (" + dq.get("section.ident3") + ")");
-		} catch (final IOException | URISyntaxException e) {
-			fail("dq.get() caused an exception: " + e);
-		}
-	}
-
-	@Test
-	public final void testGetNoKey() {
-		DataQuery dq;
-		try {
-			dq = Config.loadFile(
-					Paths.get("assets", "base-config-test.cfg"));
-			assertFalse(dq.get("section.blech.ident4"),
-					"dq.get(\"section.blech.ident4\") is (not) false ("
-							+ dq.get("section.blech.ident4") + ")");
-		} catch (final IOException | URISyntaxException e) {
-			fail("dq.get() caused an exception: " + e);
-		}
-	}
-
-	@Test
-	public final void testGetBadKey() {
-		DataQuery dq;
-		try {
-			dq = Config.loadFile(
-					Paths.get("assets", "base-config-test.cfg"));
-			assertFalse(dq.get(".section.blech.ident4"),
-					"dq.get(\".section.blech.ident4\") is (not) false ("
-							+ dq.get(".section.blech.ident4") + ")");
-		} catch (final IOException | URISyntaxException e) {
-			fail("dq.get() caused an exception: " + e);
-		}
-	}
 }

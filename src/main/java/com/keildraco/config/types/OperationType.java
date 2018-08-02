@@ -2,6 +2,8 @@ package com.keildraco.config.types;
 
 import javax.annotation.Nullable;
 
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
+
 public final class OperationType extends ParserInternalTypeBase {
 
 	private String ident;
@@ -22,6 +24,10 @@ public final class OperationType extends ParserInternalTypeBase {
 			final String value) {
 		this(parent, name);
 		this.ident = value;
+	}
+
+	public OperationType(String name, String value) {
+		this(null, name, value);
 	}
 
 	public OperationType setOperation(final String oper) {
