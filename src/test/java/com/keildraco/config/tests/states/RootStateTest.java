@@ -2,14 +2,11 @@ package com.keildraco.config.tests.states;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.RootState;
-import com.keildraco.config.states.SectionParser;
 
 class RootStateTest {
 	@Test

@@ -58,10 +58,16 @@ class DataQueryTest {
 	@Test
 	final void testGet() {
 		Path p = Paths.get("assets", "base-config-test.cfg");
-		DataQuery c = null;
+		DataQuery c;
 		try {
 			c = com.keildraco.config.Config.loadFile(p);
-			assertNotNull(c.get("section.magic"), "Load Worked? ");
+			assertAll(
+					() -> assertTrue(c.get("section.magic"), "basic test"),
+					() -> assertFalse(c.get("section.dead"), "incorrect key"),
+					() -> assertTrue(c.get("section"), "variant"),
+					() -> assertTrue(c.get("section.magic.xyzzy"), "long test"),
+					() -> assertFalse(c.get("nope"), "nonexistent bit, short"),
+					() -> assertFalse(c.get("section.blech.dead"), "buried dead key"));
 		} catch (final IOException | IllegalArgumentException | URISyntaxException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(), e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);

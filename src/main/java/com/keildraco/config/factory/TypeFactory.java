@@ -83,7 +83,8 @@ public final class TypeFactory {
 		return this.getParser(nextState, null);
 	}
 	
-	public void dumpStateTable() {
+	/* this is a debugging item and is commented out until needed */
+/*	public void dumpStateTable() {
 		Config.LOGGER.fatal("STATES:");
 		this.stateMap.entrySet().forEach( ssm -> {
 			Config.LOGGER.fatal("\tCurrent: %s", ssm.getKey());
@@ -93,4 +94,5 @@ public final class TypeFactory {
 			});
 		});
 	}
+*/
 }

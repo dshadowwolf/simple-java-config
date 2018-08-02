@@ -11,7 +11,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.exceptions.GenericParseException;
@@ -23,12 +26,17 @@ import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.ListParser;
 
+@TestInstance(Lifecycle.PER_CLASS)
 class ListParserTest {
+	@BeforeAll
+	final void setup() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+		Config.reset();
+		Config.registerKnownParts();
+	}
+	
 	@Test
 	final void testGetState() {
 		try {
-			Config.reset();
-			Config.registerKnownParts();
 			IStateParser p = Config.getFactory().getParser("LIST", null);
 			String data = "[ alpha, beta, charlie(! delta) ]";
 			InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
@@ -38,7 +46,7 @@ class ListParserTest {
 			ParserInternalTypeBase pb = p.getState(t);
 			assertAll("result is correct", () -> assertTrue(pb!=null, "result not null"), () -> assertTrue(pb.has("alpha"), "has member named alpha"),
 					() -> assertFalse(pb.has("bravo"), "has no member named bravo"));
-		} catch (final IOException | IllegalArgumentException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
+		} catch (final IOException | IllegalArgumentException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: "+e);
@@ -70,5 +78,28 @@ class ListParserTest {
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: "+e);
 		}
+	}
+	
+	private void doParse(String data) throws IOException, IllegalParserStateException, UnknownStateException, GenericParseException {
+		IStateParser parser = Config.getFactory().getParser("LIST", null);
+		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+		InputStreamReader br = new InputStreamReader(is);
+		StreamTokenizer tok = new StreamTokenizer(br);
+		Tokenizer t = new Tokenizer(tok);
+		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
+		@SuppressWarnings("unused")
+		ParserInternalTypeBase pb = parser.getState(t);
+	}
+
+	@Test
+	final void testErrorStates() {
+		String earlyEOF = "[ a, b, c";
+		String noData = "";
+		String badData = "[ a, ( ]";
+		
+		assertAll(
+				() -> assertThrows(IllegalStateException.class, () -> doParse(noData)),
+				() -> assertThrows(GenericParseException.class, () -> doParse(badData)),
+				() -> assertThrows(GenericParseException.class, () -> doParse(earlyEOF)));
 	}
 }

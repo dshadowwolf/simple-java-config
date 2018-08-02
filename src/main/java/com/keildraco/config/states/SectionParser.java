@@ -1,8 +1,5 @@
 package com.keildraco.config.states;
 
-import java.util.Arrays;
-
-import com.keildraco.config.Config;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
@@ -34,19 +31,12 @@ public class SectionParser extends AbstractParserBase implements IStateParser {
 		SectionType rv = new SectionType(sectionName);
 		
 		while(tok.hasNext()) {
-			try {
-				if(current.getType() == TokenType.CLOSE_BRACE) {
-					tok.nextToken();
-					rv.setName(sectionName); // force this, despite what other code thinks
-					return rv;
-				}
-				rv.addItem(this.factory.nextState(this.name.toUpperCase(), current, next).getState(tok));
-			} catch (UnknownStateException e) {
-				Config.LOGGER.error("Exception during parse: %s", e.getMessage());
-				Arrays.asList(e.getStackTrace()).stream()
-				.forEach(Config.LOGGER::error);
-				return ParserInternalTypeBase.EmptyType;
+			if(current.getType() == TokenType.CLOSE_BRACE) {
+				tok.nextToken();
+				rv.setName(sectionName); // force this, despite what other code thinks
+				return rv;
 			}
+			rv.addItem(this.factory.nextState(this.name.toUpperCase(), current, next).getState(tok));
 			current = tok.peek();
 			next = tok.peekToken();
 		}

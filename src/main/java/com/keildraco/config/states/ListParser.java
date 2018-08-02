@@ -36,7 +36,7 @@ public class ListParser extends AbstractParserBase implements IStateParser {
 		while(tok.hasNext()) {
 			switch(current.getType()) {
 			case IDENTIFIER:
-				if(next.getType() != TokenType.SEPERATOR && next.getType() != TokenType.CLOSE_LIST) {
+				if(next != null && (next.getType() != TokenType.SEPERATOR && next.getType() != TokenType.CLOSE_LIST)) {
 						rv.addItem(this.factory.nextState(this.getName().toUpperCase(), current, next).getState(tok));
 				} else {
 					rv.addItem(this.factory.getType(null, current.getValue(), current.getValue(), ItemType.IDENTIFIER));

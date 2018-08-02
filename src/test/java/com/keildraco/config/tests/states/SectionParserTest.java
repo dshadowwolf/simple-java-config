@@ -23,25 +23,28 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.SectionParser;
 
 class SectionParserTest {
+	private ParserInternalTypeBase doParse(String data) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IOException, IllegalParserStateException, UnknownStateException, GenericParseException {
+		Config.reset();
+		Config.registerKnownParts();
+		IStateParser parser = Config.getFactory().getParser("SECTION", null);
+		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+		InputStreamReader br = new InputStreamReader(is);
+		StreamTokenizer tok = new StreamTokenizer(br);
+		Tokenizer t = new Tokenizer(tok);
+		return parser.getState(t);		
+	}
+
 	@Test
 	final void testGetState() {
-		try {
-			Config.reset();
-			Config.registerKnownParts();
-			IStateParser p = Config.getFactory().getParser("SECTION", null);
-			String data = "section { item = value }";
-			InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			InputStreamReader br = new InputStreamReader(is);
-			StreamTokenizer tok = new StreamTokenizer(br);
-			Tokenizer t = new Tokenizer(tok);
-			ParserInternalTypeBase pb = p.getState(t);
-			assertAll("result is correct", () -> assertTrue(pb!=null, "result not null"), () -> assertEquals("section", pb.getName(), "name is correct"),
-					() -> assertTrue(pb.has("item"), "has data item named item"));
-		} catch (final IOException | IllegalArgumentException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
-		}
+			String validData = "section { item = value }";
+			String earlyExit = "section { item = value";
+			String noData = "";
+			String badData = "section { [ item ] }";
+			
+			assertAll(() -> assertTrue(doParse(validData)!=ParserInternalTypeBase.EmptyType, "standard parse works"),
+					() -> assertThrows(GenericParseException.class, () -> doParse(earlyExit)),
+					() -> assertThrows(IllegalStateException.class, () -> doParse(noData)),
+					() -> assertThrows(UnknownStateException.class, () -> doParse(badData)));
 	}
 
 	@Test

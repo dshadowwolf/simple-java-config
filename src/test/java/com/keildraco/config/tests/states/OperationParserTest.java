@@ -19,6 +19,7 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.OperationParser;
 import com.keildraco.config.types.OperationType;
 
@@ -69,5 +70,31 @@ class OperationParserTest {
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: "+e);
 		}
+	}
+	
+	private void doParse(String data) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IOException, IllegalParserStateException, UnknownStateException, GenericParseException {
+		Config.reset();
+		Config.registerKnownParts();
+		IStateParser parser = Config.getFactory().getParser("OPERATION", null);
+		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+		InputStreamReader br = new InputStreamReader(is);
+		StreamTokenizer tok = new StreamTokenizer(br);
+		Tokenizer t = new Tokenizer(tok);
+		@SuppressWarnings("unused")
+		ParserInternalTypeBase pb = parser.getState(t);
+	}
+	
+	@Test
+	final void testErrorPaths() {
+		String extraInParens = "op(! id ent)";
+		String invalidOperator = "op(< ident)";
+		String noOperator = "op(ident)";
+		String notAnIdentifier = "op(~ id-ent)";
+		String noWork = "";
+		assertAll( () -> assertThrows(GenericParseException.class, () -> doParse(extraInParens)),
+				() -> assertThrows(GenericParseException.class, () -> doParse(invalidOperator)),
+				() -> assertThrows(GenericParseException.class, () -> doParse(noOperator)),
+				() -> assertThrows(GenericParseException.class, () -> doParse(notAnIdentifier)),
+				() -> assertThrows(IllegalStateException.class, () -> doParse(noWork)));		
 	}
 }

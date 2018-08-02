@@ -26,6 +26,10 @@ public final class OperationType extends ParserInternalTypeBase {
 		this.ident = value;
 	}
 
+	public OperationType(String name, String value) {
+		this(null, name, value);
+	}
+
 	public OperationType setOperation(final String oper) {
 		this.operator = oper.trim();
 		return this;
