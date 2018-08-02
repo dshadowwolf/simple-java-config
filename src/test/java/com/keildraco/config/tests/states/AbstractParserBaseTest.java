@@ -10,9 +10,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
@@ -21,7 +23,9 @@ import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
+import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
+import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.IdentifierType;
 
@@ -157,6 +161,15 @@ class AbstractParserBaseTest {
 		}
 	}
 
+	private ParserInternalTypeBase doParse(AbstractParserBase parser, String data) throws IOException, IllegalParserStateException, UnknownStateException, GenericParseException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+		InputStreamReader br = new InputStreamReader(is);
+		StreamTokenizer tok = new StreamTokenizer(br);
+		Tokenizer t = new Tokenizer(tok);
+		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
+		return parser.getState(t);
+	}
+
 	@Test
 	final void testGetState() {
 		try {
@@ -169,15 +182,19 @@ class AbstractParserBaseTest {
 			InputStreamReader br = new InputStreamReader(is);
 			StreamTokenizer tok = new StreamTokenizer(br);
 			Tokenizer t = new Tokenizer(tok);
-			AbstractParserBase apb = new AbstractParserBase(Config.getFactory(),null,"ROOT") { 
+			AbstractParserBase apb = new AbstractParserBase(Config.getFactory(),null,"BLARGH") { 
 				@Override
 				public void registerTransitions(TypeFactory factory) {
-					// intentionally blank
+					factory.registerStateTransition(this.getName().toUpperCase(), TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION");
+					factory.registerStateTransition(this.getName().toUpperCase(), TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
 				};
 			};
-			@SuppressWarnings("unused")
+			Config.getFactory().registerParser(() -> apb, "BLARGH");
+			apb.registerTransitions(Config.getFactory());
 			ParserInternalTypeBase res = apb.getState(t);
-			assertTrue(true, "AbstractParserBase.getState() works");
+			assertAll( () -> assertTrue(res!=ParserInternalTypeBase.EmptyType, "AbstractParserBase.getState() works"),
+					() -> assertThrows(IllegalParserStateException.class, () -> doParse(apb, ""), "throws on null input"),
+					() -> assertEquals(ParserInternalTypeBase.EmptyType, doParse(apb, "alpha(!bravo)"), "returns ParserInternalTypeBase.EmptyType on an interally caught exception"));
 		} catch (final IOException | IllegalArgumentException | URISyntaxException | IllegalParserStateException | UnknownStateException | GenericParseException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);

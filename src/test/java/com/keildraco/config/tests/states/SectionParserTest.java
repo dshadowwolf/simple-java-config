@@ -43,7 +43,7 @@ class SectionParserTest {
 			
 			assertAll(() -> assertTrue(doParse(validData)!=ParserInternalTypeBase.EmptyType, "standard parse works"),
 					() -> assertThrows(GenericParseException.class, () -> doParse(earlyExit)),
-					() -> assertThrows(IllegalStateException.class, () -> doParse(noData)),
+					() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
 					() -> assertThrows(UnknownStateException.class, () -> doParse(badData)));
 	}
 

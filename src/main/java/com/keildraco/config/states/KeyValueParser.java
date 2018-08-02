@@ -20,7 +20,7 @@ public class KeyValueParser extends AbstractParserBase implements IStateParser {
 
 	@Override
 	public ParserInternalTypeBase getState(Tokenizer tok) throws IllegalParserStateException, UnknownStateException, GenericParseException {
-		if(!tok.hasNext()) throw new IllegalStateException("End of input at start of state");
+		if(!tok.hasNext()) throw new IllegalParserStateException("End of input at start of state");
 
 		String key = tok.nextToken().getValue();
 		tok.nextToken();

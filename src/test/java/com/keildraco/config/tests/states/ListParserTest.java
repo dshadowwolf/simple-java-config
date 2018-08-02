@@ -98,7 +98,7 @@ class ListParserTest {
 		String badData = "[ a, ( ]";
 		
 		assertAll(
-				() -> assertThrows(IllegalStateException.class, () -> doParse(noData)),
+				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
 				() -> assertThrows(GenericParseException.class, () -> doParse(badData)),
 				() -> assertThrows(GenericParseException.class, () -> doParse(earlyEOF)));
 	}

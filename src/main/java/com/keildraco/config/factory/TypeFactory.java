@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
-import com.keildraco.config.Config;
 import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.Tokenizer.Token;
 import com.keildraco.config.interfaces.IParserState;

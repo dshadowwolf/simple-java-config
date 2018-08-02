@@ -95,6 +95,6 @@ class OperationParserTest {
 				() -> assertThrows(GenericParseException.class, () -> doParse(invalidOperator)),
 				() -> assertThrows(GenericParseException.class, () -> doParse(noOperator)),
 				() -> assertThrows(GenericParseException.class, () -> doParse(notAnIdentifier)),
-				() -> assertThrows(IllegalStateException.class, () -> doParse(noWork)));		
+				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noWork)));		
 	}
 }

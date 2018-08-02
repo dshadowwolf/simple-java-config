@@ -20,7 +20,7 @@ class TokenizerTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		InputStream is = IOUtils.toInputStream("a b ( c ) d { e ! f ~ g } h = [ i, j, k, -l, ? ]", StandardCharsets.UTF_8);
+		InputStream is = IOUtils.toInputStream("a b ( c ) d { e ! f ~ g } h = [ i, j, k, -l, ? ] ", StandardCharsets.UTF_8);
 		InputStreamReader isr = new InputStreamReader(is);
 		this.tok = new StreamTokenizer(isr);
 	}
@@ -96,5 +96,4 @@ class TokenizerTest {
 			fail("Caught exception running test: "+e);
 		}
 	}
-
 }

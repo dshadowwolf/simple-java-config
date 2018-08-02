@@ -12,10 +12,8 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.data.DataQuery;
@@ -25,10 +23,9 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
-@TestInstance(Lifecycle.PER_CLASS)
 class DataQueryTest {
 
-	@BeforeAll
+	@BeforeEach
 	void setUp() throws Exception {
 		Config.reset();
 		Config.registerKnownParts();

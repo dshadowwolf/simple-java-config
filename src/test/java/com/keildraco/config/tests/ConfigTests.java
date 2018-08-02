@@ -15,7 +15,11 @@ import com.keildraco.config.data.DataQuery;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
+import com.keildraco.config.factory.TypeFactory;
+import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 
 class ConfigTests {
 
@@ -115,4 +119,35 @@ class ConfigTests {
 		}
 	}
 
+	@Test
+	final void testErrorStates() {
+		Config.registerParser("WILLTHROW", ParserThatThrows.class);
+		Config.registerType(ItemType.INVALID, TypeThatThrows.class);
+		
+		IStateParser p = Config.getFactory().getParser("WILLTHROW", null);
+		ParserInternalTypeBase t = Config.getFactory().getType(null, "", "", ItemType.INVALID);
+		assertAll(() -> assertNull(p), () -> assertNull(t));
+	}
+	
+	private class ParserThatThrows extends AbstractParserBase implements IStateParser {
+
+		public ParserThatThrows(TypeFactory f, ParserInternalTypeBase b) throws IllegalAccessException {
+			super(f,b, "TEST");
+			throw new IllegalAccessException("testing purposes only");
+		}
+		
+		@Override
+		public void registerTransitions(TypeFactory factory) {
+			// not needed
+		}
+	}
+	
+	private class TypeThatThrows extends ParserInternalTypeBase {
+
+		public TypeThatThrows(ParserInternalTypeBase parentIn, String nameIn, String valueIn) throws IllegalAccessException {
+			super(parentIn, nameIn, valueIn);
+			throw new IllegalAccessException("testing purposes only");
+		}
+		
+	}
 }

@@ -1,8 +1,10 @@
 package com.keildraco.config.tests.types;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Collections;
@@ -101,7 +103,13 @@ public final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testHas() {
-		assertTrue(this.testItem.has("foobar"), "Test Item has child \"foobar\"");
+		this.testFoobar.addItem(new ParserInternalTypeBase("blargh"));
+		assertAll( () -> assertTrue(this.testItem.has("foobar"), "Test Item has child \"foobar\""),
+				() -> assertFalse(this.testItem.has("foobar.baz"), "Test Item's child \"foobar\" doesn't have child \"baz\""),
+				() -> assertTrue(this.testItem.has("foobar.blargh"), "Test Item's child \"foobar\" has child \"blargh\""),
+				() -> assertFalse(this.testItem.has("blargh"), "Test Item doesn't have child \"blargh\""),
+				() -> assertFalse(this.testItem.has("blargh.blech"), "Test Item doesn't have child \"blargh\" with child \"blech\""),
+				() -> assertFalse(ParserInternalTypeBase.EmptyType.has("Blargh"), "EmptyType always fails has() checks"));
 	}
 
 	/**

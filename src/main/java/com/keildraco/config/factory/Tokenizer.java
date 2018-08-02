@@ -81,8 +81,7 @@ public class Tokenizer {
 		int p;
 		while((p = this.baseTokenizer.nextToken()) != StreamTokenizer.TT_EOF) {
 			if(p == StreamTokenizer.TT_WORD) this.tokens.addLast(new Token(this.baseTokenizer.sval));
-			else if(p != StreamTokenizer.TT_NUMBER && p != StreamTokenizer.TT_EOL) this.tokens.addLast(new Token(String.format("%c", p)));
-			else this.tokens.addLast(new Token(String.format("-%s-%c-", this.baseTokenizer.sval, p>0&&p<127?p:0x01)));
+			else this.tokens.addLast(new Token(String.format("%c", p)));
 		}
 	}
 

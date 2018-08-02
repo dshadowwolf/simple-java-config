@@ -71,4 +71,24 @@ class KeyValueParserTest {
 		}
 	}
 
+	private ParserInternalTypeBase doParse(String data) throws IOException, IllegalParserStateException, UnknownStateException, GenericParseException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+		Config.reset();
+		Config.registerKnownParts();
+		IStateParser parser = Config.getFactory().getParser("KEYVALUE", null);
+		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+		InputStreamReader br = new InputStreamReader(is);
+		StreamTokenizer tok = new StreamTokenizer(br);
+		Tokenizer t = new Tokenizer(tok);
+		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
+		return parser.getState(t);
+	}
+
+	@Test
+	final void testGetStateErrorRoutes() {
+		String goodData = "item = value(! value)";
+		String noData = "";
+		assertAll( () -> assertThrows(IllegalParserStateException.class, () -> doParse(noData), "Illegal State, no data to parse"),
+				() -> assertThrows(UnknownStateException.class, () -> doParse(goodData), "KEYVALUE cannot store OPERATION"));
+	}
+
 }
