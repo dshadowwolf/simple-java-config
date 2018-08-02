@@ -62,29 +62,32 @@ public abstract class AbstractParserBase implements IStateParser {
 	public void setName(final String nameIn) {
 		this.name = nameIn;
 	}
-	
+
 	@Override
-	public ParserInternalTypeBase getState(Tokenizer tok) throws IllegalParserStateException, UnknownStateException, GenericParseException {
-		if(!tok.hasNext()) throw new IllegalParserStateException("End of input at start of state");
-		
+	public ParserInternalTypeBase getState(final Tokenizer tok)
+			throws IllegalParserStateException, UnknownStateException, GenericParseException {
+		if (!tok.hasNext()) {
+			throw new IllegalParserStateException("End of input at start of state");
+		}
+
 		Token current = tok.peek();
 		Token next = tok.peekToken();
-		
+
 		Deque<ParserInternalTypeBase> bits = new LinkedList<>();
-		
-		while(tok.hasNext()) {
+
+		while (tok.hasNext()) {
 			try {
-				bits.push(this.factory.nextState(this.name.toUpperCase(), current, next).getState(tok));
+				bits.push(this.factory.nextState(this.name.toUpperCase(), current, next)
+						.getState(tok));
 			} catch (UnknownStateException e) {
 				Config.LOGGER.error("Exception during parse: %s", e.getMessage());
-				Arrays.asList(e.getStackTrace()).stream()
-				.forEach(Config.LOGGER::error);
-				return ParserInternalTypeBase.EmptyType;
+				Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+				return ParserInternalTypeBase.EMPTY_TYPE;
 			}
 			current = tok.peek();
 			next = tok.peekToken();
 		}
-		
+
 		ParserInternalTypeBase rv = new ParserInternalTypeBase(this.name.toUpperCase());
 		bits.stream().forEach(rv::addItem);
 		return rv;

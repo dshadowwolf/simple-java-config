@@ -33,7 +33,7 @@ Checkstyle configuration that checks the sun coding conventions.
       <property name="processJavadoc" value="false"/>
     </module>
     <module name="LineLength">
-      <property name="max" value="100"/>
+      <property name="max" value="120"/>
       <property name="tabWidth" value="4"/>
     </module>
     <module name="MethodLength"/>

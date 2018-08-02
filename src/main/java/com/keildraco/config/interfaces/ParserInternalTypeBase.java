@@ -15,7 +15,7 @@ public class ParserInternalTypeBase {
 
 	protected final Map<String, ParserInternalTypeBase> items;
 
-	public static final ParserInternalTypeBase EmptyType = new ParserInternalTypeBase("EMPTY") {
+	public static final ParserInternalTypeBase EMPTY_TYPE = new ParserInternalTypeBase("EMPTY") {
 
 		@Override
 		public boolean has(final String itemName) {
@@ -54,8 +54,8 @@ public class ParserInternalTypeBase {
 		this.items = new ConcurrentHashMap<>();
 	}
 
-	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn, final String nameIn,
-			@SuppressWarnings("unused") final String valueIn) {
+	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
+			final String nameIn, @SuppressWarnings("unused") final String valueIn) {
 		this(parentIn, nameIn);
 	}
 
@@ -69,15 +69,18 @@ public class ParserInternalTypeBase {
 			final String nameBits = itemName.substring(0, itemName.indexOf('.'));
 			final String nameRest = itemName.substring(itemName.indexOf('.') + 1);
 			if (this.has(nameBits)) {
-				/* this had an extraneous null check originally... if 'this.has()' returns true, then this.get() should not be null */
+				/*
+				 * this had an extraneous null check originally... if 'this.has()' returns true,
+				 * then this.get() should not be null
+				 */
 				return this.get(nameBits).get(nameRest);
-			} else if(this.getName().equalsIgnoreCase(nameBits) && this.has(nameRest)) {
+			} else if (this.getName().equalsIgnoreCase(nameBits) && this.has(nameRest)) {
 				return this.items.get(nameRest);
 			}
 		} else if (this.has(itemName)) {
 			return this.items.get(itemName);
 		}
-		return ParserInternalTypeBase.EmptyType;
+		return ParserInternalTypeBase.EMPTY_TYPE;
 	}
 
 	/**
@@ -90,7 +93,7 @@ public class ParserInternalTypeBase {
 			final String nn = itemName.substring(0, itemName.indexOf('.'));
 			final String rest = itemName.substring(itemName.indexOf('.') + 1);
 			final boolean a = this.items.containsKey(nn);
-			final boolean b = this.items.getOrDefault(nn, EmptyType).has(rest);
+			final boolean b = this.items.getOrDefault(nn, EMPTY_TYPE).has(rest);
 			return a && b;
 		}
 
@@ -134,12 +137,19 @@ public class ParserInternalTypeBase {
 	}
 
 	public Map<String, ParserInternalTypeBase> getChildren() {
-		return this.items.isEmpty() ? Collections.emptyMap()
-				: Collections.unmodifiableMap(this.items);
+		if (this.items.isEmpty()) {
+			return Collections.emptyMap();
+		}
+
+		return Collections.unmodifiableMap(this.items);
 	}
 
 	public ParserInternalTypeBase getParent() {
-		return this.parent != null ? this.parent : EmptyType;
+		if (this.parent != null) {
+			return this.parent;
+		}
+
+		return EMPTY_TYPE;
 	}
 
 	public String getValue() {

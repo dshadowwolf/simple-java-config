@@ -89,7 +89,7 @@ public final class ListTypeTest {
 	public final void testAddItem() {
 		try {
 			final ListType testItem2 = new ListType("blargh");
-			testItem2.addItem(ParserInternalTypeBase.EmptyType);
+			testItem2.addItem(ParserInternalTypeBase.EMPTY_TYPE);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
@@ -106,7 +106,7 @@ public final class ListTypeTest {
 
 	@Test
 	public final void testGetNotThere() {
-		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("no_such_item"),
+		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get("no_such_item"),
 				"item doesn't exist");
 	}
 
@@ -120,7 +120,7 @@ public final class ListTypeTest {
 	@Test
 	public final void testListTypeParentName() {
 		try {
-			ListType lt = new ListType(ParserInternalTypeBase.EmptyType, "blargh");
+			ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "blargh");
 			assertTrue(lt!=null, "constructor works");
 		} catch(Exception e) {
 			fail("caught exception: "+e);
@@ -130,7 +130,7 @@ public final class ListTypeTest {
 	@Test
 	public final void testListTypeParentNameValue() {
 		try {
-			ListType lt = new ListType(ParserInternalTypeBase.EmptyType, "foo", "bar");
+			ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "foo", "bar");
 			assertTrue(lt!=null, "constructor works");
 		} catch(Exception e) {
 			fail("caught exception: "+e);

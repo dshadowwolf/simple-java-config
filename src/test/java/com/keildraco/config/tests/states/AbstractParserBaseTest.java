@@ -25,7 +25,6 @@ import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
-import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.IdentifierType;
 
@@ -95,7 +94,7 @@ class AbstractParserBaseTest {
 					// intentionally blank
 				};
 			};
-			apb.setParent(ParserInternalTypeBase.EmptyType);
+			apb.setParent(ParserInternalTypeBase.EMPTY_TYPE);
 			assertTrue(true, "setParent() works");
 		} catch(Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(), e.getMessage());
@@ -192,9 +191,9 @@ class AbstractParserBaseTest {
 			Config.getFactory().registerParser(() -> apb, "BLARGH");
 			apb.registerTransitions(Config.getFactory());
 			ParserInternalTypeBase res = apb.getState(t);
-			assertAll( () -> assertTrue(res!=ParserInternalTypeBase.EmptyType, "AbstractParserBase.getState() works"),
+			assertAll( () -> assertTrue(res!=ParserInternalTypeBase.EMPTY_TYPE, "AbstractParserBase.getState() works"),
 					() -> assertThrows(IllegalParserStateException.class, () -> doParse(apb, ""), "throws on null input"),
-					() -> assertEquals(ParserInternalTypeBase.EmptyType, doParse(apb, "alpha(!bravo)"), "returns ParserInternalTypeBase.EmptyType on an interally caught exception"));
+					() -> assertEquals(ParserInternalTypeBase.EMPTY_TYPE, doParse(apb, "alpha(!bravo)"), "returns ParserInternalTypeBase.EmptyType on an interally caught exception"));
 		} catch (final IOException | IllegalArgumentException | URISyntaxException | IllegalParserStateException | UnknownStateException | GenericParseException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);

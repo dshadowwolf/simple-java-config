@@ -41,7 +41,7 @@ class SectionParserTest {
 			String noData = "";
 			String badData = "section { [ item ] }";
 			
-			assertAll(() -> assertTrue(doParse(validData)!=ParserInternalTypeBase.EmptyType, "standard parse works"),
+			assertAll(() -> assertTrue(doParse(validData)!=ParserInternalTypeBase.EMPTY_TYPE, "standard parse works"),
 					() -> assertThrows(GenericParseException.class, () -> doParse(earlyExit)),
 					() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
 					() -> assertThrows(UnknownStateException.class, () -> doParse(badData)));

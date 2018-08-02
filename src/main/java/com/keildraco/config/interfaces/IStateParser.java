@@ -12,13 +12,16 @@ public interface IStateParser {
 
 	TypeFactory getFactory();
 
-	ParserInternalTypeBase getState(Tokenizer tok) throws IllegalParserStateException, UnknownStateException, GenericParseException;
+	ParserInternalTypeBase getState(Tokenizer tok)
+			throws IllegalParserStateException, UnknownStateException, GenericParseException;
 
 	void setParent(ParserInternalTypeBase parent);
 
 	ParserInternalTypeBase getParent();
 
-	void setName(final String name);
+	void setName(String name);
+
 	String getName();
+
 	void registerTransitions(TypeFactory factory);
 }

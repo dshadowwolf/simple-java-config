@@ -35,7 +35,10 @@ public final class IdentifierType extends ParserInternalTypeBase {
 
 	@Override
 	public ParserInternalTypeBase get(final String s) {
-		return this.has(s) ? this : EmptyType;
+		if (this.has(s)) {
+			return this;
+		}
+		return EMPTY_TYPE;
 	}
 
 	@Override

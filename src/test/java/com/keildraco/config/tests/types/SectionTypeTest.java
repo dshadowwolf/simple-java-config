@@ -54,7 +54,7 @@ public final class SectionTypeTest {
 	public final void testAddItem() {
 		try {
 			final SectionType testItem2 = new SectionType("blargh");
-			testItem2.addItem(ParserInternalTypeBase.EmptyType);
+			testItem2.addItem(ParserInternalTypeBase.EMPTY_TYPE);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
@@ -79,9 +79,9 @@ public final class SectionTypeTest {
 	@Test
 	public final void testSectionTypeParentNameValue() {
 		try {
-			final SectionType stOne = new SectionType(ParserInternalTypeBase.EmptyType, "blargh", "blech");
+			final SectionType stOne = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, "blargh", "blech");
 			final SectionType stTwo = new SectionType(null, "blargh");
-			final SectionType stThree = new SectionType(ParserInternalTypeBase.EmptyType, "");
+			final SectionType stThree = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, "");
 			assertAll( () -> assertEquals("blargh", stOne.getName()),
 					() -> assertEquals("ROOT", stTwo.getName()),
 					() -> assertEquals("ROOT", stThree.getName()));

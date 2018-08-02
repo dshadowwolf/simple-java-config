@@ -35,7 +35,7 @@ public final class IdentifierTypeTest {
 	 */
 	@Test
 	public final void testGetNoItem() {
-		assertEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("test"));
+		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get("test"));
 	}
 
 	/**
@@ -43,7 +43,7 @@ public final class IdentifierTypeTest {
 	 */
 	@Test
 	public final void testGetHasItem() {
-		assertNotEquals(ParserInternalTypeBase.EmptyType, this.testItem.get("value"));
+		assertNotEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get("value"));
 	}
 
 	/**
@@ -86,7 +86,7 @@ public final class IdentifierTypeTest {
 	@Test
 	public final void testAddItem() {
 		try {
-			this.testItem.addItem(ParserInternalTypeBase.EmptyType);
+			this.testItem.addItem(ParserInternalTypeBase.EMPTY_TYPE);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");

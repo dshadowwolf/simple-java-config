@@ -26,7 +26,7 @@ public final class OperationType extends ParserInternalTypeBase {
 		this.ident = value;
 	}
 
-	public OperationType(String name, String value) {
+	public OperationType(final String name, final String value) {
 		this(null, name, value);
 	}
 

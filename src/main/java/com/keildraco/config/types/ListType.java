@@ -57,7 +57,7 @@ public final class ListType extends ParserInternalTypeBase {
 	@Override
 	public ParserInternalTypeBase get(final String s) {
 		if (!this.has(s)) {
-			return EmptyType;
+			return EMPTY_TYPE;
 		}
 
 		return this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst()
@@ -76,10 +76,12 @@ public final class ListType extends ParserInternalTypeBase {
 
 	@Override
 	public String asString() {
-		final String format = String.format("[ %s ]",
-				this.value.stream()
-						.map(v -> v.getType() == ItemType.OPERATION ? v.asString() : v.getValue())
-						.collect(Collectors.joining(", ")));
+		final String format = String.format("[ %s ]", this.value.stream().map(v -> {
+			if (v.getType() == ItemType.OPERATION) {
+				return v.asString();
+			}
+			return v.getValue();
+		}).collect(Collectors.joining(", ")));
 
 		if (this.getName().equals("")) {
 			return format;

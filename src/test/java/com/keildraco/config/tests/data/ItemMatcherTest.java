@@ -49,7 +49,7 @@ class ItemMatcherTest {
 	
 	@Test
 	final void testAlwaysFalseMatcherMatches() {
-		assertFalse(ItemMatcher.AlwaysFalse.matches("blargh"), "The AlwaysFalse matcher should only return false");
+		assertFalse(ItemMatcher.ALWAYS_FALSE.matches("blargh"), "The AlwaysFalse matcher should only return false");
 	}
 
 	@Test
@@ -65,7 +65,7 @@ class ItemMatcherTest {
 			Tokenizer t = new Tokenizer(tok);
 			ParserInternalTypeBase pb = p.getState(t);
 			ItemMatcher m = new ItemMatcher(pb);
-			ItemMatcher m2 = new ItemMatcher(ParserInternalTypeBase.EmptyType);
+			ItemMatcher m2 = new ItemMatcher(ParserInternalTypeBase.EMPTY_TYPE);
 			OperationType o = new OperationType("oper", "value");
 			o.setOperation(">");
 			ItemMatcher m3 = new ItemMatcher(o);

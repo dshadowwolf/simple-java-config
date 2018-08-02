@@ -19,7 +19,8 @@ public final class DataQuery {
 	/**
 	 *
 	 * @param key
-	 * @return
+	 *            Name of item to look for, can be a dotted-notation for sub-items
+	 * @return true/false of items existence
 	 */
 	public boolean get(final String key) {
 		// find item, or "all"

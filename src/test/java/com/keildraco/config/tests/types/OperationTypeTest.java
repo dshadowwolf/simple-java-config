@@ -1,6 +1,6 @@
 package com.keildraco.config.tests.types;
 
-import static com.keildraco.config.interfaces.ParserInternalTypeBase.EmptyType;
+import static com.keildraco.config.interfaces.ParserInternalTypeBase.EMPTY_TYPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -21,7 +21,7 @@ public final class OperationTypeTest {
 
 	@BeforeAll
 	public void setUp() throws Exception {
-		this.testItem = new OperationType(EmptyType, "blargh", "foobar");
+		this.testItem = new OperationType(EMPTY_TYPE, "blargh", "foobar");
 		this.testItem.setOperation("!");
 	}
 
@@ -40,7 +40,7 @@ public final class OperationTypeTest {
 	public final void testOperationTypeParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
-			final OperationType op = new OperationType(ParserInternalTypeBase.EmptyType,
+			final OperationType op = new OperationType(ParserInternalTypeBase.EMPTY_TYPE,
 					"OPERATION");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {

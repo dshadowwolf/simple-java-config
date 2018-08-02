@@ -12,15 +12,18 @@ import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 
-public class KeyValueParser extends AbstractParserBase implements IStateParser {
+public final class KeyValueParser extends AbstractParserBase implements IStateParser {
 
-	public KeyValueParser(TypeFactory factoryIn, ParserInternalTypeBase parentIn) {
+	public KeyValueParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "KEYVALUE");
 	}
 
 	@Override
-	public ParserInternalTypeBase getState(Tokenizer tok) throws IllegalParserStateException, UnknownStateException, GenericParseException {
-		if(!tok.hasNext()) throw new IllegalParserStateException("End of input at start of state");
+	public ParserInternalTypeBase getState(final Tokenizer tok)
+			throws IllegalParserStateException, UnknownStateException, GenericParseException {
+		if (!tok.hasNext()) {
+			throw new IllegalParserStateException("End of input at start of state");
+		}
 
 		String key = tok.nextToken().getValue();
 		tok.nextToken();
@@ -28,21 +31,24 @@ public class KeyValueParser extends AbstractParserBase implements IStateParser {
 		Token next = tok.peek();
 		Token following = tok.peekToken();
 
-		if(next.getType() == TokenType.IDENTIFIER && (following == null || following.getType() != TokenType.OPEN_PARENS)) {
-			ParserInternalTypeBase rv = this.factory.getType(null, key, next.getValue(), ItemType.IDENTIFIER);
+		if (next.getType() == TokenType.IDENTIFIER
+				&& (following == null || following.getType() != TokenType.OPEN_PARENS)) {
+			ParserInternalTypeBase rv = this.factory.getType(null, key, next.getValue(),
+					ItemType.IDENTIFIER);
 			tok.nextToken();
 			return rv;
 		}
-		
+
 		IStateParser parser = this.factory.nextState(this.getName().toUpperCase(), next, following);
 		ParserInternalTypeBase rv = parser.getState(tok);
 		rv.setName(key);
 		return rv;
 	}
-	
+
 	@Override
-	public void registerTransitions(TypeFactory factory) {
-		factory.registerStateTransition(this.getName().toUpperCase(), TokenType.OPEN_LIST, TokenType.IDENTIFIER, "LIST");
+	public void registerTransitions(final TypeFactory factory) {
+		factory.registerStateTransition(this.getName().toUpperCase(), TokenType.OPEN_LIST,
+				TokenType.IDENTIFIER, "LIST");
 	}
 
 }

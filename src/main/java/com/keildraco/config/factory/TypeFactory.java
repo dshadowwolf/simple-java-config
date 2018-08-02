@@ -23,7 +23,6 @@ public final class TypeFactory {
 	private final Map<ParserInternalTypeBase.ItemType, IParserType> typeMap;
 	private final Map<String, IParserState> parserMap;
 	private final Map<String, Map<TokenType, Map<TokenType, String>>> stateMap;
-	
 
 	/**
 	 * Private default constructor.
@@ -46,15 +45,19 @@ public final class TypeFactory {
 	public void registerParser(final IParserState parser, final String name) {
 		this.parserMap.put(name, parser);
 	}
-	
-	public void registerStateTransition(final String stateName, final TokenType currentToken, final TokenType nextToken, final String toState) {
-		Map<TokenType, String> transitionMapping = this.stateMap.getOrDefault(stateName, new ConcurrentHashMap<>())
+
+	public void registerStateTransition(final String stateName, final TokenType currentToken,
+			final TokenType nextToken, final String toState) {
+		Map<TokenType, String> transitionMapping = this.stateMap
+				.getOrDefault(stateName, new ConcurrentHashMap<>())
 				.getOrDefault(currentToken, new ConcurrentHashMap<>());
-		Map<TokenType, Map<TokenType, String>> baseMapping = this.stateMap.getOrDefault(stateName, new ConcurrentHashMap<>());
+		Map<TokenType, Map<TokenType, String>> baseMapping = this.stateMap.getOrDefault(stateName,
+				new ConcurrentHashMap<>());
 		transitionMapping.put(nextToken, toState);
 		baseMapping.put(currentToken, transitionMapping);
 		this.stateMap.put(stateName, baseMapping);
 	}
+
 	/**
 	 *
 	 * @param parserName
@@ -72,26 +75,18 @@ public final class TypeFactory {
 		return parser.get();
 	}
 
-	public IStateParser nextState(String currentState, Token currentToken, Token nextToken) throws UnknownStateException {
+	public IStateParser nextState(final String currentState, final Token currentToken,
+			final Token nextToken) throws UnknownStateException {
 		String nextState = this.stateMap.getOrDefault(currentState, new ConcurrentHashMap<>())
 				.getOrDefault(currentToken.getType(), new ConcurrentHashMap<>())
 				.getOrDefault(nextToken.getType(), "");
-		
-		if(nextState.length() == 0) throw new UnknownStateException(String.format("Transition state starting at %s with current as %s and next as %s is not known", currentState, currentToken.getType(), nextToken.getType()));
-		
+
+		if (nextState.length() == 0) {
+			throw new UnknownStateException(String.format(
+					"Transition state starting at %s with current as %s and next as %s is not known",
+					currentState, currentToken.getType(), nextToken.getType()));
+		}
+
 		return this.getParser(nextState, null);
 	}
-	
-	/* this is a debugging item and is commented out until needed */
-/*	public void dumpStateTable() {
-		Config.LOGGER.fatal("STATES:");
-		this.stateMap.entrySet().forEach( ssm -> {
-			Config.LOGGER.fatal("\tCurrent: %s", ssm.getKey());
-			ssm.getValue().entrySet().stream().forEach( tsm -> {
-				Config.LOGGER.fatal("\t\tCurrent Token: %s", tsm.getKey());
-				tsm.getValue().entrySet().forEach( fsm -> Config.LOGGER.fatal("\t\t\tNext Token: %s -> %s", fsm.getKey(), fsm.getValue()));
-			});
-		});
-	}
-*/
 }
