@@ -1,60 +1,48 @@
 package com.keildraco.config.states;
 
-import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
-import static java.io.StreamTokenizer.TT_WORD;
-
-import java.io.StreamTokenizer;
-
-import com.keildraco.config.Config;
+import com.keildraco.config.exceptions.GenericParseException;
+import com.keildraco.config.exceptions.IllegalParserStateException;
+import com.keildraco.config.exceptions.UnknownStateException;
+import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.types.ParserInternalTypeBase;
-import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.factory.Tokenizer.Token;
+import com.keildraco.config.factory.Tokenizer.TokenType;
+import com.keildraco.config.interfaces.AbstractParserBase;
+import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 
-public final class KeyValueParser extends AbstractParserBase {
+public class KeyValueParser extends AbstractParserBase implements IStateParser {
 
-	public KeyValueParser(final TypeFactory factory, final String name) {
-		super(factory, null, name);
-	}
-
-	public KeyValueParser(final TypeFactory factory) {
-		super(factory, null, "Well I'll Be Buggered");
+	public KeyValueParser(TypeFactory factoryIn, ParserInternalTypeBase parentIn) {
+		super(factoryIn, parentIn, "KEYVALUE");
 	}
 
 	@Override
-	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
-		final int p = this.nextToken(tok);
+	public ParserInternalTypeBase getState(Tokenizer tok) throws IllegalParserStateException, UnknownStateException, GenericParseException {
+		if(!tok.hasNext()) throw new IllegalStateException("End of input at start of state");
 
-		if (!this.errored() && p == TT_WORD && tok.sval.matches(IDENTIFIER_PATTERN)) {
-			final String temp = tok.sval;
-			if (this.peekToken(tok) == '(') {
-				return this.factory.parseTokens("OPERATION", null, tok, temp);
-			} else {
-				return this.factory.getType(this.getParent(), this.name, temp, ItemType.IDENTIFIER);
-			}
-		} else if (!this.errored() && p != TT_WORD) {
-			switch (p) {
-				case StreamTokenizer.TT_EOF:
-					Config.LOGGER.error(
-							"Premature End of File while parsing a key-value pair, line %d",
-							tok.lineno());
-					this.setErrored();
-					break;
-				case '[':
-					return this.factory.parseTokens("LIST", this.parent, tok, this.name);
-				case '}':
-					tok.pushBack();
-					return EmptyType;
-				default:
-					Config.LOGGER.error(
-							"Token of unexpected type %s found where TT_WORD expected, line %d",
-							ttypeToString(p), tok.lineno());
-			}
-			tok.pushBack();
-			return EmptyType;
-		} else {
-			Config.LOGGER.error("ERROR! ERROR! ERROR! - Error parsing at line " + tok.lineno());
-			tok.pushBack();
-			return EmptyType;
+		String key = tok.nextToken().getValue();
+		tok.nextToken();
+
+		Token next = tok.peek();
+		Token following = tok.peekToken();
+
+		if(next.getType() == TokenType.IDENTIFIER && (following == null || following.getType() != TokenType.OPEN_PARENS)) {
+			ParserInternalTypeBase rv = this.factory.getType(null, key, next.getValue(), ItemType.IDENTIFIER);
+			tok.nextToken();
+			return rv;
 		}
+		
+		IStateParser parser = this.factory.nextState(this.getName().toUpperCase(), next, following);
+		ParserInternalTypeBase rv = parser.getState(tok);
+		rv.setName(key);
+		return rv;
 	}
+	
+	@Override
+	public void registerTransitions(TypeFactory factory) {
+		factory.registerStateTransition(this.getName().toUpperCase(), TokenType.OPEN_LIST, TokenType.IDENTIFIER, "LIST");
+	}
+
 }

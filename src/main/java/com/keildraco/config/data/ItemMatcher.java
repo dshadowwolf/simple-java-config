@@ -1,12 +1,12 @@
 package com.keildraco.config.data;
 
-import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
+import static com.keildraco.config.interfaces.ParserInternalTypeBase.EmptyType;
 
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
 import com.keildraco.config.types.OperationType;
-import com.keildraco.config.types.ParserInternalTypeBase;
-import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.SectionType;
 
 public class ItemMatcher {

@@ -1,111 +1,63 @@
 package com.keildraco.config.states;
 
-import static com.keildraco.config.types.ParserInternalTypeBase.EmptyType;
-import static java.io.StreamTokenizer.TT_EOF;
-import static java.io.StreamTokenizer.TT_WORD;
-
-import java.io.StreamTokenizer;
+import java.util.Arrays;
 
 import com.keildraco.config.Config;
+import com.keildraco.config.exceptions.GenericParseException;
+import com.keildraco.config.exceptions.IllegalParserStateException;
+import com.keildraco.config.exceptions.UnknownStateException;
+import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.types.ParserInternalTypeBase;
+import com.keildraco.config.factory.Tokenizer.Token;
+import com.keildraco.config.factory.Tokenizer.TokenType;
+import com.keildraco.config.interfaces.AbstractParserBase;
+import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
 
-public final class SectionParser extends AbstractParserBase {
+public class SectionParser extends AbstractParserBase implements IStateParser {
 
-	private final SectionType section;
-
-	public SectionParser(final TypeFactory factory) {
-		super(factory, null, "ROOT");
-		this.section = new SectionType(EmptyType, this.name);
-	}
-
-	public SectionParser(final TypeFactory factory, final SectionType parent, final String name) {
-		super(factory, parent, name);
-		this.section = new SectionType(parent, this.name);
-	}
-
-	public SectionParser(final TypeFactory factory, final String name) {
-		super(factory, null, name);
-		this.section = new SectionType(parent, this.name);
+	public SectionParser(TypeFactory factoryIn, ParserInternalTypeBase parentIn) {
+		super(factoryIn, parentIn, "SECTION");
 	}
 
 	@Override
-	public ParserInternalTypeBase getState(final StreamTokenizer tok) {
-		String ident = "";
-		while (this.nextToken(tok) != TT_EOF && !this.errored()) {
-			int tt = getTokenType(tok);
+	public ParserInternalTypeBase getState(Tokenizer tok) throws IllegalParserStateException, UnknownStateException, GenericParseException {
+		if(!tok.hasNext()) throw new IllegalStateException("End of input at start of state");
 
-			switch (tt) {
-				case '=':
-					if (ident.equals("")) {
-						this.setErrored();
-						Config.LOGGER.error(
-								"Found a store operation (=) where I was expecting an identifier");
-						return EmptyType;
-					}
-					this.getKeyValue(tok, ident);
-					ident = "";
-					break;
-				case '{':
-					this.getSection(tok, ident);
-					break;
-				case '}':
-					return this.section;
-				case -1:
-					ident = tok.sval.trim();
-					break;
-				case -2:
-				case -3:
-				case -4:
-				default:
-					this.setErrored();
-					Config.LOGGER.error("Found %s where it was not expected - this is an error",
-							itToString(tt));
-					return EmptyType;
+		String sectionName = tok.nextToken().getValue();
+		tok.nextToken(); // skip the OPEN_BRACE
+		
+		Token current = tok.peek();
+		Token next = tok.peekToken();
+		
+		SectionType rv = new SectionType(sectionName);
+		
+		while(tok.hasNext()) {
+			try {
+				if(current.getType() == TokenType.CLOSE_BRACE) {
+					tok.nextToken();
+					rv.setName(sectionName); // force this, despite what other code thinks
+					return rv;
+				}
+				rv.addItem(this.factory.nextState(this.name.toUpperCase(), current, next).getState(tok));
+			} catch (UnknownStateException e) {
+				Config.LOGGER.error("Exception during parse: %s", e.getMessage());
+				Arrays.asList(e.getStackTrace()).stream()
+				.forEach(Config.LOGGER::error);
+				return ParserInternalTypeBase.EmptyType;
 			}
+			current = tok.peek();
+			next = tok.peekToken();
 		}
-		if (!this.errored()) {
-			return this.section;
-		}
-		return EmptyType;
+		
+		throw new GenericParseException("End of input while parsing a SECTION");
 	}
 
-	private void getSection(final StreamTokenizer tok, final String ident) {
-		final ParserInternalTypeBase sk = this.factory.parseTokens("SECTION", this.section, tok,
-				ident);
-		if (EmptyType.equals(sk)) {
-			this.setErrored();
-		} else {
-			this.section.addItem(sk);
-		}
+	@Override
+	public void registerTransitions(TypeFactory factory) {
+		factory.registerStateTransition(this.getName().toUpperCase(), TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
+		factory.registerStateTransition(this.getName().toUpperCase(), TokenType.IDENTIFIER, TokenType.OPEN_BRACE, this.getName().toUpperCase());
 	}
 
-	private void getKeyValue(final StreamTokenizer tok, final String ident) {
-		final ParserInternalTypeBase kv = this.factory.parseTokens("KEYVALUE", this.section, tok,
-				ident);
-		if (EmptyType.equals(kv)) {
-			this.setErrored();
-		} else {
-			this.section.addItem(kv);
-		}
-	}
-
-	private String itToString(final int tt) {
-		if (tt == -1) {
-			return "an Identifier";
-		}
-		return String.format("'%c'", tt);
-	}
-
-	private static int getTokenType(final StreamTokenizer tok) {
-		if (tok.ttype == TT_WORD) {
-			if (tok.sval.matches(IDENTIFIER_PATTERN)) {
-				return -1;
-			}
-			return -4;
-		} else {
-			return tok.ttype;
-		}
-	}
 }

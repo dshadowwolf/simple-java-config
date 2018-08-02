@@ -11,9 +11,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.keildraco.config.states.Tokenizer;
-import com.keildraco.config.states.Tokenizer.Token;
-import com.keildraco.config.states.Tokenizer.TokenType;
+import com.keildraco.config.factory.Tokenizer;
+import com.keildraco.config.factory.Tokenizer.Token;
+import com.keildraco.config.factory.Tokenizer.TokenType;
 
 class TokenizerTest {
 	private StreamTokenizer tok;

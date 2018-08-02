@@ -1,6 +1,4 @@
-package com.keildraco.config.factory;
-
-import com.keildraco.config.states.IStateParser;
+package com.keildraco.config.interfaces;
 
 public interface IParserState {
 

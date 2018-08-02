@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.IdentifierType;
-import com.keildraco.config.types.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
 
 /**
@@ -47,7 +47,7 @@ public final class SectionTypeTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.SectionType#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
+	 * {@link com.keildraco.config.types.SectionType#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
 	public final void testAddItem() {
@@ -61,7 +61,7 @@ public final class SectionTypeTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#getParent()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getParent()}.
 	 */
 	@Test
 	public final void testGetParent() {

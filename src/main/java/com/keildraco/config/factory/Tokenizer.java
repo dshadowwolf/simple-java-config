@@ -1,4 +1,4 @@
-package com.keildraco.config.states;
+package com.keildraco.config.factory;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
@@ -9,8 +9,8 @@ public class Tokenizer {
 	private final StreamTokenizer baseTokenizer;
 	private final Deque<Token> tokens;
 
-	enum TokenType {
-		IDENTIFIER, STORE, OPEN_BRACE, CLOSE_BRACE, OPEN_PARENS, CLOSE_PARENS, TILDE, NOT, UNKNOWN;
+	public enum TokenType {
+		IDENTIFIER, STORE, OPEN_BRACE, CLOSE_BRACE, OPEN_PARENS, CLOSE_PARENS, TILDE, NOT, OPEN_LIST, CLOSE_LIST, SEPERATOR, UNKNOWN;
 	}
 
 	public class Token {
@@ -43,6 +43,15 @@ public class Tokenizer {
 					break;
 				case "!":
 					this.type = TokenType.NOT;
+					break;
+				case "[":
+					this.type = TokenType.OPEN_LIST;
+					break;
+				case "]":
+					this.type = TokenType.CLOSE_LIST;
+					break;
+				case ",":
+					this.type = TokenType.SEPERATOR;
 					break;
 				default:
 					this.type = TokenType.UNKNOWN;
@@ -82,11 +91,19 @@ public class Tokenizer {
 	}
 	
 	public boolean hasNext() {
-		return this.tokens.isEmpty();
+		return !this.tokens.isEmpty();
 	}
 	
 	public Token peekToken() {
-		return this.tokens.getFirst();
+		if(this.tokens.isEmpty()) return null;
+		Token k = this.tokens.pop();
+		Token rv = this.tokens.peek();
+		this.tokens.push(k);
+		return rv;
+	}
+	
+	public Token peek() {
+		return this.tokens.peek();
 	}
 	
 	public void pushBack(Token token) {

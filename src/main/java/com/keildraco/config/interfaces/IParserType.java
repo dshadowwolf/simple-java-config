@@ -1,8 +1,6 @@
-package com.keildraco.config.factory;
+package com.keildraco.config.interfaces;
 
 import javax.annotation.Nullable;
-
-import com.keildraco.config.types.ParserInternalTypeBase;
 
 public interface IParserType {
 

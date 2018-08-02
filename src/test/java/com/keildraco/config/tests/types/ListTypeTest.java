@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
-import com.keildraco.config.types.ParserInternalTypeBase;
 
 /**
  * @author Daniel Hazelton
@@ -70,7 +70,7 @@ public final class ListTypeTest {
 
 	/**
 	 * Test method for
-	 * {@link com.keildraco.config.types.ListType#addItem(com.keildraco.config.types.ParserInternalTypeBase)}.
+	 * {@link com.keildraco.config.types.ListType#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
 	public final void testAddItem() {
@@ -84,7 +84,7 @@ public final class ListTypeTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ParserInternalTypeBase#asString()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#asString()}.
 	 */
 	@Test
 	public final void testAsString() {

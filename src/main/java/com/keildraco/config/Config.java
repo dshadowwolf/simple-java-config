@@ -3,8 +3,6 @@ package com.keildraco.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StreamTokenizer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -12,51 +10,34 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
+
+import java.io.Reader;
+import java.io.StreamTokenizer;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.keildraco.config.data.DataQuery;
+import com.keildraco.config.exceptions.GenericParseException;
+import com.keildraco.config.exceptions.IllegalParserStateException;
+import com.keildraco.config.exceptions.UnknownStateException;
+import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.states.IStateParser;
-import com.keildraco.config.states.KeyValueParser;
-import com.keildraco.config.states.ListParser;
-import com.keildraco.config.states.OperationParser;
-import com.keildraco.config.states.SectionParser;
-import com.keildraco.config.types.IdentifierType;
-import com.keildraco.config.types.ListType;
-import com.keildraco.config.types.OperationType;
-import com.keildraco.config.types.ParserInternalTypeBase;
-import com.keildraco.config.types.ParserInternalTypeBase.ItemType;
-import com.keildraco.config.types.SectionType;
+import com.keildraco.config.interfaces.AbstractParserBase;
+import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
+
+import org.reflections.Reflections;
 
 public final class Config {
-
-	private static final TypeFactory coreTypeFactory = new TypeFactory();
-
-	private static final List<ParserInternalTypeBase> internalTypes = Arrays.asList(
-			new IdentifierType(null, "", ""), new ListType(null, "", ""),
-			new SectionType(null, "", ""), new OperationType(null, "", ""));
-
-	private static final Map<String, Class<? extends IStateParser>> internalParsers = new ConcurrentHashMap<>();
-
 	public static final Logger LOGGER = LogManager.getFormatterLogger("config");
-
-	// this is here to make sure we can have an instance for the testing...
-	public static final Config INSTANCE = new Config();
-
-	static {
-		internalParsers.put("KEYVALUE", KeyValueParser.class);
-		internalParsers.put("LIST", ListParser.class);
-		internalParsers.put("OPERATION", OperationParser.class);
-		internalParsers.put("SECTION", SectionParser.class);
-	}
-
+	private static TypeFactory coreTypeFactory = new TypeFactory();
+	
 	private Config() {
 		// do nothing, not even throw
 	}
@@ -69,12 +50,14 @@ public final class Config {
 			final Class<? extends IStateParser> clazz) {
 		Constructor<? extends IStateParser> c;
 		try {
-			c = clazz.getConstructor(TypeFactory.class);
-			return c.newInstance(coreTypeFactory);
+			c = clazz.getConstructor(TypeFactory.class, ParserInternalTypeBase.class);
+			IStateParser cc = c.newInstance(coreTypeFactory, ParserInternalTypeBase.EmptyType);
+			cc.registerTransitions(coreTypeFactory);
+			return cc;
 		} catch (final NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			LOGGER.error("Exception getting parser instance for %s: %s", name, e.getMessage());
-			LOGGER.error(e.getStackTrace());
+			LOGGER.error("Exception getting type instance for %s (%s): %s", name, e.toString(), e.getMessage());
+			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(LOGGER::error);
 			return null;
 		}
 	}
@@ -93,8 +76,8 @@ public final class Config {
 			return c.newInstance(parent, name, value);
 		} catch (final NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			LOGGER.error("Exception getting type instance for %s: %s", name, e.getMessage());
-			LOGGER.error(e.getStackTrace());
+			LOGGER.error("Exception getting type instance for %s (%s): %s", name, e.toString(), e.getMessage());
+			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(LOGGER::error);
 			return null;
 		}
 	}
@@ -115,35 +98,57 @@ public final class Config {
 		registerParserInternal(name, clazz);
 	}
 
+	private static void registerType(Class<? extends ParserInternalTypeBase> clazz) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException{
+		Constructor<? extends ParserInternalTypeBase> cc = clazz.getConstructor(String.class);
+		ParserInternalTypeBase zz = cc.newInstance("blargh");
+		registerType(zz.getType(), clazz);
+	}
+	
+	private static void registerParser(Class<? extends IStateParser> clazz) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+		Constructor<? extends IStateParser> cc = clazz.getConstructor(TypeFactory.class, ParserInternalTypeBase.class);
+		IStateParser zz = cc.newInstance(coreTypeFactory, null);
+		registerParser(zz.getName().toUpperCase(), clazz);
+	}
+
 	/**
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
 	 *
 	 */
-	public static void registerKnownParts() {
-		internalTypes.stream().forEach(type -> registerType(type.getType(), type.getClass()));
-		internalParsers.entrySet().stream()
-				.forEach(ent -> registerParser(ent.getKey(), ent.getValue()));
+	public static void registerKnownParts() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+		Reflections typeRefs = new Reflections("com.keildraco.config.types");
+		Reflections parserRefs = new Reflections("com.keildraco.config.states");
+		List<Class<? extends ParserInternalTypeBase>> types = typeRefs.getSubTypesOf(ParserInternalTypeBase.class).stream()
+		.collect(Collectors.toList());
+		
+		for(Class<? extends ParserInternalTypeBase> type : types) {
+			registerType(type);
+		}
+		
+		List<Class<? extends IStateParser>> parsers = parserRefs.getSubTypesOf(AbstractParserBase.class).stream().collect(Collectors.toList());
+		
+		for( Class<? extends IStateParser> parser : parsers ) {
+			registerParser(parser);
+		}
 	}
 
 	public static void reset() {
-		coreTypeFactory.reset();
+		coreTypeFactory = new TypeFactory();
 	}
-
-	private static SectionType runParser(final Reader reader) {
+	
+	private static ParserInternalTypeBase runParser(final Reader reader) throws IOException, IllegalParserStateException, UnknownStateException, GenericParseException {
 		StreamTokenizer tok = new StreamTokenizer(reader);
-		tok.commentChar('#');
-		tok.wordChars('_', '_');
-		tok.wordChars('-', '-');
-		tok.slashSlashComments(true);
-		tok.slashStarComments(true);
-		final ParserInternalTypeBase root = coreTypeFactory.getType(null, "root", "",
-				ItemType.SECTION);
-		return SectionType.class
-				.cast(coreTypeFactory.getParser("SECTION", (SectionType) root).getState(tok));
+		Tokenizer t = new Tokenizer(tok);
+		return coreTypeFactory.getParser("ROOT", null).getState(t);
 	}
 
-	public static DataQuery parseStream(InputStream is) {
+	public static DataQuery parseStream(InputStream is) throws IllegalParserStateException, IOException, UnknownStateException, GenericParseException {
 		InputStreamReader br = new InputStreamReader(is);
-		final SectionType res = runParser(br);
+		final ParserInternalTypeBase res = runParser(br);
 		return DataQuery.of(res);
 	}
 	/**
@@ -151,22 +156,23 @@ public final class Config {
 	 * @param filePath
 	 * @return
 	 * @throws IOException
+	 * @throws GenericParseException 
+	 * @throws UnknownStateException 
+	 * @throws IllegalParserStateException 
 	 */
-	public static DataQuery loadFile(final URI filePath) throws IOException {
+	public static DataQuery loadFile(final URI filePath) throws IOException, IllegalParserStateException, UnknownStateException, GenericParseException {
 		return parseStream(filePath.toURL().openStream());
 	}
 
-	public static DataQuery loadFile(final Path filePath) throws IOException, URISyntaxException {
+	public static DataQuery loadFile(final Path filePath) throws IOException, URISyntaxException, IllegalParserStateException, UnknownStateException, GenericParseException {
 		String ts = String.join("/", filePath.toString().split("\\\\"));
 		URL tu = Config.class.getClassLoader().getResource(ts);
-		Config.LOGGER.fatal("(loadFile(Path) Asked to load %s (%s -- %s??)\n%s", filePath, filePath.toString(), ts, tu);
-		URI temp = Config.class.getClassLoader().getResource(ts).toURI();
+		URI temp = tu.toURI();
 		return loadFile(temp);
 	}
 
-	public static DataQuery loadFile(final String filePath) throws IOException, URISyntaxException {
+	public static DataQuery loadFile(final String filePath) throws IOException, URISyntaxException, IllegalParserStateException, UnknownStateException, GenericParseException {
 		URL tu = Config.class.getClassLoader().getResource(filePath);
-		Config.LOGGER.fatal("(loadFile(String) Asked to load %s (%s ?)", filePath, tu);
 		URI temp = tu.toURI();
 		return loadFile(temp);
 	}
@@ -175,8 +181,13 @@ public final class Config {
 	 *
 	 * @param data
 	 * @return
+	 * @throws GenericParseException 
+	 * @throws UnknownStateException 
+	 * @throws IOException 
+	 * @throws IllegalParserStateException 
 	 */
-	public static DataQuery parseString(final String data) {
+	public static DataQuery parseString(final String data) throws IllegalParserStateException, IOException, UnknownStateException, GenericParseException {
 		return parseStream(IOUtils.toInputStream(data, StandardCharsets.UTF_8));
 	}
+
 }

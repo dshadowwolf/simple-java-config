@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
+
 public final class ListType extends ParserInternalTypeBase {
 
 	private final List<ParserInternalTypeBase> value;

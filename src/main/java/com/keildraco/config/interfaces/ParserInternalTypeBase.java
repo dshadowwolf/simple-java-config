@@ -1,4 +1,4 @@
-package com.keildraco.config.types;
+package com.keildraco.config.interfaces;
 
 import java.util.Collections;
 import java.util.List;
