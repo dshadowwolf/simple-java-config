@@ -45,7 +45,7 @@ public class ItemMatcher {
 			case LIST:
 				return this.listMatcher(bn,xn);
 			case OPERATION:
-				return this.operatorMatches(bn, xn);
+				return this.operatorMatches(bn);
 			case SECTION:
 				return this.sectionMatcher(bn,xn);
 			default:
@@ -90,7 +90,7 @@ public class ItemMatcher {
 		}
 	}
 
-	private boolean operatorMatches(String bn, String xn) {
+	private boolean operatorMatches(String bn) {
 		// at this point our item is an operator, so we should only have 'bn'
 
 		OperationType op = (OperationType)this.thisItem;
