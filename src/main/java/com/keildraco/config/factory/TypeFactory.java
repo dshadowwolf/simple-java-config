@@ -1,14 +1,13 @@
 package com.keildraco.config.factory;
 
-import static com.keildraco.config.factory.Tokenizer.TokenType;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
+import com.keildraco.config.data.Token;
+import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.factory.Tokenizer.Token;
 import com.keildraco.config.interfaces.IParserState;
 import com.keildraco.config.interfaces.IParserType;
 import com.keildraco.config.interfaces.IStateParser;

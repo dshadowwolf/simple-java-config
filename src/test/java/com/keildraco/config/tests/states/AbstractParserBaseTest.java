@@ -18,14 +18,14 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
+import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 
 class AbstractParserBaseTest {

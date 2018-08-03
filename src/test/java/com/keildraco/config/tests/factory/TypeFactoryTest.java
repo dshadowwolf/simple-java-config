@@ -11,12 +11,12 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
-import com.keildraco.config.factory.Tokenizer;
-import com.keildraco.config.factory.Tokenizer.Token;
+import com.keildraco.config.data.Token;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.states.SectionParser;
+import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 
 class TypeFactoryTest {

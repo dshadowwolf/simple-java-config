@@ -1,14 +1,14 @@
 package com.keildraco.config.states;
 
+import com.keildraco.config.data.Token;
+import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.factory.Tokenizer.Token;
-import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.SectionType;
 
 public final class SectionParser extends AbstractParserBase {
@@ -40,7 +40,7 @@ public final class SectionParser extends AbstractParserBase {
 			}
 
 			rv.addItem(
-					this.factory.nextState(this.name.toUpperCase(), current, next).getState(tok));
+					this.getFactory().nextState(this.getName().toUpperCase(), current, next).getState(tok));
 			current = tok.peek();
 			next = tok.peekToken();
 		}

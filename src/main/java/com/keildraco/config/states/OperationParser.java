@@ -1,15 +1,15 @@
 package com.keildraco.config.states;
 
+import com.keildraco.config.data.Token;
+import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.factory.Tokenizer.Token;
-import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.OperationType;
 
 public final class OperationParser extends AbstractParserBase {
@@ -53,7 +53,7 @@ public final class OperationParser extends AbstractParserBase {
 		value = operT.getValue();
 		operT = tok.nextToken();
 		if (operT.getType().equals(TokenType.CLOSE_PARENS)) {
-			OperationType rv = (OperationType) this.factory.getType(null, key, value,
+			OperationType rv = (OperationType) this.getFactory().getType(null, key, value,
 					ItemType.OPERATION);
 			rv.setOperation(oper);
 			return rv;

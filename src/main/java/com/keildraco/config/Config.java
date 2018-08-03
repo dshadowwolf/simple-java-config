@@ -25,12 +25,12 @@ import com.keildraco.config.data.DataQuery;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.tokenizer.Tokenizer;
 
 import org.reflections.Reflections;
 

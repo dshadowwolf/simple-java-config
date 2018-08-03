@@ -1,15 +1,15 @@
 package com.keildraco.config.states;
 
+import com.keildraco.config.data.Token;
+import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.factory.Tokenizer.Token;
-import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.ListType;
 
 public final class ListParser extends AbstractParserBase {
@@ -41,10 +41,10 @@ public final class ListParser extends AbstractParserBase {
 					if (next != null && (next.getType() != TokenType.SEPERATOR
 							&& next.getType() != TokenType.CLOSE_LIST)) {
 						rv.addItem(
-								this.factory.nextState(this.getName().toUpperCase(), current, next)
+								this.getFactory().nextState(this.getName().toUpperCase(), current, next)
 										.getState(tok));
 					} else {
-						rv.addItem(this.factory.getType(null, current.getValue(),
+						rv.addItem(this.getFactory().getType(null, current.getValue(),
 								current.getValue(), ItemType.IDENTIFIER));
 						tok.nextToken(); // consume the identifier
 					}

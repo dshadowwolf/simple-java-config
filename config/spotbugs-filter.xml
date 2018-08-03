@@ -10,7 +10,6 @@
       <Or>
 	<Class name="com.keildraco.config.data.ItemMatcher"/>
 	<Class name="com.keildraco.config.states.OperationParser"/>
-	<Class name="com.keildraco.config.factory.Tokenizer$Token"/>
       </Or>
     </Not>
   </Match>
@@ -25,13 +24,6 @@
 	<Bug pattern="BC_UNCONFIRMED_CAST"/>
 	<Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
       </Or>
-    </Not>
-  </Match>
-  <Match>
-    <Class name="com.keildraco.config.factory.Tokenizer$Token"/>
-    <Bug category="CORRECTNESS, MT_CORRECTNESS, BAD_PRACTICICE, PERFORMANCE, STYLE"/>
-    <Not>
-      <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>
     </Not>
   </Match>
   <!-- All bugs in test classes, except for JUnit-specific bugs -->

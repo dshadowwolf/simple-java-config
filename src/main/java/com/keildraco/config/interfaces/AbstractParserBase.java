@@ -3,23 +3,23 @@ package com.keildraco.config.interfaces;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
 import com.keildraco.config.Config;
+import com.keildraco.config.data.BasicResult;
+import com.keildraco.config.data.Token;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.factory.Tokenizer.Token;
+import com.keildraco.config.tokenizer.Tokenizer;
 
 public abstract class AbstractParserBase implements IStateParser {
 
-	protected TypeFactory factory;
-	protected ParserInternalTypeBase parent;
-	protected String name;
+	private TypeFactory factory;
+	private ParserInternalTypeBase parent;
+	private String name;
 
 	/**
 	 *
@@ -89,26 +89,9 @@ public abstract class AbstractParserBase implements IStateParser {
 			next = tok.peekToken();
 		}
 
-		ParserInternalTypeBase rv = new ParserInternalTypeBase(this.name.toUpperCase()) {
-
-			private String valAsString(ParserInternalTypeBase val) {
-				return val.getValue();
-			}
-
-			@Override
-			public String getValue() {
-				return String.join(String.format("%n"), this.items.values().stream()
-						.map(this::valAsString).collect(Collectors.toList()));
-			}
-
-			@Override
-			public String getValueRaw() {
-				return this.getValue();
-			}
-		};
+		ParserInternalTypeBase rv = new BasicResult(this.name.toUpperCase());
 
 		bits.stream().forEach(rv::addItem);
 		return rv;
 	}
-
 }

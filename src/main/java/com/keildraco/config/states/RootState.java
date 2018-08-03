@@ -1,7 +1,7 @@
 package com.keildraco.config.states;
 
+import com.keildraco.config.data.TokenType;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 

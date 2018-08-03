@@ -129,7 +129,8 @@ public class ItemMatcher {
 
 	private boolean identMatches(final IdentifierType ident, final String name,
 			final String value) {
-		return ident.getName().equalsIgnoreCase(name) && ident.getValueRaw().equalsIgnoreCase(value);
+		return ident.getName().equalsIgnoreCase(name)
+				&& ident.getValueRaw().equalsIgnoreCase(value);
 	}
 
 	private boolean listMatchesAny(final ListType theList, final String name) {

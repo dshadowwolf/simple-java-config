@@ -1,16 +1,16 @@
 package com.keildraco.config.states;
 
+import com.keildraco.config.data.Token;
+import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.factory.Tokenizer;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.factory.Tokenizer.Token;
-import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.tokenizer.Tokenizer;
 
 public final class KeyValueParser extends AbstractParserBase {
 
@@ -33,13 +33,13 @@ public final class KeyValueParser extends AbstractParserBase {
 
 		if (next.getType() == TokenType.IDENTIFIER
 				&& (following == null || following.getType() != TokenType.OPEN_PARENS)) {
-			ParserInternalTypeBase rv = this.factory.getType(null, key, next.getValue(),
+			ParserInternalTypeBase rv = this.getFactory().getType(null, key, next.getValue(),
 					ItemType.IDENTIFIER);
 			tok.nextToken();
 			return rv;
 		}
 
-		IStateParser parser = this.factory.nextState(this.getName().toUpperCase(), next, following);
+		IStateParser parser = this.getFactory().nextState(this.getName().toUpperCase(), next, following);
 		ParserInternalTypeBase rv = parser.getState(tok);
 		rv.setName(key);
 		return rv;
