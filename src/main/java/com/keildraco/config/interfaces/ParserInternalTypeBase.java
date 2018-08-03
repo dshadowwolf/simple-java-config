@@ -26,7 +26,7 @@ public abstract class ParserInternalTypeBase {
 	/**
 	 *
 	 */
-	protected final Map<String, ParserInternalTypeBase> items;
+	private Map<String, ParserInternalTypeBase> items;
 
 	/**
 	 *
@@ -113,12 +113,12 @@ public abstract class ParserInternalTypeBase {
 				 */
 				return this.get(nameBits).get(nameRest);
 			} else if (this.getName().equalsIgnoreCase(nameBits) && this.has(nameRest)) {
-				return this.items.get(nameRest);
+				return this.getItems().get(nameRest);
 			}
 		} else if (index == 0) {
 			throw new IllegalArgumentException("search keys cannot start with a '.'");
 		} else if (this.has(itemName)) {
-			return this.items.get(itemName);
+			return this.getItems().get(itemName);
 		}
 		return ParserInternalTypeBase.EMPTY_TYPE;
 	}
@@ -132,12 +132,12 @@ public abstract class ParserInternalTypeBase {
 		if (itemName.contains(".")) {
 			final String nn = itemName.substring(0, itemName.indexOf('.'));
 			final String rest = itemName.substring(itemName.indexOf('.') + 1);
-			final boolean a = this.items.containsKey(nn);
-			final boolean b = this.items.getOrDefault(nn, EMPTY_TYPE).has(rest);
+			final boolean a = this.getItems().containsKey(nn);
+			final boolean b = this.getItems().getOrDefault(nn, EMPTY_TYPE).has(rest);
 			return a && b;
 		}
 
-		return this.items.containsKey(itemName);
+		return this.getItems().containsKey(itemName);
 	}
 
 	/**
@@ -216,7 +216,7 @@ public abstract class ParserInternalTypeBase {
 	 * @param item
 	 */
 	public void addItem(final ParserInternalTypeBase item) {
-		this.items.put(item.getName(), item);
+		this.getItems().put(item.getName(), item);
 	}
 
 	/**
@@ -224,11 +224,11 @@ public abstract class ParserInternalTypeBase {
 	 * @return
 	 */
 	public Map<String, ParserInternalTypeBase> getChildren() {
-		if (this.items.isEmpty()) {
+		if (this.getItems().isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		return Collections.unmodifiableMap(this.items);
+		return Collections.unmodifiableMap(this.getItems());
 	}
 
 	/**
@@ -254,4 +254,12 @@ public abstract class ParserInternalTypeBase {
 	 * @return
 	 */
 	public abstract String getValueRaw();
+
+	/**
+	 *
+	 * @return
+	 */
+	public Map<String, ParserInternalTypeBase> getItems() {
+		return items;
+	}
 }

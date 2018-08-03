@@ -55,7 +55,7 @@ public final class SectionType extends ParserInternalTypeBase {
 			k.append(String.format("%s {%n", this.getName()));
 		}
 
-		this.items.values().stream().forEach(v -> k.append(String.format(" %s%n", v.getValue())));
+		this.getItems().values().stream().forEach(v -> k.append(String.format(" %s%n", v.getValue())));
 
 		if (!this.getName().equals("ROOT")) {
 			k.append(String.format("}%n"));

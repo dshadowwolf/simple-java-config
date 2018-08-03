@@ -37,7 +37,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#get(java.lang.String)}.
 	 */
 	@Test
-	public final void testGetNoItem() {
+	public void testGetNoItem() {
 		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get("test"));
 	}
 
@@ -45,7 +45,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#get(java.lang.String)}.
 	 */
 	@Test
-	public final void testGetHasItem() {
+	public void testGetHasItem() {
 		assertNotEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get("value"));
 	}
 
@@ -53,7 +53,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#has(java.lang.String)}.
 	 */
 	@Test
-	public final void testHasByName() {
+	public void testHasByName() {
 		assertTrue(this.testItem.has("key"));
 	}
 
@@ -61,7 +61,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#getType()}.
 	 */
 	@Test
-	public final void testGetType() {
+	public void testGetType() {
 		assertEquals(ParserInternalTypeBase.ItemType.IDENTIFIER, this.testItem.getType());
 	}
 
@@ -69,7 +69,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#getValue()}.
 	 */
 	@Test
-	public final void testAsStringProper() {
+	public void testAsStringProper() {
 		assertEquals("key = value", this.testItem.getValue());
 	}
 
@@ -77,7 +77,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#getValue()}.
 	 */
 	@Test
-	public final void testAsStringEmpty() {
+	public void testAsStringEmpty() {
 		IdentifierType l = new IdentifierType("", "value");
 		assertEquals("value", l.getValueRaw());
 	}
@@ -87,7 +87,7 @@ public final class IdentifierTypeTest {
 	 * {@link com.keildraco.config.types.IdentifierType#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
-	public final void testAddItem() {
+	public void testAddItem() {
 		try {
 			this.testItem.addItem(ParserInternalTypeBase.EMPTY_TYPE);
 			assertTrue(true, "Expected no exception");
@@ -100,7 +100,7 @@ public final class IdentifierTypeTest {
 	 *
 	 */
 	@Test
-	public final void testHasByIdent() {
+	public void testHasByIdent() {
 		assertTrue(this.testItem.has("value"));
 	}
 }

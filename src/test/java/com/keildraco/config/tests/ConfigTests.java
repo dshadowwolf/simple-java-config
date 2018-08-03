@@ -184,7 +184,7 @@ class ConfigTests {
 		 * @param b
 		 * @throws IllegalAccessException
 		 */
-		public ParserThatThrows(final TypeFactory factory, final ParserInternalTypeBase b)
+		ParserThatThrows(final TypeFactory factory, final ParserInternalTypeBase b)
 				throws IllegalAccessException {
 			super(factory, b, "TEST");
 			throw new IllegalAccessException("testing purposes only");
@@ -211,7 +211,7 @@ class ConfigTests {
 		 * @param valueIn
 		 * @throws IllegalAccessException
 		 */
-		public TypeThatThrows(final ParserInternalTypeBase parentIn, final String nameIn, final String valueIn)
+		TypeThatThrows(final ParserInternalTypeBase parentIn, final String nameIn, final String valueIn)
 				throws IllegalAccessException {
 			super(parentIn, nameIn, valueIn);
 			throw new IllegalAccessException("testing purposes only");

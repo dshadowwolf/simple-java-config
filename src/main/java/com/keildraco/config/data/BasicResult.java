@@ -31,7 +31,7 @@ public final class BasicResult extends ParserInternalTypeBase {
 	@Override
 	public String getValue() {
 		return String.join(String.format("%n"),
-				this.items.values().stream().map(this::valAsString).collect(Collectors.toList()));
+				this.getItems().values().stream().map(this::valAsString).collect(Collectors.toList()));
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public final class OperationTypeTest {
 	 *
 	 */
 	@Test
-	public final void testOperationTypeString() {
+	public void testOperationTypeString() {
 		try {
 			@SuppressWarnings("unused")
 			final OperationType op = new OperationType("OPERATION");
@@ -55,7 +55,7 @@ public final class OperationTypeTest {
 	 *
 	 */
 	@Test
-	public final void testOperationTypeParserInternalTypeBaseString() {
+	public void testOperationTypeParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
 			final OperationType op = new OperationType(ParserInternalTypeBase.EMPTY_TYPE,
@@ -70,7 +70,7 @@ public final class OperationTypeTest {
 	 *
 	 */
 	@Test
-	public final void testGetType() {
+	public void testGetType() {
 		assertEquals(ItemType.OPERATION, this.testItem.getType());
 	}
 
@@ -78,7 +78,7 @@ public final class OperationTypeTest {
 	 *
 	 */
 	@Test
-	public final void testAsString() {
+	public void testAsString() {
 		assertEquals("blargh(! foobar)", this.testItem.getValue());
 	}
 
@@ -86,7 +86,7 @@ public final class OperationTypeTest {
 	 *
 	 */
 	@Test
-	public final void testSetOperation() {
+	public void testSetOperation() {
 		try {
 			this.testItem.setOperation("!");
 			assertTrue(true, "Expected no exception");
