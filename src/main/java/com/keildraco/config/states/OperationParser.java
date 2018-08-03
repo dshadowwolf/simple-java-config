@@ -12,8 +12,18 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.OperationType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class OperationParser extends AbstractParserBase {
 
+	/**
+	 *
+	 * @param factoryIn
+	 * @param parentIn
+	 */
 	public OperationParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "OPERATION");
 	}
@@ -27,7 +37,6 @@ public final class OperationParser extends AbstractParserBase {
 
 		String key = tok.nextToken().getValue();
 		String oper;
-		String value;
 
 		tok.nextToken();
 		Token operT = tok.nextToken();
@@ -50,7 +59,7 @@ public final class OperationParser extends AbstractParserBase {
 					String.format("Found %s where an Identifier was expected", operT.getValue()));
 		}
 
-		value = operT.getValue();
+		String value = operT.getValue();
 		operT = tok.nextToken();
 		if (operT.getType().equals(TokenType.CLOSE_PARENS)) {
 			OperationType rv = (OperationType) this.getFactory().getType(null, key, value,

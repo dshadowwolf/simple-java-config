@@ -1,5 +1,7 @@
 package com.keildraco.config.states;
 
+import java.util.Locale;
+
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
@@ -12,8 +14,18 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.ListType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class ListParser extends AbstractParserBase {
 
+	/**
+	 *
+	 * @param factoryIn
+	 * @param parentIn
+	 */
 	public ListParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "LIST");
 	}
@@ -33,16 +45,17 @@ public final class ListParser extends AbstractParserBase {
 		Token current = tok.peek();
 		Token next = tok.peekToken();
 
-		ListType rv = new ListType("");
+		final ListType rv = new ListType("");
 
 		while (tok.hasNext()) {
 			switch (current.getType()) {
 				case IDENTIFIER:
 					if (next != null && (next.getType() != TokenType.SEPERATOR
 							&& next.getType() != TokenType.CLOSE_LIST)) {
-						rv.addItem(
-								this.getFactory().nextState(this.getName().toUpperCase(), current, next)
-										.getState(tok));
+						rv.addItem(this.getFactory()
+								.nextState(this.getName().toUpperCase(Locale.ENGLISH), current,
+										next)
+								.getState(tok));
 					} else {
 						rv.addItem(this.getFactory().getType(null, current.getValue(),
 								current.getValue(), ItemType.IDENTIFIER));
@@ -69,7 +82,7 @@ public final class ListParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName().toUpperCase(), TokenType.IDENTIFIER,
-				TokenType.OPEN_PARENS, "OPERATION");
+		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+				TokenType.IDENTIFIER, TokenType.OPEN_PARENS, "OPERATION");
 	}
 }

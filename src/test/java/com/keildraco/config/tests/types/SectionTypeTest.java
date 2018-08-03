@@ -21,8 +21,19 @@ import com.keildraco.config.types.SectionType;
 @TestInstance(Lifecycle.PER_CLASS)
 public final class SectionTypeTest {
 
+	/**
+	 *
+	 */
 	private SectionType root;
+
+	/**
+	 *
+	 */
 	private SectionType child;
+
+	/**
+	 *
+	 */
 	private IdentifierType kp;
 
 	/**
@@ -42,7 +53,7 @@ public final class SectionTypeTest {
 	 * Test method for {@link com.keildraco.config.types.SectionType#getType()}.
 	 */
 	@Test
-	public final void testGetType() {
+	public void testGetType() {
 		assertEquals(ParserInternalTypeBase.ItemType.SECTION, this.root.getType());
 	}
 
@@ -51,7 +62,7 @@ public final class SectionTypeTest {
 	 * {@link com.keildraco.config.types.SectionType#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
-	public final void testAddItem() {
+	public void testAddItem() {
 		try {
 			final SectionType testItem2 = new SectionType("blargh");
 			testItem2.addItem(ParserInternalTypeBase.EMPTY_TYPE);
@@ -65,19 +76,25 @@ public final class SectionTypeTest {
 	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getParent()}.
 	 */
 	@Test
-	public final void testGetParent() {
+	public void testGetParent() {
 		assertEquals(this.child.getParent(), this.root);
 	}
 
+	/**
+	 *
+	 */
 	@Test
-	public final void testAsString() {
+	public void testAsString() {
 		final String result = String.format("blargh = blech%n CHILD {%n blargh = foobar%n}");
 		assertAll(() -> assertEquals(result, this.root.getValue().trim()),
 				() -> assertEquals(result, this.root.getValueRaw().trim()));
 	}
 
+	/**
+	 *
+	 */
 	@Test
-	public final void testSectionTypeParentNameValue() {
+	public void testSectionTypeParentNameValue() {
 		try {
 			final SectionType stOne = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, "blargh",
 					"blech");
@@ -92,5 +109,4 @@ public final class SectionTypeTest {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
 	}
-
 }

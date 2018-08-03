@@ -9,14 +9,31 @@ import javax.annotation.Nullable;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class ListType extends ParserInternalTypeBase {
 
+	/**
+	 *
+	 */
 	private final List<ParserInternalTypeBase> value;
 
+	/**
+	 *
+	 * @param n
+	 */
 	public ListType(final String n) {
 		this(n, Collections.emptyList());
 	}
 
+	/**
+	 *
+	 * @param n
+	 * @param values
+	 */
 	public ListType(final String n, final List<ParserInternalTypeBase> values) {
 		this(null, n, values);
 	}
@@ -34,11 +51,22 @@ public final class ListType extends ParserInternalTypeBase {
 		this.value.addAll(values);
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 */
 	public ListType(@Nullable final ParserInternalTypeBase parent, final String name) {
 		super(parent, name);
 		this.value = new LinkedList<>();
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 * @param valueIn
+	 */
 	public ListType(@Nullable final ParserInternalTypeBase parent, final String name,
 			final String valueIn) {
 		this(parent, name);
@@ -64,6 +92,10 @@ public final class ListType extends ParserInternalTypeBase {
 				.collect(Collectors.toList()).get(0);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public List<ParserInternalTypeBase> getValueAsList() {
 		return Collections.unmodifiableList(this.value);
 	}
@@ -73,6 +105,11 @@ public final class ListType extends ParserInternalTypeBase {
 		return ItemType.LIST;
 	}
 
+	/**
+	 *
+	 * @param item
+	 * @return
+	 */
 	private String getItemValue(final ParserInternalTypeBase item) {
 		return item.getValue();
 	}

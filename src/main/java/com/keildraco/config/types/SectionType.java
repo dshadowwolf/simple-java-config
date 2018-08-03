@@ -4,8 +4,17 @@ import javax.annotation.Nullable;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class SectionType extends ParserInternalTypeBase {
 
+	/**
+	 *
+	 * @param name
+	 */
 	public SectionType(final String name) {
 		this(null, name);
 	}
@@ -22,6 +31,12 @@ public final class SectionType extends ParserInternalTypeBase {
 		}
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 * @param value
+	 */
 	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name,
 			final String value) {
 		this(parent, name);
@@ -40,7 +55,8 @@ public final class SectionType extends ParserInternalTypeBase {
 			k.append(String.format("%s {%n", this.getName()));
 		}
 
-		this.items.values().stream().forEach(v -> k.append(String.format(" %s%n", v.getValue())));
+		this.getItems().values().stream()
+				.forEach(v -> k.append(String.format(" %s%n", v.getValue())));
 
 		if (!this.getName().equals("ROOT")) {
 			k.append(String.format("}%n"));

@@ -6,12 +6,31 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public abstract class ParserInternalTypeBase {
 
+	/**
+	 *
+	 */
 	private final ParserInternalTypeBase parent;
-	private String name;
-	protected final Map<String, ParserInternalTypeBase> items;
 
+	/**
+	 *
+	 */
+	private String name;
+
+	/**
+	 *
+	 */
+	private Map<String, ParserInternalTypeBase> items;
+
+	/**
+	 *
+	 */
 	public static final ParserInternalTypeBase EMPTY_TYPE = new ParserInternalTypeBase("EMPTY") {
 
 		@Override
@@ -45,6 +64,10 @@ public abstract class ParserInternalTypeBase {
 		}
 	};
 
+	/**
+	 *
+	 * @param nameIn
+	 */
 	public ParserInternalTypeBase(final String nameIn) {
 		this(null, nameIn);
 	}
@@ -61,6 +84,12 @@ public abstract class ParserInternalTypeBase {
 		this.items = new ConcurrentHashMap<>();
 	}
 
+	/**
+	 *
+	 * @param parentIn
+	 * @param nameIn
+	 * @param valueIn
+	 */
 	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
 			final String nameIn, final String valueIn) {
 		this(parentIn, valueIn);
@@ -73,7 +102,7 @@ public abstract class ParserInternalTypeBase {
 	 * @return
 	 */
 	public ParserInternalTypeBase get(final String itemName) {
-		int index = itemName.indexOf('.');
+		final int index = itemName.indexOf('.');
 		if (index > 0) {
 			final String nameBits = itemName.substring(0, itemName.indexOf('.'));
 			final String nameRest = itemName.substring(itemName.indexOf('.') + 1);
@@ -84,12 +113,12 @@ public abstract class ParserInternalTypeBase {
 				 */
 				return this.get(nameBits).get(nameRest);
 			} else if (this.getName().equalsIgnoreCase(nameBits) && this.has(nameRest)) {
-				return this.items.get(nameRest);
+				return this.getItems().get(nameRest);
 			}
 		} else if (index == 0) {
 			throw new IllegalArgumentException("search keys cannot start with a '.'");
 		} else if (this.has(itemName)) {
-			return this.items.get(itemName);
+			return this.getItems().get(itemName);
 		}
 		return ParserInternalTypeBase.EMPTY_TYPE;
 	}
@@ -103,42 +132,109 @@ public abstract class ParserInternalTypeBase {
 		if (itemName.contains(".")) {
 			final String nn = itemName.substring(0, itemName.indexOf('.'));
 			final String rest = itemName.substring(itemName.indexOf('.') + 1);
-			final boolean a = this.items.containsKey(nn);
-			final boolean b = this.items.getOrDefault(nn, EMPTY_TYPE).has(rest);
+			final boolean a = this.getItems().containsKey(nn);
+			final boolean b = this.getItems().getOrDefault(nn, EMPTY_TYPE).has(rest);
 			return a && b;
 		}
 
-		return this.items.containsKey(itemName);
+		return this.getItems().containsKey(itemName);
 	}
 
+	/**
+	 *
+	 * @author Daniel Hazelton
+	 *
+	 */
 	public enum ItemType {
-		SECTION, IDENTIFIER, NUMBER, BOOLEAN, LIST, OPERATION, INVALID, EMPTY
+
+		/**
+		 *
+		 */
+		SECTION,
+
+		/**
+		 *
+		 */
+		IDENTIFIER,
+
+		/**
+		 *
+		 */
+		NUMBER,
+
+		/**
+		 *
+		 */
+		BOOLEAN,
+
+		/**
+		 *
+		 */
+		LIST,
+
+		/**
+		 *
+		 */
+		OPERATION,
+
+		/**
+		 *
+		 */
+		INVALID,
+
+		/**
+		 *
+		 */
+		EMPTY
 	}
 
+	/**
+	 *
+	 */
 	public ItemType getType() {
 		return ItemType.INVALID;
 	}
 
+	/**
+	 *
+	 * @param nameIn
+	 */
 	public void setName(final String nameIn) {
 		this.name = nameIn;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 *
+	 * @param item
+	 */
 	public void addItem(final ParserInternalTypeBase item) {
-		this.items.put(item.getName(), item);
+		this.getItems().put(item.getName(), item);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Map<String, ParserInternalTypeBase> getChildren() {
-		if (this.items.isEmpty()) {
+		if (this.getItems().isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		return Collections.unmodifiableMap(this.items);
+		return Collections.unmodifiableMap(this.getItems());
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public ParserInternalTypeBase getParent() {
 		if (this.parent != null) {
 			return this.parent;
@@ -147,7 +243,23 @@ public abstract class ParserInternalTypeBase {
 		return EMPTY_TYPE;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public abstract String getValue();
 
+	/**
+	 *
+	 * @return
+	 */
 	public abstract String getValueRaw();
+
+	/**
+	 *
+	 * @return
+	 */
+	public Map<String, ParserInternalTypeBase> getItems() {
+		return items;
+	}
 }

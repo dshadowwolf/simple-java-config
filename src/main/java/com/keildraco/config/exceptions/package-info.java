@@ -1,8 +1,8 @@
 /**
+ * @author Daniel Hazelton
  *
  */
-/**
- * @author SYSTEM
- *
- */
+@ParametersAreNonnullByDefault
 package com.keildraco.config.exceptions;
+
+import javax.annotation.ParametersAreNonnullByDefault;

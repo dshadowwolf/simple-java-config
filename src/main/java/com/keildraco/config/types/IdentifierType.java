@@ -4,18 +4,41 @@ import javax.annotation.Nullable;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class IdentifierType extends ParserInternalTypeBase {
 
+	/**
+	 *
+	 */
 	private final String ident;
 
+	/**
+	 *
+	 * @param n
+	 */
 	public IdentifierType(final String n) {
 		this(n, n);
 	}
 
+	/**
+	 *
+	 * @param n
+	 * @param v
+	 */
 	public IdentifierType(final String n, final String v) {
 		this(null, n, v);
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 * @param value
+	 */
 	public IdentifierType(@Nullable final ParserInternalTypeBase parent, final String name,
 			final String value) {
 		super(parent, name);

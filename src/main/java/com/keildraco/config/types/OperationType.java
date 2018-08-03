@@ -4,37 +4,77 @@ import javax.annotation.Nullable;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class OperationType extends ParserInternalTypeBase {
 
+	/**
+	 *
+	 */
 	private String ident;
 
+	/**
+	 *
+	 */
 	private String operator;
 
+	/**
+	 *
+	 * @param name
+	 */
 	public OperationType(final String name) {
 		super(name);
 		this.operator = "";
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 */
 	public OperationType(@Nullable final ParserInternalTypeBase parent, final String name) {
 		super(parent, name);
 		this.operator = "";
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 * @param value
+	 */
 	public OperationType(@Nullable final ParserInternalTypeBase parent, final String name,
 			final String value) {
 		this(parent, name);
 		this.ident = value;
 	}
 
+	/**
+	 *
+	 * @param name
+	 * @param value
+	 */
 	public OperationType(final String name, final String value) {
 		this(null, name, value);
 	}
 
+	/**
+	 *
+	 * @param oper
+	 * @return
+	 */
 	public OperationType setOperation(final String oper) {
 		this.operator = oper.trim();
 		return this;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getOperator() {
 		return this.operator.charAt(0);
 	}

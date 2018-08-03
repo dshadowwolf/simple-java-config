@@ -3,6 +3,7 @@ package com.keildraco.config.interfaces;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import javax.annotation.Nullable;
 
@@ -15,10 +16,26 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public abstract class AbstractParserBase implements IStateParser {
 
+	/**
+	 *
+	 */
 	private TypeFactory factory;
+
+	/**
+	 *
+	 */
 	private ParserInternalTypeBase parent;
+
+	/**
+	 *
+	 */
 	private String name;
 
 	/**
@@ -34,36 +51,57 @@ public abstract class AbstractParserBase implements IStateParser {
 		this.name = nameIn;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void setFactory(final TypeFactory factoryIn) {
 		this.factory = factoryIn;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public TypeFactory getFactory() {
 		return this.factory;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void setParent(final ParserInternalTypeBase parentIn) {
 		this.parent = parentIn;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public ParserInternalTypeBase getParent() {
 		return this.parent;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void setName(final String nameIn) {
 		this.name = nameIn;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public ParserInternalTypeBase getState(final Tokenizer tok)
 			throws IllegalParserStateException, UnknownStateException, GenericParseException {
@@ -74,12 +112,13 @@ public abstract class AbstractParserBase implements IStateParser {
 		Token current = tok.peek();
 		Token next = tok.peekToken();
 
-		Deque<ParserInternalTypeBase> bits = new LinkedList<>();
+		final Deque<ParserInternalTypeBase> bits = new LinkedList<>();
 
 		while (tok.hasNext()) {
 			try {
-				bits.push(this.factory.nextState(this.name.toUpperCase(), current, next)
-						.getState(tok));
+				bits.push(
+						this.factory.nextState(this.name.toUpperCase(Locale.ENGLISH), current, next)
+								.getState(tok));
 			} catch (UnknownStateException e) {
 				Config.LOGGER.error("Exception during parse: %s", e.getMessage());
 				Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
@@ -89,7 +128,7 @@ public abstract class AbstractParserBase implements IStateParser {
 			next = tok.peekToken();
 		}
 
-		ParserInternalTypeBase rv = new BasicResult(this.name.toUpperCase());
+		final ParserInternalTypeBase rv = new BasicResult(this.name.toUpperCase(Locale.ENGLISH));
 
 		bits.stream().forEach(rv::addItem);
 		return rv;

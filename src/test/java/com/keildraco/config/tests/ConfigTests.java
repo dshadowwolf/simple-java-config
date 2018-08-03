@@ -1,12 +1,18 @@
 package com.keildraco.config.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,8 +27,16 @@ import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class ConfigTests {
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetFactory() {
 		assertNotNull(Config.getFactory());
@@ -35,8 +49,9 @@ class ConfigTests {
 
 	/**
 	 * Test the automatic (using reflection) registration of known value types and parser states and
-	 * state transitions
-	 * 
+	 * state transitions.
+	 *
+	 * <p>
 	 * Will fail if it catches any of a number of possible exceptions
 	 */
 	@Test
@@ -47,24 +62,27 @@ class ConfigTests {
 		} catch (NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception %s", e.toString());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::fatal);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::fatal);
 			fail("Exception Caught");
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testReset() {
 		try {
 			Config.registerKnownParts();
-			IStateParser p = Config.getFactory().getParser("SECTION", null);
+			final IStateParser p = Config.getFactory().getParser("SECTION", null);
 			Config.reset();
-			IStateParser q = Config.getFactory().getParser("SECTION", null);
+			final IStateParser q = Config.getFactory().getParser("SECTION", null);
 			assertAll("parser prior to reset should not equal a parser post reset",
 					() -> assertNull(q), () -> assertTrue(p != null), () -> assertFalse(p == q));
 		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception %s", e.toString());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::fatal);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::fatal);
 			fail("Exception Caught");
 		}
 	}
@@ -75,6 +93,9 @@ class ConfigTests {
 	 * loadFileString() and loadFilePath() both call loadFileURI() - which calls parseStream().
 	 */
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testLoadFilePath() {
 		Path p = Paths.get("assets", "base-config-test.cfg");
@@ -90,11 +111,14 @@ class ConfigTests {
 				| GenericParseException e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testLoadFileString() {
 		DataQuery c = null;
@@ -109,11 +133,14 @@ class ConfigTests {
 				| GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testParseString() {
 		DataQuery c = null;
@@ -128,39 +155,67 @@ class ConfigTests {
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testErrorStates() {
 		Config.registerParser("WILLTHROW", ParserThatThrows.class);
 		Config.registerType(ItemType.INVALID, TypeThatThrows.class);
 
-		IStateParser p = Config.getFactory().getParser("WILLTHROW", null);
-		ParserInternalTypeBase t = Config.getFactory().getType(null, "", "", ItemType.INVALID);
+		final IStateParser p = Config.getFactory().getParser("WILLTHROW", null);
+		final ParserInternalTypeBase t = Config.getFactory().getType(null, "", "",
+				ItemType.INVALID);
 		assertAll(() -> assertNull(p), () -> assertNull(t));
 	}
 
-	private class ParserThatThrows extends AbstractParserBase implements IStateParser {
+	/**
+	 *
+	 * @author Daniel Hazelton
+	 *
+	 */
+	private class ParserThatThrows extends AbstractParserBase {
 
-		public ParserThatThrows(TypeFactory f, ParserInternalTypeBase b)
+		/**
+		 *
+		 * @param factory
+		 * @param b
+		 * @throws IllegalAccessException
+		 */
+		ParserThatThrows(final TypeFactory factory, final ParserInternalTypeBase b)
 				throws IllegalAccessException {
-			super(f, b, "TEST");
+			super(factory, b, "TEST");
 			throw new IllegalAccessException("testing purposes only");
 		}
 
 		@Override
-		public void registerTransitions(TypeFactory factory) {
+		public void registerTransitions(final TypeFactory factory) {
 			// not needed
 		}
 	}
 
+	/**
+	 *
+	 * @author Daniel Hazelton
+	 *
+	 *
+	 */
 	private class TypeThatThrows extends ParserInternalTypeBase {
 
-		public TypeThatThrows(ParserInternalTypeBase parentIn, String nameIn, String valueIn)
-				throws IllegalAccessException {
+		/**
+		 *
+		 * @param parentIn
+		 * @param nameIn
+		 * @param valueIn
+		 * @throws IllegalAccessException
+		 */
+		TypeThatThrows(final ParserInternalTypeBase parentIn, final String nameIn,
+				final String valueIn) throws IllegalAccessException {
 			super(parentIn, nameIn, valueIn);
 			throw new IllegalAccessException("testing purposes only");
 		}

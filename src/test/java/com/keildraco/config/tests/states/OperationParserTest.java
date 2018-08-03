@@ -1,6 +1,10 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -23,20 +28,28 @@ import com.keildraco.config.states.OperationParser;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.OperationType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class OperationParserTest {
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetState() {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			IStateParser p = Config.getFactory().getParser("OPERATION", null);
-			String data = "op(! ident)";
-			InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			InputStreamReader br = new InputStreamReader(is);
-			StreamTokenizer tok = new StreamTokenizer(br);
-			Tokenizer t = new Tokenizer(tok);
-			OperationType opt = (OperationType) p.getState(t);
+			final IStateParser p = Config.getFactory().getParser("OPERATION", null);
+			final String data = "op(! ident)";
+			final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
+			final StreamTokenizer tok = new StreamTokenizer(br);
+			final Tokenizer t = new Tokenizer(tok);
+			final OperationType opt = (OperationType) p.getState(t);
 			assertAll("result is correct", () -> assertTrue(opt != null, "result not null"),
 					() -> assertEquals("op", opt.getName(), "name is correct"),
 					() -> assertEquals("ident", opt.getValueRaw(), "value is correct"),
@@ -46,11 +59,14 @@ class OperationParserTest {
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testOperationParser() {
 		try {
@@ -65,6 +81,9 @@ class OperationParserTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testRegisterTransitions() {
 		try {
@@ -80,20 +99,35 @@ class OperationParserTest {
 		}
 	}
 
-	private void doParse(String data) throws NoSuchMethodException, InstantiationException,
+	/**
+	 *
+	 * @param data
+	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws IOException
+	 * @throws IllegalParserStateException
+	 * @throws UnknownStateException
+	 * @throws GenericParseException
+	 */
+	private void doParse(final String data) throws NoSuchMethodException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, IOException,
 			IllegalParserStateException, UnknownStateException, GenericParseException {
 		Config.reset();
 		Config.registerKnownParts();
 		IStateParser parser = Config.getFactory().getParser("OPERATION", null);
 		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-		InputStreamReader br = new InputStreamReader(is);
+		InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		StreamTokenizer tok = new StreamTokenizer(br);
 		Tokenizer t = new Tokenizer(tok);
 		@SuppressWarnings("unused")
 		ParserInternalTypeBase pb = parser.getState(t);
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testErrorPaths() {
 		String extraInParens = "op(! id ent)";

@@ -1,6 +1,11 @@
 package com.keildraco.config.tests.data;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +14,10 @@ import java.io.StreamTokenizer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,40 +30,56 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class DataQueryTest {
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@BeforeEach
 	void setUp() throws Exception {
 		Config.reset();
 		Config.registerKnownParts();
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testOf() {
 		try {
-			Path p = Paths.get("assets", "base-config-test.cfg");
-			String ts = String.join("/", p.toString().split("\\\\"));
-			URL tu = Config.class.getClassLoader().getResource(ts);
-			URI temp = tu.toURI();
-			InputStream is = temp.toURL().openStream();
-			InputStreamReader br = new InputStreamReader(is);
-			StreamTokenizer tok = new StreamTokenizer(br);
-			Tokenizer t = new Tokenizer(tok);
-			ParserInternalTypeBase pb = Config.getFactory().getParser("ROOT", null).getState(t);
-			DataQuery c = DataQuery.of(pb);
+			final Path p = Paths.get("assets", "base-config-test.cfg");
+			final String ts = String.join("/", p.toString().split("\\\\"));
+			final URL tu = Config.class.getClassLoader().getResource(ts);
+			final URI temp = tu.toURI();
+			final InputStream is = temp.toURL().openStream();
+			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
+			final StreamTokenizer tok = new StreamTokenizer(br);
+			final Tokenizer t = new Tokenizer(tok);
+			final ParserInternalTypeBase pb = Config.getFactory().getParser("ROOT", null)
+					.getState(t);
+			final DataQuery c = DataQuery.of(pb);
 			assertNotNull(c, "Load Worked? ");
 		} catch (final IOException | IllegalArgumentException | URISyntaxException
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGet() {
-		Path p = Paths.get("assets", "base-config-test.cfg");
+		final Path p = Paths.get("assets", "base-config-test.cfg");
 		DataQuery c;
 		try {
 			c = com.keildraco.config.Config.loadFile(p);
@@ -71,7 +94,7 @@ class DataQueryTest {
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}

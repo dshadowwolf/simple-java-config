@@ -9,10 +9,21 @@ import com.keildraco.config.types.ListType;
 import com.keildraco.config.types.OperationType;
 import com.keildraco.config.types.SectionType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public class ItemMatcher {
 
+	/**
+	 *
+	 */
 	private final ParserInternalTypeBase thisItem;
 
+	/**
+	 *
+	 */
 	public static final ItemMatcher ALWAYS_FALSE = new ItemMatcher(EMPTY_TYPE) {
 
 		@Override
@@ -21,6 +32,10 @@ public class ItemMatcher {
 		}
 	};
 
+	/**
+	 *
+	 * @param item
+	 */
 	public ItemMatcher(final ParserInternalTypeBase item) {
 		this.thisItem = item;
 	}
@@ -44,6 +59,13 @@ public class ItemMatcher {
 		return this.doMatch(this.thisItem.getType(), bn, xn);
 	}
 
+	/**
+	 *
+	 * @param type
+	 * @param bn
+	 * @param xn
+	 * @return
+	 */
 	private boolean doMatch(final ItemType type, final String bn, final String xn) {
 		switch (type) {
 			case IDENTIFIER:
@@ -59,6 +81,12 @@ public class ItemMatcher {
 		}
 	}
 
+	/**
+	 *
+	 * @param bn
+	 * @param xn
+	 * @return
+	 */
 	private boolean sectionMatcher(final String bn, final String xn) {
 		if (this.thisItem.getName().equalsIgnoreCase(bn)) {
 			// we match the base name itself, so we have to see if we can split the extended name or
@@ -80,6 +108,12 @@ public class ItemMatcher {
 		return this.sectionMatches(bn);
 	}
 
+	/**
+	 *
+	 * @param bn
+	 * @param xn
+	 * @return
+	 */
 	private boolean listMatcher(final String bn, final String xn) {
 		if (xn.length() == 0) {
 			// above all else we're only, actually, into the list here...
@@ -93,6 +127,12 @@ public class ItemMatcher {
 		return Boolean.FALSE;
 	}
 
+	/**
+	 *
+	 * @param bn
+	 * @param xn
+	 * @return
+	 */
 	private boolean identMatcher(final String bn, final String xn) {
 		if (xn.length() > 0) {
 			return this.identMatches((IdentifierType) this.thisItem, bn, xn);
@@ -101,6 +141,11 @@ public class ItemMatcher {
 		}
 	}
 
+	/**
+	 *
+	 * @param bn
+	 * @return
+	 */
 	private boolean operatorMatches(final String bn) {
 		// at this point our item is an operator, so we should only have 'bn'
 
@@ -115,28 +160,63 @@ public class ItemMatcher {
 		return false;
 	}
 
+	/**
+	 *
+	 * @param sec
+	 * @param name
+	 * @return
+	 */
 	private boolean sectionMatches(final SectionType sec, final String name) {
 		return sec.has(name);
 	}
 
+	/**
+	 *
+	 * @param name
+	 * @return
+	 */
 	private boolean sectionMatches(final String name) {
 		return this.sectionMatches((SectionType) this.thisItem, name);
 	}
 
+	/**
+	 *
+	 * @param ident
+	 * @param value
+	 * @return
+	 */
 	private boolean identMatches(final IdentifierType ident, final String value) {
 		return ident.getValueRaw().equalsIgnoreCase(value);
 	}
 
+	/**
+	 *
+	 * @param ident
+	 * @param name
+	 * @param value
+	 * @return
+	 */
 	private boolean identMatches(final IdentifierType ident, final String name,
 			final String value) {
 		return ident.getName().equalsIgnoreCase(name)
 				&& ident.getValueRaw().equalsIgnoreCase(value);
 	}
 
+	/**
+	 *
+	 * @param theList
+	 * @param name
+	 * @return
+	 */
 	private boolean listMatchesAny(final ListType theList, final String name) {
 		return theList.has(name);
 	}
 
+	/**
+	 *
+	 * @param name
+	 * @return
+	 */
 	private boolean listMatchesAny(final String name) {
 		return this.listMatchesAny((ListType) this.thisItem, name);
 	}
