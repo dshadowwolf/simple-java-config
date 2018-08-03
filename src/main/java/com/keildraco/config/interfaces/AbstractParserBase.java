@@ -3,6 +3,7 @@ package com.keildraco.config.interfaces;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import javax.annotation.Nullable;
 
@@ -115,7 +116,7 @@ public abstract class AbstractParserBase implements IStateParser {
 
 		while (tok.hasNext()) {
 			try {
-				bits.push(this.factory.nextState(this.name.toUpperCase(), current, next)
+				bits.push(this.factory.nextState(this.name.toUpperCase(Locale.ENGLISH), current, next)
 						.getState(tok));
 			} catch (UnknownStateException e) {
 				Config.LOGGER.error("Exception during parse: %s", e.getMessage());
@@ -126,7 +127,7 @@ public abstract class AbstractParserBase implements IStateParser {
 			next = tok.peekToken();
 		}
 
-		ParserInternalTypeBase rv = new BasicResult(this.name.toUpperCase());
+		ParserInternalTypeBase rv = new BasicResult(this.name.toUpperCase(Locale.ENGLISH));
 
 		bits.stream().forEach(rv::addItem);
 		return rv;

@@ -17,6 +17,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -250,9 +251,9 @@ class AbstractParserBaseTest {
 
 				@Override
 				public void registerTransitions(final TypeFactory factory) {
-					factory.registerStateTransition(this.getName().toUpperCase(),
+					factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
 							TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION");
-					factory.registerStateTransition(this.getName().toUpperCase(),
+					factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
 							TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
 				};
 			};

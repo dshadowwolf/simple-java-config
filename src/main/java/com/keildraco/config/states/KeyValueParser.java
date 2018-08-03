@@ -1,5 +1,7 @@
 package com.keildraco.config.states;
 
+import java.util.Locale;
+
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
@@ -49,7 +51,7 @@ public final class KeyValueParser extends AbstractParserBase {
 			return rv;
 		}
 
-		IStateParser parser = this.getFactory().nextState(this.getName().toUpperCase(), next, following);
+		IStateParser parser = this.getFactory().nextState(this.getName().toUpperCase(Locale.ENGLISH), next, following);
 		ParserInternalTypeBase rv = parser.getState(tok);
 		rv.setName(key);
 		return rv;
@@ -57,7 +59,7 @@ public final class KeyValueParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName().toUpperCase(), TokenType.OPEN_LIST,
+		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH), TokenType.OPEN_LIST,
 				TokenType.IDENTIFIER, "LIST");
 	}
 

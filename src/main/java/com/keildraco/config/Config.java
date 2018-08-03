@@ -13,6 +13,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
@@ -181,7 +182,7 @@ public final class Config {
 		Constructor<? extends IStateParser> cc = clazz.getConstructor(TypeFactory.class,
 				ParserInternalTypeBase.class);
 		IStateParser zz = cc.newInstance(coreTypeFactory, null);
-		registerParser(zz.getName().toUpperCase(), clazz);
+		registerParser(zz.getName().toUpperCase(Locale.ENGLISH), clazz);
 	}
 
 	/**

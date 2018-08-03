@@ -45,7 +45,7 @@ class ListParserTest {
 	 * @throws InvocationTargetException
 	 */
 	@BeforeAll
-	final void setup() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+	final void setUp() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
 			InvocationTargetException {
 		Config.reset();
 		Config.registerKnownParts();

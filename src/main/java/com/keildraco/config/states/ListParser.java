@@ -1,5 +1,7 @@
 package com.keildraco.config.states;
 
+import java.util.Locale;
+
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
@@ -51,7 +53,7 @@ public final class ListParser extends AbstractParserBase {
 					if (next != null && (next.getType() != TokenType.SEPERATOR
 							&& next.getType() != TokenType.CLOSE_LIST)) {
 						rv.addItem(
-								this.getFactory().nextState(this.getName().toUpperCase(), current, next)
+								this.getFactory().nextState(this.getName().toUpperCase(Locale.ENGLISH), current, next)
 										.getState(tok));
 					} else {
 						rv.addItem(this.getFactory().getType(null, current.getValue(),
@@ -79,7 +81,7 @@ public final class ListParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName().toUpperCase(), TokenType.IDENTIFIER,
+		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH), TokenType.IDENTIFIER,
 				TokenType.OPEN_PARENS, "OPERATION");
 	}
 }

@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -141,7 +142,7 @@ class TypeFactoryTest {
 			Token next = t.peekToken();
 			IStateParser nextState = Config.getFactory().nextState("SECTION", cur, next);
 			assertAll("TypeFactory.nextState() works", () -> assertTrue(nextState != null),
-					() -> assertEquals("KEYVALUE", nextState.getName().toUpperCase()));
+					() -> assertEquals("KEYVALUE", nextState.getName().toUpperCase(Locale.ENGLISH)));
 		} catch (Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
