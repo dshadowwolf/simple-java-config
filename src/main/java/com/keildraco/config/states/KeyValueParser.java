@@ -12,8 +12,18 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class KeyValueParser extends AbstractParserBase {
 
+	/**
+	 *
+	 * @param factoryIn
+	 * @param parentIn
+	 */
 	public KeyValueParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "KEYVALUE");
 	}

@@ -11,8 +11,18 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.SectionType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class SectionParser extends AbstractParserBase {
 
+	/**
+	 *
+	 * @param factoryIn
+	 * @param parentIn
+	 */
 	public SectionParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "SECTION");
 	}

@@ -1,6 +1,10 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,8 +26,16 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.KeyValueParser;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class KeyValueParserTest {
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetState() {
 		try {
@@ -32,7 +44,7 @@ class KeyValueParserTest {
 			IStateParser p = Config.getFactory().getParser("KEYVALUE", null);
 			String data = "item = value";
 			InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			InputStreamReader br = new InputStreamReader(is);
+			InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			StreamTokenizer tok = new StreamTokenizer(br);
 			Tokenizer t = new Tokenizer(tok);
 			ParserInternalTypeBase pb = p.getState(t);
@@ -49,6 +61,9 @@ class KeyValueParserTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testKeyValueParser() {
 		try {
@@ -63,6 +78,9 @@ class KeyValueParserTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testRegisterTransitions() {
 		try {
@@ -78,7 +96,20 @@ class KeyValueParserTest {
 		}
 	}
 
-	private ParserInternalTypeBase doParse(String data)
+	/**
+	 *
+	 * @param data
+	 * @return
+	 * @throws IOException
+	 * @throws IllegalParserStateException
+	 * @throws UnknownStateException
+	 * @throws GenericParseException
+	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+	private ParserInternalTypeBase doParse(final String data)
 			throws IOException, IllegalParserStateException, UnknownStateException,
 			GenericParseException, NoSuchMethodException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
@@ -86,13 +117,16 @@ class KeyValueParserTest {
 		Config.registerKnownParts();
 		IStateParser parser = Config.getFactory().getParser("KEYVALUE", null);
 		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-		InputStreamReader br = new InputStreamReader(is);
+		InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		StreamTokenizer tok = new StreamTokenizer(br);
 		Tokenizer t = new Tokenizer(tok);
 		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
 		return parser.getState(t);
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetStateErrorRoutes() {
 		String goodData = "item = value(! value)";

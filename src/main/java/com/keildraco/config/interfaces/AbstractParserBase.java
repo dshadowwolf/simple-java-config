@@ -15,10 +15,26 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public abstract class AbstractParserBase implements IStateParser {
 
+	/**
+	 *
+	 */
 	private TypeFactory factory;
+
+	/**
+	 *
+	 */
 	private ParserInternalTypeBase parent;
+
+	/**
+	 *
+	 */
 	private String name;
 
 	/**
@@ -34,36 +50,57 @@ public abstract class AbstractParserBase implements IStateParser {
 		this.name = nameIn;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void setFactory(final TypeFactory factoryIn) {
 		this.factory = factoryIn;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public TypeFactory getFactory() {
 		return this.factory;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void setParent(final ParserInternalTypeBase parentIn) {
 		this.parent = parentIn;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public ParserInternalTypeBase getParent() {
 		return this.parent;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void setName(final String nameIn) {
 		this.name = nameIn;
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public ParserInternalTypeBase getState(final Tokenizer tok)
 			throws IllegalParserStateException, UnknownStateException, GenericParseException {

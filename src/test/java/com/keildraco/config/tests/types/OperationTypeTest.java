@@ -14,17 +14,32 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.OperationType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 @TestInstance(Lifecycle.PER_CLASS)
 public final class OperationTypeTest {
 
+	/**
+	 *
+	 */
 	private OperationType testItem;
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@BeforeAll
 	public void setUp() throws Exception {
 		this.testItem = new OperationType(EMPTY_TYPE, "blargh", "foobar");
 		this.testItem.setOperation("!");
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testOperationTypeString() {
 		try {
@@ -36,6 +51,9 @@ public final class OperationTypeTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testOperationTypeParserInternalTypeBaseString() {
 		try {
@@ -48,16 +66,25 @@ public final class OperationTypeTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testGetType() {
 		assertEquals(ItemType.OPERATION, this.testItem.getType());
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testAsString() {
 		assertEquals("blargh(! foobar)", this.testItem.getValue());
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testSetOperation() {
 		try {

@@ -21,8 +21,19 @@ import com.keildraco.config.types.SectionType;
 @TestInstance(Lifecycle.PER_CLASS)
 public final class SectionTypeTest {
 
+	/**
+	 *
+	 */
 	private SectionType root;
+
+	/**
+	 *
+	 */
 	private SectionType child;
+
+	/**
+	 *
+	 */
 	private IdentifierType kp;
 
 	/**
@@ -69,6 +80,9 @@ public final class SectionTypeTest {
 		assertEquals(this.child.getParent(), this.root);
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testAsString() {
 		final String result = String.format("blargh = blech%n CHILD {%n blargh = foobar%n}");
@@ -76,6 +90,9 @@ public final class SectionTypeTest {
 				() -> assertEquals(result, this.root.getValueRaw().trim()));
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testSectionTypeParentNameValue() {
 		try {
@@ -92,5 +109,4 @@ public final class SectionTypeTest {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
 	}
-
 }

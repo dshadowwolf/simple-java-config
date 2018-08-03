@@ -1,6 +1,9 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,21 +25,42 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.SectionParser;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class SectionParserTest {
 
-	private ParserInternalTypeBase doParse(String data) throws NoSuchMethodException,
+	/**
+	 *
+	 * @param data
+	 * @return
+	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws IOException
+	 * @throws IllegalParserStateException
+	 * @throws UnknownStateException
+	 * @throws GenericParseException
+	 */
+	private ParserInternalTypeBase doParse(final String data) throws NoSuchMethodException,
 			InstantiationException, IllegalAccessException, InvocationTargetException, IOException,
 			IllegalParserStateException, UnknownStateException, GenericParseException {
 		Config.reset();
 		Config.registerKnownParts();
 		IStateParser parser = Config.getFactory().getParser("SECTION", null);
 		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-		InputStreamReader br = new InputStreamReader(is);
+		InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		StreamTokenizer tok = new StreamTokenizer(br);
 		Tokenizer t = new Tokenizer(tok);
 		return parser.getState(t);
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetState() {
 		String validData = "section { item = value }";
@@ -52,6 +76,9 @@ class SectionParserTest {
 				() -> assertThrows(UnknownStateException.class, () -> doParse(badData)));
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testSectionParser() {
 		try {
@@ -66,6 +93,9 @@ class SectionParserTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testRegisterTransitions() {
 		try {

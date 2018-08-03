@@ -7,11 +7,28 @@ import java.util.LinkedList;
 
 import com.keildraco.config.data.Token;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class Tokenizer {
 
+	/**
+	 *
+	 */
 	private final StreamTokenizer baseTokenizer;
+
+	/**
+	 *
+	 */
 	private final Deque<Token> tokens;
 
+	/**
+	 *
+	 * @param tok
+	 * @throws IOException
+	 */
 	public Tokenizer(final StreamTokenizer tok) throws IOException {
 		this.baseTokenizer = tok;
 		this.tokens = new LinkedList<>();
@@ -31,14 +48,26 @@ public final class Tokenizer {
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Token nextToken() {
 		return this.tokens.pop();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean hasNext() {
 		return !this.tokens.isEmpty();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Token peekToken() {
 		if (this.tokens.isEmpty()) {
 			return null;
@@ -50,10 +79,18 @@ public final class Tokenizer {
 		return rv;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Token peek() {
 		return this.tokens.peek();
 	}
 
+	/**
+	 *
+	 * @param token
+	 */
 	public void pushBack(final Token token) {
 		this.tokens.push(token);
 	}

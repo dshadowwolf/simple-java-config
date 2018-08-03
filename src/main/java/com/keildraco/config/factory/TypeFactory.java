@@ -19,8 +19,19 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
  */
 public final class TypeFactory {
 
+	/**
+	 *
+	 */
 	private final Map<ParserInternalTypeBase.ItemType, IParserType> typeMap;
+
+	/**
+	 *
+	 */
 	private final Map<String, IParserState> parserMap;
+
+	/**
+	 *
+	 */
 	private final Map<String, Map<TokenType, Map<TokenType, String>>> stateMap;
 
 	/**
@@ -32,19 +43,44 @@ public final class TypeFactory {
 		this.stateMap = new ConcurrentHashMap<>();
 	}
 
+	/**
+	 *
+	 * @param lambda
+	 * @param type
+	 */
 	public void registerType(final IParserType lambda, final ParserInternalTypeBase.ItemType type) {
 		this.typeMap.put(type, lambda);
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 * @param value
+	 * @param type
+	 * @return
+	 */
 	public ParserInternalTypeBase getType(@Nullable final ParserInternalTypeBase parent,
 			final String name, final String value, final ParserInternalTypeBase.ItemType type) {
 		return this.typeMap.get(type).get(parent, name, value);
 	}
 
+	/**
+	 *
+	 * @param parser
+	 * @param name
+	 */
 	public void registerParser(final IParserState parser, final String name) {
 		this.parserMap.put(name, parser);
 	}
 
+	/**
+	 *
+	 * @param stateName
+	 * @param currentToken
+	 * @param nextToken
+	 * @param toState
+	 */
 	public void registerStateTransition(final String stateName, final TokenType currentToken,
 			final TokenType nextToken, final String toState) {
 		Map<TokenType, String> transitionMapping = this.stateMap
@@ -74,6 +110,14 @@ public final class TypeFactory {
 		return parser.get();
 	}
 
+	/**
+	 *
+	 * @param currentState
+	 * @param currentToken
+	 * @param nextToken
+	 * @return
+	 * @throws UnknownStateException
+	 */
 	public IStateParser nextState(final String currentState, final Token currentToken,
 			final Token nextToken) throws UnknownStateException {
 		String nextState = this.stateMap.getOrDefault(currentState, new ConcurrentHashMap<>())

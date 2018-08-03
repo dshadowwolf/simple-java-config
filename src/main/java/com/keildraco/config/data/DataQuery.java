@@ -2,16 +2,32 @@ package com.keildraco.config.data;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class DataQuery {
 
+	/**
+	 *
+	 */
 	private ParserInternalTypeBase baseSection;
 
+	/**
+	 *
+	 * @param section
+	 */
 	private DataQuery(final ParserInternalTypeBase section) {
 		this.baseSection = section;
 	}
 
-	// as odd as it seems, this cannot, legally, be called with anything other than a valid,
-	// non-null SectionType value - not even 'EmptyType' can be used here and be valid or compile
+	/**
+	 * as odd as it seems, this cannot, legally, be called with anything other than a valid,
+	 * non-null SectionType value - not even 'EmptyType' can be used here and be valid or compile.
+	 * @param section
+	 * @return
+	 */
 	public static DataQuery of(final ParserInternalTypeBase section) {
 		return new DataQuery(section);
 	}

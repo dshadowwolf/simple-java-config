@@ -1,6 +1,9 @@
 package com.keildraco.config.tests.data;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,8 +26,16 @@ import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.OperationType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class ItemMatcherTest {
 
+	/**
+	 *
+	 */
 	@Test
 	final void testItemMatcher() {
 		try {
@@ -39,6 +50,9 @@ class ItemMatcherTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testMatches() {
 		ParserInternalTypeBase item = new IdentifierType("magic", "name");
@@ -49,12 +63,18 @@ class ItemMatcherTest {
 				() -> assertFalse(m.matches("xyzzy.magic"), "neither name or value match"));
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testAlwaysFalseMatcherMatches() {
 		assertFalse(ItemMatcher.ALWAYS_FALSE.matches("blargh"),
 				"The AlwaysFalse matcher should only return false");
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testMoreConditionCoverage() {
 		try {
@@ -63,7 +83,7 @@ class ItemMatcherTest {
 			IStateParser p = Config.getFactory().getParser("SECTION", null);
 			String data = "section { item = value\n listitem = [ alpha, bravo(! charlie), epsilon(~ foobar) ] }";
 			InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			InputStreamReader br = new InputStreamReader(is);
+			InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			StreamTokenizer tok = new StreamTokenizer(br);
 			Tokenizer t = new Tokenizer(tok);
 			ParserInternalTypeBase pb = p.getState(t);

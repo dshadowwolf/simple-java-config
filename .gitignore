@@ -27,8 +27,8 @@ classes
 /forge-*-changelog.txt
 
 secret.json
-libs/*
-!/libs/README.txt
+#libs/*
+#!/libs/README.txt
 
 .DS_Store
 
@@ -37,3 +37,5 @@ libs/*
 
 # have SonarCloud/SonarQube stuff in this
 gradle.properties
+
+.checkstyle

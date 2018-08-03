@@ -4,12 +4,26 @@ import java.util.stream.Collectors;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class BasicResult extends ParserInternalTypeBase {
 
+	/**
+	 *
+	 * @param name
+	 */
 	public BasicResult(final String name) {
 		super(name);
 	}
 
+	/**
+	 *
+	 * @param val
+	 * @return
+	 */
 	private String valAsString(final ParserInternalTypeBase val) {
 		return val.getValue();
 	}

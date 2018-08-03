@@ -6,12 +6,31 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public abstract class ParserInternalTypeBase {
 
+	/**
+	 *
+	 */
 	private final ParserInternalTypeBase parent;
+
+	/**
+	 *
+	 */
 	private String name;
+
+	/**
+	 *
+	 */
 	protected final Map<String, ParserInternalTypeBase> items;
 
+	/**
+	 *
+	 */
 	public static final ParserInternalTypeBase EMPTY_TYPE = new ParserInternalTypeBase("EMPTY") {
 
 		@Override
@@ -45,6 +64,10 @@ public abstract class ParserInternalTypeBase {
 		}
 	};
 
+	/**
+	 *
+	 * @param nameIn
+	 */
 	public ParserInternalTypeBase(final String nameIn) {
 		this(null, nameIn);
 	}
@@ -61,6 +84,12 @@ public abstract class ParserInternalTypeBase {
 		this.items = new ConcurrentHashMap<>();
 	}
 
+	/**
+	 *
+	 * @param parentIn
+	 * @param nameIn
+	 * @param valueIn
+	 */
 	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
 			final String nameIn, final String valueIn) {
 		this(parentIn, valueIn);
@@ -111,26 +140,89 @@ public abstract class ParserInternalTypeBase {
 		return this.items.containsKey(itemName);
 	}
 
+	/**
+	 *
+	 * @author Daniel Hazelton
+	 *
+	 */
 	public enum ItemType {
-		SECTION, IDENTIFIER, NUMBER, BOOLEAN, LIST, OPERATION, INVALID, EMPTY
+
+		/**
+		 *
+		 */
+		SECTION,
+
+		/**
+		 *
+		 */
+		IDENTIFIER,
+
+		/**
+		 *
+		 */
+		NUMBER,
+
+		/**
+		 *
+		 */
+		BOOLEAN,
+
+		/**
+		 *
+		 */
+		LIST,
+
+		/**
+		 *
+		 */
+		OPERATION,
+
+		/**
+		 *
+		 */
+		INVALID,
+
+		/**
+		 *
+		 */
+		EMPTY
 	}
 
+	/**
+	 *
+	 */
 	public ItemType getType() {
 		return ItemType.INVALID;
 	}
 
+	/**
+	 *
+	 * @param nameIn
+	 */
 	public void setName(final String nameIn) {
 		this.name = nameIn;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 *
+	 * @param item
+	 */
 	public void addItem(final ParserInternalTypeBase item) {
 		this.items.put(item.getName(), item);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Map<String, ParserInternalTypeBase> getChildren() {
 		if (this.items.isEmpty()) {
 			return Collections.emptyMap();
@@ -139,6 +231,10 @@ public abstract class ParserInternalTypeBase {
 		return Collections.unmodifiableMap(this.items);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public ParserInternalTypeBase getParent() {
 		if (this.parent != null) {
 			return this.parent;
@@ -147,7 +243,15 @@ public abstract class ParserInternalTypeBase {
 		return EMPTY_TYPE;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public abstract String getValue();
 
+	/**
+	 *
+	 * @return
+	 */
 	public abstract String getValueRaw();
 }

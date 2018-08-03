@@ -1,6 +1,9 @@
 package com.keildraco.config.tests.factory;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,8 +22,16 @@ import com.keildraco.config.states.SectionParser;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class TypeFactoryTest {
 
+	/**
+	 *
+	 */
 	@Test
 	final void testTypeFactory() {
 		try {
@@ -34,6 +45,9 @@ class TypeFactoryTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testRegisterType() {
 		try {
@@ -48,6 +62,9 @@ class TypeFactoryTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetType() {
 		try {
@@ -63,6 +80,9 @@ class TypeFactoryTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testRegisterParser() {
 		try {
@@ -85,6 +105,9 @@ class TypeFactoryTest {
 	 * here
 	 */
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetParser() {
 		try {
@@ -102,13 +125,16 @@ class TypeFactoryTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testNextState() {
 		try {
 			Config.registerKnownParts();
 			String data = "key = value";
 			InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			InputStreamReader br = new InputStreamReader(is);
+			InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			StreamTokenizer tok = new StreamTokenizer(br);
 			Tokenizer t = new Tokenizer(tok);
 			Token cur = t.peek();
@@ -122,5 +148,4 @@ class TypeFactoryTest {
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
-
 }

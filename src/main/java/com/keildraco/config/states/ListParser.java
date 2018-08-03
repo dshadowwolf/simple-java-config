@@ -12,8 +12,18 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.ListType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class ListParser extends AbstractParserBase {
 
+	/**
+	 *
+	 * @param factoryIn
+	 * @param parentIn
+	 */
 	public ListParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "LIST");
 	}

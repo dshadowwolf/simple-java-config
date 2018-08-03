@@ -1,6 +1,10 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +32,16 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class AbstractParserBaseTest {
 
+	/**
+	 *
+	 */
 	@Test
 	final void testAbstractParserBase() {
 		try {
@@ -37,7 +49,7 @@ class AbstractParserBaseTest {
 			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
-				public void registerTransitions(TypeFactory factory) {
+				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
 				};
 			};
@@ -50,6 +62,9 @@ class AbstractParserBaseTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testSetFactory() {
 		try {
@@ -57,7 +72,7 @@ class AbstractParserBaseTest {
 			AbstractParserBase apb = new AbstractParserBase(null, null, "BLARGH") {
 
 				@Override
-				public void registerTransitions(TypeFactory factory) {
+				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
 				};
 			};
@@ -71,6 +86,9 @@ class AbstractParserBaseTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetFactory() {
 		try {
@@ -78,7 +96,7 @@ class AbstractParserBaseTest {
 			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
-				public void registerTransitions(TypeFactory factory) {
+				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
 				};
 			};
@@ -91,6 +109,9 @@ class AbstractParserBaseTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testSetParent() {
 		try {
@@ -98,7 +119,7 @@ class AbstractParserBaseTest {
 			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
-				public void registerTransitions(TypeFactory factory) {
+				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
 				};
 			};
@@ -112,6 +133,9 @@ class AbstractParserBaseTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetParent() {
 		try {
@@ -119,7 +143,7 @@ class AbstractParserBaseTest {
 			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
-				public void registerTransitions(TypeFactory factory) {
+				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
 				};
 			};
@@ -134,6 +158,9 @@ class AbstractParserBaseTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetName() {
 		try {
@@ -141,7 +168,7 @@ class AbstractParserBaseTest {
 			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
-				public void registerTransitions(TypeFactory factory) {
+				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
 				};
 			};
@@ -154,6 +181,9 @@ class AbstractParserBaseTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testSetName() {
 		try {
@@ -161,7 +191,7 @@ class AbstractParserBaseTest {
 			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
-				public void registerTransitions(TypeFactory factory) {
+				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
 				};
 			};
@@ -175,18 +205,35 @@ class AbstractParserBaseTest {
 		}
 	}
 
-	private ParserInternalTypeBase doParse(AbstractParserBase parser, String data)
+	/**
+	 *
+	 * @param parser
+	 * @param data
+	 * @return
+	 * @throws IOException
+	 * @throws IllegalParserStateException
+	 * @throws UnknownStateException
+	 * @throws GenericParseException
+	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+	private ParserInternalTypeBase doParse(final AbstractParserBase parser, final String data)
 			throws IOException, IllegalParserStateException, UnknownStateException,
 			GenericParseException, NoSuchMethodException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
 		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-		InputStreamReader br = new InputStreamReader(is);
+		InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		StreamTokenizer tok = new StreamTokenizer(br);
 		Tokenizer t = new Tokenizer(tok);
 		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
 		return parser.getState(t);
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetState() {
 		try {
@@ -196,13 +243,13 @@ class AbstractParserBaseTest {
 			URL tu = Config.class.getClassLoader().getResource(ts);
 			URI temp = tu.toURI();
 			InputStream is = temp.toURL().openStream();
-			InputStreamReader br = new InputStreamReader(is);
+			InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			StreamTokenizer tok = new StreamTokenizer(br);
 			Tokenizer t = new Tokenizer(tok);
 			AbstractParserBase apb = new AbstractParserBase(Config.getFactory(), null, "BLARGH") {
 
 				@Override
-				public void registerTransitions(TypeFactory factory) {
+				public void registerTransitions(final TypeFactory factory) {
 					factory.registerStateTransition(this.getName().toUpperCase(),
 							TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION");
 					factory.registerStateTransition(this.getName().toUpperCase(),

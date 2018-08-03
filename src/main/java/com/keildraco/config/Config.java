@@ -3,6 +3,8 @@ package com.keildraco.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StreamTokenizer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -14,12 +16,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
-
-import java.io.Reader;
-import java.io.StreamTokenizer;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.reflections.Reflections;
 
 import com.keildraco.config.data.DataQuery;
 import com.keildraco.config.exceptions.GenericParseException;
@@ -32,21 +31,44 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 
-import org.reflections.Reflections;
-
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class Config {
 
+	/**
+	 *
+	 */
 	public static final Logger LOGGER = LogManager.getFormatterLogger("config");
+
+	/**
+	 *
+	 */
 	private static TypeFactory coreTypeFactory = new TypeFactory();
 
+	/**
+	 *
+	 */
 	private Config() {
 		// do nothing, not even throw
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public static TypeFactory getFactory() {
 		return coreTypeFactory;
 	}
 
+	/**
+	 *
+	 * @param name
+	 * @param clazz
+	 * @return
+	 */
 	private static IStateParser registerParserGenerator(final String name,
 			final Class<? extends IStateParser> clazz) {
 		Constructor<? extends IStateParser> c;
@@ -64,11 +86,24 @@ public final class Config {
 		}
 	}
 
+	/**
+	 *
+	 * @param name
+	 * @param clazz
+	 */
 	private static void registerParserInternal(final String name,
 			final Class<? extends IStateParser> clazz) {
 		coreTypeFactory.registerParser(() -> registerParserGenerator(name, clazz), name);
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 * @param value
+	 * @param clazz
+	 * @return
+	 */
 	private static ParserInternalTypeBase registerTypeGenerator(final ParserInternalTypeBase parent,
 			final String name, final String value,
 			final Class<? extends ParserInternalTypeBase> clazz) {
@@ -85,22 +120,45 @@ public final class Config {
 		}
 	}
 
+	/**
+	 *
+	 * @param type
+	 * @param clazz
+	 */
 	private static void registerTypeInternal(final ItemType type,
 			final Class<? extends ParserInternalTypeBase> clazz) {
 		coreTypeFactory.registerType(
 				(parent, name, value) -> registerTypeGenerator(parent, name, value, clazz), type);
 	}
 
+	/**
+	 *
+	 * @param type
+	 * @param clazz
+	 */
 	public static void registerType(final ItemType type,
 			final Class<? extends ParserInternalTypeBase> clazz) {
 		registerTypeInternal(type, clazz);
 	}
 
+	/**
+	 *
+	 * @param name
+	 * @param clazz
+	 */
 	public static void registerParser(final String name,
 			final Class<? extends IStateParser> clazz) {
 		registerParserInternal(name, clazz);
 	}
 
+	/**
+	 *
+	 * @param clazz
+	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
 	private static void registerType(final Class<? extends ParserInternalTypeBase> clazz)
 			throws NoSuchMethodException, InstantiationException, IllegalAccessException,
 			InvocationTargetException {
@@ -109,6 +167,14 @@ public final class Config {
 		registerType(zz.getType(), clazz);
 	}
 
+	/**
+	 *
+	 * @param clazz
+	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
 	private static void registerParser(final Class<? extends IStateParser> clazz)
 			throws NoSuchMethodException, InstantiationException, IllegalAccessException,
 			InvocationTargetException {
@@ -146,10 +212,22 @@ public final class Config {
 		}
 	}
 
+	/**
+	 *
+	 */
 	public static void reset() {
 		coreTypeFactory = new TypeFactory();
 	}
 
+	/**
+	 *
+	 * @param reader
+	 * @return
+	 * @throws IOException
+	 * @throws IllegalParserStateException
+	 * @throws UnknownStateException
+	 * @throws GenericParseException
+	 */
 	private static ParserInternalTypeBase runParser(final Reader reader) throws IOException,
 			IllegalParserStateException, UnknownStateException, GenericParseException {
 		StreamTokenizer tok = new StreamTokenizer(reader);
@@ -157,9 +235,18 @@ public final class Config {
 		return coreTypeFactory.getParser("ROOT", null).getState(t);
 	}
 
+	/**
+	 *
+	 * @param is
+	 * @return
+	 * @throws IllegalParserStateException
+	 * @throws IOException
+	 * @throws UnknownStateException
+	 * @throws GenericParseException
+	 */
 	public static DataQuery parseStream(final InputStream is) throws IllegalParserStateException,
 			IOException, UnknownStateException, GenericParseException {
-		InputStreamReader br = new InputStreamReader(is);
+		InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		final ParserInternalTypeBase res = runParser(br);
 		return DataQuery.of(res);
 	}
@@ -178,6 +265,16 @@ public final class Config {
 		return parseStream(filePath.toURL().openStream());
 	}
 
+	/**
+	 *
+	 * @param filePath
+	 * @return
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws IllegalParserStateException
+	 * @throws UnknownStateException
+	 * @throws GenericParseException
+	 */
 	public static DataQuery loadFile(final Path filePath) throws IOException, URISyntaxException,
 			IllegalParserStateException, UnknownStateException, GenericParseException {
 		String ts = String.join("/", filePath.toString().split("\\\\"));
@@ -186,6 +283,16 @@ public final class Config {
 		return loadFile(temp);
 	}
 
+	/**
+	 *
+	 * @param filePath
+	 * @return
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws IllegalParserStateException
+	 * @throws UnknownStateException
+	 * @throws GenericParseException
+	 */
 	public static DataQuery loadFile(final String filePath) throws IOException, URISyntaxException,
 			IllegalParserStateException, UnknownStateException, GenericParseException {
 		URL tu = Config.class.getClassLoader().getResource(filePath);

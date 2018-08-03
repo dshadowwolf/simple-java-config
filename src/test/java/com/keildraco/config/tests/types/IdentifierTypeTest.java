@@ -20,6 +20,9 @@ import com.keildraco.config.types.IdentifierType;
 @TestInstance(Lifecycle.PER_CLASS)
 public final class IdentifierTypeTest {
 
+	/**
+	 *
+	 */
 	private IdentifierType testItem;
 
 	/**
@@ -93,6 +96,9 @@ public final class IdentifierTypeTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testHasByIdent() {
 		assertTrue(this.testItem.has("value"));

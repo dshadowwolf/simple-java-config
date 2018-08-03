@@ -1,6 +1,7 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,8 +9,16 @@ import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.RootState;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class RootStateTest {
 
+	/**
+	 *
+	 */
 	@Test
 	final void testRootState() {
 		try {
@@ -24,6 +33,9 @@ class RootStateTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testRegisterTransitions() {
 		try {

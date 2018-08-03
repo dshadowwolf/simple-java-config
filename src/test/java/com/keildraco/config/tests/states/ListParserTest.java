@@ -1,6 +1,10 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,9 +29,21 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.ListParser;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 @TestInstance(Lifecycle.PER_CLASS)
 class ListParserTest {
 
+	/**
+	 *
+	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
 	@BeforeAll
 	final void setup() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
 			InvocationTargetException {
@@ -35,13 +51,16 @@ class ListParserTest {
 		Config.registerKnownParts();
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetState() {
 		try {
 			IStateParser p = Config.getFactory().getParser("LIST", null);
 			String data = "[ alpha, beta, charlie(! delta) ]";
 			InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			InputStreamReader br = new InputStreamReader(is);
+			InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			StreamTokenizer tok = new StreamTokenizer(br);
 			Tokenizer t = new Tokenizer(tok);
 			ParserInternalTypeBase pb = p.getState(t);
@@ -57,6 +76,9 @@ class ListParserTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testListParser() {
 		try {
@@ -71,6 +93,9 @@ class ListParserTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testRegisterTransitions() {
 		try {
@@ -86,11 +111,19 @@ class ListParserTest {
 		}
 	}
 
-	private void doParse(String data) throws IOException, IllegalParserStateException,
+	/**
+	 *
+	 * @param data
+	 * @throws IOException
+	 * @throws IllegalParserStateException
+	 * @throws UnknownStateException
+	 * @throws GenericParseException
+	 */
+	private void doParse(final String data) throws IOException, IllegalParserStateException,
 			UnknownStateException, GenericParseException {
 		IStateParser parser = Config.getFactory().getParser("LIST", null);
 		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-		InputStreamReader br = new InputStreamReader(is);
+		InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		StreamTokenizer tok = new StreamTokenizer(br);
 		Tokenizer t = new Tokenizer(tok);
 		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
@@ -98,6 +131,9 @@ class ListParserTest {
 		ParserInternalTypeBase pb = parser.getState(t);
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testErrorStates() {
 		String earlyEOF = "[ a, b, c";

@@ -12,8 +12,18 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.OperationType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class OperationParser extends AbstractParserBase {
 
+	/**
+	 *
+	 * @param factoryIn
+	 * @param parentIn
+	 */
 	public OperationParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "OPERATION");
 	}

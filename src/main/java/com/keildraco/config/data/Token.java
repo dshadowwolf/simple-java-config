@@ -1,10 +1,26 @@
 package com.keildraco.config.data;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 public final class Token {
 
+	/**
+	 *
+	 */
 	private final String val;
+
+	/**
+	 *
+	 */
 	private final TokenType type;
 
+	/**
+	 *
+	 * @param valueIn
+	 */
 	public Token(final String valueIn) {
 		this.val = valueIn;
 		if (this.val.matches("^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$")) {
@@ -48,10 +64,18 @@ public final class Token {
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public String getValue() {
 		return this.val;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public TokenType getType() {
 		return this.type;
 	}

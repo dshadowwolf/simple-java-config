@@ -36,6 +36,9 @@ import com.keildraco.config.types.ListType;
 @TestInstance(Lifecycle.PER_CLASS)
 public final class ListTypeTest {
 
+	/**
+	 *
+	 */
 	private ListType testItem;
 
 	/**
@@ -104,12 +107,18 @@ public final class ListTypeTest {
 		assertEquals("blank = [  ]", this.testItem.getValue());
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testGetNotThere() {
 		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get("no_such_item"),
 				"item doesn't exist");
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testOtherAsString() {
 		final ListType lt = new ListType("");
@@ -117,6 +126,9 @@ public final class ListTypeTest {
 				"ListType with blank name should return \"[  ]\"");
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testListTypeParentName() {
 		try {
@@ -127,6 +139,9 @@ public final class ListTypeTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testListTypeParentNameValue() {
 		try {
@@ -137,6 +152,9 @@ public final class ListTypeTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	public final void fullAsString() {
 		try {
@@ -145,7 +163,7 @@ public final class ListTypeTest {
 			String data = "[ a, b, c, d, e(! f) ]";
 			IStateParser parser = Config.getFactory().getParser("LIST", null);
 			InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			InputStreamReader br = new InputStreamReader(is);
+			InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			StreamTokenizer tok = new StreamTokenizer(br);
 			Tokenizer t = new Tokenizer(tok);
 			ParserInternalTypeBase pitb = parser.getState(t);

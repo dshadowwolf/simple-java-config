@@ -1,6 +1,11 @@
 package com.keildraco.config.tests.data;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +14,7 @@ import java.io.StreamTokenizer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -23,14 +29,26 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class DataQueryTest {
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@BeforeEach
 	void setUp() throws Exception {
 		Config.reset();
 		Config.registerKnownParts();
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testOf() {
 		try {
@@ -39,7 +57,7 @@ class DataQueryTest {
 			URL tu = Config.class.getClassLoader().getResource(ts);
 			URI temp = tu.toURI();
 			InputStream is = temp.toURL().openStream();
-			InputStreamReader br = new InputStreamReader(is);
+			InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			StreamTokenizer tok = new StreamTokenizer(br);
 			Tokenizer t = new Tokenizer(tok);
 			ParserInternalTypeBase pb = Config.getFactory().getParser("ROOT", null).getState(t);
@@ -54,6 +72,9 @@ class DataQueryTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGet() {
 		Path p = Paths.get("assets", "base-config-test.cfg");

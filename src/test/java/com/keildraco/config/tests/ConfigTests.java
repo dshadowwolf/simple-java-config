@@ -1,6 +1,11 @@
 package com.keildraco.config.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -21,8 +26,16 @@ import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class ConfigTests {
 
+	/**
+	 *
+	 */
 	@Test
 	final void testGetFactory() {
 		assertNotNull(Config.getFactory());
@@ -35,8 +48,8 @@ class ConfigTests {
 
 	/**
 	 * Test the automatic (using reflection) registration of known value types and parser states and
-	 * state transitions
-	 * 
+	 * state transitions.
+	 *
 	 * Will fail if it catches any of a number of possible exceptions
 	 */
 	@Test
@@ -52,6 +65,9 @@ class ConfigTests {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testReset() {
 		try {
@@ -75,6 +91,9 @@ class ConfigTests {
 	 * loadFileString() and loadFilePath() both call loadFileURI() - which calls parseStream().
 	 */
 
+	/**
+	 *
+	 */
 	@Test
 	public final void testLoadFilePath() {
 		Path p = Paths.get("assets", "base-config-test.cfg");
@@ -95,6 +114,9 @@ class ConfigTests {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testLoadFileString() {
 		DataQuery c = null;
@@ -114,6 +136,9 @@ class ConfigTests {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testParseString() {
 		DataQuery c = null;
@@ -133,6 +158,9 @@ class ConfigTests {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testErrorStates() {
 		Config.registerParser("WILLTHROW", ParserThatThrows.class);
@@ -143,23 +171,47 @@ class ConfigTests {
 		assertAll(() -> assertNull(p), () -> assertNull(t));
 	}
 
-	private class ParserThatThrows extends AbstractParserBase implements IStateParser {
+	/**
+	 *
+	 * @author Daniel Hazelton
+	 *
+	 */
+	private class ParserThatThrows extends AbstractParserBase {
 
-		public ParserThatThrows(TypeFactory f, ParserInternalTypeBase b)
+		/**
+		 *
+		 * @param factory
+		 * @param b
+		 * @throws IllegalAccessException
+		 */
+		public ParserThatThrows(final TypeFactory factory, final ParserInternalTypeBase b)
 				throws IllegalAccessException {
-			super(f, b, "TEST");
+			super(factory, b, "TEST");
 			throw new IllegalAccessException("testing purposes only");
 		}
 
 		@Override
-		public void registerTransitions(TypeFactory factory) {
+		public void registerTransitions(final TypeFactory factory) {
 			// not needed
 		}
 	}
 
+	/**
+	 *
+	 * @author Daniel Hazelton
+
+	 *
+	 */
 	private class TypeThatThrows extends ParserInternalTypeBase {
 
-		public TypeThatThrows(ParserInternalTypeBase parentIn, String nameIn, String valueIn)
+		/**
+		 *
+		 * @param parentIn
+		 * @param nameIn
+		 * @param valueIn
+		 * @throws IllegalAccessException
+		 */
+		public TypeThatThrows(final ParserInternalTypeBase parentIn, final String nameIn, final String valueIn)
 				throws IllegalAccessException {
 			super(parentIn, nameIn, valueIn);
 			throw new IllegalAccessException("testing purposes only");

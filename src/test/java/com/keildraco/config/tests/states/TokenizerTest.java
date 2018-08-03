@@ -1,6 +1,9 @@
 package com.keildraco.config.tests.states;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,18 +18,33 @@ import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+/**
+ *
+ * @author Daniel Hazelton
+ *
+ */
 class TokenizerTest {
 
+	/**
+	 *
+	 */
 	private StreamTokenizer tok;
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	@BeforeEach
 	void setUp() throws Exception {
 		InputStream is = IOUtils.toInputStream("a b ( c ) d { e ! f ~ g } h = [ i, j, k, -l, ? ] ",
 				StandardCharsets.UTF_8);
-		InputStreamReader isr = new InputStreamReader(is);
+		InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
 		this.tok = new StreamTokenizer(isr);
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testTokenizer() {
 		try {
@@ -38,6 +56,9 @@ class TokenizerTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testNextToken() {
 		try {
@@ -52,6 +73,9 @@ class TokenizerTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testHasNextTrue() {
 		try {
@@ -63,10 +87,13 @@ class TokenizerTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testHasNextFalse() {
 		InputStream is = IOUtils.toInputStream("a", StandardCharsets.UTF_8);
-		InputStreamReader isr = new InputStreamReader(is);
+		InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
 		StreamTokenizer tok2 = new StreamTokenizer(isr);
 		try {
 			Tokenizer t = new Tokenizer(tok2);
@@ -79,6 +106,9 @@ class TokenizerTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testPeekToken() {
 		try {
@@ -93,6 +123,9 @@ class TokenizerTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Test
 	final void testPushBack() {
 		try {
