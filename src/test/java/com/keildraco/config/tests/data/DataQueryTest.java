@@ -64,7 +64,8 @@ class DataQueryTest {
 					() -> assertTrue(c.get("section"), "variant"),
 					() -> assertTrue(c.get("section.magic.xyzzy"), "long test"),
 					() -> assertFalse(c.get("nope"), "nonexistent bit, short"),
-					() -> assertFalse(c.get("section.blech.dead"), "buried dead key"));
+					() -> assertFalse(c.get("section.blech.dead"), "buried dead key"),
+					() -> assertThrows(IllegalArgumentException.class, () -> c.get(".section")));
 		} catch (final IOException | IllegalArgumentException | URISyntaxException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(), e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);

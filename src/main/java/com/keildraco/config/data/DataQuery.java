@@ -24,16 +24,19 @@ public final class DataQuery {
 	 */
 	public boolean get(final String key) {
 		// find item, or "all"
+		int index = key.indexOf('.');
 		if (this.baseSection.has(key)) {
 			return true;
-		} else if (key.indexOf('.') > 0) {
+		} else if (index != -1 && index > 0 ) {
 			final String base = String.format("%s.all", key.substring(0, key.lastIndexOf('.')));
 			if (this.baseSection.has(base)) {
 				final String term = key.substring(key.lastIndexOf('.') + 1);
 				return new ItemMatcher(this.baseSection.get(base)).matches(term);
-			} else {
+			}  else {
 				return false;
 			}
+		} else if (index == 0) {
+			throw new IllegalArgumentException("search keys must not start with '.'");
 		} else {
 			return false;
 		}

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Collections;
@@ -94,7 +95,8 @@ public final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testGet() {
-		assertEquals(this.testFoobar, this.testItem.get("foobar"));
+		assertAll( () -> assertEquals(this.testFoobar, this.testItem.get("foobar")),
+				() -> assertThrows(IllegalArgumentException.class, () -> this.testItem.get(".foo")));
 	}
 
 	/**

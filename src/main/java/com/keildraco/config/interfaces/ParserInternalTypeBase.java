@@ -65,7 +65,8 @@ public class ParserInternalTypeBase {
 	 * @return
 	 */
 	public ParserInternalTypeBase get(final String itemName) {
-		if (itemName.indexOf('.') > 0) {
+		int index = itemName.indexOf('.');
+		if (index > 0) {
 			final String nameBits = itemName.substring(0, itemName.indexOf('.'));
 			final String nameRest = itemName.substring(itemName.indexOf('.') + 1);
 			if (this.has(nameBits)) {
@@ -77,6 +78,8 @@ public class ParserInternalTypeBase {
 			} else if (this.getName().equalsIgnoreCase(nameBits) && this.has(nameRest)) {
 				return this.items.get(nameRest);
 			}
+		} else if (index == 0) {
+			throw new IllegalArgumentException("search keys cannot start with a '.'");
 		} else if (this.has(itemName)) {
 			return this.items.get(itemName);
 		}
