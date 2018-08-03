@@ -8,11 +8,10 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.factory.Tokenizer.Token;
 import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
-import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.SectionType;
 
-public final class SectionParser extends AbstractParserBase implements IStateParser {
+public final class SectionParser extends AbstractParserBase {
 
 	public SectionParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "SECTION");

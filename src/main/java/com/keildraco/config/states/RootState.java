@@ -3,10 +3,9 @@ package com.keildraco.config.states;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
-import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
-public final class RootState extends AbstractParserBase implements IStateParser {
+public final class RootState extends AbstractParserBase {
 
 	public RootState(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "ROOT");

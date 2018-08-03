@@ -8,12 +8,11 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.factory.Tokenizer.Token;
 import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
-import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.OperationType;
 
-public final class OperationParser extends AbstractParserBase implements IStateParser {
+public final class OperationParser extends AbstractParserBase {
 
 	public OperationParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "OPERATION");

@@ -8,12 +8,11 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.factory.Tokenizer.Token;
 import com.keildraco.config.factory.Tokenizer.TokenType;
 import com.keildraco.config.interfaces.AbstractParserBase;
-import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.ListType;
 
-public final class ListParser extends AbstractParserBase implements IStateParser {
+public final class ListParser extends AbstractParserBase {
 
 	public ListParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "LIST");
