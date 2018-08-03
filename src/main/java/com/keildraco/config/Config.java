@@ -74,8 +74,10 @@ public final class Config {
 	private static IStateParser registerParserGenerator(final String name,
 			final Class<? extends IStateParser> clazz) {
 		try {
-			final Constructor<? extends IStateParser> c = clazz.getConstructor(TypeFactory.class, ParserInternalTypeBase.class);
-			final IStateParser cc = c.newInstance(coreTypeFactory, ParserInternalTypeBase.EMPTY_TYPE);
+			final Constructor<? extends IStateParser> c = clazz.getConstructor(TypeFactory.class,
+					ParserInternalTypeBase.class);
+			final IStateParser cc = c.newInstance(coreTypeFactory,
+					ParserInternalTypeBase.EMPTY_TYPE);
 			cc.registerTransitions(coreTypeFactory);
 			return cc;
 		} catch (final NoSuchMethodException | SecurityException | InstantiationException
@@ -109,7 +111,8 @@ public final class Config {
 			final String name, final String value,
 			final Class<? extends ParserInternalTypeBase> clazz) {
 		try {
-			final Constructor<? extends ParserInternalTypeBase> c = clazz.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
+			final Constructor<? extends ParserInternalTypeBase> c = clazz
+					.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
 			return c.newInstance(parent, name, value);
 		} catch (final NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

@@ -36,8 +36,8 @@ class TokenizerTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-		final InputStream is = IOUtils.toInputStream("a b ( c ) d { e ! f ~ g } h = [ i, j, k, -l, ? ] ",
-				StandardCharsets.UTF_8);
+		final InputStream is = IOUtils.toInputStream(
+				"a b ( c ) d { e ! f ~ g } h = [ i, j, k, -l, ? ] ", StandardCharsets.UTF_8);
 		final InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
 		this.tok = new StreamTokenizer(isr);
 	}

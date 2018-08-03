@@ -25,6 +25,7 @@ public final class DataQuery {
 	/**
 	 * as odd as it seems, this cannot, legally, be called with anything other than a valid,
 	 * non-null SectionType value - not even 'EmptyType' can be used here and be valid or compile.
+	 *
 	 * @param section
 	 * @return
 	 */

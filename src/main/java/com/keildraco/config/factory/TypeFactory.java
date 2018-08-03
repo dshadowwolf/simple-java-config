@@ -86,8 +86,8 @@ public final class TypeFactory {
 		final Map<TokenType, String> transitionMapping = this.stateMap
 				.getOrDefault(stateName, new ConcurrentHashMap<>())
 				.getOrDefault(currentToken, new ConcurrentHashMap<>());
-		final Map<TokenType, Map<TokenType, String>> baseMapping = this.stateMap.getOrDefault(stateName,
-				new ConcurrentHashMap<>());
+		final Map<TokenType, Map<TokenType, String>> baseMapping = this.stateMap
+				.getOrDefault(stateName, new ConcurrentHashMap<>());
 		transitionMapping.put(nextToken, toState);
 		baseMapping.put(currentToken, transitionMapping);
 		this.stateMap.put(stateName, baseMapping);

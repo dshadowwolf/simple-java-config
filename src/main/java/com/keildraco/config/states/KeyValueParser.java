@@ -51,7 +51,8 @@ public final class KeyValueParser extends AbstractParserBase {
 			return rv;
 		}
 
-		final IStateParser parser = this.getFactory().nextState(this.getName().toUpperCase(Locale.ENGLISH), next, following);
+		final IStateParser parser = this.getFactory()
+				.nextState(this.getName().toUpperCase(Locale.ENGLISH), next, following);
 		final ParserInternalTypeBase rv = parser.getState(tok);
 		rv.setName(key);
 		return rv;
@@ -59,8 +60,8 @@ public final class KeyValueParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH), TokenType.OPEN_LIST,
-				TokenType.IDENTIFIER, "LIST");
+		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+				TokenType.OPEN_LIST, TokenType.IDENTIFIER, "LIST");
 	}
 
 }

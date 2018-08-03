@@ -51,7 +51,8 @@ class ConfigTests {
 	 * Test the automatic (using reflection) registration of known value types and parser states and
 	 * state transitions.
 	 *
-	 * <p>Will fail if it catches any of a number of possible exceptions
+	 * <p>
+	 * Will fail if it catches any of a number of possible exceptions
 	 */
 	@Test
 	final void testRegisterKnownParts() {
@@ -168,7 +169,8 @@ class ConfigTests {
 		Config.registerType(ItemType.INVALID, TypeThatThrows.class);
 
 		final IStateParser p = Config.getFactory().getParser("WILLTHROW", null);
-		final ParserInternalTypeBase t = Config.getFactory().getType(null, "", "", ItemType.INVALID);
+		final ParserInternalTypeBase t = Config.getFactory().getType(null, "", "",
+				ItemType.INVALID);
 		assertAll(() -> assertNull(p), () -> assertNull(t));
 	}
 
@@ -200,7 +202,7 @@ class ConfigTests {
 	/**
 	 *
 	 * @author Daniel Hazelton
-
+	 *
 	 *
 	 */
 	private class TypeThatThrows extends ParserInternalTypeBase {
@@ -212,8 +214,8 @@ class ConfigTests {
 		 * @param valueIn
 		 * @throws IllegalAccessException
 		 */
-		TypeThatThrows(final ParserInternalTypeBase parentIn, final String nameIn, final String valueIn)
-				throws IllegalAccessException {
+		TypeThatThrows(final ParserInternalTypeBase parentIn, final String nameIn,
+				final String valueIn) throws IllegalAccessException {
 			super(parentIn, nameIn, valueIn);
 			throw new IllegalAccessException("testing purposes only");
 		}

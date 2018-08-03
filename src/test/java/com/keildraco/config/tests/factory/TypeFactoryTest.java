@@ -143,7 +143,8 @@ class TypeFactoryTest {
 			final Token next = t.peekToken();
 			final IStateParser nextState = Config.getFactory().nextState("SECTION", cur, next);
 			assertAll("TypeFactory.nextState() works", () -> assertTrue(nextState != null),
-					() -> assertEquals("KEYVALUE", nextState.getName().toUpperCase(Locale.ENGLISH)));
+					() -> assertEquals("KEYVALUE",
+							nextState.getName().toUpperCase(Locale.ENGLISH)));
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
 			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);

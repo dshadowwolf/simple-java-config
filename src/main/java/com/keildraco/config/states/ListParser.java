@@ -52,9 +52,10 @@ public final class ListParser extends AbstractParserBase {
 				case IDENTIFIER:
 					if (next != null && (next.getType() != TokenType.SEPERATOR
 							&& next.getType() != TokenType.CLOSE_LIST)) {
-						rv.addItem(
-								this.getFactory().nextState(this.getName().toUpperCase(Locale.ENGLISH), current, next)
-										.getState(tok));
+						rv.addItem(this.getFactory()
+								.nextState(this.getName().toUpperCase(Locale.ENGLISH), current,
+										next)
+								.getState(tok));
 					} else {
 						rv.addItem(this.getFactory().getType(null, current.getValue(),
 								current.getValue(), ItemType.IDENTIFIER));
@@ -81,7 +82,7 @@ public final class ListParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH), TokenType.IDENTIFIER,
-				TokenType.OPEN_PARENS, "OPERATION");
+		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+				TokenType.IDENTIFIER, TokenType.OPEN_PARENS, "OPERATION");
 	}
 }

@@ -61,7 +61,8 @@ class DataQueryTest {
 			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			final StreamTokenizer tok = new StreamTokenizer(br);
 			final Tokenizer t = new Tokenizer(tok);
-			final ParserInternalTypeBase pb = Config.getFactory().getParser("ROOT", null).getState(t);
+			final ParserInternalTypeBase pb = Config.getFactory().getParser("ROOT", null)
+					.getState(t);
 			final DataQuery c = DataQuery.of(pb);
 			assertNotNull(c, "Load Worked? ");
 		} catch (final IOException | IllegalArgumentException | URISyntaxException

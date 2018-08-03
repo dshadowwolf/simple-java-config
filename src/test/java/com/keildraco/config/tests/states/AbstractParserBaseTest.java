@@ -248,7 +248,8 @@ class AbstractParserBaseTest {
 			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			final StreamTokenizer tok = new StreamTokenizer(br);
 			final Tokenizer t = new Tokenizer(tok);
-			final AbstractParserBase apb = new AbstractParserBase(Config.getFactory(), null, "BLARGH") {
+			final AbstractParserBase apb = new AbstractParserBase(Config.getFactory(), null,
+					"BLARGH") {
 
 				@Override
 				public void registerTransitions(final TypeFactory factory) {

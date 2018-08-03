@@ -25,10 +25,10 @@ public final class RootState extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH), TokenType.IDENTIFIER,
-				TokenType.OPEN_BRACE, "SECTION");
-		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH), TokenType.IDENTIFIER,
-				TokenType.STORE, "KEYVALUE");
+		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+				TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION");
+		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+				TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
 	}
 
 }

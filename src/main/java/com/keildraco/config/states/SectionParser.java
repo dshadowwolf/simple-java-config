@@ -51,8 +51,9 @@ public final class SectionParser extends AbstractParserBase {
 				return rv;
 			}
 
-			rv.addItem(
-					this.getFactory().nextState(this.getName().toUpperCase(Locale.ENGLISH), current, next).getState(tok));
+			rv.addItem(this.getFactory()
+					.nextState(this.getName().toUpperCase(Locale.ENGLISH), current, next)
+					.getState(tok));
 			current = tok.peek();
 			next = tok.peekToken();
 		}
@@ -62,9 +63,10 @@ public final class SectionParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH), TokenType.IDENTIFIER,
-				TokenType.STORE, "KEYVALUE");
-		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH), TokenType.IDENTIFIER,
-				TokenType.OPEN_BRACE, this.getName().toUpperCase(Locale.ENGLISH));
+		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+				TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
+		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+				TokenType.IDENTIFIER, TokenType.OPEN_BRACE,
+				this.getName().toUpperCase(Locale.ENGLISH));
 	}
 }
