@@ -9,16 +9,18 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.RootState;
 
 class RootStateTest {
+
 	@Test
 	final void testRootState() {
 		try {
 			TypeFactory f = new TypeFactory();
 			RootState rs = new RootState(f, null);
-			assertTrue(rs!=null, "Able to instantiate a RootState");
+			assertTrue(rs != null, "Able to instantiate a RootState");
 		} catch (Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -30,9 +32,10 @@ class RootStateTest {
 			rs.registerTransitions(f);
 			assertTrue(true, "was able to register transitions");
 		} catch (Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 

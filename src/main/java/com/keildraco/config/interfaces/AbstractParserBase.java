@@ -92,28 +92,18 @@ public abstract class AbstractParserBase implements IStateParser {
 		ParserInternalTypeBase rv = new ParserInternalTypeBase(this.name.toUpperCase()) {
 
 			private String valAsString(ParserInternalTypeBase val) {
-				return val.asString();
+				return val.getValue();
 			}
 
 			@Override
 			public String getValue() {
-				return this.asString();
-			}
-
-			@Override
-			public String asString() {
 				return String.join(String.format("%n"), this.items.values().stream()
 						.map(this::valAsString).collect(Collectors.toList()));
 			}
 
 			@Override
-			public Number toNumber() {
-				return Float.NaN;
-			}
-
-			@Override
-			public boolean toBoolean() {
-				return Boolean.FALSE;
+			public String getValueRaw() {
+				return this.getValue();
 			}
 		};
 

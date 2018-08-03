@@ -8,19 +8,26 @@ import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
 
 class ExceptionsTest {
+
 	@Test
 	final void testGenericParseException() {
-		assertThrows(GenericParseException.class, () -> { throw new GenericParseException("Blargh!"); });
+		assertThrows(GenericParseException.class, () -> {
+			throw new GenericParseException("Blargh!");
+		});
 	}
 
 	@Test
 	final void testIllegalParserStateException() {
-		assertThrows(IllegalParserStateException.class, () -> { throw new IllegalParserStateException("Blargh!"); });
+		assertThrows(IllegalParserStateException.class, () -> {
+			throw new IllegalParserStateException("Blargh!");
+		});
 	}
 
 	@Test
 	final void testUnknownStateException() {
-		assertThrows(UnknownStateException.class, () -> { throw new UnknownStateException("Blargh!"); });
+		assertThrows(UnknownStateException.class, () -> {
+			throw new UnknownStateException("Blargh!");
+		});
 	}
 
 }

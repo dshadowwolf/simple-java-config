@@ -32,9 +32,10 @@ class ConfigTests {
 	 * There should be a "testRegisterType" and "testRegisterParser" here, but those are covered by
 	 * "testRegisterKnownParts()"
 	 */
-	
+
 	/**
-	 * Test the automatic (using reflection) registration of known value types and parser states and state transitions
+	 * Test the automatic (using reflection) registration of known value types and parser states and
+	 * state transitions
 	 * 
 	 * Will fail if it catches any of a number of possible exceptions
 	 */
@@ -43,8 +44,8 @@ class ConfigTests {
 		try {
 			Config.registerKnownParts();
 			assertTrue(true, "able to register known bits automatically and without exceptions");
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
+		} catch (NoSuchMethodException | SecurityException | InstantiationException
+				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception %s", e.toString());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::fatal);
 			fail("Exception Caught");
@@ -58,7 +59,8 @@ class ConfigTests {
 			IStateParser p = Config.getFactory().getParser("SECTION", null);
 			Config.reset();
 			IStateParser q = Config.getFactory().getParser("SECTION", null);
-			assertAll("parser prior to reset should not equal a parser post reset", () -> assertNull(q), () -> assertTrue(p!=null), () -> assertFalse(p==q) );
+			assertAll("parser prior to reset should not equal a parser post reset",
+					() -> assertNull(q), () -> assertTrue(p != null), () -> assertFalse(p == q));
 		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception %s", e.toString());
@@ -68,9 +70,9 @@ class ConfigTests {
 	}
 
 	/*
-	 * There would be a testParseStream() here, but it is actually called from all the various parse() functions.
-	 * Same for testLoadFileURI(), actually, so neither gets a separate test. loadFileString() and loadFilePath() both
-	 * call loadFileURI() - which calls parseStream().
+	 * There would be a testParseStream() here, but it is actually called from all the various
+	 * parse() functions. Same for testLoadFileURI(), actually, so neither gets a separate test.
+	 * loadFileString() and loadFilePath() both call loadFileURI() - which calls parseStream().
 	 */
 
 	@Test
@@ -82,10 +84,14 @@ class ConfigTests {
 			Config.registerKnownParts();
 			c = com.keildraco.config.Config.loadFile(p);
 			assertNotNull(c, "Load Worked? ");
-		} catch (final IOException | IllegalArgumentException | URISyntaxException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(), e.getMessage());
+		} catch (final IOException | IllegalArgumentException | URISyntaxException
+				| NoSuchMethodException | InstantiationException | IllegalAccessException
+				| InvocationTargetException | IllegalParserStateException | UnknownStateException
+				| GenericParseException e) {
+			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -97,10 +103,14 @@ class ConfigTests {
 			Config.registerKnownParts();
 			c = com.keildraco.config.Config.loadFile("assets/base-config-test.cfg");
 			assertNotNull(c, "Load Worked? ");
-		} catch (final IOException | IllegalArgumentException | URISyntaxException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+		} catch (final IOException | IllegalArgumentException | URISyntaxException
+				| NoSuchMethodException | InstantiationException | IllegalAccessException
+				| InvocationTargetException | IllegalParserStateException | UnknownStateException
+				| GenericParseException e) {
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -110,12 +120,16 @@ class ConfigTests {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			c = com.keildraco.config.Config.parseString("section { item = value\n item2 = [ list, op(! ident), op2(~ident2) ]\nsubsection { item3 = ident3 } }");
+			c = com.keildraco.config.Config.parseString(
+					"section { item = value\n item2 = [ list, op(! ident), op2(~ident2) ]\nsubsection { item3 = ident3 } }");
 			assertNotNull(c, "Load Worked? ");
-		} catch (final IOException | IllegalArgumentException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
+				| InstantiationException | IllegalAccessException | InvocationTargetException
+				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -123,49 +137,42 @@ class ConfigTests {
 	final void testErrorStates() {
 		Config.registerParser("WILLTHROW", ParserThatThrows.class);
 		Config.registerType(ItemType.INVALID, TypeThatThrows.class);
-		
+
 		IStateParser p = Config.getFactory().getParser("WILLTHROW", null);
 		ParserInternalTypeBase t = Config.getFactory().getType(null, "", "", ItemType.INVALID);
 		assertAll(() -> assertNull(p), () -> assertNull(t));
 	}
-	
+
 	private class ParserThatThrows extends AbstractParserBase implements IStateParser {
 
-		public ParserThatThrows(TypeFactory f, ParserInternalTypeBase b) throws IllegalAccessException {
-			super(f,b, "TEST");
+		public ParserThatThrows(TypeFactory f, ParserInternalTypeBase b)
+				throws IllegalAccessException {
+			super(f, b, "TEST");
 			throw new IllegalAccessException("testing purposes only");
 		}
-		
+
 		@Override
 		public void registerTransitions(TypeFactory factory) {
 			// not needed
 		}
 	}
-	
+
 	private class TypeThatThrows extends ParserInternalTypeBase {
 
-		public TypeThatThrows(ParserInternalTypeBase parentIn, String nameIn, String valueIn) throws IllegalAccessException {
+		public TypeThatThrows(ParserInternalTypeBase parentIn, String nameIn, String valueIn)
+				throws IllegalAccessException {
 			super(parentIn, nameIn, valueIn);
 			throw new IllegalAccessException("testing purposes only");
 		}
-		@Override
-		public String getValue() {
-			return "";
-		}
 
 		@Override
-		public String asString() {
+		public String getValue() {
 			return "Abstract!";
 		}
 
 		@Override
-		public Number toNumber() {
-			return Float.NaN;
-		}
-
-		@Override
-		public boolean toBoolean() {
-			return Boolean.FALSE;
+		public String getValueRaw() {
+			return this.getValue();
 		}
 	}
 }

@@ -24,16 +24,18 @@ import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.OperationType;
 
 class ItemMatcherTest {
+
 	@Test
 	final void testItemMatcher() {
 		try {
 			ParserInternalTypeBase item = new IdentifierType("magic", "name");
 			ItemMatcher m = new ItemMatcher(item);
-			assertTrue(m!=null, "Able to instantiate an ItemMatcher");
+			assertTrue(m != null, "Able to instantiate an ItemMatcher");
 		} catch (Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -41,15 +43,16 @@ class ItemMatcherTest {
 	final void testMatches() {
 		ParserInternalTypeBase item = new IdentifierType("magic", "name");
 		ItemMatcher m = new ItemMatcher(item);
-		assertAll( () -> assertTrue(m.matches("magic.name"), "name and value match"),
+		assertAll(() -> assertTrue(m.matches("magic.name"), "name and value match"),
 				() -> assertFalse(m.matches("name.name"), "name doesn't match but value does"),
 				() -> assertFalse(m.matches("magic.xyzzy"), "name matches but value doesn't"),
 				() -> assertFalse(m.matches("xyzzy.magic"), "neither name or value match"));
 	}
-	
+
 	@Test
 	final void testAlwaysFalseMatcherMatches() {
-		assertFalse(ItemMatcher.ALWAYS_FALSE.matches("blargh"), "The AlwaysFalse matcher should only return false");
+		assertFalse(ItemMatcher.ALWAYS_FALSE.matches("blargh"),
+				"The AlwaysFalse matcher should only return false");
 	}
 
 	@Test
@@ -69,23 +72,33 @@ class ItemMatcherTest {
 			OperationType o = new OperationType("oper", "value");
 			o.setOperation(">");
 			ItemMatcher m3 = new ItemMatcher(o);
-			assertAll("result is correct", () -> assertTrue(m!=null, "result not null"), 
+			assertAll("result is correct", () -> assertTrue(m != null, "result not null"),
 					() -> assertTrue(m.matches("section"), "section match correct"),
 					() -> assertTrue(m.matches("section.item.value"), "full item match works"),
 					() -> assertTrue(m.matches("section.item"), "item exists/short name match"),
 					() -> assertFalse(m.matches("section.I_Dont_Exist"), "item doesn't exist"),
-					() -> assertTrue(m.matches("section.listitem.alpha"), "section has a list sub-item named \"listitem\" that has a member named \"alpha\""),
-					() -> assertFalse(m.matches("section.listitem.bravo.charlie"), "operation named \"bravo\" says \"charlie\" shouldn't match"),
-					() -> assertTrue(m.matches("section.listitem.bravo.delta"), "operation named \"bravo\" should match \"delta\""),
-					() -> assertTrue(m.matches("section.listitem.epsilon.foobar"), "foobar temp-ignore operation type named epsilon"),
-					() -> assertFalse(m.matches("section.listitem.echo.foxtrot"), "check for a different code path"),
+					() -> assertTrue(m.matches("section.listitem.alpha"),
+							"section has a list sub-item named \"listitem\" that has a member named \"alpha\""),
+					() -> assertFalse(m.matches("section.listitem.bravo.charlie"),
+							"operation named \"bravo\" says \"charlie\" shouldn't match"),
+					() -> assertTrue(m.matches("section.listitem.bravo.delta"),
+							"operation named \"bravo\" should match \"delta\""),
+					() -> assertTrue(m.matches("section.listitem.epsilon.foobar"),
+							"foobar temp-ignore operation type named epsilon"),
+					() -> assertFalse(m.matches("section.listitem.echo.foxtrot"),
+							"check for a different code path"),
 					() -> assertFalse(m2.matches("blargh"), "EmptyType should match nothing"),
-					() -> assertFalse(m.matches("section.item.foobar"), "section.item does not have value foobar"),
-					() -> assertFalse(m3.matches("oper.value"), "invalid/unknown operation - always false"));
-		} catch (final IOException | IllegalArgumentException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+					() -> assertFalse(m.matches("section.item.foobar"),
+							"section.item does not have value foobar"),
+					() -> assertFalse(m3.matches("oper.value"),
+							"invalid/unknown operation - always false"));
+		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
+				| InstantiationException | IllegalAccessException | InvocationTargetException
+				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 }

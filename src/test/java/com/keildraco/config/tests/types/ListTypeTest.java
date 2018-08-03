@@ -3,7 +3,6 @@ package com.keildraco.config.tests.types;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -75,11 +74,11 @@ public final class ListTypeTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.types.ListType#toList()}.
+	 * Test method for {@link com.keildraco.config.types.ListType#getValueAsList()}.
 	 */
 	@Test
-	public final void testToList() {
-		assertEquals(Collections.emptyList(), this.testItem.toList());
+	public final void testGetValueAsList() {
+		assertEquals(Collections.emptyList(), this.testItem.getValueAsList());
 	}
 
 	/**
@@ -104,14 +103,6 @@ public final class ListTypeTest {
 	public final void testGetValue() {
 		assertEquals("blank = [  ]", this.testItem.getValue());
 	}
-	
-	@Test
-	public final void testOtherBits() {
-		assertAll(
-				() -> assertEquals(Boolean.FALSE, this.testItem.toBoolean()),
-				() -> assertEquals(Float.NaN, this.testItem.toNumber())
-				);
-	}
 
 	@Test
 	public final void testGetNotThere() {
@@ -122,46 +113,48 @@ public final class ListTypeTest {
 	@Test
 	public final void testOtherAsString() {
 		final ListType lt = new ListType("");
-		assertEquals("[  ]", lt.asString().trim(),
+		assertEquals("[  ]", lt.getValue().trim(),
 				"ListType with blank name should return \"[  ]\"");
 	}
-	
+
 	@Test
 	public final void testListTypeParentName() {
 		try {
 			ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "blargh");
-			assertTrue(lt!=null, "constructor works");
-		} catch(Exception e) {
-			fail("caught exception: "+e);
+			assertTrue(lt != null, "constructor works");
+		} catch (Exception e) {
+			fail("caught exception: " + e);
 		}
 	}
-	
+
 	@Test
 	public final void testListTypeParentNameValue() {
 		try {
 			ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "foo", "bar");
-			assertTrue(lt!=null, "constructor works");
-		} catch(Exception e) {
-			fail("caught exception: "+e);
+			assertTrue(lt != null, "constructor works");
+		} catch (Exception e) {
+			fail("caught exception: " + e);
 		}
 	}
 
 	@Test
 	public final void fullAsString() {
 		try {
-		Config.reset();
-		Config.registerKnownParts();
-		String data = "[ a, b, c, d, e(! f) ]";
-		IStateParser parser = Config.getFactory().getParser("LIST", null);
-		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-		InputStreamReader br = new InputStreamReader(is);
-		StreamTokenizer tok = new StreamTokenizer(br);
-		Tokenizer t = new Tokenizer(tok);
-		ParserInternalTypeBase pitb = parser.getState(t);
-		pitb.setName("foobar");
-		assertEquals("foobar = [ a, b, c, d, e(! f) ]", pitb.asString());
-		} catch(UnknownStateException | IllegalParserStateException | GenericParseException | IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-			fail("caught exception: "+e);
+			Config.reset();
+			Config.registerKnownParts();
+			String data = "[ a, b, c, d, e(! f) ]";
+			IStateParser parser = Config.getFactory().getParser("LIST", null);
+			InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+			InputStreamReader br = new InputStreamReader(is);
+			StreamTokenizer tok = new StreamTokenizer(br);
+			Tokenizer t = new Tokenizer(tok);
+			ParserInternalTypeBase pitb = parser.getState(t);
+			pitb.setName("foobar");
+			assertEquals("foobar = [ a, b, c, d, e(! f) ]", pitb.getValue());
+		} catch (UnknownStateException | IllegalParserStateException | GenericParseException
+				| IOException | NoSuchMethodException | InstantiationException
+				| IllegalAccessException | InvocationTargetException e) {
+			fail("caught exception: " + e);
 		}
 	}
 

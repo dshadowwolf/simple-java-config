@@ -33,14 +33,14 @@ public final class SectionType extends ParserInternalTypeBase {
 	}
 
 	@Override
-	public String asString() {
+	public String getValue() {
 		final StringBuilder k = new StringBuilder();
 
 		if (!this.getName().equals("ROOT")) {
 			k.append(String.format("%s {%n", this.getName()));
 		}
 
-		this.items.values().stream().forEach(v -> k.append(String.format(" %s%n", v.asString())));
+		this.items.values().stream().forEach(v -> k.append(String.format(" %s%n", v.getValue())));
 
 		if (!this.getName().equals("ROOT")) {
 			k.append(String.format("}%n"));
@@ -50,18 +50,7 @@ public final class SectionType extends ParserInternalTypeBase {
 	}
 
 	@Override
-	public String getValue() {
-		return this.asString();
+	public String getValueRaw() {
+		return this.getValue();
 	}
-
-	@Override
-	public Number toNumber() {
-		return Float.NaN;
-	}
-
-	@Override
-	public boolean toBoolean() {
-		return Boolean.FALSE;
-	}
-
 }

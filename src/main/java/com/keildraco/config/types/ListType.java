@@ -64,8 +64,7 @@ public final class ListType extends ParserInternalTypeBase {
 				.collect(Collectors.toList()).get(0);
 	}
 
-	@Override
-	public List<ParserInternalTypeBase> toList() {
+	public List<ParserInternalTypeBase> getValueAsList() {
 		return Collections.unmodifiableList(this.value);
 	}
 
@@ -74,15 +73,13 @@ public final class ListType extends ParserInternalTypeBase {
 		return ItemType.LIST;
 	}
 
-	@Override
-	public String asString() {
-		final String format = String.format("[ %s ]", this.value.stream().map(v -> {
-			if (v.getType() == ItemType.OPERATION) {
-				return v.asString();
-			}
-			return v.getValue();
-		}).collect(Collectors.joining(", ")));
+	private String getItemValue(final ParserInternalTypeBase item) {
+		return item.getValue();
+	}
 
+	@Override
+	public String getValue() {
+		final String format = this.getValueRaw();
 		if (this.getName().equals("")) {
 			return format;
 		}
@@ -90,17 +87,8 @@ public final class ListType extends ParserInternalTypeBase {
 	}
 
 	@Override
-	public String getValue() {
-		return this.asString();
-	}
-
-	@Override
-	public Number toNumber() {
-		return Float.NaN;
-	}
-
-	@Override
-	public boolean toBoolean() {
-		return Boolean.FALSE;
+	public String getValueRaw() {
+		return String.format("[ %s ]",
+				this.value.stream().map(this::getItemValue).collect(Collectors.joining(", ")));
 	}
 }

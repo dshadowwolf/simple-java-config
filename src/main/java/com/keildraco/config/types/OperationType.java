@@ -40,27 +40,17 @@ public final class OperationType extends ParserInternalTypeBase {
 	}
 
 	@Override
-	public String asString() {
+	public String getValue() {
 		return String.format("%s(%s %s)", this.getName(), this.operator, this.ident);
+	}
+
+	@Override
+	public String getValueRaw() {
+		return this.ident;
 	}
 
 	@Override
 	public ItemType getType() {
 		return ItemType.OPERATION;
-	}
-
-	@Override
-	public String getValue() {
-		return String.format("%s", this.ident); // force a copy, period
-	}
-
-	@Override
-	public Number toNumber() {
-		return Float.NaN;
-	}
-
-	@Override
-	public boolean toBoolean() {
-		return Boolean.FALSE;
 	}
 }

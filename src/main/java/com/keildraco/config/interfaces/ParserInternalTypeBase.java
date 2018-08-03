@@ -1,7 +1,6 @@
 package com.keildraco.config.interfaces;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,23 +35,13 @@ public abstract class ParserInternalTypeBase {
 		}
 
 		@Override
-		public String asString() {
+		public String getValue() {
 			return "EMPTY";
 		}
 
 		@Override
-		public String getValue() {
-			return this.asString();
-		}
-
-		@Override
-		public Number toNumber() {
-			return Float.NaN;
-		}
-
-		@Override
-		public boolean toBoolean() {
-			return Boolean.FALSE;
+		public String getValueRaw() {
+			return this.getValue();
 		}
 	};
 
@@ -130,16 +119,6 @@ public abstract class ParserInternalTypeBase {
 		return ItemType.INVALID;
 	}
 
-	public abstract String asString();
-
-	public abstract Number toNumber();
-
-	public abstract boolean toBoolean();
-
-	public List<ParserInternalTypeBase> toList() {
-		return Collections.emptyList();
-	}
-
 	public void setName(final String nameIn) {
 		this.name = nameIn;
 	}
@@ -169,4 +148,6 @@ public abstract class ParserInternalTypeBase {
 	}
 
 	public abstract String getValue();
+
+	public abstract String getValueRaw();
 }

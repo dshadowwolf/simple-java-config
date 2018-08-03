@@ -1,7 +1,6 @@
 package com.keildraco.config.tests.types;
 
 import static com.keildraco.config.interfaces.ParserInternalTypeBase.EMPTY_TYPE;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -56,7 +55,7 @@ public final class OperationTypeTest {
 
 	@Test
 	public final void testAsString() {
-		assertEquals("blargh(! foobar)", this.testItem.asString());
+		assertEquals("blargh(! foobar)", this.testItem.getValue());
 	}
 
 	@Test
@@ -67,11 +66,5 @@ public final class OperationTypeTest {
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
-	}
-
-	@Test
-	public final void testExtraBits() {
-		assertAll( () -> assertEquals(Float.NaN, this.testItem.toNumber()),
-				() -> assertEquals(Boolean.FALSE, this.testItem.toBoolean()));
 	}
 }

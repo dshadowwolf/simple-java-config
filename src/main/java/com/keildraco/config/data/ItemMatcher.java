@@ -107,9 +107,9 @@ public class ItemMatcher {
 		OperationType op = (OperationType) this.thisItem;
 		int oper = op.getOperator();
 		if (oper == '!') {
-			return !op.getValue().equalsIgnoreCase(bn);
+			return !op.getValueRaw().equalsIgnoreCase(bn);
 		} else if (oper == '~') {
-			return op.getValue().equalsIgnoreCase(bn);
+			return op.getValueRaw().equalsIgnoreCase(bn);
 		}
 
 		return false;
@@ -124,12 +124,12 @@ public class ItemMatcher {
 	}
 
 	private boolean identMatches(final IdentifierType ident, final String value) {
-		return ident.getValue().equalsIgnoreCase(value);
+		return ident.getValueRaw().equalsIgnoreCase(value);
 	}
 
 	private boolean identMatches(final IdentifierType ident, final String name,
 			final String value) {
-		return ident.getName().equalsIgnoreCase(name) && ident.getValue().equalsIgnoreCase(value);
+		return ident.getName().equalsIgnoreCase(name) && ident.getValueRaw().equalsIgnoreCase(value);
 	}
 
 	private boolean listMatchesAny(final ListType theList, final String name) {

@@ -1,6 +1,5 @@
 package com.keildraco.config.tests.states;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
@@ -28,12 +27,14 @@ import com.keildraco.config.states.ListParser;
 
 @TestInstance(Lifecycle.PER_CLASS)
 class ListParserTest {
+
 	@BeforeAll
-	final void setup() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+	final void setup() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+			InvocationTargetException {
 		Config.reset();
 		Config.registerKnownParts();
 	}
-	
+
 	@Test
 	final void testGetState() {
 		try {
@@ -44,12 +45,15 @@ class ListParserTest {
 			StreamTokenizer tok = new StreamTokenizer(br);
 			Tokenizer t = new Tokenizer(tok);
 			ParserInternalTypeBase pb = p.getState(t);
-			assertAll("result is correct", () -> assertTrue(pb!=null, "result not null"), () -> assertTrue(pb.has("alpha"), "has member named alpha"),
+			assertAll("result is correct", () -> assertTrue(pb != null, "result not null"),
+					() -> assertTrue(pb.has("alpha"), "has member named alpha"),
 					() -> assertFalse(pb.has("bravo"), "has no member named bravo"));
-		} catch (final IOException | IllegalArgumentException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+		} catch (final IOException | IllegalArgumentException | IllegalParserStateException
+				| UnknownStateException | GenericParseException e) {
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -58,11 +62,12 @@ class ListParserTest {
 		try {
 			TypeFactory f = new TypeFactory();
 			ListParser op = new ListParser(f, null);
-			assertTrue(op!=null, "Able to instantiate a ListParser");
+			assertTrue(op != null, "Able to instantiate a ListParser");
 		} catch (Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -74,13 +79,15 @@ class ListParserTest {
 			op.registerTransitions(f);
 			assertTrue(true, "was able to register transitions");
 		} catch (Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
-	
-	private void doParse(String data) throws IOException, IllegalParserStateException, UnknownStateException, GenericParseException {
+
+	private void doParse(String data) throws IOException, IllegalParserStateException,
+			UnknownStateException, GenericParseException {
 		IStateParser parser = Config.getFactory().getParser("LIST", null);
 		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
 		InputStreamReader br = new InputStreamReader(is);
@@ -96,9 +103,8 @@ class ListParserTest {
 		String earlyEOF = "[ a, b, c";
 		String noData = "";
 		String badData = "[ a, ( ]";
-		
-		assertAll(
-				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
+
+		assertAll(() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
 				() -> assertThrows(GenericParseException.class, () -> doParse(badData)),
 				() -> assertThrows(GenericParseException.class, () -> doParse(earlyEOF)));
 	}

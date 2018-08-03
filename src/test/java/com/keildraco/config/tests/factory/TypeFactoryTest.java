@@ -20,15 +20,17 @@ import com.keildraco.config.states.SectionParser;
 import com.keildraco.config.types.IdentifierType;
 
 class TypeFactoryTest {
+
 	@Test
 	final void testTypeFactory() {
 		try {
 			TypeFactory f = new TypeFactory();
-			assertTrue(f!=null);
-		} catch(Exception e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(), e.getMessage());
+			assertTrue(f != null);
+		} catch (Exception e) {
+			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -36,12 +38,13 @@ class TypeFactoryTest {
 	final void testRegisterType() {
 		try {
 			TypeFactory f = new TypeFactory();
-			f.registerType((parent, name, value) -> new IdentifierType(parent,name,value), ItemType.IDENTIFIER);
+			f.registerType((parent, name, value) -> new IdentifierType(parent, name, value),
+					ItemType.IDENTIFIER);
 			assertTrue(true, "Able to register a type without an exception");
-		} catch(Exception e) {
+		} catch (Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -49,12 +52,14 @@ class TypeFactoryTest {
 	final void testGetType() {
 		try {
 			TypeFactory f = new TypeFactory();
-			f.registerType((parent, name, value) -> new IdentifierType(parent,name,value), ItemType.IDENTIFIER);
-			assertTrue(f.getType(null, "", "", ItemType.IDENTIFIER)!=null, "TypeFactory.getType() works");
-		} catch(Exception e) {
+			f.registerType((parent, name, value) -> new IdentifierType(parent, name, value),
+					ItemType.IDENTIFIER);
+			assertTrue(f.getType(null, "", "", ItemType.IDENTIFIER) != null,
+					"TypeFactory.getType() works");
+		} catch (Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -62,29 +67,38 @@ class TypeFactoryTest {
 	final void testRegisterParser() {
 		try {
 			TypeFactory f = new TypeFactory();
-			f.registerParser(() -> { SectionParser sp = new SectionParser(f, null); sp.registerTransitions(f); return sp; }, "SECTION");
+			f.registerParser(() -> {
+				SectionParser sp = new SectionParser(f, null);
+				sp.registerTransitions(f);
+				return sp;
+			}, "SECTION");
 			assertTrue(true, "Able to register a parser without exceptions");
-		} catch(Exception e) {
+		} catch (Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
 	/*
-	 * registerStateTransition is actually tested in quite a few places, so we won't be testing it here
+	 * registerStateTransition is actually tested in quite a few places, so we won't be testing it
+	 * here
 	 */
 
 	@Test
 	final void testGetParser() {
 		try {
 			TypeFactory f = new TypeFactory();
-			f.registerParser(() -> { SectionParser sp = new SectionParser(f, null); sp.registerTransitions(f); return sp; }, "SECTION");
-			assertTrue(f.getParser("SECTION", null)!=null, "TypeFactory.getParser() works");
-		} catch(Exception e) {
+			f.registerParser(() -> {
+				SectionParser sp = new SectionParser(f, null);
+				sp.registerTransitions(f);
+				return sp;
+			}, "SECTION");
+			assertTrue(f.getParser("SECTION", null) != null, "TypeFactory.getParser() works");
+		} catch (Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -100,11 +114,12 @@ class TypeFactoryTest {
 			Token cur = t.peek();
 			Token next = t.peekToken();
 			IStateParser nextState = Config.getFactory().nextState("SECTION", cur, next);
-			assertAll("TypeFactory.nextState() works", () -> assertTrue(nextState!=null), () -> assertEquals("KEYVALUE", nextState.getName().toUpperCase()));
-		} catch(Exception e) {
+			assertAll("TypeFactory.nextState() works", () -> assertTrue(nextState != null),
+					() -> assertEquals("KEYVALUE", nextState.getName().toUpperCase()));
+		} catch (Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 

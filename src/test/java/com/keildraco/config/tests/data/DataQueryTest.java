@@ -45,10 +45,12 @@ class DataQueryTest {
 			ParserInternalTypeBase pb = Config.getFactory().getParser("ROOT", null).getState(t);
 			DataQuery c = DataQuery.of(pb);
 			assertNotNull(c, "Load Worked? ");
-		} catch (final IOException | IllegalArgumentException | URISyntaxException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+		} catch (final IOException | IllegalArgumentException | URISyntaxException
+				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -58,18 +60,19 @@ class DataQueryTest {
 		DataQuery c;
 		try {
 			c = com.keildraco.config.Config.loadFile(p);
-			assertAll(
-					() -> assertTrue(c.get("section.magic"), "basic test"),
+			assertAll(() -> assertTrue(c.get("section.magic"), "basic test"),
 					() -> assertFalse(c.get("section.dead"), "incorrect key"),
 					() -> assertTrue(c.get("section"), "variant"),
 					() -> assertTrue(c.get("section.magic.xyzzy"), "long test"),
 					() -> assertFalse(c.get("nope"), "nonexistent bit, short"),
 					() -> assertFalse(c.get("section.blech.dead"), "buried dead key"),
 					() -> assertThrows(IllegalArgumentException.class, () -> c.get(".section")));
-		} catch (final IOException | IllegalArgumentException | URISyntaxException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(), e.getMessage());
+		} catch (final IOException | IllegalArgumentException | URISyntaxException
+				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
+			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 

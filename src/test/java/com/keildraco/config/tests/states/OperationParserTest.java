@@ -24,6 +24,7 @@ import com.keildraco.config.states.OperationParser;
 import com.keildraco.config.types.OperationType;
 
 class OperationParserTest {
+
 	@Test
 	final void testGetState() {
 		try {
@@ -35,13 +36,18 @@ class OperationParserTest {
 			InputStreamReader br = new InputStreamReader(is);
 			StreamTokenizer tok = new StreamTokenizer(br);
 			Tokenizer t = new Tokenizer(tok);
-			OperationType opt = (OperationType)p.getState(t);
-			assertAll("result is correct", () -> assertTrue(opt!=null, "result not null"), () -> assertEquals("op", opt.getName(), "name is correct"),
-					() -> assertEquals("ident", opt.getValue(), "value is correct"), () -> assertEquals('!', opt.getOperator()));
-		} catch (final IOException | IllegalArgumentException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			OperationType opt = (OperationType) p.getState(t);
+			assertAll("result is correct", () -> assertTrue(opt != null, "result not null"),
+					() -> assertEquals("op", opt.getName(), "name is correct"),
+					() -> assertEquals("ident", opt.getValueRaw(), "value is correct"),
+					() -> assertEquals('!', opt.getOperator()));
+		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
+				| InstantiationException | IllegalAccessException | InvocationTargetException
+				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -50,11 +56,12 @@ class OperationParserTest {
 		try {
 			TypeFactory f = new TypeFactory();
 			OperationParser op = new OperationParser(f, null);
-			assertTrue(op!=null, "Able to instantiate a OperationParser");
+			assertTrue(op != null, "Able to instantiate a OperationParser");
 		} catch (Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -66,13 +73,16 @@ class OperationParserTest {
 			op.registerTransitions(f);
 			assertTrue(true, "was able to register transitions");
 		} catch (Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
-	
-	private void doParse(String data) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IOException, IllegalParserStateException, UnknownStateException, GenericParseException {
+
+	private void doParse(String data) throws NoSuchMethodException, InstantiationException,
+			IllegalAccessException, InvocationTargetException, IOException,
+			IllegalParserStateException, UnknownStateException, GenericParseException {
 		Config.reset();
 		Config.registerKnownParts();
 		IStateParser parser = Config.getFactory().getParser("OPERATION", null);
@@ -83,7 +93,7 @@ class OperationParserTest {
 		@SuppressWarnings("unused")
 		ParserInternalTypeBase pb = parser.getState(t);
 	}
-	
+
 	@Test
 	final void testErrorPaths() {
 		String extraInParens = "op(! id ent)";
@@ -91,10 +101,10 @@ class OperationParserTest {
 		String noOperator = "op(ident)";
 		String notAnIdentifier = "op(~ id-ent)";
 		String noWork = "";
-		assertAll( () -> assertThrows(GenericParseException.class, () -> doParse(extraInParens)),
+		assertAll(() -> assertThrows(GenericParseException.class, () -> doParse(extraInParens)),
 				() -> assertThrows(GenericParseException.class, () -> doParse(invalidOperator)),
 				() -> assertThrows(GenericParseException.class, () -> doParse(noOperator)),
 				() -> assertThrows(GenericParseException.class, () -> doParse(notAnIdentifier)),
-				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noWork)));		
+				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noWork)));
 	}
 }

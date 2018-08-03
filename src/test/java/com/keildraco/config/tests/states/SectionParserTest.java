@@ -23,7 +23,10 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.SectionParser;
 
 class SectionParserTest {
-	private ParserInternalTypeBase doParse(String data) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IOException, IllegalParserStateException, UnknownStateException, GenericParseException {
+
+	private ParserInternalTypeBase doParse(String data) throws NoSuchMethodException,
+			InstantiationException, IllegalAccessException, InvocationTargetException, IOException,
+			IllegalParserStateException, UnknownStateException, GenericParseException {
 		Config.reset();
 		Config.registerKnownParts();
 		IStateParser parser = Config.getFactory().getParser("SECTION", null);
@@ -31,20 +34,22 @@ class SectionParserTest {
 		InputStreamReader br = new InputStreamReader(is);
 		StreamTokenizer tok = new StreamTokenizer(br);
 		Tokenizer t = new Tokenizer(tok);
-		return parser.getState(t);		
+		return parser.getState(t);
 	}
 
 	@Test
 	final void testGetState() {
-			String validData = "section { item = value }";
-			String earlyExit = "section { item = value";
-			String noData = "";
-			String badData = "section { [ item ] }";
-			
-			assertAll(() -> assertTrue(doParse(validData)!=ParserInternalTypeBase.EMPTY_TYPE, "standard parse works"),
-					() -> assertThrows(GenericParseException.class, () -> doParse(earlyExit)),
-					() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
-					() -> assertThrows(UnknownStateException.class, () -> doParse(badData)));
+		String validData = "section { item = value }";
+		String earlyExit = "section { item = value";
+		String noData = "";
+		String badData = "section { [ item ] }";
+
+		assertAll(
+				() -> assertTrue(doParse(validData) != ParserInternalTypeBase.EMPTY_TYPE,
+						"standard parse works"),
+				() -> assertThrows(GenericParseException.class, () -> doParse(earlyExit)),
+				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
+				() -> assertThrows(UnknownStateException.class, () -> doParse(badData)));
 	}
 
 	@Test
@@ -52,11 +57,12 @@ class SectionParserTest {
 		try {
 			TypeFactory f = new TypeFactory();
 			SectionParser sp = new SectionParser(f, null);
-			assertTrue(sp!=null, "Able to instantiate a SectionParser");
+			assertTrue(sp != null, "Able to instantiate a SectionParser");
 		} catch (Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 
@@ -68,9 +74,10 @@ class SectionParserTest {
 			sp.registerTransitions(f);
 			assertTrue(true, "was able to register transitions");
 		} catch (Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+					e.getMessage());
 			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: "+e);
+			fail("Caught exception running loadFile: " + e);
 		}
 	}
 }

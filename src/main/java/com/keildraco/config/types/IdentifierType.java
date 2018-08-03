@@ -42,30 +42,20 @@ public final class IdentifierType extends ParserInternalTypeBase {
 	}
 
 	@Override
-	public String asString() {
-		if (this.getName().equals("")) {
+	public String getValue() {
+		if (this.getName().equals(this.ident)) {
 			return this.ident;
 		}
 		return String.format("%s = %s", this.getName(), this.ident);
 	}
 
 	@Override
-	public ItemType getType() {
-		return ItemType.IDENTIFIER;
-	}
-
-	@Override
-	public String getValue() {
+	public String getValueRaw() {
 		return this.ident;
 	}
 
 	@Override
-	public boolean toBoolean() {
-		return Boolean.FALSE;
-	}
-
-	@Override
-	public Number toNumber() {
-		return Float.NaN;
+	public ItemType getType() {
+		return ItemType.IDENTIFIER;
 	}
 }
