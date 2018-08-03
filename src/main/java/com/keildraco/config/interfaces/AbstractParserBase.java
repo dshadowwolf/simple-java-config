@@ -3,6 +3,7 @@ package com.keildraco.config.interfaces;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -88,7 +89,34 @@ public abstract class AbstractParserBase implements IStateParser {
 			next = tok.peekToken();
 		}
 
-		ParserInternalTypeBase rv = new ParserInternalTypeBase(this.name.toUpperCase());
+		ParserInternalTypeBase rv = new ParserInternalTypeBase(this.name.toUpperCase()) {
+
+			private String valAsString(ParserInternalTypeBase val) {
+				return val.asString();
+			}
+
+			@Override
+			public String getValue() {
+				return this.asString();
+			}
+
+			@Override
+			public String asString() {
+				return String.join(String.format("%n"), this.items.values().stream()
+						.map(this::valAsString).collect(Collectors.toList()));
+			}
+
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
+
 		bits.stream().forEach(rv::addItem);
 		return rv;
 	}

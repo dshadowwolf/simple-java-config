@@ -72,7 +72,7 @@ public final class SectionTypeTest {
 	@Test
 	public final void testAsString() {
 		final String result = String
-				.format("blargh = blech%n" + " CHILD {%n" + " blargh = foobar%n" + "}");
+				.format("blargh = blech%n CHILD {%n blargh = foobar%n}");
 		assertEquals(result, this.root.asString().trim());
 	}
 	
@@ -82,9 +82,13 @@ public final class SectionTypeTest {
 			final SectionType stOne = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, "blargh", "blech");
 			final SectionType stTwo = new SectionType(null, "blargh");
 			final SectionType stThree = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, "");
+			final String matchVal = String.format("blargh {%n}%n");
 			assertAll( () -> assertEquals("blargh", stOne.getName()),
 					() -> assertEquals("ROOT", stTwo.getName()),
-					() -> assertEquals("ROOT", stThree.getName()));
+					() -> assertEquals("ROOT", stThree.getName()),
+					() -> assertEquals(matchVal, stOne.getValue()),
+					() -> assertEquals(Boolean.FALSE, stOne.toBoolean()),
+					() -> assertEquals(Float.NaN, stOne.toNumber()));
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}		

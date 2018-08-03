@@ -27,12 +27,12 @@ public final class DataQuery {
 		int index = key.indexOf('.');
 		if (this.baseSection.has(key)) {
 			return true;
-		} else if (index != -1 && index > 0 ) {
+		} else if (index != -1 && index > 0) {
 			final String base = String.format("%s.all", key.substring(0, key.lastIndexOf('.')));
 			if (this.baseSection.has(base)) {
 				final String term = key.substring(key.lastIndexOf('.') + 1);
 				return new ItemMatcher(this.baseSection.get(base)).matches(term);
-			}  else {
+			} else {
 				return false;
 			}
 		} else if (index == 0) {

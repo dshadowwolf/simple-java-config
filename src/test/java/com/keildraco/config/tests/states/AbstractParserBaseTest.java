@@ -191,7 +191,18 @@ class AbstractParserBaseTest {
 			Config.getFactory().registerParser(() -> apb, "BLARGH");
 			apb.registerTransitions(Config.getFactory());
 			ParserInternalTypeBase res = apb.getState(t);
-			assertAll( () -> assertTrue(res!=ParserInternalTypeBase.EMPTY_TYPE, "AbstractParserBase.getState() works"),
+			final String matchVal = String.format("section {%n" + 
+					" magic = xyzzy%n" + 
+					" all = ident3%n" + 
+					" blech {%n" + 
+					" magic = abcd%n" + 
+					"}%n%n" + 
+					" key = [ list, op(! ident), ident2 ]%n" + 
+					"}%n");
+			assertAll(() -> assertEquals(matchVal, res.getValue(), "result should be a specific value as a string"),
+					() -> assertEquals(Float.NaN, res.toNumber(), "result should never have a number form"),
+					() -> assertEquals(Boolean.FALSE, res.toBoolean(), "result should be a boolean false"),
+					() -> assertTrue(res!=ParserInternalTypeBase.EMPTY_TYPE, "AbstractParserBase.getState() works"),
 					() -> assertThrows(IllegalParserStateException.class, () -> doParse(apb, ""), "throws on null input"),
 					() -> assertEquals(ParserInternalTypeBase.EMPTY_TYPE, doParse(apb, "alpha(!bravo)"), "returns ParserInternalTypeBase.EmptyType on an interally caught exception"));
 		} catch (final IOException | IllegalArgumentException | URISyntaxException | IllegalParserStateException | UnknownStateException | GenericParseException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {

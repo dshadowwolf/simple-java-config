@@ -48,4 +48,20 @@ public final class SectionType extends ParserInternalTypeBase {
 
 		return k.toString();
 	}
+
+	@Override
+	public String getValue() {
+		return this.asString();
+	}
+
+	@Override
+	public Number toNumber() {
+		return Float.NaN;
+	}
+
+	@Override
+	public boolean toBoolean() {
+		return Boolean.FALSE;
+	}
+
 }

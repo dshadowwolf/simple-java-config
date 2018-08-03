@@ -53,4 +53,14 @@ public final class OperationType extends ParserInternalTypeBase {
 	public String getValue() {
 		return String.format("%s", this.ident); // force a copy, period
 	}
+
+	@Override
+	public Number toNumber() {
+		return Float.NaN;
+	}
+
+	@Override
+	public boolean toBoolean() {
+		return Boolean.FALSE;
+	}
 }

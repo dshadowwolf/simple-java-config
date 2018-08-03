@@ -60,8 +60,8 @@ public final class ListType extends ParserInternalTypeBase {
 			return EMPTY_TYPE;
 		}
 
-		return this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s)).findFirst()
-				.get();
+		return this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s))
+				.collect(Collectors.toList()).get(0);
 	}
 
 	@Override
@@ -87,5 +87,20 @@ public final class ListType extends ParserInternalTypeBase {
 			return format;
 		}
 		return String.format("%s = %s", this.getName(), format);
+	}
+
+	@Override
+	public String getValue() {
+		return this.asString();
+	}
+
+	@Override
+	public Number toNumber() {
+		return Float.NaN;
+	}
+
+	@Override
+	public boolean toBoolean() {
+		return Boolean.FALSE;
 	}
 }

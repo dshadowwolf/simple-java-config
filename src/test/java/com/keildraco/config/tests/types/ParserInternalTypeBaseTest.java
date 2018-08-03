@@ -18,6 +18,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 
 /**
  * @author Daniel Hazelton
@@ -35,10 +36,70 @@ public final class ParserInternalTypeBaseTest {
 	 */
 	@BeforeAll
 	public void setUp() throws Exception {
-		this.testItem = new ParserInternalTypeBase("blech");
-		this.testFoobar = new ParserInternalTypeBase("foobar");
+		this.testItem = new ParserInternalTypeBase("blech") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
+		this.testFoobar = new ParserInternalTypeBase("foobar") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		this.testItem.addItem(this.testFoobar);
-		this.testNesting = new ParserInternalTypeBase("nesting");
+		this.testNesting = new ParserInternalTypeBase("nesting") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		this.testNesting.addItem(this.testFoobar);
 	}
 
@@ -50,7 +111,27 @@ public final class ParserInternalTypeBaseTest {
 	public final void testParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
-			final ParserInternalTypeBase testNoParent = new ParserInternalTypeBase("blargh");
+			final ParserInternalTypeBase testNoParent = new ParserInternalTypeBase("blargh") {
+				@Override
+				public String getValue() {
+					return "";
+				}
+				
+				@Override
+				public String asString() {
+					return "Abstract!";
+				}
+				
+				@Override
+				public Number toNumber() {
+					return Float.NaN;
+				}
+				
+				@Override
+				public boolean toBoolean() {
+					return Boolean.FALSE;
+				}
+			};
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
@@ -66,7 +147,27 @@ public final class ParserInternalTypeBaseTest {
 		try {
 			@SuppressWarnings("unused")
 			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(
-					ParserInternalTypeBase.EMPTY_TYPE, "blargh");
+					ParserInternalTypeBase.EMPTY_TYPE, "blargh") {
+				@Override
+				public String getValue() {
+					return "";
+				}
+				
+				@Override
+				public String asString() {
+					return "Abstract!";
+				}
+				
+				@Override
+				public Number toNumber() {
+					return Float.NaN;
+				}
+				
+				@Override
+				public boolean toBoolean() {
+					return Boolean.FALSE;
+				}
+			};
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
@@ -82,7 +183,27 @@ public final class ParserInternalTypeBaseTest {
 		try {
 			@SuppressWarnings("unused")
 			final ParserInternalTypeBase testEmptyParent = new ParserInternalTypeBase(
-					ParserInternalTypeBase.EMPTY_TYPE, "blargh", "blech");
+					ParserInternalTypeBase.EMPTY_TYPE, "blargh", "blech") {
+				@Override
+				public String getValue() {
+					return "";
+				}
+				
+				@Override
+				public String asString() {
+					return "Abstract!";
+				}
+				
+				@Override
+				public Number toNumber() {
+					return Float.NaN;
+				}
+				
+				@Override
+				public boolean toBoolean() {
+					return Boolean.FALSE;
+				}
+			};
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
@@ -105,15 +226,44 @@ public final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testHas() {
-		this.testFoobar.addItem(new ParserInternalTypeBase("blargh"));
+		this.testFoobar.addItem(new ParserInternalTypeBase("blargh") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		});
 		assertAll( () -> assertTrue(this.testItem.has("foobar"), "Test Item has child \"foobar\""),
 				() -> assertFalse(this.testItem.has("foobar.baz"), "Test Item's child \"foobar\" doesn't have child \"baz\""),
 				() -> assertTrue(this.testItem.has("foobar.blargh"), "Test Item's child \"foobar\" has child \"blargh\""),
 				() -> assertFalse(this.testItem.has("blargh"), "Test Item doesn't have child \"blargh\""),
-				() -> assertFalse(this.testItem.has("blargh.blech"), "Test Item doesn't have child \"blargh\" with child \"blech\""),
-				() -> assertFalse(ParserInternalTypeBase.EMPTY_TYPE.has("Blargh"), "EmptyType always fails has() checks"));
+				() -> assertFalse(this.testItem.has("blargh.blech"), "Test Item doesn't have child \"blargh\" with child \"blech\""));
 	}
 
+	@Test
+	public final void testEmptyType() {
+		assertAll(
+				() -> assertEquals("EMPTY", ParserInternalTypeBase.EMPTY_TYPE.getValue()),
+				() -> assertEquals(ItemType.EMPTY, ParserInternalTypeBase.EMPTY_TYPE.getType()),
+				() -> assertFalse(ParserInternalTypeBase.EMPTY_TYPE.has("Blargh"), "EmptyType always fails has() checks"),
+				() -> assertEquals(Boolean.FALSE, ParserInternalTypeBase.EMPTY_TYPE.toBoolean()),
+				() -> assertEquals(Float.NaN, ParserInternalTypeBase.EMPTY_TYPE.toNumber())
+				);
+	}
 	/**
 	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getType()}.
 	 */
@@ -127,7 +277,7 @@ public final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testAsString() {
-		assertEquals("BaseType()", this.testItem.asString());
+		assertEquals("Abstract!", this.testItem.asString());
 	}
 
 	/**
@@ -160,7 +310,27 @@ public final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	public final void testSetName() {
-		final ParserInternalTypeBase t = new ParserInternalTypeBase("a");
+		final ParserInternalTypeBase t = new ParserInternalTypeBase("a") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		t.setName("b");
 		assertEquals("b", t.getName());
 	}
@@ -218,26 +388,126 @@ public final class ParserInternalTypeBaseTest {
 
 	@Test
 	public final void testParserInternalTypeBaseGetNoMember() {
-		final ParserInternalTypeBase p = new ParserInternalTypeBase("z");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("z") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("blargh"));
 	}
 
 	@Test
 	public final void testParserInternalTypeBaseGetValue() {
-		final ParserInternalTypeBase p = new ParserInternalTypeBase("ZZTOP");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("ZZTOP") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		assertEquals("", p.getValue());
 	}
 
 	@Test
 	public final void testParserInternalTypeBaseGetChildrenEmpty() {
-		final ParserInternalTypeBase p = new ParserInternalTypeBase("ZZTOP");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("ZZTOP") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		assertEquals(Collections.emptyMap(), p.getChildren());
 	}
 
 	@Test
 	public final void testParserInternalTypeBaseGetChildrenMembers() {
-		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
-		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		p.addItem(q);
 		final Map<String, ParserInternalTypeBase> expectBase = new ConcurrentHashMap<>();
 		expectBase.put("ZZTOP", q);
@@ -246,40 +516,240 @@ public final class ParserInternalTypeBaseTest {
 	
 	@Test
 	public final void testParserInternalTypeBaseGetItemLongNone() {
-		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
-		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		p.addItem(q);
 		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("ZZTOP.MUZAK"));
 	}
 
 	@Test
 	public final void testParserInternalTypeBaseGetItemLongValid() {
-		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
-		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		p.addItem(q);
 		assertEquals(q, p.get("MUZAK.ZZTOP"));
 	}
 
 	@Test
 	public final void testParserInternalTypeBaseGetItemLongCondTestOne() {
-		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
-		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		p.addItem(q);
 		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("ZZTOP.ZZTOP"));
 	}
 	
 	@Test
 	public final void testParserInternalTypeBaseGetItemLongCondTestTwo() {
-		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
-		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		p.addItem(q);
 		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("MUZAK.MUZAK"));
 	}
 
 	@Test
 	public final void testParserInternalTypeBaseGetItemLongCondTestThree() {
-		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK");
-		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP");
+		final ParserInternalTypeBase p = new ParserInternalTypeBase("MUZAK") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
+		final ParserInternalTypeBase q = new ParserInternalTypeBase("ZZTOP") {
+			@Override
+			public String getValue() {
+				return "";
+			}
+			
+			@Override
+			public String asString() {
+				return "Abstract!";
+			}
+			
+			@Override
+			public Number toNumber() {
+				return Float.NaN;
+			}
+			
+			@Override
+			public boolean toBoolean() {
+				return Boolean.FALSE;
+			}
+		};
 		p.addItem(q);
 		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("BLARGH.BLECH"));
 	}

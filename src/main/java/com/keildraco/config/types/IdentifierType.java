@@ -58,4 +58,14 @@ public final class IdentifierType extends ParserInternalTypeBase {
 	public String getValue() {
 		return this.ident;
 	}
+
+	@Override
+	public boolean toBoolean() {
+		return Boolean.FALSE;
+	}
+
+	@Override
+	public Number toNumber() {
+		return Float.NaN;
+	}
 }

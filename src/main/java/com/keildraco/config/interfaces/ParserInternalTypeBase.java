@@ -7,12 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
-public class ParserInternalTypeBase {
+public abstract class ParserInternalTypeBase {
 
 	private final ParserInternalTypeBase parent;
-
 	private String name;
-
 	protected final Map<String, ParserInternalTypeBase> items;
 
 	public static final ParserInternalTypeBase EMPTY_TYPE = new ParserInternalTypeBase("EMPTY") {
@@ -36,6 +34,26 @@ public class ParserInternalTypeBase {
 		public ItemType getType() {
 			return ItemType.EMPTY;
 		}
+
+		@Override
+		public String asString() {
+			return "EMPTY";
+		}
+
+		@Override
+		public String getValue() {
+			return this.asString();
+		}
+
+		@Override
+		public Number toNumber() {
+			return Float.NaN;
+		}
+
+		@Override
+		public boolean toBoolean() {
+			return Boolean.FALSE;
+		}
 	};
 
 	public ParserInternalTypeBase(final String nameIn) {
@@ -55,8 +73,9 @@ public class ParserInternalTypeBase {
 	}
 
 	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
-			final String nameIn, @SuppressWarnings("unused") final String valueIn) {
-		this(parentIn, nameIn);
+			final String nameIn, final String valueIn) {
+		this(parentIn, valueIn);
+		this.setName(nameIn);
 	}
 
 	/**
@@ -111,17 +130,11 @@ public class ParserInternalTypeBase {
 		return ItemType.INVALID;
 	}
 
-	public String asString() {
-		return "BaseType()";
-	}
+	public abstract String asString();
 
-	public Number toNumber() {
-		return Float.NaN;
-	}
+	public abstract Number toNumber();
 
-	public boolean toBoolean() {
-		return Boolean.FALSE;
-	}
+	public abstract boolean toBoolean();
 
 	public List<ParserInternalTypeBase> toList() {
 		return Collections.emptyList();
@@ -155,7 +168,5 @@ public class ParserInternalTypeBase {
 		return EMPTY_TYPE;
 	}
 
-	public String getValue() {
-		return "";
-	}
+	public abstract String getValue();
 }

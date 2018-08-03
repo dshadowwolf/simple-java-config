@@ -148,6 +148,24 @@ class ConfigTests {
 			super(parentIn, nameIn, valueIn);
 			throw new IllegalAccessException("testing purposes only");
 		}
-		
+		@Override
+		public String getValue() {
+			return "";
+		}
+
+		@Override
+		public String asString() {
+			return "Abstract!";
+		}
+
+		@Override
+		public Number toNumber() {
+			return Float.NaN;
+		}
+
+		@Override
+		public boolean toBoolean() {
+			return Boolean.FALSE;
+		}
 	}
 }

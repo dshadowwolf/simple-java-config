@@ -3,6 +3,7 @@ package com.keildraco.config.tests.types;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -96,5 +97,12 @@ public final class IdentifierTypeTest {
 	@Test
 	public final void testHasByIdent() {
 		assertTrue(this.testItem.has("value"));
+	}
+	
+	@Test
+	public final void testExtraBits() {
+		assertAll( () -> assertEquals(Float.NaN, this.testItem.toNumber()),
+				() -> assertEquals(Boolean.FALSE, this.testItem.toBoolean()),
+				() -> assertEquals("value", this.testItem.getValue()));
 	}
 }

@@ -3,6 +3,7 @@ package com.keildraco.config.tests.types;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -97,11 +98,19 @@ public final class ListTypeTest {
 	}
 
 	/**
-	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#asString()}.
+	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getValue()}.
 	 */
 	@Test
-	public final void testAsString() {
-		assertEquals("blank = [  ]", this.testItem.asString());
+	public final void testGetValue() {
+		assertEquals("blank = [  ]", this.testItem.getValue());
+	}
+	
+	@Test
+	public final void testOtherBits() {
+		assertAll(
+				() -> assertEquals(Boolean.FALSE, this.testItem.toBoolean()),
+				() -> assertEquals(Float.NaN, this.testItem.toNumber())
+				);
 	}
 
 	@Test
