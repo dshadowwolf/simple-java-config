@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -41,13 +42,13 @@ class KeyValueParserTest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			IStateParser p = Config.getFactory().getParser("KEYVALUE", null);
-			String data = "item = value";
-			InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
-			StreamTokenizer tok = new StreamTokenizer(br);
-			Tokenizer t = new Tokenizer(tok);
-			ParserInternalTypeBase pb = p.getState(t);
+			final IStateParser p = Config.getFactory().getParser("KEYVALUE", null);
+			final String data = "item = value";
+			final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
+			final StreamTokenizer tok = new StreamTokenizer(br);
+			final Tokenizer t = new Tokenizer(tok);
+			final ParserInternalTypeBase pb = p.getState(t);
 			assertAll("result is correct", () -> assertTrue(pb != null, "result not null"),
 					() -> assertEquals("item", pb.getName(), "name is correct"),
 					() -> assertEquals("value", pb.getValueRaw(), "value is correct"));
@@ -56,7 +57,7 @@ class KeyValueParserTest {
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -67,13 +68,13 @@ class KeyValueParserTest {
 	@Test
 	final void testKeyValueParser() {
 		try {
-			TypeFactory f = new TypeFactory();
-			KeyValueParser kvp = new KeyValueParser(f, null);
+			final TypeFactory f = new TypeFactory();
+			final KeyValueParser kvp = new KeyValueParser(f, null);
 			assertTrue(kvp != null, "Able to instantiate a KeyValueParser");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -84,14 +85,14 @@ class KeyValueParserTest {
 	@Test
 	final void testRegisterTransitions() {
 		try {
-			TypeFactory f = new TypeFactory();
-			KeyValueParser kvp = new KeyValueParser(f, null);
+			final TypeFactory f = new TypeFactory();
+			final KeyValueParser kvp = new KeyValueParser(f, null);
 			kvp.registerTransitions(f);
 			assertTrue(true, "was able to register transitions");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -115,11 +116,11 @@ class KeyValueParserTest {
 			IllegalAccessException, InvocationTargetException {
 		Config.reset();
 		Config.registerKnownParts();
-		IStateParser parser = Config.getFactory().getParser("KEYVALUE", null);
-		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-		InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
-		StreamTokenizer tok = new StreamTokenizer(br);
-		Tokenizer t = new Tokenizer(tok);
+		final IStateParser parser = Config.getFactory().getParser("KEYVALUE", null);
+		final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+		final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
+		final StreamTokenizer tok = new StreamTokenizer(br);
+		final Tokenizer t = new Tokenizer(tok);
 		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
 		return parser.getState(t);
 	}
@@ -129,8 +130,8 @@ class KeyValueParserTest {
 	 */
 	@Test
 	final void testGetStateErrorRoutes() {
-		String goodData = "item = value(! value)";
-		String noData = "";
+		final String goodData = "item = value(! value)";
+		final String noData = "";
 		assertAll(
 				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData),
 						"Illegal State, no data to parse"),

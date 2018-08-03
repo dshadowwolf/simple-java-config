@@ -45,7 +45,7 @@ public final class ListParser extends AbstractParserBase {
 		Token current = tok.peek();
 		Token next = tok.peekToken();
 
-		ListType rv = new ListType("");
+		final ListType rv = new ListType("");
 
 		while (tok.hasNext()) {
 			switch (current.getType()) {

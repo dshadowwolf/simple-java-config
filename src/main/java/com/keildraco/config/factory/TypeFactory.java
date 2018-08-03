@@ -83,10 +83,10 @@ public final class TypeFactory {
 	 */
 	public void registerStateTransition(final String stateName, final TokenType currentToken,
 			final TokenType nextToken, final String toState) {
-		Map<TokenType, String> transitionMapping = this.stateMap
+		final Map<TokenType, String> transitionMapping = this.stateMap
 				.getOrDefault(stateName, new ConcurrentHashMap<>())
 				.getOrDefault(currentToken, new ConcurrentHashMap<>());
-		Map<TokenType, Map<TokenType, String>> baseMapping = this.stateMap.getOrDefault(stateName,
+		final Map<TokenType, Map<TokenType, String>> baseMapping = this.stateMap.getOrDefault(stateName,
 				new ConcurrentHashMap<>());
 		transitionMapping.put(nextToken, toState);
 		baseMapping.put(currentToken, transitionMapping);
@@ -120,7 +120,7 @@ public final class TypeFactory {
 	 */
 	public IStateParser nextState(final String currentState, final Token currentToken,
 			final Token nextToken) throws UnknownStateException {
-		String nextState = this.stateMap.getOrDefault(currentState, new ConcurrentHashMap<>())
+		final String nextState = this.stateMap.getOrDefault(currentState, new ConcurrentHashMap<>())
 				.getOrDefault(currentToken.getType(), new ConcurrentHashMap<>())
 				.getOrDefault(nextToken.getType(), "");
 

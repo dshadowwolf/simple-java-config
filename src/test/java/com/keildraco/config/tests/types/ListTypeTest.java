@@ -132,9 +132,9 @@ public final class ListTypeTest {
 	@Test
 	public void testListTypeParentName() {
 		try {
-			ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "blargh");
+			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "blargh");
 			assertTrue(lt != null, "constructor works");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			fail("caught exception: " + e);
 		}
 	}
@@ -145,9 +145,9 @@ public final class ListTypeTest {
 	@Test
 	public void testListTypeParentNameValue() {
 		try {
-			ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "foo", "bar");
+			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "foo", "bar");
 			assertTrue(lt != null, "constructor works");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			fail("caught exception: " + e);
 		}
 	}
@@ -160,16 +160,16 @@ public final class ListTypeTest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			String data = "[ a, b, c, d, e(! f) ]";
-			IStateParser parser = Config.getFactory().getParser("LIST", null);
-			InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
-			StreamTokenizer tok = new StreamTokenizer(br);
-			Tokenizer t = new Tokenizer(tok);
-			ParserInternalTypeBase pitb = parser.getState(t);
+			final String data = "[ a, b, c, d, e(! f) ]";
+			final IStateParser parser = Config.getFactory().getParser("LIST", null);
+			final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
+			final StreamTokenizer tok = new StreamTokenizer(br);
+			final Tokenizer t = new Tokenizer(tok);
+			final ParserInternalTypeBase pitb = parser.getState(t);
 			pitb.setName("foobar");
 			assertEquals("foobar = [ a, b, c, d, e(! f) ]", pitb.getValue());
-		} catch (UnknownStateException | IllegalParserStateException | GenericParseException
+		} catch (final UnknownStateException | IllegalParserStateException | GenericParseException
 				| IOException | NoSuchMethodException | InstantiationException
 				| IllegalAccessException | InvocationTargetException e) {
 			fail("caught exception: " + e);

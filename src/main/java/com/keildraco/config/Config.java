@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -72,17 +73,16 @@ public final class Config {
 	 */
 	private static IStateParser registerParserGenerator(final String name,
 			final Class<? extends IStateParser> clazz) {
-		Constructor<? extends IStateParser> c;
 		try {
-			c = clazz.getConstructor(TypeFactory.class, ParserInternalTypeBase.class);
-			IStateParser cc = c.newInstance(coreTypeFactory, ParserInternalTypeBase.EMPTY_TYPE);
+			final Constructor<? extends IStateParser> c = clazz.getConstructor(TypeFactory.class, ParserInternalTypeBase.class);
+			final IStateParser cc = c.newInstance(coreTypeFactory, ParserInternalTypeBase.EMPTY_TYPE);
 			cc.registerTransitions(coreTypeFactory);
 			return cc;
 		} catch (final NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			LOGGER.error("Exception getting type instance for %s (%s): %s", name, e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(LOGGER::error);
 			return null;
 		}
 	}
@@ -108,9 +108,8 @@ public final class Config {
 	private static ParserInternalTypeBase registerTypeGenerator(final ParserInternalTypeBase parent,
 			final String name, final String value,
 			final Class<? extends ParserInternalTypeBase> clazz) {
-		Constructor<? extends ParserInternalTypeBase> c;
 		try {
-			c = clazz.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
+			final Constructor<? extends ParserInternalTypeBase> c = clazz.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
 			return c.newInstance(parent, name, value);
 		} catch (final NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -144,6 +143,22 @@ public final class Config {
 
 	/**
 	 *
+	 * @param clazz
+	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+	private static void registerType(final Class<? extends ParserInternalTypeBase> clazz)
+			throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+			InvocationTargetException {
+		final Constructor<? extends ParserInternalTypeBase> cc = clazz.getConstructor(String.class);
+		ParserInternalTypeBase zz = cc.newInstance("blargh");
+		registerType(zz.getType(), clazz);
+	}
+
+	/**
+	 *
 	 * @param name
 	 * @param clazz
 	 */
@@ -160,28 +175,12 @@ public final class Config {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	private static void registerType(final Class<? extends ParserInternalTypeBase> clazz)
-			throws NoSuchMethodException, InstantiationException, IllegalAccessException,
-			InvocationTargetException {
-		Constructor<? extends ParserInternalTypeBase> cc = clazz.getConstructor(String.class);
-		ParserInternalTypeBase zz = cc.newInstance("blargh");
-		registerType(zz.getType(), clazz);
-	}
-
-	/**
-	 *
-	 * @param clazz
-	 * @throws NoSuchMethodException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 */
 	private static void registerParser(final Class<? extends IStateParser> clazz)
 			throws NoSuchMethodException, InstantiationException, IllegalAccessException,
 			InvocationTargetException {
-		Constructor<? extends IStateParser> cc = clazz.getConstructor(TypeFactory.class,
+		final Constructor<? extends IStateParser> cc = clazz.getConstructor(TypeFactory.class,
 				ParserInternalTypeBase.class);
-		IStateParser zz = cc.newInstance(coreTypeFactory, null);
+		final IStateParser zz = cc.newInstance(coreTypeFactory, null);
 		registerParser(zz.getName().toUpperCase(Locale.ENGLISH), clazz);
 	}
 
@@ -196,16 +195,16 @@ public final class Config {
 	 */
 	public static void registerKnownParts() throws NoSuchMethodException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
-		Reflections typeRefs = new Reflections("com.keildraco.config.types");
-		Reflections parserRefs = new Reflections("com.keildraco.config.states");
-		List<Class<? extends ParserInternalTypeBase>> types = typeRefs
+		final Reflections typeRefs = new Reflections("com.keildraco.config.types");
+		final Reflections parserRefs = new Reflections("com.keildraco.config.states");
+		final List<Class<? extends ParserInternalTypeBase>> types = typeRefs
 				.getSubTypesOf(ParserInternalTypeBase.class).stream().collect(Collectors.toList());
 
 		for (final Class<? extends ParserInternalTypeBase> type : types) {
 			registerType(type);
 		}
 
-		List<Class<? extends IStateParser>> parsers = parserRefs
+		final List<Class<? extends IStateParser>> parsers = parserRefs
 				.getSubTypesOf(AbstractParserBase.class).stream().collect(Collectors.toList());
 
 		for (final Class<? extends IStateParser> parser : parsers) {
@@ -231,8 +230,8 @@ public final class Config {
 	 */
 	private static ParserInternalTypeBase runParser(final Reader reader) throws IOException,
 			IllegalParserStateException, UnknownStateException, GenericParseException {
-		StreamTokenizer tok = new StreamTokenizer(reader);
-		Tokenizer t = new Tokenizer(tok);
+		final StreamTokenizer tok = new StreamTokenizer(reader);
+		final Tokenizer t = new Tokenizer(tok);
 		return coreTypeFactory.getParser("ROOT", null).getState(t);
 	}
 
@@ -247,7 +246,7 @@ public final class Config {
 	 */
 	public static DataQuery parseStream(final InputStream is) throws IllegalParserStateException,
 			IOException, UnknownStateException, GenericParseException {
-		InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
+		final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		final ParserInternalTypeBase res = runParser(br);
 		return DataQuery.of(res);
 	}
@@ -278,10 +277,8 @@ public final class Config {
 	 */
 	public static DataQuery loadFile(final Path filePath) throws IOException, URISyntaxException,
 			IllegalParserStateException, UnknownStateException, GenericParseException {
-		String ts = String.join("/", filePath.toString().split("\\\\"));
-		URL tu = Config.class.getClassLoader().getResource(ts);
-		URI temp = tu.toURI();
-		return loadFile(temp);
+		final String ts = String.join("/", filePath.toString().split("\\\\"));
+		return loadFile(ts);
 	}
 
 	/**
@@ -296,8 +293,8 @@ public final class Config {
 	 */
 	public static DataQuery loadFile(final String filePath) throws IOException, URISyntaxException,
 			IllegalParserStateException, UnknownStateException, GenericParseException {
-		URL tu = Config.class.getClassLoader().getResource(filePath);
-		URI temp = tu.toURI();
+		final URL tu = Config.class.getClassLoader().getResource(filePath);
+		final URI temp = tu.toURI();
 		return loadFile(temp);
 	}
 

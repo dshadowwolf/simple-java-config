@@ -102,7 +102,7 @@ public abstract class ParserInternalTypeBase {
 	 * @return
 	 */
 	public ParserInternalTypeBase get(final String itemName) {
-		int index = itemName.indexOf('.');
+		final int index = itemName.indexOf('.');
 		if (index > 0) {
 			final String nameBits = itemName.substring(0, itemName.indexOf('.'));
 			final String nameRest = itemName.substring(itemName.indexOf('.') + 1);

@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +51,7 @@ class ConfigTests {
 	 * Test the automatic (using reflection) registration of known value types and parser states and
 	 * state transitions.
 	 *
-	 * Will fail if it catches any of a number of possible exceptions
+	 * <p>Will fail if it catches any of a number of possible exceptions
 	 */
 	@Test
 	final void testRegisterKnownParts() {
@@ -60,7 +61,7 @@ class ConfigTests {
 		} catch (NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception %s", e.toString());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::fatal);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::fatal);
 			fail("Exception Caught");
 		}
 	}
@@ -72,15 +73,15 @@ class ConfigTests {
 	final void testReset() {
 		try {
 			Config.registerKnownParts();
-			IStateParser p = Config.getFactory().getParser("SECTION", null);
+			final IStateParser p = Config.getFactory().getParser("SECTION", null);
 			Config.reset();
-			IStateParser q = Config.getFactory().getParser("SECTION", null);
+			final IStateParser q = Config.getFactory().getParser("SECTION", null);
 			assertAll("parser prior to reset should not equal a parser post reset",
 					() -> assertNull(q), () -> assertTrue(p != null), () -> assertFalse(p == q));
 		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception %s", e.toString());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::fatal);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::fatal);
 			fail("Exception Caught");
 		}
 	}
@@ -109,7 +110,7 @@ class ConfigTests {
 				| GenericParseException e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -131,7 +132,7 @@ class ConfigTests {
 				| GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -153,7 +154,7 @@ class ConfigTests {
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -166,8 +167,8 @@ class ConfigTests {
 		Config.registerParser("WILLTHROW", ParserThatThrows.class);
 		Config.registerType(ItemType.INVALID, TypeThatThrows.class);
 
-		IStateParser p = Config.getFactory().getParser("WILLTHROW", null);
-		ParserInternalTypeBase t = Config.getFactory().getType(null, "", "", ItemType.INVALID);
+		final IStateParser p = Config.getFactory().getParser("WILLTHROW", null);
+		final ParserInternalTypeBase t = Config.getFactory().getType(null, "", "", ItemType.INVALID);
 		assertAll(() -> assertNull(p), () -> assertNull(t));
 	}
 

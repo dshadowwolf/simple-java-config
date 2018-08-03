@@ -17,6 +17,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Locale;
 
 import org.apache.commons.io.IOUtils;
@@ -46,19 +47,19 @@ class AbstractParserBaseTest {
 	@Test
 	final void testAbstractParserBase() {
 		try {
-			TypeFactory f = new TypeFactory();
-			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
+			final TypeFactory f = new TypeFactory();
+			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
 				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
-				};
+				}
 			};
 			assertTrue(apb != null);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -69,20 +70,20 @@ class AbstractParserBaseTest {
 	@Test
 	final void testSetFactory() {
 		try {
-			TypeFactory f = new TypeFactory();
-			AbstractParserBase apb = new AbstractParserBase(null, null, "BLARGH") {
+			final TypeFactory f = new TypeFactory();
+			final AbstractParserBase apb = new AbstractParserBase(null, null, "BLARGH") {
 
 				@Override
 				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
-				};
+				}
 			};
 			apb.setFactory(f);
 			assertTrue(true, "AbstractParserBase.setFactory() works");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -93,19 +94,19 @@ class AbstractParserBaseTest {
 	@Test
 	final void testGetFactory() {
 		try {
-			TypeFactory f = new TypeFactory();
-			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
+			final TypeFactory f = new TypeFactory();
+			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
 				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
-				};
+				}
 			};
 			assertEquals(f, apb.getFactory());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -116,20 +117,20 @@ class AbstractParserBaseTest {
 	@Test
 	final void testSetParent() {
 		try {
-			TypeFactory f = new TypeFactory();
-			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
+			final TypeFactory f = new TypeFactory();
+			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
 				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
-				};
+				}
 			};
 			apb.setParent(ParserInternalTypeBase.EMPTY_TYPE);
 			assertTrue(true, "setParent() works");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -140,21 +141,21 @@ class AbstractParserBaseTest {
 	@Test
 	final void testGetParent() {
 		try {
-			TypeFactory f = new TypeFactory();
-			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
+			final TypeFactory f = new TypeFactory();
+			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
 				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
-				};
+				}
 			};
-			IdentifierType it = new IdentifierType("test");
+			final IdentifierType it = new IdentifierType("test");
 			apb.setParent(it);
 			assertEquals(it, apb.getParent());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -165,19 +166,19 @@ class AbstractParserBaseTest {
 	@Test
 	final void testGetName() {
 		try {
-			TypeFactory f = new TypeFactory();
-			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
+			final TypeFactory f = new TypeFactory();
+			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
 				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
-				};
+				}
 			};
 			assertEquals("BLARGH", apb.getName());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -188,20 +189,20 @@ class AbstractParserBaseTest {
 	@Test
 	final void testSetName() {
 		try {
-			TypeFactory f = new TypeFactory();
-			AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
+			final TypeFactory f = new TypeFactory();
+			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
 
 				@Override
 				public void registerTransitions(final TypeFactory factory) {
 					// intentionally blank
-				};
+				}
 			};
 			apb.setName("BLECH");
 			assertEquals("BLECH", apb.getName());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -224,10 +225,10 @@ class AbstractParserBaseTest {
 			throws IOException, IllegalParserStateException, UnknownStateException,
 			GenericParseException, NoSuchMethodException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
-		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-		InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
-		StreamTokenizer tok = new StreamTokenizer(br);
-		Tokenizer t = new Tokenizer(tok);
+		final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+		final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
+		final StreamTokenizer tok = new StreamTokenizer(br);
+		final Tokenizer t = new Tokenizer(tok);
 		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
 		return parser.getState(t);
 	}
@@ -239,15 +240,15 @@ class AbstractParserBaseTest {
 	final void testGetState() {
 		try {
 			Config.registerKnownParts();
-			Path p = Paths.get("assets", "base-config-test.cfg");
-			String ts = String.join("/", p.toString().split("\\\\"));
-			URL tu = Config.class.getClassLoader().getResource(ts);
-			URI temp = tu.toURI();
-			InputStream is = temp.toURL().openStream();
-			InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
-			StreamTokenizer tok = new StreamTokenizer(br);
-			Tokenizer t = new Tokenizer(tok);
-			AbstractParserBase apb = new AbstractParserBase(Config.getFactory(), null, "BLARGH") {
+			final Path p = Paths.get("assets", "base-config-test.cfg");
+			final String ts = String.join("/", p.toString().split("\\\\"));
+			final URL tu = Config.class.getClassLoader().getResource(ts);
+			final URI temp = tu.toURI();
+			final InputStream is = temp.toURL().openStream();
+			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
+			final StreamTokenizer tok = new StreamTokenizer(br);
+			final Tokenizer t = new Tokenizer(tok);
+			final AbstractParserBase apb = new AbstractParserBase(Config.getFactory(), null, "BLARGH") {
 
 				@Override
 				public void registerTransitions(final TypeFactory factory) {
@@ -255,11 +256,11 @@ class AbstractParserBaseTest {
 							TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION");
 					factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
 							TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
-				};
+				}
 			};
 			Config.getFactory().registerParser(() -> apb, "BLARGH");
 			apb.registerTransitions(Config.getFactory());
-			ParserInternalTypeBase res = apb.getState(t);
+			final ParserInternalTypeBase res = apb.getState(t);
 			final String matchVal = String.format("section {%n" + " magic = xyzzy%n"
 					+ " all = ident3%n" + " blech {%n" + " magic = abcd%n" + "}%n%n"
 					+ " key = [ list, op(! ident), ident2 ]%n" + "}%n");
@@ -280,9 +281,8 @@ class AbstractParserBaseTest {
 				| InvocationTargetException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
-
 }

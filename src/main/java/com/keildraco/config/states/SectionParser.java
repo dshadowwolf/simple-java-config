@@ -36,13 +36,13 @@ public final class SectionParser extends AbstractParserBase {
 			throw new IllegalParserStateException("End of input at start of state");
 		}
 
-		String sectionName = tok.nextToken().getValue();
+		final String sectionName = tok.nextToken().getValue();
 		tok.nextToken(); // skip the OPEN_BRACE
 
 		Token current = tok.peek();
 		Token next = tok.peekToken();
 
-		SectionType rv = new SectionType(sectionName);
+		final SectionType rv = new SectionType(sectionName);
 
 		while (tok.hasNext()) {
 			if (current.getType() == TokenType.CLOSE_BRACE) {

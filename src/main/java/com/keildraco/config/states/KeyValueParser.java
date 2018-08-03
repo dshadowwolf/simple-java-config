@@ -37,22 +37,22 @@ public final class KeyValueParser extends AbstractParserBase {
 			throw new IllegalParserStateException("End of input at start of state");
 		}
 
-		String key = tok.nextToken().getValue();
+		final String key = tok.nextToken().getValue();
 		tok.nextToken();
 
-		Token next = tok.peek();
-		Token following = tok.peekToken();
+		final Token next = tok.peek();
+		final Token following = tok.peekToken();
 
 		if (next.getType() == TokenType.IDENTIFIER
 				&& (following == null || following.getType() != TokenType.OPEN_PARENS)) {
-			ParserInternalTypeBase rv = this.getFactory().getType(null, key, next.getValue(),
+			final ParserInternalTypeBase rv = this.getFactory().getType(null, key, next.getValue(),
 					ItemType.IDENTIFIER);
 			tok.nextToken();
 			return rv;
 		}
 
-		IStateParser parser = this.getFactory().nextState(this.getName().toUpperCase(Locale.ENGLISH), next, following);
-		ParserInternalTypeBase rv = parser.getState(tok);
+		final IStateParser parser = this.getFactory().nextState(this.getName().toUpperCase(Locale.ENGLISH), next, following);
+		final ParserInternalTypeBase rv = parser.getState(tok);
 		rv.setName(key);
 		return rv;
 	}

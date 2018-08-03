@@ -1,8 +1,5 @@
 /**
- *
- */
-/**
- * @author SYSTEM
+ * @author Daniel Hazelton
  *
  */
 @ParametersAreNonnullByDefault

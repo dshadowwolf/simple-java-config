@@ -40,7 +40,7 @@ public final class DataQuery {
 	 */
 	public boolean get(final String key) {
 		// find item, or "all"
-		int index = key.indexOf('.');
+		final int index = key.indexOf('.');
 		if (this.baseSection.has(key)) {
 			return true;
 		} else if (index != -1 && index > 0) {

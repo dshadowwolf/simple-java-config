@@ -3,7 +3,6 @@
  *
  */
 @ParametersAreNonnullByDefault
-
 package com.keildraco.config;
 
 import javax.annotation.ParametersAreNonnullByDefault;

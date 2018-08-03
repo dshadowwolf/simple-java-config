@@ -112,7 +112,7 @@ public abstract class AbstractParserBase implements IStateParser {
 		Token current = tok.peek();
 		Token next = tok.peekToken();
 
-		Deque<ParserInternalTypeBase> bits = new LinkedList<>();
+		final Deque<ParserInternalTypeBase> bits = new LinkedList<>();
 
 		while (tok.hasNext()) {
 			try {
@@ -127,7 +127,7 @@ public abstract class AbstractParserBase implements IStateParser {
 			next = tok.peekToken();
 		}
 
-		ParserInternalTypeBase rv = new BasicResult(this.name.toUpperCase(Locale.ENGLISH));
+		final ParserInternalTypeBase rv = new BasicResult(this.name.toUpperCase(Locale.ENGLISH));
 
 		bits.stream().forEach(rv::addItem);
 		return rv;

@@ -78,7 +78,7 @@ public final class IdentifierTypeTest {
 	 */
 	@Test
 	public void testAsStringEmpty() {
-		IdentifierType l = new IdentifierType("", "value");
+		final IdentifierType l = new IdentifierType("", "value");
 		assertEquals("value", l.getValueRaw());
 	}
 

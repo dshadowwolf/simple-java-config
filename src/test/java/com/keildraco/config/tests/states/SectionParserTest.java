@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -50,11 +51,11 @@ class SectionParserTest {
 			IllegalParserStateException, UnknownStateException, GenericParseException {
 		Config.reset();
 		Config.registerKnownParts();
-		IStateParser parser = Config.getFactory().getParser("SECTION", null);
-		InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-		InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
-		StreamTokenizer tok = new StreamTokenizer(br);
-		Tokenizer t = new Tokenizer(tok);
+		final IStateParser parser = Config.getFactory().getParser("SECTION", null);
+		final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
+		final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
+		final StreamTokenizer tok = new StreamTokenizer(br);
+		final Tokenizer t = new Tokenizer(tok);
 		return parser.getState(t);
 	}
 
@@ -63,10 +64,10 @@ class SectionParserTest {
 	 */
 	@Test
 	final void testGetState() {
-		String validData = "section { item = value }";
-		String earlyExit = "section { item = value";
-		String noData = "";
-		String badData = "section { [ item ] }";
+		final String validData = "section { item = value }";
+		final String earlyExit = "section { item = value";
+		final String noData = "";
+		final String badData = "section { [ item ] }";
 
 		assertAll(
 				() -> assertTrue(doParse(validData) != ParserInternalTypeBase.EMPTY_TYPE,
@@ -82,13 +83,13 @@ class SectionParserTest {
 	@Test
 	final void testSectionParser() {
 		try {
-			TypeFactory f = new TypeFactory();
-			SectionParser sp = new SectionParser(f, null);
+			final TypeFactory f = new TypeFactory();
+			final SectionParser sp = new SectionParser(f, null);
 			assertTrue(sp != null, "Able to instantiate a SectionParser");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -99,14 +100,14 @@ class SectionParserTest {
 	@Test
 	final void testRegisterTransitions() {
 		try {
-			TypeFactory f = new TypeFactory();
-			SectionParser sp = new SectionParser(f, null);
+			final TypeFactory f = new TypeFactory();
+			final SectionParser sp = new SectionParser(f, null);
 			sp.registerTransitions(f);
 			assertTrue(true, "was able to register transitions");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}

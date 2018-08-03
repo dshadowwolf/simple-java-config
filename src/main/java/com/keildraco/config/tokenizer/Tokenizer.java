@@ -73,8 +73,8 @@ public final class Tokenizer {
 			return null;
 		}
 
-		Token k = this.tokens.pop();
-		Token rv = this.tokens.peek();
+		final Token k = this.tokens.pop();
+		final Token rv = this.tokens.peek();
 		this.tokens.push(k);
 		return rv;
 	}
