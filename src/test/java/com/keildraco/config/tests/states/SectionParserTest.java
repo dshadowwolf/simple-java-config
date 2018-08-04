@@ -72,7 +72,7 @@ final class SectionParserTest {
 		final String badData = "section { [ item ] }";
 
 		assertAll(
-				() -> assertNotSame(doParse(validData), ParserInternalTypeBase.EMPTY_TYPE,
+				() -> assertNotSame(ParserInternalTypeBase.EMPTY_TYPE, doParse(validData),
 						"standard parse works"),
 				() -> assertThrows(GenericParseException.class, () -> doParse(earlyExit)),
 				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),

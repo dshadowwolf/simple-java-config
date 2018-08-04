@@ -35,7 +35,7 @@ public final class OperationParser extends AbstractParserBase {
 			throw new IllegalParserStateException("End of input at start of state");
 		}
 
-		String key = tok.nextToken().getValue();
+		final String key = tok.nextToken().getValue();
 		String oper;
 
 		tok.nextToken();
@@ -73,7 +73,7 @@ public final class OperationParser extends AbstractParserBase {
 	}
 
 	@Override
-	public void registerTransitions(final TypeFactory factory) {
+	public void registerTransitions(@Nullable final TypeFactory factory) {
 		// blank - no transitions here
 	}
 }

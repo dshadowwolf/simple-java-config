@@ -18,10 +18,15 @@ final class ExceptionsTest {
 	/**
 	 *
 	 */
+	private static final String BLARGH = "Blargh!";
+
+	/**
+	 *
+	 */
 	@Test
 	void testGenericParseException() {
 		assertThrows(GenericParseException.class, () -> {
-			throw new GenericParseException("Blargh!");
+			throw new GenericParseException(BLARGH);
 		});
 	}
 
@@ -31,7 +36,7 @@ final class ExceptionsTest {
 	@Test
 	void testIllegalParserStateException() {
 		assertThrows(IllegalParserStateException.class, () -> {
-			throw new IllegalParserStateException("Blargh!");
+			throw new IllegalParserStateException(BLARGH);
 		});
 	}
 
@@ -41,7 +46,7 @@ final class ExceptionsTest {
 	@Test
 	void testUnknownStateException() {
 		assertThrows(UnknownStateException.class, () -> {
-			throw new UnknownStateException("Blargh!");
+			throw new UnknownStateException(BLARGH);
 		});
 	}
 }

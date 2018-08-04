@@ -91,13 +91,13 @@ public class ItemMatcher {
 		if (this.thisItem.getName().equalsIgnoreCase(bn)) {
 			// we match the base name itself, so we have to see if we can split the extended name or
 			// don't need to and re-match
-			if (xn.length() > 0) {
+			if (!xn.isEmpty()) {
 				return this.matches(xn);
 			} else {
 				return true;
 			}
 		} else if (this.thisItem.has(bn)) {
-			if (xn.length() > 0) {
+			if (!xn.isEmpty()) {
 				return new ItemMatcher(this.thisItem.get(bn)).matches(xn);
 			} else {
 				return true;
@@ -115,7 +115,7 @@ public class ItemMatcher {
 	 * @return
 	 */
 	private boolean listMatcher(final String bn, final String xn) {
-		if (xn.length() == 0) {
+		if (xn.isEmpty()) {
 			// above all else we're only, actually, into the list here...
 			return this.listMatchesAny(bn);
 		}
@@ -134,7 +134,7 @@ public class ItemMatcher {
 	 * @return
 	 */
 	private boolean identMatcher(final String bn, final String xn) {
-		if (xn.length() > 0) {
+		if (!xn.isEmpty()) {
 			return this.identMatches((IdentifierType) this.thisItem, bn, xn);
 		} else {
 			return this.identMatches((IdentifierType) this.thisItem, bn);
@@ -149,8 +149,8 @@ public class ItemMatcher {
 	private boolean operatorMatches(final String bn) {
 		// at this point our item is an operator, so we should only have 'bn'
 
-		OperationType op = (OperationType) this.thisItem;
-		int oper = op.getOperator();
+		final OperationType op = (OperationType) this.thisItem;
+		final int oper = op.getOperator();
 		if (oper == '!') {
 			return !op.getValueRaw().equalsIgnoreCase(bn);
 		} else if (oper == '~') {

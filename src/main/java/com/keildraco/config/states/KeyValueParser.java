@@ -42,8 +42,8 @@ public final class KeyValueParser extends AbstractParserBase {
 		final Token next = tokenizer.peek();
 		final Token following = tokenizer.peekToken();
 
-		if (next.getType() == TokenType.IDENTIFIER
-				&& (following == null || following.getType() != TokenType.OPEN_PARENS)) {
+		if ((next.getType() == TokenType.IDENTIFIER)
+				&& ((following == null) || (following.getType() != TokenType.OPEN_PARENS))) {
 			final ParserInternalTypeBase rv = this.getFactory().getType(null, key, next.getValue(),
 					ItemType.IDENTIFIER);
 			tokenizer.nextToken();
@@ -58,9 +58,8 @@ public final class KeyValueParser extends AbstractParserBase {
 	}
 
 	@Override
-	public void registerTransitions(final TypeFactory factory) {
+	public void registerTransitions(@Nullable final TypeFactory factory) {
 		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
 				TokenType.OPEN_LIST, TokenType.IDENTIFIER, "LIST");
 	}
-
 }

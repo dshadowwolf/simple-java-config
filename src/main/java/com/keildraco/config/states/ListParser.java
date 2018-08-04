@@ -50,8 +50,8 @@ public final class ListParser extends AbstractParserBase {
 		while (tokenizer.hasNext()) {
 			switch (current.getType()) {
 				case IDENTIFIER:
-					if (next != null && (next.getType() != TokenType.SEPERATOR
-							&& next.getType() != TokenType.CLOSE_LIST)) {
+					if ((next != null) && ((next.getType() != TokenType.SEPERATOR)
+							&& (next.getType() != TokenType.CLOSE_LIST))) {
 						rv.addItem(this.getFactory()
 								.nextState(this.getName().toUpperCase(Locale.ENGLISH), current,
 										next)
@@ -81,7 +81,7 @@ public final class ListParser extends AbstractParserBase {
 	}
 
 	@Override
-	public void registerTransitions(final TypeFactory factory) {
+	public void registerTransitions(@Nullable final TypeFactory factory) {
 		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
 				TokenType.IDENTIFIER, TokenType.OPEN_PARENS, "OPERATION");
 	}

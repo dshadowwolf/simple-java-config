@@ -46,6 +46,8 @@ import javax.annotation.Nullable;
  */
 final class AbstractParserBaseTest {
 
+	private static final String BLARGH = "BLARGH";
+
 	/**
 	 *
 	 */
@@ -53,7 +55,7 @@ final class AbstractParserBaseTest {
 	void testAbstractParserBase() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, "BLARGH");
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
 			assertNotNull(apb);
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
@@ -70,7 +72,7 @@ final class AbstractParserBaseTest {
 	void testSetFactory() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBaseTester(null, null, "BLARGH");
+			final AbstractParserBase apb = new AbstractParserBaseTester(null, null, BLARGH);
 			apb.setFactory(f);
 			assertTrue(true, "AbstractParserBase.setFactory() works");
 		} catch (final Exception e) {
@@ -88,7 +90,7 @@ final class AbstractParserBaseTest {
 	void testGetFactory() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, "BLARGH");
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
 			assertEquals(f, apb.getFactory());
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
@@ -105,7 +107,7 @@ final class AbstractParserBaseTest {
 	void testSetParent() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, "BLARGH");
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
 			apb.setParent(ParserInternalTypeBase.EMPTY_TYPE);
 			assertTrue(true, "setParent() works");
 		} catch (final Exception e) {
@@ -123,7 +125,7 @@ final class AbstractParserBaseTest {
 	void testGetParent() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, "BLARGH");
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
 			final IdentifierType it = new IdentifierType("test");
 			apb.setParent(it);
 			assertEquals(it, apb.getParent());
@@ -142,8 +144,8 @@ final class AbstractParserBaseTest {
 	void testGetName() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, "BLARGH");
-			assertEquals("BLARGH", apb.getName());
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
+			assertEquals(BLARGH, apb.getName());
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
@@ -159,7 +161,7 @@ final class AbstractParserBaseTest {
 	void testSetName() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, "BLARGH");
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
 			apb.setName("BLECH");
 			assertEquals("BLECH", apb.getName());
 		} catch (final Exception e) {
@@ -259,7 +261,7 @@ final class AbstractParserBaseTest {
 		}
 
 		@Override
-		public void registerTransitions(@Nonnull final TypeFactory factory) {
+		public void registerTransitions(@Nullable final TypeFactory factory) {
 			// intentionally blank
 		}
 	}

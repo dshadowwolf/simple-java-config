@@ -53,14 +53,14 @@ public final class IdentifierType extends ParserInternalTypeBase {
 	}
 
 	@Override
-	public boolean has(final String s) {
-		return this.getName().equalsIgnoreCase(s) || this.ident.equalsIgnoreCase(s);
+	public boolean has(final String itemName) {
+		return this.getName().equalsIgnoreCase(itemName) || this.ident.equalsIgnoreCase(itemName);
 	}
 
 	@Nonnull
 	@Override
-	public ParserInternalTypeBase get(final String s) {
-		if (this.has(s)) {
+	public ParserInternalTypeBase get(final String itemName) {
+		if (this.has(itemName)) {
 			return this;
 		}
 		return EMPTY_TYPE;

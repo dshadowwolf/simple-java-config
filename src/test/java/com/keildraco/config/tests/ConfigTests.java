@@ -27,7 +27,7 @@ import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  *
@@ -193,7 +193,7 @@ final class ConfigTests {
 		}
 
 		@Override
-		public void registerTransitions(@Nonnull final TypeFactory factory) {
+		public void registerTransitions(@Nullable final TypeFactory factory) {
 			// not needed
 		}
 	}

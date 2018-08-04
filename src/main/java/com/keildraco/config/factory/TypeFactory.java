@@ -60,7 +60,6 @@ public final class TypeFactory {
 	 * @param type
 	 * @return
 	 */
-	@Nullable
 	public ParserInternalTypeBase getType(@Nullable final ParserInternalTypeBase parent,
 			final String name, final String value, final ParserInternalTypeBase.ItemType type) {
 		return this.typeMap.get(type).get(parent, name, value);
@@ -125,7 +124,7 @@ public final class TypeFactory {
 				.getOrDefault(currentToken.getType(), new ConcurrentHashMap<>())
 				.getOrDefault(nextToken.getType(), "");
 
-		if (nextState.length() == 0) {
+		if (nextState.isEmpty()) {
 			throw new UnknownStateException(String.format(
 					"Transition state starting at %s with current as %s and next as %s is not known",
 					currentState, currentToken.getType(), nextToken.getType()));

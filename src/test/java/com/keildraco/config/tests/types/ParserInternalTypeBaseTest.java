@@ -93,6 +93,7 @@ final class ParserInternalTypeBaseTest {
 			final String name, final String value) {
 		return new ParserInternalTypeBase(parent, name, value) {
 
+			@Nonnull
 			@Override
 			public String getValueRaw() {
 				return this.getValue();

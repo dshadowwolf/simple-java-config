@@ -27,7 +27,7 @@ public final class SectionType extends ParserInternalTypeBase {
 	 */
 	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name) {
 		super(parent, name);
-		if (this.getName().equals("") || parent == null) {
+		if ((this.getName().isEmpty()) || (parent == null)) {
 			this.setName("ROOT");
 		}
 	}

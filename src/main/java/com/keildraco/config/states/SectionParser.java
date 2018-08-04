@@ -31,38 +31,38 @@ public final class SectionParser extends AbstractParserBase {
 	}
 
 	@Override
-	public ParserInternalTypeBase getState(final Tokenizer tok) {
-		if (!tok.hasNext()) {
+	public ParserInternalTypeBase getState(final Tokenizer tokenizer) {
+		if (!tokenizer.hasNext()) {
 			throw new IllegalParserStateException("End of input at start of state");
 		}
 
-		final String sectionName = tok.nextToken().getValue();
-		tok.nextToken(); // skip the OPEN_BRACE
+		final String sectionName = tokenizer.nextToken().getValue();
+		tokenizer.nextToken(); // skip the OPEN_BRACE
 
-		Token current = tok.peek();
-		Token next = tok.peekToken();
+		Token current = tokenizer.peek();
+		Token next = tokenizer.peekToken();
 
 		final SectionType rv = new SectionType(sectionName);
 
-		while (tok.hasNext()) {
+		while (tokenizer.hasNext()) {
 			if (current.getType() == TokenType.CLOSE_BRACE) {
-				tok.nextToken();
+				tokenizer.nextToken();
 				rv.setName(sectionName); // force this, despite what other code thinks
 				return rv;
 			}
 
 			rv.addItem(this.getFactory()
 					.nextState(this.getName().toUpperCase(Locale.ENGLISH), current, next)
-					.getState(tok));
-			current = tok.peek();
-			next = tok.peekToken();
+					.getState(tokenizer));
+			current = tokenizer.peek();
+			next = tokenizer.peekToken();
 		}
 
 		throw new GenericParseException("End of input while parsing a SECTION");
 	}
 
 	@Override
-	public void registerTransitions(final TypeFactory factory) {
+	public void registerTransitions(@Nullable final TypeFactory factory) {
 		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
 				TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
 		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
