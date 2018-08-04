@@ -66,9 +66,8 @@ public final class OperationType extends ParserInternalTypeBase {
 	 * @param oper
 	 * @return
 	 */
-	public OperationType setOperation(final String oper) {
+	public void setOperation(final String oper) {
 		this.operator = oper.trim();
-		return this;
 	}
 
 	/**

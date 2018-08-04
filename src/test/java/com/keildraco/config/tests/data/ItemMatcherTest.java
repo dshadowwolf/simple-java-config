@@ -2,6 +2,7 @@ package com.keildraco.config.tests.data;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -42,11 +43,11 @@ class ItemMatcherTest {
 		try {
 			final ParserInternalTypeBase item = new IdentifierType("magic", "name");
 			final ItemMatcher m = new ItemMatcher(item);
-			assertTrue(m != null, "Able to instantiate an ItemMatcher");
+			assertNotNull(m, "Able to instantiate an ItemMatcher");
 		} catch (Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -93,7 +94,7 @@ class ItemMatcherTest {
 			final OperationType o = new OperationType("oper", "value");
 			o.setOperation(">");
 			final ItemMatcher m3 = new ItemMatcher(o);
-			assertAll("result is correct", () -> assertTrue(m != null, "result not null"),
+			assertAll("result is correct", () -> assertNotNull(m, "result not null"),
 					() -> assertTrue(m.matches("section"), "section match correct"),
 					() -> assertTrue(m.matches("section.item.value"), "full item match works"),
 					() -> assertTrue(m.matches("section.item"), "item exists/short name match"),
@@ -118,7 +119,7 @@ class ItemMatcherTest {
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}

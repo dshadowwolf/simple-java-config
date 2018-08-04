@@ -119,7 +119,7 @@ public abstract class AbstractParserBase implements IStateParser {
 								.getState(tok));
 			} catch (UnknownStateException e) {
 				Config.LOGGER.error("Exception during parse: %s", e.getMessage());
-				Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+				Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 				return ParserInternalTypeBase.EMPTY_TYPE;
 			}
 			current = tok.peek();

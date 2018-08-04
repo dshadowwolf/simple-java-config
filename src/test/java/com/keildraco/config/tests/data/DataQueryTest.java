@@ -69,7 +69,7 @@ class DataQueryTest {
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -94,7 +94,7 @@ class DataQueryTest {
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}

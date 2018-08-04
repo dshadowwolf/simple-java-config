@@ -62,7 +62,7 @@ class ConfigTests {
 		} catch (NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception %s", e.toString());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::fatal);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::fatal);
 			fail("Exception Caught");
 		}
 	}
@@ -78,11 +78,11 @@ class ConfigTests {
 			Config.reset();
 			final IStateParser q = Config.getFactory().getParser("SECTION", null);
 			assertAll("parser prior to reset should not equal a parser post reset",
-					() -> assertNull(q), () -> assertTrue(p != null), () -> assertFalse(p == q));
+					() -> assertNull(q), () -> assertNotNull(p), () -> assertFalse(p == q));
 		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception %s", e.toString());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::fatal);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::fatal);
 			fail("Exception Caught");
 		}
 	}
@@ -111,7 +111,7 @@ class ConfigTests {
 				| GenericParseException e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -133,7 +133,7 @@ class ConfigTests {
 				| GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -155,7 +155,7 @@ class ConfigTests {
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -179,7 +179,7 @@ class ConfigTests {
 	 * @author Daniel Hazelton
 	 *
 	 */
-	private class ParserThatThrows extends AbstractParserBase {
+	private static final class ParserThatThrows extends AbstractParserBase {
 
 		/**
 		 *
@@ -205,7 +205,7 @@ class ConfigTests {
 	 *
 	 *
 	 */
-	private class TypeThatThrows extends ParserInternalTypeBase {
+	private static final class TypeThatThrows extends ParserInternalTypeBase {
 
 		/**
 		 *

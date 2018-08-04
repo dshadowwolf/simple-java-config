@@ -1,6 +1,7 @@
 package com.keildraco.config.tests.states;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -85,11 +86,11 @@ class SectionParserTest {
 		try {
 			final TypeFactory f = new TypeFactory();
 			final SectionParser sp = new SectionParser(f, null);
-			assertTrue(sp != null, "Able to instantiate a SectionParser");
+			assertNotNull(sp, "Able to instantiate a SectionParser");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -107,7 +108,7 @@ class SectionParserTest {
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}

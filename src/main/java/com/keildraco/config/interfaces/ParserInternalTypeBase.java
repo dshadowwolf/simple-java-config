@@ -160,16 +160,6 @@ public abstract class ParserInternalTypeBase {
 		/**
 		 *
 		 */
-		NUMBER,
-
-		/**
-		 *
-		 */
-		BOOLEAN,
-
-		/**
-		 *
-		 */
 		LIST,
 
 		/**
@@ -259,7 +249,7 @@ public abstract class ParserInternalTypeBase {
 	 *
 	 * @return
 	 */
-	public Map<String, ParserInternalTypeBase> getItems() {
+	protected Map<String, ParserInternalTypeBase> getItems() {
 		return items;
 	}
 }

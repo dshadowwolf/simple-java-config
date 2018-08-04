@@ -2,6 +2,7 @@ package com.keildraco.config.tests.states;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -49,7 +50,7 @@ class KeyValueParserTest {
 			final StreamTokenizer tok = new StreamTokenizer(br);
 			final Tokenizer t = new Tokenizer(tok);
 			final ParserInternalTypeBase pb = p.getState(t);
-			assertAll("result is correct", () -> assertTrue(pb != null, "result not null"),
+			assertAll("result is correct", () -> assertNotNull(pb, "result not null"),
 					() -> assertEquals("item", pb.getName(), "name is correct"),
 					() -> assertEquals("value", pb.getValueRaw(), "value is correct"));
 		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
@@ -57,7 +58,7 @@ class KeyValueParserTest {
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -70,11 +71,11 @@ class KeyValueParserTest {
 		try {
 			final TypeFactory f = new TypeFactory();
 			final KeyValueParser kvp = new KeyValueParser(f, null);
-			assertTrue(kvp != null, "Able to instantiate a KeyValueParser");
+			assertNotNull(kvp, "Able to instantiate a KeyValueParser");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -92,7 +93,7 @@ class KeyValueParserTest {
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}

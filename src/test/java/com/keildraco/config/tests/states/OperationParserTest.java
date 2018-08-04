@@ -2,6 +2,7 @@ package com.keildraco.config.tests.states;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -50,7 +51,7 @@ class OperationParserTest {
 			final StreamTokenizer tok = new StreamTokenizer(br);
 			final Tokenizer t = new Tokenizer(tok);
 			final OperationType opt = (OperationType) p.getState(t);
-			assertAll("result is correct", () -> assertTrue(opt != null, "result not null"),
+			assertAll("result is correct", () -> assertNotNull(opt, "result not null"),
 					() -> assertEquals("op", opt.getName(), "name is correct"),
 					() -> assertEquals("ident", opt.getValueRaw(), "value is correct"),
 					() -> assertEquals('!', opt.getOperator()));
@@ -59,7 +60,7 @@ class OperationParserTest {
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -72,11 +73,11 @@ class OperationParserTest {
 		try {
 			TypeFactory f = new TypeFactory();
 			OperationParser op = new OperationParser(f, null);
-			assertTrue(op != null, "Able to instantiate a OperationParser");
+			assertNotNull(op, "Able to instantiate a OperationParser");
 		} catch (Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -94,7 +95,7 @@ class OperationParserTest {
 		} catch (Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
