@@ -17,11 +17,6 @@ public final class Tokenizer {
 	/**
 	 *
 	 */
-	private final StreamTokenizer baseTokenizer;
-
-	/**
-	 *
-	 */
 	private final Deque<Token> tokens;
 
 	/**
@@ -30,20 +25,26 @@ public final class Tokenizer {
 	 * @throws IOException
 	 */
 	public Tokenizer(final StreamTokenizer tok) throws IOException {
-		this.baseTokenizer = tok;
 		this.tokens = new LinkedList<>();
-		this.baseTokenizer.slashSlashComments(true);
-		this.baseTokenizer.slashStarComments(true);
-		this.baseTokenizer.commentChar('#');
-		this.baseTokenizer.wordChars('_', '_');
-		this.baseTokenizer.wordChars('-', '-');
+		
+		// setup the StreamTokenizer exactly how we want it
+		tok.resetSyntax();
+		tok.whitespaceChars(0, ' ');
+		tok.slashSlashComments(true);
+		tok.slashStarComments(true);
+		tok.commentChar('#');
+		tok.wordChars('a', 'z');
+		tok.wordChars('A', 'Z');
+		tok.wordChars('0', '9');
+		tok.wordChars('_', '_');
+		tok.wordChars('-', '-');
 
 		int p;
-		while ((p = this.baseTokenizer.nextToken()) != StreamTokenizer.TT_EOF) {
+		while ((p = tok.nextToken()) != StreamTokenizer.TT_EOF) {
 			if (p == StreamTokenizer.TT_WORD) {
-				this.tokens.addLast(new Token(this.baseTokenizer.sval));
+				this.tokens.addLast(new Token(tok.sval));
 			} else {
-				this.tokens.addLast(new Token(String.format("%c", p)));
+				this.tokens.addLast(new Token(String.format("%C", p)));
 			}
 		}
 	}
