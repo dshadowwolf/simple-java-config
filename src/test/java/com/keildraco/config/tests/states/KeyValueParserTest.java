@@ -110,7 +110,7 @@ final class KeyValueParserTest {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	private void doParse(final String data)
+	private ParserInternalTypeBase doParse(final String data)
 			throws IOException, IllegalParserStateException, UnknownStateException,
 			GenericParseException, NoSuchMethodException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
@@ -122,7 +122,7 @@ final class KeyValueParserTest {
 		final StreamTokenizer tok = new StreamTokenizer(br);
 		final Tokenizer t = new Tokenizer(tok);
 		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
-//		return parser.getState(t);
+		return parser.getState(t);
 	}
 
 	/**

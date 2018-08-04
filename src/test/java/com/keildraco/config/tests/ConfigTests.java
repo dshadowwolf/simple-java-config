@@ -2,8 +2,8 @@ package com.keildraco.config.tests;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -80,7 +80,7 @@ final class ConfigTests {
 			Config.reset();
 			final IStateParser q = Config.getFactory().getParser("SECTION", null);
 			assertAll("parser prior to reset should not equal a parser post reset",
-					() -> assertNull(q), () -> assertNotNull(p), () -> assertSame(p, q));
+					() -> assertNull(q), () -> assertNotNull(p), () -> assertNotSame(p, q));
 		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception %s", e.toString());
