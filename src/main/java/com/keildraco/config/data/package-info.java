@@ -4,10 +4,9 @@
  */
 @ParametersAreNonnullByDefault
 @FieldsAreNonnullByDefault
-@MethodsReturnNonnullByDefault
+@MethodsAreNonnullByDefault
 package com.keildraco.config.data;
 
-import com.keildraco.config.util.FieldsAreNonnullByDefault;
-import com.keildraco.config.util.MethodsReturnNonnullByDefault;
-
 import javax.annotation.ParametersAreNonnullByDefault;
+import com.sharneng.annotation.FieldsAreNonnullByDefault;
+import com.sharneng.annotation.MethodsAreNonnullByDefault;

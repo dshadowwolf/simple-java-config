@@ -53,6 +53,8 @@ dependencies {
 	
 	// Reflection Helpers
 	compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
+	compile group: 'com.sharneng', name: 'jsr305defaults', version: '2.0.3'
+	runtime group: 'com.sharneng', name: 'jsr305defaults', version: '2.0.3'
 }
 
 repositories {
