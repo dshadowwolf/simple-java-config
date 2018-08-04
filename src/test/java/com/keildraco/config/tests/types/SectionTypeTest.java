@@ -19,7 +19,7 @@ import com.keildraco.config.types.SectionType;
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-public final class SectionTypeTest {
+final class SectionTypeTest {
 
 	/**
 	 *
@@ -32,20 +32,15 @@ public final class SectionTypeTest {
 	private SectionType child;
 
 	/**
-	 *
-	 */
-	private IdentifierType kp;
-
-	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeAll
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 		this.root = new SectionType("ROOT");
 		this.child = new SectionType(this.root, "CHILD");
-		this.kp = new IdentifierType("blargh", "blech");
+		final IdentifierType kp = new IdentifierType("blargh", "blech");
 		this.child.addItem(new IdentifierType("blargh", "foobar"));
-		this.root.addItem(this.kp);
+		this.root.addItem(kp);
 		this.root.addItem(this.child);
 	}
 
@@ -53,7 +48,7 @@ public final class SectionTypeTest {
 	 * Test method for {@link com.keildraco.config.types.SectionType#getType()}.
 	 */
 	@Test
-	public void testGetType() {
+	void testGetType() {
 		assertEquals(ParserInternalTypeBase.ItemType.SECTION, this.root.getType());
 	}
 
@@ -62,7 +57,7 @@ public final class SectionTypeTest {
 	 * {@link com.keildraco.config.types.SectionType#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
-	public void testAddItem() {
+	void testAddItem() {
 		try {
 			final SectionType testItem2 = new SectionType("blargh");
 			testItem2.addItem(ParserInternalTypeBase.EMPTY_TYPE);
@@ -76,7 +71,7 @@ public final class SectionTypeTest {
 	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getParent()}.
 	 */
 	@Test
-	public void testGetParent() {
+	void testGetParent() {
 		assertEquals(this.child.getParent(), this.root);
 	}
 
@@ -84,7 +79,7 @@ public final class SectionTypeTest {
 	 *
 	 */
 	@Test
-	public void testAsString() {
+	void testAsString() {
 		final String result = String.format("blargh = blech%n CHILD {%n blargh = foobar%n}");
 		assertAll(() -> assertEquals(result, this.root.getValue().trim()),
 				() -> assertEquals(result, this.root.getValueRaw().trim()));
@@ -94,7 +89,7 @@ public final class SectionTypeTest {
 	 *
 	 */
 	@Test
-	public void testSectionTypeParentNameValue() {
+	void testSectionTypeParentNameValue() {
 		try {
 			final SectionType stOne = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, "blargh",
 					"blech");

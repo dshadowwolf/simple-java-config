@@ -60,6 +60,7 @@ public final class TypeFactory {
 	 * @param type
 	 * @return
 	 */
+	@Nullable
 	public ParserInternalTypeBase getType(@Nullable final ParserInternalTypeBase parent,
 			final String name, final String value, final ParserInternalTypeBase.ItemType type) {
 		return this.typeMap.get(type).get(parent, name, value);
@@ -117,6 +118,7 @@ public final class TypeFactory {
 	 * @param nextToken
 	 * @return
 	 */
+	@Nullable
 	public IStateParser nextState(final String currentState, final Token currentToken,
 			final Token nextToken) {
 		final String nextState = this.stateMap.getOrDefault(currentState, new ConcurrentHashMap<>())

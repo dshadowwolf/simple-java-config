@@ -34,13 +34,13 @@ import com.keildraco.config.types.OperationType;
  * @author Daniel Hazelton
  *
  */
-class OperationParserTest {
+final class OperationParserTest {
 
 	/**
 	 *
 	 */
 	@Test
-	final void testGetState() {
+	void testGetState() {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
@@ -69,7 +69,7 @@ class OperationParserTest {
 	 *
 	 */
 	@Test
-	final void testOperationParser() {
+	void testOperationParser() {
 		try {
 			TypeFactory f = new TypeFactory();
 			OperationParser op = new OperationParser(f, null);
@@ -86,7 +86,7 @@ class OperationParserTest {
 	 *
 	 */
 	@Test
-	final void testRegisterTransitions() {
+	void testRegisterTransitions() {
 		try {
 			TypeFactory f = new TypeFactory();
 			OperationParser op = new OperationParser(f, null);
@@ -130,7 +130,7 @@ class OperationParserTest {
 	 *
 	 */
 	@Test
-	final void testErrorPaths() {
+	void testErrorPaths() {
 		String extraInParens = "op(! id ent)";
 		String invalidOperator = "op(< ident)";
 		String noOperator = "op(ident)";

@@ -12,6 +12,8 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.SectionType;
 
+import javax.annotation.Nullable;
+
 /**
  *
  * @author Daniel Hazelton
@@ -24,7 +26,7 @@ public final class SectionParser extends AbstractParserBase {
 	 * @param factoryIn
 	 * @param parentIn
 	 */
-	public SectionParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
+	public SectionParser(@Nullable final TypeFactory factoryIn, @Nullable final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "SECTION");
 	}
 

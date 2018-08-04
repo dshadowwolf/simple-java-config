@@ -14,9 +14,9 @@ public class GenericParseException extends RuntimeException {
 
 	/**
 	 *
-	 * @param mess
+	 * @param message
 	 */
-	public GenericParseException(final String mess) {
-		super(mess);
+	public GenericParseException(final String message) {
+		super(message);
 	}
 }

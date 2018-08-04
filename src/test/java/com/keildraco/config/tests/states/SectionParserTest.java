@@ -2,6 +2,7 @@ package com.keildraco.config.tests.states;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -32,7 +33,7 @@ import com.keildraco.config.tokenizer.Tokenizer;
  * @author Daniel Hazelton
  *
  */
-class SectionParserTest {
+final class SectionParserTest {
 
 	/**
 	 *
@@ -64,14 +65,14 @@ class SectionParserTest {
 	 *
 	 */
 	@Test
-	final void testGetState() {
+	void testGetState() {
 		final String validData = "section { item = value }";
 		final String earlyExit = "section { item = value";
 		final String noData = "";
 		final String badData = "section { [ item ] }";
 
 		assertAll(
-				() -> assertTrue(doParse(validData) != ParserInternalTypeBase.EMPTY_TYPE,
+				() -> assertNotSame(doParse(validData), ParserInternalTypeBase.EMPTY_TYPE,
 						"standard parse works"),
 				() -> assertThrows(GenericParseException.class, () -> doParse(earlyExit)),
 				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
@@ -82,7 +83,7 @@ class SectionParserTest {
 	 *
 	 */
 	@Test
-	final void testSectionParser() {
+	void testSectionParser() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			final SectionParser sp = new SectionParser(f, null);
@@ -99,7 +100,7 @@ class SectionParserTest {
 	 *
 	 */
 	@Test
-	final void testRegisterTransitions() {
+	void testRegisterTransitions() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			final SectionParser sp = new SectionParser(f, null);

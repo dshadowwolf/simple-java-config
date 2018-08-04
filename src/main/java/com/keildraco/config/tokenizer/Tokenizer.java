@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 import com.keildraco.config.data.Token;
 
+import javax.annotation.Nullable;
+
 /**
  *
  * @author Daniel Hazelton
@@ -21,28 +23,28 @@ public final class Tokenizer {
 
 	/**
 	 *
-	 * @param tok
+	 * @param tokenizer
 	 * @throws IOException
 	 */
-	public Tokenizer(final StreamTokenizer tok) throws IOException {
+	public Tokenizer(final StreamTokenizer tokenizer) throws IOException {
 		this.tokens = new LinkedList<>();
-		
+
 		// setup the StreamTokenizer exactly how we want it
-		tok.resetSyntax();
-		tok.whitespaceChars(0, ' ');
-		tok.slashSlashComments(true);
-		tok.slashStarComments(true);
-		tok.commentChar('#');
-		tok.wordChars('a', 'z');
-		tok.wordChars('A', 'Z');
-		tok.wordChars('0', '9');
-		tok.wordChars('_', '_');
-		tok.wordChars('-', '-');
+		tokenizer.resetSyntax();
+		tokenizer.whitespaceChars(0, ' ');
+		tokenizer.slashSlashComments(true);
+		tokenizer.slashStarComments(true);
+		tokenizer.commentChar('#');
+		tokenizer.wordChars('a', 'z');
+		tokenizer.wordChars('A', 'Z');
+		tokenizer.wordChars('0', '9');
+		tokenizer.wordChars('_', '_');
+		tokenizer.wordChars('-', '-');
 
 		int p;
-		while ((p = tok.nextToken()) != StreamTokenizer.TT_EOF) {
+		while ((p = tokenizer.nextToken()) != StreamTokenizer.TT_EOF) {
 			if (p == StreamTokenizer.TT_WORD) {
-				this.tokens.addLast(new Token(tok.sval));
+				this.tokens.addLast(new Token(tokenizer.sval));
 			} else {
 				this.tokens.addLast(new Token(String.format("%C", p)));
 			}
@@ -53,6 +55,7 @@ public final class Tokenizer {
 	 *
 	 * @return
 	 */
+	@Nullable
 	public Token nextToken() {
 		return this.tokens.pop();
 	}
@@ -69,6 +72,7 @@ public final class Tokenizer {
 	 *
 	 * @return
 	 */
+	@Nullable
 	public Token peekToken() {
 		if (this.tokens.isEmpty()) {
 			return null;
@@ -84,6 +88,7 @@ public final class Tokenizer {
 	 *
 	 * @return
 	 */
+	@Nullable
 	public Token peek() {
 		return this.tokens.peek();
 	}

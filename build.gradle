@@ -15,7 +15,22 @@ mainClassName = 'App'
 apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 apply plugin: 'com.github.spotbugs'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 //apply plugin: 'org.junit.platform.gradle.plugin'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+eclipse.project {
+  buildCommand 'org.eclipse.buildship.core.gradleprojectbuilder'
+  natures 'org.eclipse.buildship.core.gradleprojectnature'
+}
+
+idea.module {
+  downloadJavadoc = true
+//  inheritOutputDirs = true
+}
 
 dependencies {
 	// This dependency is found on compile classpath of this component and consumers.

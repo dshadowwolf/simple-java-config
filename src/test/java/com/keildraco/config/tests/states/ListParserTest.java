@@ -2,6 +2,7 @@ package com.keildraco.config.tests.states;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -36,7 +37,7 @@ import com.keildraco.config.tokenizer.Tokenizer;
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-class ListParserTest {
+final class ListParserTest {
 
 	/**
 	 *
@@ -46,7 +47,7 @@ class ListParserTest {
 	 * @throws InvocationTargetException
 	 */
 	@BeforeAll
-	final void setUp() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+	void setUp() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
 			InvocationTargetException {
 		Config.reset();
 		Config.registerKnownParts();
@@ -56,7 +57,7 @@ class ListParserTest {
 	 *
 	 */
 	@Test
-	final void testGetState() {
+	void testGetState() {
 		try {
 			final IStateParser p = Config.getFactory().getParser("LIST", null);
 			final String data = "[ alpha, beta, charlie(! delta) ]";
@@ -65,14 +66,14 @@ class ListParserTest {
 			final StreamTokenizer tok = new StreamTokenizer(br);
 			final Tokenizer t = new Tokenizer(tok);
 			final ParserInternalTypeBase pb = p.getState(t);
-			assertAll("result is correct", () -> assertTrue(pb != null, "result not null"),
+			assertAll("result is correct", () -> assertNotNull(pb, "result not null"),
 					() -> assertTrue(pb.has("alpha"), "has member named alpha"),
 					() -> assertFalse(pb.has("bravo"), "has no member named bravo"));
 		} catch (final IOException | IllegalArgumentException | IllegalParserStateException
 				| UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -81,15 +82,15 @@ class ListParserTest {
 	 *
 	 */
 	@Test
-	final void testListParser() {
+	void testListParser() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			final ListParser op = new ListParser(f, null);
-			assertTrue(op != null, "Able to instantiate a ListParser");
+			assertNotNull(op, "Able to instantiate a ListParser");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -98,7 +99,7 @@ class ListParserTest {
 	 *
 	 */
 	@Test
-	final void testRegisterTransitions() {
+	void testRegisterTransitions() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			final ListParser op = new ListParser(f, null);
@@ -136,7 +137,7 @@ class ListParserTest {
 	 *
 	 */
 	@Test
-	final void testErrorStates() {
+	void testErrorStates() {
 		final String earlyEOF = "[ a, b, c";
 		final String noData = "";
 		final String badData = "[ a, ( ]";

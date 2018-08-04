@@ -13,13 +13,13 @@ import com.keildraco.config.exceptions.UnknownStateException;
  * @author Daniel Hazelton
  *
  */
-class ExceptionsTest {
+final class ExceptionsTest {
 
 	/**
 	 *
 	 */
 	@Test
-	final void testGenericParseException() {
+	void testGenericParseException() {
 		assertThrows(GenericParseException.class, () -> {
 			throw new GenericParseException("Blargh!");
 		});
@@ -29,7 +29,7 @@ class ExceptionsTest {
 	 *
 	 */
 	@Test
-	final void testIllegalParserStateException() {
+	void testIllegalParserStateException() {
 		assertThrows(IllegalParserStateException.class, () -> {
 			throw new IllegalParserStateException("Blargh!");
 		});
@@ -39,7 +39,7 @@ class ExceptionsTest {
 	 *
 	 */
 	@Test
-	final void testUnknownStateException() {
+	void testUnknownStateException() {
 		assertThrows(UnknownStateException.class, () -> {
 			throw new UnknownStateException("Blargh!");
 		});

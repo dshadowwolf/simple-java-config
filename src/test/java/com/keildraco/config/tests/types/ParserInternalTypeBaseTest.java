@@ -20,12 +20,14 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 
+import javax.annotation.Nonnull;
+
 /**
  * @author Daniel Hazelton
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-public final class ParserInternalTypeBaseTest {
+final class ParserInternalTypeBaseTest {
 
 	/**
 	 *
@@ -39,11 +41,6 @@ public final class ParserInternalTypeBaseTest {
 
 	/**
 	 *
-	 */
-	private ParserInternalTypeBase testNesting;
-
-	/**
-	 *
 	 * @param name
 	 * @return
 	 */
@@ -51,7 +48,7 @@ public final class ParserInternalTypeBaseTest {
 		return new ParserInternalTypeBase(name) {
 
 			@Override
-			public String getValueRaw() {
+			@Nonnull public String getValueRaw() {
 				return this.getValue();
 			}
 
@@ -72,6 +69,7 @@ public final class ParserInternalTypeBaseTest {
 			final String name) {
 		return new ParserInternalTypeBase(parent, name) {
 
+			@Nonnull
 			@Override
 			public String getValueRaw() {
 				return this.getValue();
@@ -111,12 +109,12 @@ public final class ParserInternalTypeBaseTest {
 	 * @throws java.lang.Exception
 	 */
 	@BeforeAll
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 		this.testItem = getInstance("blech");
 		this.testFoobar = getInstance("foobar");
 		this.testItem.addItem(this.testFoobar);
-		this.testNesting = getInstance("nesting");
-		this.testNesting.addItem(this.testFoobar);
+		final ParserInternalTypeBase testNesting = getInstance("nesting");
+		testNesting.addItem(this.testFoobar);
 	}
 
 	/**
@@ -124,7 +122,7 @@ public final class ParserInternalTypeBaseTest {
 	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#ParserInternalTypeBase(java.lang.String)}.
 	 */
 	@Test
-	public void testParserInternalTypeBaseString() {
+	void testParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
 			final ParserInternalTypeBase testNoParent = getInstance("blargh");
@@ -139,7 +137,7 @@ public final class ParserInternalTypeBaseTest {
 	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#ParserInternalTypeBase(com.keildraco.config.interfaces.ParserInternalTypeBase, java.lang.String)}.
 	 */
 	@Test
-	public void testParserInternalTypeBaseParserInternalTypeBaseString() {
+	void testParserInternalTypeBaseParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
 			final ParserInternalTypeBase testEmptyParent = getInstance(
@@ -155,7 +153,7 @@ public final class ParserInternalTypeBaseTest {
 	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#ParserInternalTypeBase(com.keildraco.config.interfaces.ParserInternalTypeBase, java.lang.String, java.lang.String)}.
 	 */
 	@Test
-	public void testParserInternalTypeBaseParserInternalTypeBaseStringString() {
+	void testParserInternalTypeBaseParserInternalTypeBaseStringString() {
 		try {
 			@SuppressWarnings("unused")
 			final ParserInternalTypeBase testEmptyParent = getInstance(
@@ -171,7 +169,7 @@ public final class ParserInternalTypeBaseTest {
 	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#get(java.lang.String)}.
 	 */
 	@Test
-	public void testGet() {
+	void testGet() {
 		assertAll(() -> assertEquals(this.testFoobar, this.testItem.get("foobar")),
 				() -> assertThrows(IllegalArgumentException.class,
 						() -> this.testItem.get(".foo")));
@@ -182,7 +180,7 @@ public final class ParserInternalTypeBaseTest {
 	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#has(java.lang.String)}.
 	 */
 	@Test
-	public void testHas() {
+	void testHas() {
 		this.testFoobar.addItem(getInstance("blargh"));
 		assertAll(() -> assertTrue(this.testItem.has("foobar"), "Test Item has child \"foobar\""),
 				() -> assertFalse(this.testItem.has("foobar.baz"),
@@ -199,7 +197,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testEmptyType() {
+	void testEmptyType() {
 		assertAll(() -> assertEquals("EMPTY", ParserInternalTypeBase.EMPTY_TYPE.getValue()),
 				() -> assertEquals("EMPTY", ParserInternalTypeBase.EMPTY_TYPE.getValueRaw()),
 				() -> assertEquals(ItemType.EMPTY, ParserInternalTypeBase.EMPTY_TYPE.getType()),
@@ -211,7 +209,7 @@ public final class ParserInternalTypeBaseTest {
 	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getType()}.
 	 */
 	@Test
-	public void testGetType() {
+	void testGetType() {
 		assertEquals(ParserInternalTypeBase.ItemType.INVALID, this.testItem.getType());
 	}
 
@@ -219,7 +217,7 @@ public final class ParserInternalTypeBaseTest {
 	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getValue()}.
 	 */
 	@Test
-	public void testAsString() {
+	void testAsString() {
 		assertEquals("Abstract!", this.testItem.getValue());
 	}
 
@@ -228,7 +226,7 @@ public final class ParserInternalTypeBaseTest {
 	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#setName(java.lang.String)}.
 	 */
 	@Test
-	public void testSetName() {
+	void testSetName() {
 		final ParserInternalTypeBase t = getInstance("a");
 		t.setName("b");
 		assertEquals("b", t.getName());
@@ -238,7 +236,7 @@ public final class ParserInternalTypeBaseTest {
 	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getName()}.
 	 */
 	@Test
-	public void testGetName() {
+	void testGetName() {
 		assertEquals("blech", this.testItem.getName());
 	}
 
@@ -247,7 +245,7 @@ public final class ParserInternalTypeBaseTest {
 	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
-	public void testAddItem() {
+	void testAddItem() {
 		try {
 			this.testItem.addItem(ParserInternalTypeBase.EMPTY_TYPE);
 			assertTrue(true, "Expected no exception");
@@ -260,7 +258,7 @@ public final class ParserInternalTypeBaseTest {
 	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getParent()}.
 	 */
 	@Test
-	public void testGetParent() {
+	void testGetParent() {
 		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.getParent());
 	}
 
@@ -268,7 +266,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testEmptyTypeGet() {
+	void testEmptyTypeGet() {
 		assertNull(ParserInternalTypeBase.EMPTY_TYPE.get("blargh"));
 	}
 
@@ -276,7 +274,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testEmptyTypeGetType() {
+	void testEmptyTypeGetType() {
 		assertEquals(ParserInternalTypeBase.ItemType.EMPTY,
 				ParserInternalTypeBase.EMPTY_TYPE.getType());
 	}
@@ -285,7 +283,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testEmptyTypeAddItem() {
+	void testEmptyTypeAddItem() {
 		try {
 			ParserInternalTypeBase.EMPTY_TYPE.addItem(ParserInternalTypeBase.EMPTY_TYPE);
 			assertTrue(true, "Expected no exception");
@@ -298,7 +296,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testParserInternalTypeBaseGetNoMember() {
+	void testParserInternalTypeBaseGetNoMember() {
 		final ParserInternalTypeBase p = getInstance("z");
 		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("blargh"));
 	}
@@ -307,7 +305,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testParserInternalTypeBaseGetValue() {
+	void testParserInternalTypeBaseGetValue() {
 		final ParserInternalTypeBase p = getInstance("ZZTOP");
 		assertEquals("Abstract!", p.getValueRaw());
 	}
@@ -316,7 +314,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testParserInternalTypeBaseGetChildrenEmpty() {
+	void testParserInternalTypeBaseGetChildrenEmpty() {
 		final ParserInternalTypeBase p = getInstance("ZZTOP");
 		assertEquals(Collections.emptyMap(), p.getChildren());
 	}
@@ -325,7 +323,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testParserInternalTypeBaseGetChildrenMembers() {
+	void testParserInternalTypeBaseGetChildrenMembers() {
 		final ParserInternalTypeBase p = getInstance("MUZAK");
 		final ParserInternalTypeBase q = getInstance("ZZTOP");
 		p.addItem(q);
@@ -338,7 +336,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testParserInternalTypeBaseGetItemLongNone() {
+	void testParserInternalTypeBaseGetItemLongNone() {
 		final ParserInternalTypeBase p = getInstance("MUZAK");
 		final ParserInternalTypeBase q = getInstance("ZZTOP");
 		p.addItem(q);
@@ -349,7 +347,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testParserInternalTypeBaseGetItemLongValid() {
+	void testParserInternalTypeBaseGetItemLongValid() {
 		final ParserInternalTypeBase p = getInstance("MUZAK");
 		final ParserInternalTypeBase q = getInstance("ZZTOP");
 		p.addItem(q);
@@ -360,7 +358,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testParserInternalTypeBaseGetItemLongCondTestOne() {
+	void testParserInternalTypeBaseGetItemLongCondTestOne() {
 		final ParserInternalTypeBase p = getInstance("MUZAK");
 		final ParserInternalTypeBase q = getInstance("ZZTOP");
 		p.addItem(q);
@@ -371,7 +369,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testParserInternalTypeBaseGetItemLongCondTestTwo() {
+	void testParserInternalTypeBaseGetItemLongCondTestTwo() {
 		final ParserInternalTypeBase p = getInstance("MUZAK");
 		final ParserInternalTypeBase q = getInstance("ZZTOP");
 		p.addItem(q);
@@ -382,7 +380,7 @@ public final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	@Test
-	public void testParserInternalTypeBaseGetItemLongCondTestThree() {
+	void testParserInternalTypeBaseGetItemLongCondTestThree() {
 		final ParserInternalTypeBase p = getInstance("MUZAK");
 		final ParserInternalTypeBase q = getInstance("ZZTOP");
 		p.addItem(q);

@@ -1,5 +1,6 @@
 package com.keildraco.config.types;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
@@ -14,6 +15,7 @@ public final class OperationType extends ParserInternalTypeBase {
 	/**
 	 *
 	 */
+	@Nullable
 	private String ident;
 
 	/**
@@ -63,11 +65,10 @@ public final class OperationType extends ParserInternalTypeBase {
 
 	/**
 	 *
-	 * @param oper
-	 * @return
+	 * @param operatorIn
 	 */
-	public void setOperation(final String oper) {
-		this.operator = oper.trim();
+	public void setOperation(final String operatorIn) {
+		this.operator = operatorIn.trim();
 	}
 
 	/**
@@ -78,16 +79,19 @@ public final class OperationType extends ParserInternalTypeBase {
 		return this.operator.charAt(0);
 	}
 
+	@Nonnull
 	@Override
 	public String getValue() {
 		return String.format("%s(%s %s)", this.getName(), this.operator, this.ident);
 	}
 
+	@Nonnull
 	@Override
 	public String getValueRaw() {
 		return this.ident;
 	}
 
+	@Nonnull
 	@Override
 	public ItemType getType() {
 		return ItemType.OPERATION;

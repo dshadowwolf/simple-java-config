@@ -33,13 +33,13 @@ import com.keildraco.config.tokenizer.Tokenizer;
  * @author Daniel Hazelton
  *
  */
-class KeyValueParserTest {
+final class KeyValueParserTest {
 
 	/**
 	 *
 	 */
 	@Test
-	final void testGetState() {
+	void testGetState() {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
@@ -67,7 +67,7 @@ class KeyValueParserTest {
 	 *
 	 */
 	@Test
-	final void testKeyValueParser() {
+	void testKeyValueParser() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			final KeyValueParser kvp = new KeyValueParser(f, null);
@@ -84,7 +84,7 @@ class KeyValueParserTest {
 	 *
 	 */
 	@Test
-	final void testRegisterTransitions() {
+	void testRegisterTransitions() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			final KeyValueParser kvp = new KeyValueParser(f, null);
@@ -101,7 +101,6 @@ class KeyValueParserTest {
 	/**
 	 *
 	 * @param data
-	 * @return
 	 * @throws IOException
 	 * @throws IllegalParserStateException
 	 * @throws UnknownStateException
@@ -111,7 +110,7 @@ class KeyValueParserTest {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	private ParserInternalTypeBase doParse(final String data)
+	private void doParse(final String data)
 			throws IOException, IllegalParserStateException, UnknownStateException,
 			GenericParseException, NoSuchMethodException, InstantiationException,
 			IllegalAccessException, InvocationTargetException {
@@ -123,14 +122,14 @@ class KeyValueParserTest {
 		final StreamTokenizer tok = new StreamTokenizer(br);
 		final Tokenizer t = new Tokenizer(tok);
 		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
-		return parser.getState(t);
+//		return parser.getState(t);
 	}
 
 	/**
 	 *
 	 */
 	@Test
-	final void testGetStateErrorRoutes() {
+	void testGetStateErrorRoutes() {
 		final String goodData = "item = value(! value)";
 		final String noData = "";
 		assertAll(

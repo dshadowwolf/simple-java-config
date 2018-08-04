@@ -2,6 +2,7 @@ package com.keildraco.config.tests.states;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -23,7 +24,7 @@ import com.keildraco.config.tokenizer.Tokenizer;
  * @author Daniel Hazelton
  *
  */
-class TokenizerTest {
+final class TokenizerTest {
 
 	/**
 	 *
@@ -46,7 +47,7 @@ class TokenizerTest {
 	 *
 	 */
 	@Test
-	final void testTokenizer() {
+	void testTokenizer() {
 		try {
 			@SuppressWarnings("unused")
 			final Tokenizer t = new Tokenizer(tok);
@@ -60,14 +61,15 @@ class TokenizerTest {
 	 *
 	 */
 	@Test
-	final void testNextToken() {
+	void testNextToken() {
 		try {
 			final Tokenizer t = new Tokenizer(tok);
 			final Token tt = t.nextToken();
+			assertNotNull(tt, "t.nextToken() returned null!");
 			assertAll(
 					"t.nextToken() did not throw an exception and returns a TokenType.IDENTIFIER of value \"a\"",
-					() -> tt.getType().equals(TokenType.IDENTIFIER),
-					() -> tt.getValue().equals("a"));
+					() -> TokenType.IDENTIFIER.equals(tt.getType()),
+					() -> "a".equals(tt.getValue()));
 		} catch (final Exception e) {
 			fail("Caught exception running test: " + e);
 		}
@@ -77,7 +79,7 @@ class TokenizerTest {
 	 *
 	 */
 	@Test
-	final void testHasNextTrue() {
+	void testHasNextTrue() {
 		try {
 			Tokenizer t = new Tokenizer(tok);
 			assertTrue(t.hasNext(),
@@ -91,7 +93,7 @@ class TokenizerTest {
 	 *
 	 */
 	@Test
-	final void testHasNextFalse() {
+	void testHasNextFalse() {
 		final InputStream is = IOUtils.toInputStream("a", StandardCharsets.UTF_8);
 		final InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
 		final StreamTokenizer tok2 = new StreamTokenizer(isr);
@@ -110,14 +112,15 @@ class TokenizerTest {
 	 *
 	 */
 	@Test
-	final void testPeekToken() {
+	void testPeekToken() {
 		try {
 			final Tokenizer t = new Tokenizer(tok);
 			final Token tt = t.peekToken();
+			assertNotNull(tt, "t.nextToken() returned null!");
 			assertAll(
 					"t.peekToken() did not throw an exception and returns a TokenType.IDENTIFIER of value \"a\"",
-					() -> tt.getType().equals(TokenType.IDENTIFIER),
-					() -> tt.getValue().equals("a"));
+					() -> TokenType.IDENTIFIER.equals(tt.getType()),
+					() -> "a".equals(tt.getValue()));
 		} catch (final Exception e) {
 			fail("Caught exception running test: " + e);
 		}
@@ -127,10 +130,11 @@ class TokenizerTest {
 	 *
 	 */
 	@Test
-	final void testPushBack() {
+	void testPushBack() {
 		try {
 			final Tokenizer t = new Tokenizer(tok);
 			final Token tt = t.nextToken();
+			assertNotNull(tt, "t.nextToken() returned null!");
 			t.pushBack(tt);
 			assertTrue(true, "t.nextToken() and t.pushBack() did not throw an exception");
 		} catch (final Exception e) {

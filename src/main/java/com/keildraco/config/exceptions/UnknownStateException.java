@@ -14,9 +14,9 @@ public class UnknownStateException extends RuntimeException {
 
 	/**
 	 *
-	 * @param mess
+	 * @param message
 	 */
-	public UnknownStateException(final String mess) {
-		super(mess);
+	public UnknownStateException(final String message) {
+		super(message);
 	}
 }

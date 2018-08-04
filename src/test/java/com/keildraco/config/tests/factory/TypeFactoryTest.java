@@ -30,13 +30,13 @@ import com.keildraco.config.types.IdentifierType;
  * @author Daniel Hazelton
  *
  */
-class TypeFactoryTest {
+final class TypeFactoryTest {
 
 	/**
 	 *
 	 */
 	@Test
-	final void testTypeFactory() {
+	void testTypeFactory() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			assertNotNull(f);
@@ -52,7 +52,7 @@ class TypeFactoryTest {
 	 *
 	 */
 	@Test
-	final void testRegisterType() {
+	void testRegisterType() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			f.registerType((parent, name, value) -> new IdentifierType(parent, name, value),
@@ -69,12 +69,12 @@ class TypeFactoryTest {
 	 *
 	 */
 	@Test
-	final void testGetType() {
+	void testGetType() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			f.registerType((parent, name, value) -> new IdentifierType(parent, name, value),
 					ItemType.IDENTIFIER);
-			assertTrue(f.getType(null, "", "", ItemType.IDENTIFIER) != null,
+			assertNotNull(f.getType(null, "", "", ItemType.IDENTIFIER),
 					"TypeFactory.getType() works");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
@@ -87,7 +87,7 @@ class TypeFactoryTest {
 	 *
 	 */
 	@Test
-	final void testRegisterParser() {
+	void testRegisterParser() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			f.registerParser(() -> {
@@ -112,7 +112,7 @@ class TypeFactoryTest {
 	 *
 	 */
 	@Test
-	final void testGetParser() {
+	void testGetParser() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			f.registerParser(() -> {
@@ -120,7 +120,7 @@ class TypeFactoryTest {
 				sp.registerTransitions(f);
 				return sp;
 			}, "SECTION");
-			assertTrue(f.getParser("SECTION", null) != null, "TypeFactory.getParser() works");
+			assertNotNull(f.getParser("SECTION", null), "TypeFactory.getParser() works");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
@@ -132,7 +132,7 @@ class TypeFactoryTest {
 	 *
 	 */
 	@Test
-	final void testNextState() {
+	void testNextState() {
 		try {
 			Config.registerKnownParts();
 			final String data = "key = value";

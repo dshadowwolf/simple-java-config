@@ -30,6 +30,8 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+import javax.annotation.Nullable;
+
 /**
  *
  * @author Daniel Hazelton
@@ -67,6 +69,7 @@ public final class Config {
 	 * @param clazz
 	 * @return
 	 */
+	@Nullable
 	private static IStateParser registerParserGenerator(final String name,
 			final Class<? extends IStateParser> clazz) {
 		try {
@@ -103,6 +106,7 @@ public final class Config {
 	 * @param clazz
 	 * @return
 	 */
+	@Nullable
 	private static ParserInternalTypeBase registerTypeGenerator(final ParserInternalTypeBase parent,
 			final String name, final String value,
 			final Class<? extends ParserInternalTypeBase> clazz) {

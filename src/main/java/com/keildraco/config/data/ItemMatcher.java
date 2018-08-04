@@ -162,12 +162,12 @@ public class ItemMatcher {
 
 	/**
 	 *
-	 * @param sec
+	 * @param section
 	 * @param name
 	 * @return
 	 */
-	private boolean sectionMatches(final SectionType sec, final String name) {
-		return sec.has(name);
+	private boolean sectionMatches(final SectionType section, final String name) {
+		return section.has(name);
 	}
 
 	/**

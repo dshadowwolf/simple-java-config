@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
@@ -23,19 +24,19 @@ public final class ListType extends ParserInternalTypeBase {
 
 	/**
 	 *
-	 * @param n
+	 * @param name
 	 */
-	public ListType(final String n) {
-		this(n, Collections.emptyList());
+	public ListType(final String name) {
+		this(name, Collections.emptyList());
 	}
 
 	/**
 	 *
-	 * @param n
+	 * @param name
 	 * @param values
 	 */
-	public ListType(final String n, final List<ParserInternalTypeBase> values) {
-		this(null, n, values);
+	public ListType(final String name, final List<ParserInternalTypeBase> values) {
+		this(null, name, values);
 	}
 
 	/**
@@ -114,6 +115,7 @@ public final class ListType extends ParserInternalTypeBase {
 		return item.getValue();
 	}
 
+	@Nonnull
 	@Override
 	public String getValue() {
 		final String format = this.getValueRaw();
@@ -123,6 +125,7 @@ public final class ListType extends ParserInternalTypeBase {
 		return String.format("%s = %s", this.getName(), format);
 	}
 
+	@Nonnull
 	@Override
 	public String getValueRaw() {
 		return String.format("[ %s ]",

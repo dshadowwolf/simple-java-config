@@ -35,7 +35,7 @@ import com.keildraco.config.types.ListType;
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-public final class ListTypeTest {
+final class ListTypeTest {
 
 	/**
 	 *
@@ -46,7 +46,7 @@ public final class ListTypeTest {
 	 * @throws java.lang.Exception
 	 */
 	@BeforeAll
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 		this.testItem = new ListType("blank");
 	}
 
@@ -54,7 +54,7 @@ public final class ListTypeTest {
 	 * Test method for {@link com.keildraco.config.types.ListType#get(java.lang.String)}.
 	 */
 	@Test
-	public void testGet() {
+	void testGet() {
 		final ListType l = new ListType("blargh");
 		final IdentifierType i = new IdentifierType("test", "nope");
 		l.addItem(i);
@@ -65,7 +65,7 @@ public final class ListTypeTest {
 	 * Test method for {@link com.keildraco.config.types.ListType#has(java.lang.String)}.
 	 */
 	@Test
-	public void testHas() {
+	void testHas() {
 		assertFalse(this.testItem.has("test"));
 	}
 
@@ -73,7 +73,7 @@ public final class ListTypeTest {
 	 * Test method for {@link com.keildraco.config.types.ListType#getType()}.
 	 */
 	@Test
-	public void testGetType() {
+	void testGetType() {
 		assertEquals(ParserInternalTypeBase.ItemType.LIST, this.testItem.getType());
 	}
 
@@ -81,7 +81,7 @@ public final class ListTypeTest {
 	 * Test method for {@link com.keildraco.config.types.ListType#getValueAsList()}.
 	 */
 	@Test
-	public void testGetValueAsList() {
+	void testGetValueAsList() {
 		assertEquals(Collections.emptyList(), this.testItem.getValueAsList());
 	}
 
@@ -90,7 +90,7 @@ public final class ListTypeTest {
 	 * {@link com.keildraco.config.types.ListType#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
-	public void testAddItem() {
+	void testAddItem() {
 		try {
 			final ListType testItem2 = new ListType("blargh");
 			testItem2.addItem(ParserInternalTypeBase.EMPTY_TYPE);
@@ -104,7 +104,7 @@ public final class ListTypeTest {
 	 * Test method for {@link com.keildraco.config.interfaces.ParserInternalTypeBase#getValue()}.
 	 */
 	@Test
-	public void testGetValue() {
+	void testGetValue() {
 		assertEquals("blank = [  ]", this.testItem.getValue());
 	}
 
@@ -112,7 +112,7 @@ public final class ListTypeTest {
 	 *
 	 */
 	@Test
-	public void testGetNotThere() {
+	void testGetNotThere() {
 		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get("no_such_item"),
 				"item doesn't exist");
 	}
@@ -121,7 +121,7 @@ public final class ListTypeTest {
 	 *
 	 */
 	@Test
-	public void testOtherAsString() {
+	void testOtherAsString() {
 		final ListType lt = new ListType("");
 		assertEquals("[  ]", lt.getValue().trim(),
 				"ListType with blank name should return \"[  ]\"");
@@ -131,7 +131,7 @@ public final class ListTypeTest {
 	 *
 	 */
 	@Test
-	public void testListTypeParentName() {
+	void testListTypeParentName() {
 		try {
 			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "blargh");
 			assertNotNull(lt, "constructor works");
@@ -144,7 +144,7 @@ public final class ListTypeTest {
 	 *
 	 */
 	@Test
-	public void testListTypeParentNameValue() {
+	void testListTypeParentNameValue() {
 		try {
 			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "foo", "bar");
 			assertNotNull(lt, "constructor works");
@@ -157,7 +157,7 @@ public final class ListTypeTest {
 	 *
 	 */
 	@Test
-	public void fullAsString() {
+	void fullAsString() {
 		try {
 			Config.reset();
 			Config.registerKnownParts();

@@ -16,6 +16,7 @@ public abstract class ParserInternalTypeBase {
 	/**
 	 *
 	 */
+	@Nullable
 	private final ParserInternalTypeBase parent;
 
 	/**
@@ -38,6 +39,7 @@ public abstract class ParserInternalTypeBase {
 			return false;
 		}
 
+		@Nullable
 		@Override
 		public ParserInternalTypeBase get(final String itemName) {
 			return null;

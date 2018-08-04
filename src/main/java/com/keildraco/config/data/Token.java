@@ -10,7 +10,7 @@ public final class Token {
 	/**
 	 *
 	 */
-	private final String val;
+	private final String value;
 
 	/**
 	 *
@@ -22,11 +22,11 @@ public final class Token {
 	 * @param valueIn
 	 */
 	public Token(final String valueIn) {
-		this.val = valueIn;
-		if (this.val.matches("^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$")) {
+		this.value = valueIn;
+		if (this.value.matches("^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$")) {
 			this.type = TokenType.IDENTIFIER;
 		} else {
-			switch (this.val) {
+			switch (this.value) {
 				case "=":
 					this.type = TokenType.STORE;
 					break;
@@ -69,7 +69,7 @@ public final class Token {
 	 * @return
 	 */
 	public String getValue() {
-		return this.val;
+		return this.value;
 	}
 
 	/**
