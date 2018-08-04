@@ -1,5 +1,6 @@
 package com.keildraco.config.types;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
@@ -18,19 +19,19 @@ public final class IdentifierType extends ParserInternalTypeBase {
 
 	/**
 	 *
-	 * @param n
+	 * @param name
 	 */
-	public IdentifierType(final String n) {
-		this(n, n);
+	public IdentifierType(final String name) {
+		this(name, name);
 	}
 
 	/**
 	 *
-	 * @param n
-	 * @param v
+	 * @param name
+	 * @param value
 	 */
-	public IdentifierType(final String n, final String v) {
-		this(null, n, v);
+	public IdentifierType(final String name, final String value) {
+		this(null, name, value);
 	}
 
 	/**
@@ -52,18 +53,20 @@ public final class IdentifierType extends ParserInternalTypeBase {
 	}
 
 	@Override
-	public boolean has(final String s) {
-		return this.getName().equalsIgnoreCase(s) || this.ident.equalsIgnoreCase(s);
+	public boolean has(final String itemName) {
+		return this.getName().equalsIgnoreCase(itemName) || this.ident.equalsIgnoreCase(itemName);
 	}
 
+	@Nonnull
 	@Override
-	public ParserInternalTypeBase get(final String s) {
-		if (this.has(s)) {
+	public ParserInternalTypeBase get(final String itemName) {
+		if (this.has(itemName)) {
 			return this;
 		}
 		return EMPTY_TYPE;
 	}
 
+	@Nonnull
 	@Override
 	public String getValue() {
 		if (this.getName().equals(this.ident)) {
@@ -72,11 +75,13 @@ public final class IdentifierType extends ParserInternalTypeBase {
 		return String.format("%s = %s", this.getName(), this.ident);
 	}
 
+	@Nonnull
 	@Override
 	public String getValueRaw() {
 		return this.ident;
 	}
 
+	@Nonnull
 	@Override
 	public ItemType getType() {
 		return ItemType.IDENTIFIER;

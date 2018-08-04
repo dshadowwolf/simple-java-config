@@ -3,6 +3,8 @@ package com.keildraco.config.interfaces;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+import javax.annotation.Nullable;
+
 /**
  *
  * @author Daniel Hazelton
@@ -12,40 +14,42 @@ public interface IStateParser {
 
 	/**
 	 *
-	 * @param factory
+	 * @param factoryIn
 	 */
-	void setFactory(TypeFactory factory);
+	void setFactory(TypeFactory factoryIn);
 
 	/**
 	 *
 	 * @return
 	 */
+	@Nullable
 	TypeFactory getFactory();
 
 	/**
 	 *
-	 * @param tok
+	 * @param tokenizer
 	 * @return
 	 */
-	ParserInternalTypeBase getState(Tokenizer tok);
+	ParserInternalTypeBase getState(Tokenizer tokenizer);
 
 	/**
 	 *
-	 * @param parent
+	 * @param parentIn
 	 */
-	void setParent(ParserInternalTypeBase parent);
+	void setParent(ParserInternalTypeBase parentIn);
 
 	/**
 	 *
 	 * @return
 	 */
+	@Nullable
 	ParserInternalTypeBase getParent();
 
 	/**
 	 *
-	 * @param name
+	 * @param nameIn
 	 */
-	void setName(String name);
+	void setName(String nameIn);
 
 	/**
 	 *
@@ -57,5 +61,5 @@ public interface IStateParser {
 	 *
 	 * @param factory
 	 */
-	void registerTransitions(TypeFactory factory);
+	void registerTransitions(@Nullable TypeFactory factory);
 }

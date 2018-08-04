@@ -18,7 +18,7 @@ import com.keildraco.config.types.IdentifierType;
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-public final class IdentifierTypeTest {
+final class IdentifierTypeTest {
 
 	/**
 	 *
@@ -29,7 +29,7 @@ public final class IdentifierTypeTest {
 	 * @throws java.lang.Exception
 	 */
 	@BeforeAll
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 		this.testItem = new IdentifierType("key", "value");
 	}
 
@@ -37,7 +37,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#get(java.lang.String)}.
 	 */
 	@Test
-	public void testGetNoItem() {
+	void testGetNoItem() {
 		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get("test"));
 	}
 
@@ -45,7 +45,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#get(java.lang.String)}.
 	 */
 	@Test
-	public void testGetHasItem() {
+	void testGetHasItem() {
 		assertNotEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get("value"));
 	}
 
@@ -53,7 +53,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#has(java.lang.String)}.
 	 */
 	@Test
-	public void testHasByName() {
+	void testHasByName() {
 		assertTrue(this.testItem.has("key"));
 	}
 
@@ -61,7 +61,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#getType()}.
 	 */
 	@Test
-	public void testGetType() {
+	void testGetType() {
 		assertEquals(ParserInternalTypeBase.ItemType.IDENTIFIER, this.testItem.getType());
 	}
 
@@ -69,7 +69,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#getValue()}.
 	 */
 	@Test
-	public void testAsStringProper() {
+	void testAsStringProper() {
 		assertEquals("key = value", this.testItem.getValue());
 	}
 
@@ -77,7 +77,7 @@ public final class IdentifierTypeTest {
 	 * Test method for {@link com.keildraco.config.types.IdentifierType#getValue()}.
 	 */
 	@Test
-	public void testAsStringEmpty() {
+	void testAsStringEmpty() {
 		final IdentifierType l = new IdentifierType("", "value");
 		assertEquals("value", l.getValueRaw());
 	}
@@ -87,7 +87,7 @@ public final class IdentifierTypeTest {
 	 * {@link com.keildraco.config.types.IdentifierType#addItem(com.keildraco.config.interfaces.ParserInternalTypeBase)}.
 	 */
 	@Test
-	public void testAddItem() {
+	void testAddItem() {
 		try {
 			this.testItem.addItem(ParserInternalTypeBase.EMPTY_TYPE);
 			assertTrue(true, "Expected no exception");
@@ -100,7 +100,7 @@ public final class IdentifierTypeTest {
 	 *
 	 */
 	@Test
-	public void testHasByIdent() {
+	void testHasByIdent() {
 		assertTrue(this.testItem.has("value"));
 	}
 }

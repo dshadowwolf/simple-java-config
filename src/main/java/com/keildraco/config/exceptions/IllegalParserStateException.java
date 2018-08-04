@@ -14,9 +14,9 @@ public class IllegalParserStateException extends RuntimeException {
 
 	/**
 	 *
-	 * @param mess
+	 * @param message
 	 */
-	public IllegalParserStateException(final String mess) {
-		super(mess);
+	public IllegalParserStateException(final String message) {
+		super(message);
 	}
 }

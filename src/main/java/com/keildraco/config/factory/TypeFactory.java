@@ -117,13 +117,14 @@ public final class TypeFactory {
 	 * @param nextToken
 	 * @return
 	 */
+	@Nullable
 	public IStateParser nextState(final String currentState, final Token currentToken,
 			final Token nextToken) {
 		final String nextState = this.stateMap.getOrDefault(currentState, new ConcurrentHashMap<>())
 				.getOrDefault(currentToken.getType(), new ConcurrentHashMap<>())
 				.getOrDefault(nextToken.getType(), "");
 
-		if (nextState.length() == 0) {
+		if (nextState.isEmpty()) {
 			throw new UnknownStateException(String.format(
 					"Transition state starting at %s with current as %s and next as %s is not known",
 					currentState, currentToken.getType(), nextToken.getType()));

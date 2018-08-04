@@ -17,13 +17,13 @@ import com.keildraco.config.states.RootState;
  * @author Daniel Hazelton
  *
  */
-class RootStateTest {
+final class RootStateTest {
 
 	/**
 	 *
 	 */
 	@Test
-	final void testRootState() {
+	void testRootState() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			final RootState rs = new RootState(f, null);
@@ -40,7 +40,7 @@ class RootStateTest {
 	 *
 	 */
 	@Test
-	final void testRegisterTransitions() {
+	void testRegisterTransitions() {
 		try {
 			final TypeFactory f = new TypeFactory();
 			final RootState rs = new RootState(f, null);

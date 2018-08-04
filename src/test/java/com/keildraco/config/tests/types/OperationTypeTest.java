@@ -20,7 +20,7 @@ import com.keildraco.config.types.OperationType;
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-public final class OperationTypeTest {
+final class OperationTypeTest {
 
 	/**
 	 *
@@ -32,7 +32,7 @@ public final class OperationTypeTest {
 	 * @throws Exception
 	 */
 	@BeforeAll
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 		this.testItem = new OperationType(EMPTY_TYPE, "blargh", "foobar");
 		this.testItem.setOperation("!");
 	}
@@ -41,7 +41,7 @@ public final class OperationTypeTest {
 	 *
 	 */
 	@Test
-	public void testOperationTypeString() {
+	void testOperationTypeString() {
 		try {
 			@SuppressWarnings("unused")
 			final OperationType op = new OperationType("OPERATION");
@@ -55,7 +55,7 @@ public final class OperationTypeTest {
 	 *
 	 */
 	@Test
-	public void testOperationTypeParserInternalTypeBaseString() {
+	void testOperationTypeParserInternalTypeBaseString() {
 		try {
 			@SuppressWarnings("unused")
 			final OperationType op = new OperationType(ParserInternalTypeBase.EMPTY_TYPE,
@@ -70,7 +70,7 @@ public final class OperationTypeTest {
 	 *
 	 */
 	@Test
-	public void testGetType() {
+	void testGetType() {
 		assertEquals(ItemType.OPERATION, this.testItem.getType());
 	}
 
@@ -78,7 +78,7 @@ public final class OperationTypeTest {
 	 *
 	 */
 	@Test
-	public void testAsString() {
+	void testAsString() {
 		assertEquals("blargh(! foobar)", this.testItem.getValue());
 	}
 
@@ -86,7 +86,7 @@ public final class OperationTypeTest {
 	 *
 	 */
 	@Test
-	public void testSetOperation() {
+	void testSetOperation() {
 		try {
 			this.testItem.setOperation("!");
 			assertTrue(true, "Expected no exception");

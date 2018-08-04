@@ -35,7 +35,7 @@ import com.keildraco.config.tokenizer.Tokenizer;
  * @author Daniel Hazelton
  *
  */
-class DataQueryTest {
+final class DataQueryTest {
 
 	/**
 	 *
@@ -51,11 +51,12 @@ class DataQueryTest {
 	 *
 	 */
 	@Test
-	final void testOf() {
+	void testOf() {
 		try {
 			final Path p = Paths.get("assets", "base-config-test.cfg");
 			final String ts = String.join("/", p.toString().split("\\\\"));
 			final URL tu = Config.class.getClassLoader().getResource(ts);
+			assertNotNull(tu, "Resource could not be found!");
 			final URI temp = tu.toURI();
 			final InputStream is = temp.toURL().openStream();
 			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
@@ -78,7 +79,7 @@ class DataQueryTest {
 	 *
 	 */
 	@Test
-	final void testGet() {
+	void testGet() {
 		final Path p = Paths.get("assets", "base-config-test.cfg");
 		DataQuery c;
 		try {

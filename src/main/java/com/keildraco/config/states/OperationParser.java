@@ -11,6 +11,8 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.OperationType;
 
+import javax.annotation.Nullable;
+
 /**
  *
  * @author Daniel Hazelton
@@ -23,7 +25,7 @@ public final class OperationParser extends AbstractParserBase {
 	 * @param factoryIn
 	 * @param parentIn
 	 */
-	public OperationParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
+	public OperationParser(@Nullable final TypeFactory factoryIn, @Nullable final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "OPERATION");
 	}
 
@@ -33,7 +35,7 @@ public final class OperationParser extends AbstractParserBase {
 			throw new IllegalParserStateException("End of input at start of state");
 		}
 
-		String key = tok.nextToken().getValue();
+		final String key = tok.nextToken().getValue();
 		String oper;
 
 		tok.nextToken();
@@ -71,7 +73,7 @@ public final class OperationParser extends AbstractParserBase {
 	}
 
 	@Override
-	public void registerTransitions(final TypeFactory factory) {
+	public void registerTransitions(@Nullable final TypeFactory factory) {
 		// blank - no transitions here
 	}
 }

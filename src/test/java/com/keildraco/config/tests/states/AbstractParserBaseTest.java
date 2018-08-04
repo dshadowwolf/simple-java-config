@@ -3,6 +3,7 @@ package com.keildraco.config.tests.states;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -35,27 +36,26 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  *
  * @author Daniel Hazelton
  *
  */
-class AbstractParserBaseTest {
+final class AbstractParserBaseTest {
+
+	private static final String BLARGH = "BLARGH";
 
 	/**
 	 *
 	 */
 	@Test
-	final void testAbstractParserBase() {
+	void testAbstractParserBase() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
-
-				@Override
-				public void registerTransitions(final TypeFactory factory) {
-					// intentionally blank
-				}
-			};
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
 			assertNotNull(apb);
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
@@ -69,16 +69,10 @@ class AbstractParserBaseTest {
 	 *
 	 */
 	@Test
-	final void testSetFactory() {
+	void testSetFactory() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBase(null, null, "BLARGH") {
-
-				@Override
-				public void registerTransitions(final TypeFactory factory) {
-					// intentionally blank
-				}
-			};
+			final AbstractParserBase apb = new AbstractParserBaseTester(null, null, BLARGH);
 			apb.setFactory(f);
 			assertTrue(true, "AbstractParserBase.setFactory() works");
 		} catch (final Exception e) {
@@ -93,16 +87,10 @@ class AbstractParserBaseTest {
 	 *
 	 */
 	@Test
-	final void testGetFactory() {
+	void testGetFactory() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
-
-				@Override
-				public void registerTransitions(final TypeFactory factory) {
-					// intentionally blank
-				}
-			};
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
 			assertEquals(f, apb.getFactory());
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
@@ -116,16 +104,10 @@ class AbstractParserBaseTest {
 	 *
 	 */
 	@Test
-	final void testSetParent() {
+	void testSetParent() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
-
-				@Override
-				public void registerTransitions(final TypeFactory factory) {
-					// intentionally blank
-				}
-			};
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
 			apb.setParent(ParserInternalTypeBase.EMPTY_TYPE);
 			assertTrue(true, "setParent() works");
 		} catch (final Exception e) {
@@ -140,16 +122,10 @@ class AbstractParserBaseTest {
 	 *
 	 */
 	@Test
-	final void testGetParent() {
+	void testGetParent() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
-
-				@Override
-				public void registerTransitions(final TypeFactory factory) {
-					// intentionally blank
-				}
-			};
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
 			final IdentifierType it = new IdentifierType("test");
 			apb.setParent(it);
 			assertEquals(it, apb.getParent());
@@ -165,17 +141,11 @@ class AbstractParserBaseTest {
 	 *
 	 */
 	@Test
-	final void testGetName() {
+	void testGetName() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
-
-				@Override
-				public void registerTransitions(final TypeFactory factory) {
-					// intentionally blank
-				}
-			};
-			assertEquals("BLARGH", apb.getName());
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
+			assertEquals(BLARGH, apb.getName());
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
@@ -188,16 +158,10 @@ class AbstractParserBaseTest {
 	 *
 	 */
 	@Test
-	final void testSetName() {
+	void testSetName() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			final AbstractParserBase apb = new AbstractParserBase(f, null, "BLARGH") {
-
-				@Override
-				public void registerTransitions(final TypeFactory factory) {
-					// intentionally blank
-				}
-			};
+			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
 			apb.setName("BLECH");
 			assertEquals("BLECH", apb.getName());
 		} catch (final Exception e) {
@@ -238,28 +202,20 @@ class AbstractParserBaseTest {
 	 *
 	 */
 	@Test
-	final void testGetState() {
+	void testGetState() {
 		try {
 			Config.registerKnownParts();
 			final Path p = Paths.get("assets", "base-config-test.cfg");
 			final String ts = String.join("/", p.toString().split("\\\\"));
 			final URL tu = Config.class.getClassLoader().getResource(ts);
+			assertNotNull(tu, "Resource could not be found!");
 			final URI temp = tu.toURI();
 			final InputStream is = temp.toURL().openStream();
 			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			final StreamTokenizer tok = new StreamTokenizer(br);
 			final Tokenizer t = new Tokenizer(tok);
-			final AbstractParserBase apb = new AbstractParserBase(Config.getFactory(), null,
-					"BLARGH") {
-
-				@Override
-				public void registerTransitions(final TypeFactory factory) {
-					factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
-							TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION");
-					factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
-							TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
-				}
-			};
+			final AbstractParserBase apb = new AbstractParserBaseGetStateTester(Config.getFactory(),
+					null, "BLARGH");
 			Config.getFactory().registerParser(() -> apb, "BLARGH");
 			apb.registerTransitions(Config.getFactory());
 			final ParserInternalTypeBase res = apb.getState(t);
@@ -270,13 +226,13 @@ class AbstractParserBaseTest {
 					() -> assertEquals(matchVal, res.getValue(),
 							"result should be a specific value as a string"),
 					() -> assertEquals(matchVal, res.getValueRaw()),
-					() -> assertTrue(res != ParserInternalTypeBase.EMPTY_TYPE,
+					() -> assertNotSame(res, ParserInternalTypeBase.EMPTY_TYPE,
 							"AbstractParserBase.getState() works"),
 					() -> assertThrows(IllegalParserStateException.class, () -> doParse(apb, ""),
 							"throws on null input"),
 					() -> assertEquals(ParserInternalTypeBase.EMPTY_TYPE,
 							doParse(apb, "alpha(!bravo)"),
-							"returns ParserInternalTypeBase.EmptyType on an interally caught exception"));
+							"returns ParserInternalTypeBase.EmptyType on an internally caught exception"));
 		} catch (final IOException | IllegalArgumentException | URISyntaxException
 				| IllegalParserStateException | UnknownStateException | GenericParseException
 				| NoSuchMethodException | InstantiationException | IllegalAccessException
@@ -285,6 +241,53 @@ class AbstractParserBaseTest {
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
+		}
+	}
+
+	/**
+	 *
+	 */
+	private static final class AbstractParserBaseTester extends AbstractParserBase {
+
+		/**
+		*
+		* @param factoryIn
+		* @param parentIn
+		* @param nameIn
+		*/
+		AbstractParserBaseTester(@Nullable final TypeFactory factoryIn,
+				@Nullable final ParserInternalTypeBase parentIn, final String nameIn) {
+			super(factoryIn, parentIn, nameIn);
+		}
+
+		@Override
+		public void registerTransitions(@Nullable final TypeFactory factory) {
+			// intentionally blank
+		}
+	}
+
+	/**
+	 *
+	 */
+	private static final class AbstractParserBaseGetStateTester extends AbstractParserBase {
+
+		/**
+		*
+		* @param factoryIn
+		* @param parentIn
+		* @param nameIn
+		*/
+		AbstractParserBaseGetStateTester(@Nullable final TypeFactory factoryIn,
+				@Nullable final ParserInternalTypeBase parentIn, final String nameIn) {
+			super(factoryIn, parentIn, nameIn);
+		}
+
+		@Override
+		public void registerTransitions(final TypeFactory factory) {
+			factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+					TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION");
+			factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+					TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
 		}
 	}
 }

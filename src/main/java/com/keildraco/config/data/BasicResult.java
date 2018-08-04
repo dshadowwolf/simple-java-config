@@ -21,11 +21,11 @@ public final class BasicResult extends ParserInternalTypeBase {
 
 	/**
 	 *
-	 * @param val
+	 * @param value
 	 * @return
 	 */
-	private String valAsString(final ParserInternalTypeBase val) {
-		return val.getValue();
+	private String valAsString(final ParserInternalTypeBase value) {
+		return value.getValue();
 	}
 
 	@Override

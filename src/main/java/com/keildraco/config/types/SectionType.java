@@ -1,5 +1,6 @@
 package com.keildraco.config.types;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
@@ -26,7 +27,7 @@ public final class SectionType extends ParserInternalTypeBase {
 	 */
 	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name) {
 		super(parent, name);
-		if (this.getName().equals("") || parent == null) {
+		if ((this.getName().isEmpty()) || (parent == null)) {
 			this.setName("ROOT");
 		}
 	}
@@ -42,6 +43,7 @@ public final class SectionType extends ParserInternalTypeBase {
 		this(parent, name);
 	}
 
+	@Nonnull
 	@Override
 	public ItemType getType() {
 		return ItemType.SECTION;
@@ -55,7 +57,7 @@ public final class SectionType extends ParserInternalTypeBase {
 			k.append(String.format("%s {%n", this.getName()));
 		}
 
-		this.getItems().values().stream()
+		this.getItems().values()
 				.forEach(v -> k.append(String.format(" %s%n", v.getValue())));
 
 		if (!this.getName().equals("ROOT")) {

@@ -12,6 +12,8 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+import javax.annotation.Nullable;
+
 /**
  *
  * @author Daniel Hazelton
@@ -24,41 +26,40 @@ public final class KeyValueParser extends AbstractParserBase {
 	 * @param factoryIn
 	 * @param parentIn
 	 */
-	public KeyValueParser(final TypeFactory factoryIn, final ParserInternalTypeBase parentIn) {
+	public KeyValueParser(@Nullable final TypeFactory factoryIn, @Nullable final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "KEYVALUE");
 	}
 
 	@Override
-	public ParserInternalTypeBase getState(final Tokenizer tok) {
-		if (!tok.hasNext()) {
+	public ParserInternalTypeBase getState(final Tokenizer tokenizer) {
+		if (!tokenizer.hasNext()) {
 			throw new IllegalParserStateException("End of input at start of state");
 		}
 
-		final String key = tok.nextToken().getValue();
-		tok.nextToken();
+		final String key = tokenizer.nextToken().getValue();
+		tokenizer.nextToken();
 
-		final Token next = tok.peek();
-		final Token following = tok.peekToken();
+		final Token next = tokenizer.peek();
+		final Token following = tokenizer.peekToken();
 
-		if (next.getType() == TokenType.IDENTIFIER
-				&& (following == null || following.getType() != TokenType.OPEN_PARENS)) {
+		if ((next.getType() == TokenType.IDENTIFIER)
+				&& ((following == null) || (following.getType() != TokenType.OPEN_PARENS))) {
 			final ParserInternalTypeBase rv = this.getFactory().getType(null, key, next.getValue(),
 					ItemType.IDENTIFIER);
-			tok.nextToken();
+			tokenizer.nextToken();
 			return rv;
 		}
 
 		final IStateParser parser = this.getFactory()
 				.nextState(this.getName().toUpperCase(Locale.ENGLISH), next, following);
-		final ParserInternalTypeBase rv = parser.getState(tok);
+		final ParserInternalTypeBase rv = parser.getState(tokenizer);
 		rv.setName(key);
 		return rv;
 	}
 
 	@Override
-	public void registerTransitions(final TypeFactory factory) {
+	public void registerTransitions(@Nullable final TypeFactory factory) {
 		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
 				TokenType.OPEN_LIST, TokenType.IDENTIFIER, "LIST");
 	}
-
 }

@@ -25,11 +25,13 @@ public abstract class AbstractParserBase implements IStateParser {
 	/**
 	 *
 	 */
+	@Nullable
 	private TypeFactory factory;
 
 	/**
 	 *
 	 */
+	@Nullable
 	private ParserInternalTypeBase parent;
 
 	/**
@@ -61,6 +63,7 @@ public abstract class AbstractParserBase implements IStateParser {
 	/**
 	 *
 	 */
+	@Nullable
 	@Override
 	public TypeFactory getFactory() {
 		return this.factory;
@@ -77,6 +80,7 @@ public abstract class AbstractParserBase implements IStateParser {
 	/**
 	 *
 	 */
+	@Nullable
 	@Override
 	public ParserInternalTypeBase getParent() {
 		return this.parent;
@@ -100,35 +104,37 @@ public abstract class AbstractParserBase implements IStateParser {
 
 	/**
 	 *
+	 * @param tokenizer
+	 * @return
 	 */
 	@Override
-	public ParserInternalTypeBase getState(final Tokenizer tok) {
-		if (!tok.hasNext()) {
+	public ParserInternalTypeBase getState(final Tokenizer tokenizer) {
+		if (!tokenizer.hasNext()) {
 			throw new IllegalParserStateException("End of input at start of state");
 		}
 
-		Token current = tok.peek();
-		Token next = tok.peekToken();
+		Token current = tokenizer.peek();
+		Token next = tokenizer.peekToken();
 
 		final Deque<ParserInternalTypeBase> bits = new LinkedList<>();
 
-		while (tok.hasNext()) {
+		while (tokenizer.hasNext()) {
 			try {
 				bits.push(
 						this.factory.nextState(this.name.toUpperCase(Locale.ENGLISH), current, next)
-								.getState(tok));
+								.getState(tokenizer));
 			} catch (UnknownStateException e) {
 				Config.LOGGER.error("Exception during parse: %s", e.getMessage());
 				Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 				return ParserInternalTypeBase.EMPTY_TYPE;
 			}
-			current = tok.peek();
-			next = tok.peekToken();
+			current = tokenizer.peek();
+			next = tokenizer.peekToken();
 		}
 
 		final ParserInternalTypeBase rv = new BasicResult(this.name.toUpperCase(Locale.ENGLISH));
 
-		bits.stream().forEach(rv::addItem);
+		bits.forEach(rv::addItem);
 		return rv;
 	}
 }

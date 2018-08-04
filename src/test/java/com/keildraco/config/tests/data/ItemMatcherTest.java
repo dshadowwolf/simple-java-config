@@ -33,13 +33,13 @@ import com.keildraco.config.types.OperationType;
  * @author Daniel Hazelton
  *
  */
-class ItemMatcherTest {
+final class ItemMatcherTest {
 
 	/**
 	 *
 	 */
 	@Test
-	final void testItemMatcher() {
+	void testItemMatcher() {
 		try {
 			final ParserInternalTypeBase item = new IdentifierType("magic", "name");
 			final ItemMatcher m = new ItemMatcher(item);
@@ -56,7 +56,7 @@ class ItemMatcherTest {
 	 *
 	 */
 	@Test
-	final void testMatches() {
+	void testMatches() {
 		final ParserInternalTypeBase item = new IdentifierType("magic", "name");
 		final ItemMatcher m = new ItemMatcher(item);
 		assertAll(() -> assertTrue(m.matches("magic.name"), "name and value match"),
@@ -69,7 +69,7 @@ class ItemMatcherTest {
 	 *
 	 */
 	@Test
-	final void testAlwaysFalseMatcherMatches() {
+	void testAlwaysFalseMatcherMatches() {
 		assertFalse(ItemMatcher.ALWAYS_FALSE.matches("blargh"),
 				"The AlwaysFalse matcher should only return false");
 	}
@@ -78,7 +78,7 @@ class ItemMatcherTest {
 	 *
 	 */
 	@Test
-	final void testMoreConditionCoverage() {
+	void testMoreConditionCoverage() {
 		try {
 			Config.reset();
 			Config.registerKnownParts();

@@ -1,8 +1,8 @@
 package com.keildraco.config.tests;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -27,18 +27,20 @@ import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 
+import javax.annotation.Nullable;
+
 /**
  *
  * @author Daniel Hazelton
  *
  */
-class ConfigTests {
+final class ConfigTests {
 
 	/**
 	 *
 	 */
 	@Test
-	final void testGetFactory() {
+	void testGetFactory() {
 		assertNotNull(Config.getFactory());
 	}
 
@@ -55,7 +57,7 @@ class ConfigTests {
 	 * Will fail if it catches any of a number of possible exceptions
 	 */
 	@Test
-	final void testRegisterKnownParts() {
+	void testRegisterKnownParts() {
 		try {
 			Config.registerKnownParts();
 			assertTrue(true, "able to register known bits automatically and without exceptions");
@@ -71,14 +73,14 @@ class ConfigTests {
 	 *
 	 */
 	@Test
-	final void testReset() {
+	void testReset() {
 		try {
 			Config.registerKnownParts();
 			final IStateParser p = Config.getFactory().getParser("SECTION", null);
 			Config.reset();
 			final IStateParser q = Config.getFactory().getParser("SECTION", null);
 			assertAll("parser prior to reset should not equal a parser post reset",
-					() -> assertNull(q), () -> assertNotNull(p), () -> assertFalse(p == q));
+					() -> assertNull(q), () -> assertNotNull(p), () -> assertNotSame(p, q));
 		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException e) {
 			Config.LOGGER.fatal("Exception %s", e.toString());
@@ -97,13 +99,12 @@ class ConfigTests {
 	 *
 	 */
 	@Test
-	public final void testLoadFilePath() {
+	void testLoadFilePath() {
 		Path p = Paths.get("assets", "base-config-test.cfg");
-		DataQuery c = null;
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			c = com.keildraco.config.Config.loadFile(p);
+			final DataQuery c = com.keildraco.config.Config.loadFile(p);
 			assertNotNull(c, "Load Worked? ");
 		} catch (final IOException | IllegalArgumentException | URISyntaxException
 				| NoSuchMethodException | InstantiationException | IllegalAccessException
@@ -120,12 +121,11 @@ class ConfigTests {
 	 *
 	 */
 	@Test
-	final void testLoadFileString() {
-		DataQuery c = null;
+	void testLoadFileString() {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			c = com.keildraco.config.Config.loadFile("assets/base-config-test.cfg");
+			final DataQuery c = com.keildraco.config.Config.loadFile("assets/base-config-test.cfg");
 			assertNotNull(c, "Load Worked? ");
 		} catch (final IOException | IllegalArgumentException | URISyntaxException
 				| NoSuchMethodException | InstantiationException | IllegalAccessException
@@ -142,12 +142,11 @@ class ConfigTests {
 	 *
 	 */
 	@Test
-	final void testParseString() {
-		DataQuery c = null;
+	void testParseString() {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			c = com.keildraco.config.Config.parseString(
+			final DataQuery c = com.keildraco.config.Config.parseString(
 					"section { item = value\n item2 = [ list, op(! ident), op2(~ident2) ]\nsubsection { item3 = ident3 } }");
 			assertNotNull(c, "Load Worked? ");
 		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
@@ -164,7 +163,7 @@ class ConfigTests {
 	 *
 	 */
 	@Test
-	final void testErrorStates() {
+	void testErrorStates() {
 		Config.registerParser("WILLTHROW", ParserThatThrows.class);
 		Config.registerType(ItemType.INVALID, TypeThatThrows.class);
 
@@ -194,7 +193,7 @@ class ConfigTests {
 		}
 
 		@Override
-		public void registerTransitions(final TypeFactory factory) {
+		public void registerTransitions(@Nullable final TypeFactory factory) {
 			// not needed
 		}
 	}
