@@ -242,9 +242,18 @@ final class AbstractParserBaseTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	private static final class AbstractParserBaseTester extends AbstractParserBase {
 
-		public AbstractParserBaseTester(@Nullable final TypeFactory factoryIn,
+		/**
+		*
+		* @param factoryIn
+		* @param parentIn
+		* @param nameIn
+		*/
+		AbstractParserBaseTester(@Nullable final TypeFactory factoryIn,
 				@Nullable final ParserInternalTypeBase parentIn, final String nameIn) {
 			super(factoryIn, parentIn, nameIn);
 		}
@@ -255,9 +264,18 @@ final class AbstractParserBaseTest {
 		}
 	}
 
+	/**
+	 *
+	 */
 	private static final class AbstractParserBaseGetStateTester extends AbstractParserBase {
 
-		public AbstractParserBaseGetStateTester(@Nullable final TypeFactory factoryIn,
+		/**
+		*
+		* @param factoryIn
+		* @param parentIn
+		* @param nameIn
+		*/
+		AbstractParserBaseGetStateTester(@Nullable final TypeFactory factoryIn,
 				@Nullable final ParserInternalTypeBase parentIn, final String nameIn) {
 			super(factoryIn, parentIn, nameIn);
 		}
