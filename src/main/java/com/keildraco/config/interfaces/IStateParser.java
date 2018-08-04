@@ -1,8 +1,5 @@
 package com.keildraco.config.interfaces;
 
-import com.keildraco.config.exceptions.GenericParseException;
-import com.keildraco.config.exceptions.IllegalParserStateException;
-import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.tokenizer.Tokenizer;
 
@@ -29,12 +26,8 @@ public interface IStateParser {
 	 *
 	 * @param tok
 	 * @return
-	 * @throws IllegalParserStateException
-	 * @throws UnknownStateException
-	 * @throws GenericParseException
 	 */
-	ParserInternalTypeBase getState(Tokenizer tok)
-			throws IllegalParserStateException, UnknownStateException, GenericParseException;
+	ParserInternalTypeBase getState(Tokenizer tok);
 
 	/**
 	 *

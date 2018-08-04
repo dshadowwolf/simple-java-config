@@ -5,7 +5,7 @@ package com.keildraco.config.exceptions;
  * @author Daniel Hazelton
  *
  */
-public class IllegalParserStateException extends Exception {
+public class IllegalParserStateException extends RuntimeException {
 
 	/**
 	 *

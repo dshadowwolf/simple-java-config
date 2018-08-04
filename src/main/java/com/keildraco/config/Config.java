@@ -23,9 +23,6 @@ import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
 
 import com.keildraco.config.data.DataQuery;
-import com.keildraco.config.exceptions.GenericParseException;
-import com.keildraco.config.exceptions.IllegalParserStateException;
-import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.IStateParser;
@@ -39,7 +36,6 @@ import com.keildraco.config.tokenizer.Tokenizer;
  *
  */
 public final class Config {
-
 	/**
 	 *
 	 */
@@ -227,12 +223,8 @@ public final class Config {
 	 * @param reader
 	 * @return
 	 * @throws IOException
-	 * @throws IllegalParserStateException
-	 * @throws UnknownStateException
-	 * @throws GenericParseException
 	 */
-	private static ParserInternalTypeBase runParser(final Reader reader) throws IOException,
-			IllegalParserStateException, UnknownStateException, GenericParseException {
+	private static ParserInternalTypeBase runParser(final Reader reader) throws IOException {
 		final StreamTokenizer tok = new StreamTokenizer(reader);
 		final Tokenizer t = new Tokenizer(tok);
 		return coreTypeFactory.getParser("ROOT", null).getState(t);
@@ -242,13 +234,9 @@ public final class Config {
 	 *
 	 * @param is
 	 * @return
-	 * @throws IllegalParserStateException
 	 * @throws IOException
-	 * @throws UnknownStateException
-	 * @throws GenericParseException
 	 */
-	public static DataQuery parseStream(final InputStream is) throws IllegalParserStateException,
-			IOException, UnknownStateException, GenericParseException {
+	public static DataQuery parseStream(final InputStream is) throws IOException {
 		final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		final ParserInternalTypeBase res = runParser(br);
 		return DataQuery.of(res);
@@ -259,12 +247,8 @@ public final class Config {
 	 * @param filePath
 	 * @return
 	 * @throws IOException
-	 * @throws GenericParseException
-	 * @throws UnknownStateException
-	 * @throws IllegalParserStateException
 	 */
-	public static DataQuery loadFile(final URI filePath) throws IOException,
-			IllegalParserStateException, UnknownStateException, GenericParseException {
+	public static DataQuery loadFile(final URI filePath) throws IOException {
 		return parseStream(filePath.toURL().openStream());
 	}
 
@@ -274,12 +258,8 @@ public final class Config {
 	 * @return
 	 * @throws IOException
 	 * @throws URISyntaxException
-	 * @throws IllegalParserStateException
-	 * @throws UnknownStateException
-	 * @throws GenericParseException
 	 */
-	public static DataQuery loadFile(final Path filePath) throws IOException, URISyntaxException,
-			IllegalParserStateException, UnknownStateException, GenericParseException {
+	public static DataQuery loadFile(final Path filePath) throws IOException, URISyntaxException {
 		final String ts = String.join("/", filePath.toString().split("\\\\"));
 		return loadFile(ts);
 	}
@@ -290,12 +270,8 @@ public final class Config {
 	 * @return
 	 * @throws IOException
 	 * @throws URISyntaxException
-	 * @throws IllegalParserStateException
-	 * @throws UnknownStateException
-	 * @throws GenericParseException
 	 */
-	public static DataQuery loadFile(final String filePath) throws IOException, URISyntaxException,
-			IllegalParserStateException, UnknownStateException, GenericParseException {
+	public static DataQuery loadFile(final String filePath) throws IOException, URISyntaxException {
 		final URL tu = Config.class.getClassLoader().getResource(filePath);
 		final URI temp = tu.toURI();
 		return loadFile(temp);
@@ -305,13 +281,9 @@ public final class Config {
 	 *
 	 * @param data
 	 * @return
-	 * @throws GenericParseException
-	 * @throws UnknownStateException
 	 * @throws IOException
-	 * @throws IllegalParserStateException
 	 */
-	public static DataQuery parseString(final String data) throws IllegalParserStateException,
-			IOException, UnknownStateException, GenericParseException {
+	public static DataQuery parseString(final String data) throws IOException {
 		return parseStream(IOUtils.toInputStream(data, StandardCharsets.UTF_8));
 	}
 }
