@@ -14,7 +14,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
@@ -184,7 +183,7 @@ public final class Config {
 		final Constructor<? extends IStateParser> cc = clazz.getConstructor(TypeFactory.class,
 				ParserInternalTypeBase.class);
 		final IStateParser zz = cc.newInstance(coreTypeFactory, null);
-		registerParser(zz.getName().toUpperCase(Locale.ENGLISH), clazz);
+		registerParser(zz.getName(), clazz);
 	}
 
 	/**

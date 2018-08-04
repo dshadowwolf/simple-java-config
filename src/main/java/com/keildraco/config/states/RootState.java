@@ -1,7 +1,5 @@
 package com.keildraco.config.states;
 
-import java.util.Locale;
-
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
@@ -26,10 +24,10 @@ public final class RootState extends AbstractParserBase {
 	}
 
 	@Override
-	public void registerTransitions(@Nullable final TypeFactory factory) {
-		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+	public void registerTransitions(final TypeFactory factory) {
+		factory.registerStateTransition(this.getName(),
 				TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION");
-		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+		factory.registerStateTransition(this.getName(),
 				TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
 	}
 }

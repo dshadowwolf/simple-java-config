@@ -49,7 +49,7 @@ public abstract class AbstractParserBase implements IStateParser {
 			@Nullable final ParserInternalTypeBase parentIn, final String nameIn) {
 		this.factory = factoryIn;
 		this.parent = parentIn;
-		this.name = nameIn;
+		this.name = nameIn.toUpperCase(Locale.getDefault());
 	}
 
 	/**
@@ -121,7 +121,7 @@ public abstract class AbstractParserBase implements IStateParser {
 		while (tokenizer.hasNext()) {
 			try {
 				bits.push(
-						this.factory.nextState(this.name.toUpperCase(Locale.ENGLISH), current, next)
+						this.factory.nextState(this.name, current, next)
 								.getState(tokenizer));
 			} catch (UnknownStateException e) {
 				Config.LOGGER.error("Exception during parse: %s", e.getMessage());
@@ -132,7 +132,7 @@ public abstract class AbstractParserBase implements IStateParser {
 			next = tokenizer.peekToken();
 		}
 
-		final ParserInternalTypeBase rv = new BasicResult(this.name.toUpperCase(Locale.ENGLISH));
+		final ParserInternalTypeBase rv = new BasicResult(this.name);
 
 		bits.forEach(rv::addItem);
 		return rv;

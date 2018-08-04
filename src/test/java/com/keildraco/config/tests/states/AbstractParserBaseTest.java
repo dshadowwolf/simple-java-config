@@ -36,7 +36,6 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**

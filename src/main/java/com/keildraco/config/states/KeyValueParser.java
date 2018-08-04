@@ -1,7 +1,5 @@
 package com.keildraco.config.states;
 
-import java.util.Locale;
-
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.IllegalParserStateException;
@@ -51,15 +49,15 @@ public final class KeyValueParser extends AbstractParserBase {
 		}
 
 		final IStateParser parser = this.getFactory()
-				.nextState(this.getName().toUpperCase(Locale.ENGLISH), next, following);
+				.nextState(this.getName(), next, following);
 		final ParserInternalTypeBase rv = parser.getState(tokenizer);
 		rv.setName(key);
 		return rv;
 	}
 
 	@Override
-	public void registerTransitions(@Nullable final TypeFactory factory) {
-		factory.registerStateTransition(this.getName().toUpperCase(Locale.ENGLISH),
+	public void registerTransitions(final TypeFactory factory) {
+		factory.registerStateTransition(this.getName(),
 				TokenType.OPEN_LIST, TokenType.IDENTIFIER, "LIST");
 	}
 }
