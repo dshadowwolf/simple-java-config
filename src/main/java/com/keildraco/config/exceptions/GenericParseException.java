@@ -5,7 +5,7 @@ package com.keildraco.config.exceptions;
  * @author Daniel Hazelton
  *
  */
-public class GenericParseException extends Exception {
+public class GenericParseException extends RuntimeException {
 
 	/**
 	 *

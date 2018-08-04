@@ -5,7 +5,7 @@ package com.keildraco.config.exceptions;
  * @author Daniel Hazelton
  *
  */
-public class UnknownStateException extends Exception {
+public class UnknownStateException extends RuntimeException {
 
 	/**
 	 *

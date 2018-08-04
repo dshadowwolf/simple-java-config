@@ -4,7 +4,6 @@ import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
-import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
@@ -29,8 +28,7 @@ public final class OperationParser extends AbstractParserBase {
 	}
 
 	@Override
-	public ParserInternalTypeBase getState(final Tokenizer tok)
-			throws IllegalParserStateException, UnknownStateException, GenericParseException {
+	public ParserInternalTypeBase getState(final Tokenizer tok) {
 		if (!tok.hasNext()) {
 			throw new IllegalParserStateException("End of input at start of state");
 		}

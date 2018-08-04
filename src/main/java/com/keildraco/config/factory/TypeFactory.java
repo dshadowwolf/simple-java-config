@@ -116,10 +116,9 @@ public final class TypeFactory {
 	 * @param currentToken
 	 * @param nextToken
 	 * @return
-	 * @throws UnknownStateException
 	 */
 	public IStateParser nextState(final String currentState, final Token currentToken,
-			final Token nextToken) throws UnknownStateException {
+			final Token nextToken) {
 		final String nextState = this.stateMap.getOrDefault(currentState, new ConcurrentHashMap<>())
 				.getOrDefault(currentToken.getType(), new ConcurrentHashMap<>())
 				.getOrDefault(nextToken.getType(), "");
