@@ -2,6 +2,7 @@ package com.keildraco.config.tests.types;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -133,7 +134,7 @@ public final class ListTypeTest {
 	public void testListTypeParentName() {
 		try {
 			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "blargh");
-			assertTrue(lt != null, "constructor works");
+			assertNotNull(lt, "constructor works");
 		} catch (final Exception e) {
 			fail("caught exception: " + e);
 		}
@@ -146,7 +147,7 @@ public final class ListTypeTest {
 	public void testListTypeParentNameValue() {
 		try {
 			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "foo", "bar");
-			assertTrue(lt != null, "constructor works");
+			assertNotNull(lt, "constructor works");
 		} catch (final Exception e) {
 			fail("caught exception: " + e);
 		}
@@ -175,5 +176,4 @@ public final class ListTypeTest {
 			fail("caught exception: " + e);
 		}
 	}
-
 }

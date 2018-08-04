@@ -84,7 +84,7 @@ public final class Config {
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			LOGGER.error("Exception getting type instance for %s (%s): %s", name, e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(LOGGER::error);
 			return null;
 		}
 	}
@@ -118,7 +118,7 @@ public final class Config {
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			LOGGER.error("Exception getting type instance for %s (%s): %s", name, e.toString(),
 					e.getMessage());
-			java.util.Arrays.asList(e.getStackTrace()).stream().forEach(LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(LOGGER::error);
 			return null;
 		}
 	}

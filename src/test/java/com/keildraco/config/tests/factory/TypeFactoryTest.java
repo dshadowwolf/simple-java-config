@@ -2,6 +2,7 @@ package com.keildraco.config.tests.factory;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -38,11 +39,11 @@ class TypeFactoryTest {
 	final void testTypeFactory() {
 		try {
 			final TypeFactory f = new TypeFactory();
-			assertTrue(f != null);
+			assertNotNull(f);
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -59,7 +60,7 @@ class TypeFactoryTest {
 			assertTrue(true, "Able to register a type without an exception");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -77,7 +78,7 @@ class TypeFactoryTest {
 					"TypeFactory.getType() works");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -97,7 +98,7 @@ class TypeFactoryTest {
 			assertTrue(true, "Able to register a parser without exceptions");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -122,7 +123,7 @@ class TypeFactoryTest {
 			assertTrue(f.getParser("SECTION", null) != null, "TypeFactory.getParser() works");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
@@ -142,12 +143,12 @@ class TypeFactoryTest {
 			final Token cur = t.peek();
 			final Token next = t.peekToken();
 			final IStateParser nextState = Config.getFactory().nextState("SECTION", cur, next);
-			assertAll("TypeFactory.nextState() works", () -> assertTrue(nextState != null),
+			assertAll("TypeFactory.nextState() works", () -> assertNotNull(nextState),
 					() -> assertEquals("KEYVALUE",
 							nextState.getName().toUpperCase(Locale.ENGLISH)));
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
-			Arrays.asList(e.getStackTrace()).stream().forEach(Config.LOGGER::error);
+			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail("Caught exception running loadFile: " + e);
 		}
 	}
