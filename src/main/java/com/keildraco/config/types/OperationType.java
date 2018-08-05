@@ -15,8 +15,7 @@ public final class OperationType extends ParserInternalTypeBase {
 	/**
 	 *
 	 */
-	@Nullable
-	private String ident;
+	private String ident = "";
 
 	/**
 	 *
@@ -76,7 +75,8 @@ public final class OperationType extends ParserInternalTypeBase {
 	 * @return
 	 */
 	public int getOperator() {
-		return this.operator.charAt(0);
+		// lets see IDEA bitch about this :)
+		return (int)this.operator.charAt(0);
 	}
 
 	@Nonnull

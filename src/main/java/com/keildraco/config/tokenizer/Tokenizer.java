@@ -55,8 +55,10 @@ public final class Tokenizer {
 	 *
 	 * @return
 	 */
-	@Nullable
 	public Token nextToken() {
+		if (this.tokens.isEmpty()) {
+			return new Token("---EMPTY---");
+		} 
 		return this.tokens.pop();
 	}
 

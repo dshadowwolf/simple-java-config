@@ -37,14 +37,14 @@ public final class OperationParser extends AbstractParserBase {
 		}
 
 		final String key = tok.nextToken().getValue();
-		String oper;
 
 		tok.nextToken();
-		Token operT = tok.nextToken();
+		final Token operT = tok.nextToken();
+		final Token value = tok.nextToken();
+		final Token last = tok.nextToken();
 		switch (operT.getType()) {
 			case NOT:
 			case TILDE:
-				oper = operT.getValue();
 				break;
 			case IDENTIFIER:
 				throw new GenericParseException(
@@ -54,23 +54,21 @@ public final class OperationParser extends AbstractParserBase {
 						String.format("Found %s where an Operator was expected", operT.getValue()));
 		}
 
-		operT = tok.nextToken();
-		if (!operT.getType().equals(TokenType.IDENTIFIER)) {
+		if (!value.getType().equals(TokenType.IDENTIFIER)) {
 			throw new GenericParseException(
 					String.format("Found %s where an Identifier was expected", operT.getValue()));
 		}
 
-		String value = operT.getValue();
-		operT = tok.nextToken();
-		if (operT.getType().equals(TokenType.CLOSE_PARENS)) {
-			OperationType rv = (OperationType) this.getFactory().getType(null, key, value,
+		
+		if (last.getType().equals(TokenType.CLOSE_PARENS)) {
+			OperationType rv = (OperationType) this.getFactory().getType(null, key, value.getValue(),
 					ItemType.OPERATION);
-			rv.setOperation(oper);
+			rv.setOperation(operT.getValue());
 			return rv;
 		}
 
 		throw new GenericParseException(
-				"Found " + operT.getValue() + " where a closing parenthesis was expected");
+				"Found " + last.getValue() + " where a closing parenthesis was expected");
 	}
 
 	@Override

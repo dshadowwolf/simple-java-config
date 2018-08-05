@@ -57,6 +57,9 @@ public final class Token {
 				case ",":
 					this.type = TokenType.SEPERATOR;
 					break;
+				case "---EMPTY---":
+					this.type = TokenType.EMPTY;
+					break;
 				default:
 					this.type = TokenType.UNKNOWN;
 					break;
@@ -78,5 +81,9 @@ public final class Token {
 	 */
 	public TokenType getType() {
 		return this.type;
+	}
+	
+	public boolean isEmpty() {
+		return this.type.equals(TokenType.EMPTY);
 	}
 }

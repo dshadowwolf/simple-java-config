@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -264,7 +263,7 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testEmptyTypeGet() {
-		assertNull(ParserInternalTypeBase.EMPTY_TYPE.get("blargh"));
+		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, ParserInternalTypeBase.EMPTY_TYPE.get("blargh"));
 	}
 
 	/**

@@ -38,10 +38,9 @@ public abstract class ParserInternalTypeBase {
 			return false;
 		}
 
-		@Nullable
 		@Override
 		public ParserInternalTypeBase get(final String itemName) {
-			return null;
+			return this;
 		}
 
 		@Override
@@ -213,7 +212,7 @@ public abstract class ParserInternalTypeBase {
 	 * @param item
 	 */
 	public void addItem(final ParserInternalTypeBase item) {
-		this.getItems().put(item.getName(), item);
+		this.items.put(item.getName(), item);
 	}
 
 	/**

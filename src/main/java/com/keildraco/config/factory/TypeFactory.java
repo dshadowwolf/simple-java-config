@@ -74,13 +74,13 @@ public final class TypeFactory {
 	 */
 	public ParserInternalTypeBase getType(@Nullable final ParserInternalTypeBase parent,
 			final String name, final String value, final ParserInternalTypeBase.ItemType type) {
-		IParserType ipt = this.typeMap.get(type);
+		final IParserType ipt = this.typeMap.get(type);
 
 		if (ipt == null) {
 			throw new UnknownParseTreeTypeException("Type " + type + " is not registered with the factory");
 		}
 
-		ParserInternalTypeBase rv = ipt.get(parent, name, value);
+		final ParserInternalTypeBase rv = ipt.get(parent, name, value);
 		if (rv == null) {
 			throw new TypeRegistrationException(type);
 		}

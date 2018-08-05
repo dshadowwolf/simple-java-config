@@ -65,5 +65,10 @@ public enum TokenType {
 	/**
 	 *
 	 */
+	EMPTY,
+
+	/**
+	 *
+	 */
 	UNKNOWN
 }

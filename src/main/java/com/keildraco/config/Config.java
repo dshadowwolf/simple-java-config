@@ -46,7 +46,7 @@ public final class Config {
 	/**
 	 *
 	 */
-	private static TypeFactory coreTypeFactory = new TypeFactory();
+	private static final TypeFactory coreTypeFactory = new TypeFactory();
 
 	/**
 	 *
