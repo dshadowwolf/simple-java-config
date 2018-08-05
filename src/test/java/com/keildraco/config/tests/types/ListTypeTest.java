@@ -94,7 +94,7 @@ final class ListTypeTest {
 		try {
 			final ListType testItem2 = new ListType("blargh");
 			testItem2.addItem(ParserInternalTypeBase.EMPTY_TYPE);
-			assertTrue(true, "Expected no exception");
+			assertTrue(testItem2.has("EMPTY"), "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}

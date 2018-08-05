@@ -129,8 +129,7 @@ final class ListParserTest {
 		final StreamTokenizer tok = new StreamTokenizer(br);
 		final Tokenizer t = new Tokenizer(tok);
 		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
-		@SuppressWarnings("unused")
-		final ParserInternalTypeBase pb = parser.getState(t);
+		parser.getState(t);
 	}
 
 	/**

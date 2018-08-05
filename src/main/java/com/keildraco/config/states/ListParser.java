@@ -25,7 +25,8 @@ public final class ListParser extends AbstractParserBase {
 	 * @param factoryIn
 	 * @param parentIn
 	 */
-	public ListParser(@Nullable final TypeFactory factoryIn, @Nullable final ParserInternalTypeBase parentIn) {
+	public ListParser(@Nullable final TypeFactory factoryIn,
+			@Nullable final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "LIST");
 	}
 
@@ -50,9 +51,7 @@ public final class ListParser extends AbstractParserBase {
 				case IDENTIFIER:
 					if ((next != null) && ((next.getType() != TokenType.SEPERATOR)
 							&& (next.getType() != TokenType.CLOSE_LIST))) {
-						rv.addItem(this.getFactory()
-								.nextState(this.getName(), current,
-										next)
+						rv.addItem(this.getFactory().nextState(this.getName(), current, next)
 								.getState(tokenizer));
 					} else {
 						rv.addItem(this.getFactory().getType(null, current.getValue(),
@@ -80,7 +79,7 @@ public final class ListParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName(),
-				TokenType.IDENTIFIER, TokenType.OPEN_PARENS, "OPERATION");
+		factory.registerStateTransition(this.getName(), TokenType.IDENTIFIER, TokenType.OPEN_PARENS,
+				"OPERATION");
 	}
 }

@@ -37,6 +37,7 @@ import javax.annotation.Nullable;
  *
  */
 public final class Config {
+
 	/**
 	 *
 	 */
@@ -218,7 +219,7 @@ public final class Config {
 	 *
 	 */
 	public static void reset() {
-		coreTypeFactory = new TypeFactory();
+		coreTypeFactory.reset();
 	}
 
 	/**

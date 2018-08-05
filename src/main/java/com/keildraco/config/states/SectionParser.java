@@ -24,7 +24,8 @@ public final class SectionParser extends AbstractParserBase {
 	 * @param factoryIn
 	 * @param parentIn
 	 */
-	public SectionParser(@Nullable final TypeFactory factoryIn, @Nullable final ParserInternalTypeBase parentIn) {
+	public SectionParser(@Nullable final TypeFactory factoryIn,
+			@Nullable final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "SECTION");
 	}
 
@@ -49,9 +50,8 @@ public final class SectionParser extends AbstractParserBase {
 				return rv;
 			}
 
-			rv.addItem(this.getFactory()
-					.nextState(this.getName(), current, next)
-					.getState(tokenizer));
+			rv.addItem(
+					this.getFactory().nextState(this.getName(), current, next).getState(tokenizer));
 			current = tokenizer.peek();
 			next = tokenizer.peekToken();
 		}
@@ -61,10 +61,9 @@ public final class SectionParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName(),
-				TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
-		factory.registerStateTransition(this.getName(),
-				TokenType.IDENTIFIER, TokenType.OPEN_BRACE,
+		factory.registerStateTransition(this.getName(), TokenType.IDENTIFIER, TokenType.STORE,
+				"KEYVALUE");
+		factory.registerStateTransition(this.getName(), TokenType.IDENTIFIER, TokenType.OPEN_BRACE,
 				this.getName());
 	}
 }

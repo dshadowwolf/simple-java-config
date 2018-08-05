@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
@@ -49,9 +50,9 @@ final class TokenizerTest {
 	@Test
 	void testTokenizer() {
 		try {
-			@SuppressWarnings("unused")
 			final Tokenizer t = new Tokenizer(tok);
-			assertTrue(true, "No exception caught when instantiating tokenizer");
+			assertTrue(t.getClass().equals(Tokenizer.class),
+					"No exception caught when instantiating tokenizer");
 		} catch (final Exception e) {
 			fail("Caught exception instantiating Tokenizer: " + e);
 		}
@@ -70,7 +71,7 @@ final class TokenizerTest {
 					"t.nextToken() did not throw an exception and returns a TokenType.IDENTIFIER of value \"a\"",
 					() -> TokenType.IDENTIFIER.equals(tt.getType()),
 					() -> "a".equals(tt.getValue()));
-		} catch (final Exception e) {
+		} catch (final IOException e) {
 			fail("Caught exception running test: " + e);
 		}
 	}
@@ -99,8 +100,7 @@ final class TokenizerTest {
 		final StreamTokenizer tok2 = new StreamTokenizer(isr);
 		try {
 			final Tokenizer t = new Tokenizer(tok2);
-			@SuppressWarnings("unused")
-			final Token tt = t.nextToken();
+			t.nextToken();
 			assertFalse(t.hasNext(),
 					"t.hasNext() did not throw an exception and returns false when no more tokens remain");
 		} catch (final Exception e) {
@@ -121,7 +121,7 @@ final class TokenizerTest {
 					"t.peekToken() did not throw an exception and returns a TokenType.IDENTIFIER of value \"a\"",
 					() -> TokenType.IDENTIFIER.equals(tt.getType()),
 					() -> "a".equals(tt.getValue()));
-		} catch (final Exception e) {
+		} catch (final IOException e) {
 			fail("Caught exception running test: " + e);
 		}
 	}

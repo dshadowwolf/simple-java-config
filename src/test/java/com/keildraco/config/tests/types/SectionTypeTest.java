@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -24,17 +24,17 @@ final class SectionTypeTest {
 	/**
 	 *
 	 */
-	private SectionType root;
+	private SectionType root = new SectionType("ROOT");
 
 	/**
 	 *
 	 */
-	private SectionType child;
+	private SectionType child = new SectionType(this.root, "CHILD");
 
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@BeforeAll
+	@BeforeEach
 	void setUp() throws Exception {
 		this.root = new SectionType("ROOT");
 		this.child = new SectionType(this.root, "CHILD");

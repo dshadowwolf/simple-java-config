@@ -2,8 +2,7 @@ package com.keildraco.config.tests;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -21,9 +20,10 @@ import com.keildraco.config.data.DataQuery;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
+import com.keildraco.config.exceptions.ParserRegistrationException;
+import com.keildraco.config.exceptions.TypeRegistrationException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
-import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 
@@ -74,19 +74,9 @@ final class ConfigTests {
 	 */
 	@Test
 	void testReset() {
-		try {
-			Config.registerKnownParts();
-			final IStateParser p = Config.getFactory().getParser("SECTION", null);
-			Config.reset();
-			final IStateParser q = Config.getFactory().getParser("SECTION", null);
-			assertAll("parser prior to reset should not equal a parser post reset",
-					() -> assertNull(q), () -> assertNotNull(p), () -> assertNotSame(p, q));
-		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
-				| InvocationTargetException e) {
-			Config.LOGGER.fatal("Exception %s", e.toString());
-			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::fatal);
-			fail("Exception Caught");
-		}
+		Config.reset();
+		assertThrows(UnknownStateException.class,
+				() -> Config.getFactory().getParser("SECTION", null));
 	}
 
 	/*
@@ -163,16 +153,43 @@ final class ConfigTests {
 	 *
 	 */
 	@Test
-	void testErrorStates() {
-		Config.registerParser("WILLTHROW", ParserThatThrows.class);
+	void testErrorStates() {		
 		Config.registerType(ItemType.INVALID, TypeThatThrows.class);
-
-		final IStateParser p = Config.getFactory().getParser("WILLTHROW", null);
-		final ParserInternalTypeBase t = Config.getFactory().getType(null, "", "",
-				ItemType.INVALID);
-		assertAll(() -> assertNull(p), () -> assertNull(t));
+		Config.getFactory().registerParser(() -> { 
+			if(!NullParser.flag) {
+				NullParser.flag = true;
+				return new NullParser(Config.getFactory(), null); 
+			} else {
+				return null; 
+			}
+		}, "NULLPARSER");
+		assertAll(() -> assertThrows(TypeRegistrationException.class, () -> Config.getFactory().getType(null, "", "",
+				ItemType.INVALID)),
+				() -> assertThrows(ParserRegistrationException.class, () -> Config.registerParser("WILLTHROW", ParserThatThrows.class)),
+				() -> assertThrows(UnknownStateException.class, () -> Config.getFactory().getParser("NULLPARSER", null)));
 	}
+	
+	/**
+	 *
+	 * @author Daniel Hazelton
+	 *
+	 */
+	private static final class NullParser extends AbstractParserBase {
+		public static boolean flag = false;
+		/**
+		 *
+		 * @param factory
+		 * @param parent
+		 */
+		public NullParser(final TypeFactory factory, final ParserInternalTypeBase parent) {
+			super(factory, parent, "NULLPARSER");
+		}
 
+		@Override
+		public void registerTransitions(@Nullable final TypeFactory factory) {
+			// blank
+		}
+	}
 	/**
 	 *
 	 * @author Daniel Hazelton
@@ -186,10 +203,10 @@ final class ConfigTests {
 		 * @param b
 		 * @throws IllegalAccessException
 		 */
-		ParserThatThrows(final TypeFactory factory, final ParserInternalTypeBase b)
-				throws IllegalAccessException {
-			super(factory, b, "TEST");
-			throw new IllegalAccessException("testing purposes only");
+		ParserThatThrows(final TypeFactory factory, final ParserInternalTypeBase parent)
+				throws IllegalArgumentException {
+			super(factory, parent, "TEST");
+			throw new IllegalArgumentException("testing purposes only");
 		}
 
 		@Override
@@ -214,9 +231,9 @@ final class ConfigTests {
 		 * @throws IllegalAccessException
 		 */
 		TypeThatThrows(final ParserInternalTypeBase parentIn, final String nameIn,
-				final String valueIn) throws IllegalAccessException {
+				final String valueIn) throws GenericParseException {
 			super(parentIn, nameIn, valueIn);
-			throw new IllegalAccessException("testing purposes only");
+			throw new GenericParseException("testing purposes only");
 		}
 
 		@Override

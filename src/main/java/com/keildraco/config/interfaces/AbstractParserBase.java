@@ -120,9 +120,7 @@ public abstract class AbstractParserBase implements IStateParser {
 
 		while (tokenizer.hasNext()) {
 			try {
-				bits.push(
-						this.factory.nextState(this.name, current, next)
-								.getState(tokenizer));
+				bits.push(this.factory.nextState(this.name, current, next).getState(tokenizer));
 			} catch (UnknownStateException e) {
 				Config.LOGGER.error("Exception during parse: %s", e.getMessage());
 				Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);

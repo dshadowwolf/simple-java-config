@@ -7,6 +7,9 @@ import javax.annotation.Nullable;
 
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
+import com.keildraco.config.exceptions.ParserRegistrationException;
+import com.keildraco.config.exceptions.TypeRegistrationException;
+import com.keildraco.config.exceptions.UnknownParseTreeTypeException;
 import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.interfaces.IParserState;
 import com.keildraco.config.interfaces.IParserType;
@@ -45,6 +48,15 @@ public final class TypeFactory {
 
 	/**
 	 *
+	 */
+	public final void reset() {
+		this.typeMap.clear();
+		this.parserMap.clear();
+		this.stateMap.clear();
+	}
+	
+	/**
+	 *
 	 * @param lambda
 	 * @param type
 	 */
@@ -62,7 +74,18 @@ public final class TypeFactory {
 	 */
 	public ParserInternalTypeBase getType(@Nullable final ParserInternalTypeBase parent,
 			final String name, final String value, final ParserInternalTypeBase.ItemType type) {
-		return this.typeMap.get(type).get(parent, name, value);
+		IParserType ipt = this.typeMap.get(type);
+		
+		if (ipt == null) {
+			throw new UnknownParseTreeTypeException("Type " + type + " is not registered with the factory");
+		}
+		
+		ParserInternalTypeBase rv = ipt.get(parent, name, value);
+		if (rv == null) {
+			throw new TypeRegistrationException(type);
+		}
+		
+		return rv;
 	}
 
 	/**
@@ -71,6 +94,13 @@ public final class TypeFactory {
 	 * @param name
 	 */
 	public void registerParser(final IParserState parser, final String name) {
+		IStateParser sp = parser.get();
+		if (sp != null) {
+			sp.registerTransitions(this);
+		} else {
+			throw new ParserRegistrationException(name);
+		}
+		
 		this.parserMap.put(name, parser);
 	}
 
@@ -99,15 +129,21 @@ public final class TypeFactory {
 	 * @param parent
 	 * @return
 	 */
-	@Nullable
 	public IStateParser getParser(final String parserName,
 			@Nullable final ParserInternalTypeBase parent) {
 		final IParserState parser = this.parserMap.getOrDefault(parserName, null);
 		if (parser == null) {
-			return null;
+			throw new UnknownStateException(
+					String.format("%s is not a known parser state!", parserName));
+		} else {
+			IStateParser rv = parser.get();
+			if (rv == null) {
+				throw new UnknownStateException("Error getting parser instance: IParserState.get() returned null");
+			} else if (parent != null) {
+				rv.setParent(parent);
+			}
+			return rv;
 		}
-
-		return parser.get();
 	}
 
 	/**
@@ -117,7 +153,6 @@ public final class TypeFactory {
 	 * @param nextToken
 	 * @return
 	 */
-	@Nullable
 	public IStateParser nextState(final String currentState, final Token currentToken,
 			final Token nextToken) {
 		final String nextState = this.stateMap.getOrDefault(currentState, new ConcurrentHashMap<>())

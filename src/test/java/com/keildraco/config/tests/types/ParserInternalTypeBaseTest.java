@@ -3,6 +3,7 @@ package com.keildraco.config.tests.types;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -48,7 +49,8 @@ final class ParserInternalTypeBaseTest {
 		return new ParserInternalTypeBase(name) {
 
 			@Override
-			@Nonnull public String getValueRaw() {
+			@Nonnull
+			public String getValueRaw() {
 				return this.getValue();
 			}
 
@@ -125,9 +127,7 @@ final class ParserInternalTypeBaseTest {
 	@Test
 	void testParserInternalTypeBaseString() {
 		try {
-			@SuppressWarnings("unused")
-			final ParserInternalTypeBase testNoParent = getInstance("blargh");
-			assertTrue(true, "Expected no exception");
+			assertNotNull(getInstance("blargh"), "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
 		}
@@ -140,10 +140,8 @@ final class ParserInternalTypeBaseTest {
 	@Test
 	void testParserInternalTypeBaseParserInternalTypeBaseString() {
 		try {
-			@SuppressWarnings("unused")
-			final ParserInternalTypeBase testEmptyParent = getInstance(
-					ParserInternalTypeBase.EMPTY_TYPE, "blargh");
-			assertTrue(true, "Expected no exception");
+			assertNotNull(getInstance(ParserInternalTypeBase.EMPTY_TYPE, "blargh"),
+					"Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
 		}
@@ -156,10 +154,8 @@ final class ParserInternalTypeBaseTest {
 	@Test
 	void testParserInternalTypeBaseParserInternalTypeBaseStringString() {
 		try {
-			@SuppressWarnings("unused")
-			final ParserInternalTypeBase testEmptyParent = getInstance(
-					ParserInternalTypeBase.EMPTY_TYPE, "blargh", "blech");
-			assertTrue(true, "Expected no exception");
+			assertNotNull(getInstance(ParserInternalTypeBase.EMPTY_TYPE, "blargh", "blech"),
+					"Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
 		}

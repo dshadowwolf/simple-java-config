@@ -24,7 +24,6 @@ import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.IStateParser;
-import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.OperationParser;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.OperationType;
@@ -122,8 +121,7 @@ final class OperationParserTest {
 		final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		final StreamTokenizer tok = new StreamTokenizer(br);
 		final Tokenizer t = new Tokenizer(tok);
-		@SuppressWarnings("unused")
-		final ParserInternalTypeBase pb = parser.getState(t);
+		parser.getState(t);
 	}
 
 	/**

@@ -73,7 +73,7 @@ final class AbstractParserBaseTest {
 			final TypeFactory f = new TypeFactory();
 			final AbstractParserBase apb = new AbstractParserBaseTester(null, null, BLARGH);
 			apb.setFactory(f);
-			assertTrue(true, "AbstractParserBase.setFactory() works");
+			assertTrue(apb.getFactory().equals(f), "AbstractParserBase.setFactory() works");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
@@ -108,7 +108,8 @@ final class AbstractParserBaseTest {
 			final TypeFactory f = new TypeFactory();
 			final AbstractParserBase apb = new AbstractParserBaseTester(f, null, BLARGH);
 			apb.setParent(ParserInternalTypeBase.EMPTY_TYPE);
-			assertTrue(true, "setParent() works");
+			assertTrue(apb.getParent().equals(ParserInternalTypeBase.EMPTY_TYPE),
+					"setParent() works");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
 					e.getMessage());
@@ -249,11 +250,11 @@ final class AbstractParserBaseTest {
 	private static final class AbstractParserBaseTester extends AbstractParserBase {
 
 		/**
-		*
-		* @param factoryIn
-		* @param parentIn
-		* @param nameIn
-		*/
+		 *
+		 * @param factoryIn
+		 * @param parentIn
+		 * @param nameIn
+		 */
 		AbstractParserBaseTester(@Nullable final TypeFactory factoryIn,
 				@Nullable final ParserInternalTypeBase parentIn, final String nameIn) {
 			super(factoryIn, parentIn, nameIn);
@@ -271,11 +272,11 @@ final class AbstractParserBaseTest {
 	private static final class AbstractParserBaseGetStateTester extends AbstractParserBase {
 
 		/**
-		*
-		* @param factoryIn
-		* @param parentIn
-		* @param nameIn
-		*/
+		 *
+		 * @param factoryIn
+		 * @param parentIn
+		 * @param nameIn
+		 */
 		AbstractParserBaseGetStateTester(@Nullable final TypeFactory factoryIn,
 				@Nullable final ParserInternalTypeBase parentIn, final String nameIn) {
 			super(factoryIn, parentIn, nameIn);

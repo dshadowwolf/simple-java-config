@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -25,13 +25,13 @@ final class OperationTypeTest {
 	/**
 	 *
 	 */
-	private OperationType testItem;
+	private OperationType testItem = new OperationType(EMPTY_TYPE, "blargh", "foobar");
 
 	/**
 	 *
 	 * @throws Exception
 	 */
-	@BeforeAll
+	@BeforeEach
 	void setUp() throws Exception {
 		this.testItem = new OperationType(EMPTY_TYPE, "blargh", "foobar");
 		this.testItem.setOperation("!");
@@ -43,8 +43,8 @@ final class OperationTypeTest {
 	@Test
 	void testOperationTypeString() {
 		try {
-			@SuppressWarnings("unused")
 			final OperationType op = new OperationType("OPERATION");
+			op.setName("blargh");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Caught exception instantiating new OperationType");
@@ -57,9 +57,9 @@ final class OperationTypeTest {
 	@Test
 	void testOperationTypeParserInternalTypeBaseString() {
 		try {
-			@SuppressWarnings("unused")
 			final OperationType op = new OperationType(ParserInternalTypeBase.EMPTY_TYPE,
 					"OPERATION");
+			op.setName("blargh");
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Caught exception instantiating new OperationType");

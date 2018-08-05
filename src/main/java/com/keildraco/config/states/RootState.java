@@ -19,15 +19,16 @@ public final class RootState extends AbstractParserBase {
 	 * @param factoryIn
 	 * @param parentIn
 	 */
-	public RootState(@Nullable final TypeFactory factoryIn, @Nullable final ParserInternalTypeBase parentIn) {
+	public RootState(@Nullable final TypeFactory factoryIn,
+			@Nullable final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "ROOT");
 	}
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName(),
-				TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION");
-		factory.registerStateTransition(this.getName(),
-				TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE");
+		factory.registerStateTransition(this.getName(), TokenType.IDENTIFIER, TokenType.OPEN_BRACE,
+				"SECTION");
+		factory.registerStateTransition(this.getName(), TokenType.IDENTIFIER, TokenType.STORE,
+				"KEYVALUE");
 	}
 }

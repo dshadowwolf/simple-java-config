@@ -24,7 +24,8 @@ public final class KeyValueParser extends AbstractParserBase {
 	 * @param factoryIn
 	 * @param parentIn
 	 */
-	public KeyValueParser(@Nullable final TypeFactory factoryIn, @Nullable final ParserInternalTypeBase parentIn) {
+	public KeyValueParser(@Nullable final TypeFactory factoryIn,
+			@Nullable final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "KEYVALUE");
 	}
 
@@ -48,8 +49,7 @@ public final class KeyValueParser extends AbstractParserBase {
 			return rv;
 		}
 
-		final IStateParser parser = this.getFactory()
-				.nextState(this.getName(), next, following);
+		final IStateParser parser = this.getFactory().nextState(this.getName(), next, following);
 		final ParserInternalTypeBase rv = parser.getState(tokenizer);
 		rv.setName(key);
 		return rv;
@@ -57,7 +57,7 @@ public final class KeyValueParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName(),
-				TokenType.OPEN_LIST, TokenType.IDENTIFIER, "LIST");
+		factory.registerStateTransition(this.getName(), TokenType.OPEN_LIST, TokenType.IDENTIFIER,
+				"LIST");
 	}
 }
