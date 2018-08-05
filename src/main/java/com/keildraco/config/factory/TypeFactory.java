@@ -49,12 +49,12 @@ public final class TypeFactory {
 	/**
 	 *
 	 */
-	public final void reset() {
+	public void reset() {
 		this.typeMap.clear();
 		this.parserMap.clear();
 		this.stateMap.clear();
 	}
-	
+
 	/**
 	 *
 	 * @param lambda
@@ -75,16 +75,16 @@ public final class TypeFactory {
 	public ParserInternalTypeBase getType(@Nullable final ParserInternalTypeBase parent,
 			final String name, final String value, final ParserInternalTypeBase.ItemType type) {
 		IParserType ipt = this.typeMap.get(type);
-		
+
 		if (ipt == null) {
 			throw new UnknownParseTreeTypeException("Type " + type + " is not registered with the factory");
 		}
-		
+
 		ParserInternalTypeBase rv = ipt.get(parent, name, value);
 		if (rv == null) {
 			throw new TypeRegistrationException(type);
 		}
-		
+
 		return rv;
 	}
 
@@ -94,13 +94,13 @@ public final class TypeFactory {
 	 * @param name
 	 */
 	public void registerParser(final IParserState parser, final String name) {
-		IStateParser sp = parser.get();
+		final IStateParser sp = parser.get();
 		if (sp != null) {
 			sp.registerTransitions(this);
 		} else {
 			throw new ParserRegistrationException(name);
 		}
-		
+
 		this.parserMap.put(name, parser);
 	}
 
@@ -136,7 +136,7 @@ public final class TypeFactory {
 			throw new UnknownStateException(
 					String.format("%s is not a known parser state!", parserName));
 		} else {
-			IStateParser rv = parser.get();
+			final IStateParser rv = parser.get();
 			if (rv == null) {
 				throw new UnknownStateException("Error getting parser instance: IParserState.get() returned null");
 			} else if (parent != null) {

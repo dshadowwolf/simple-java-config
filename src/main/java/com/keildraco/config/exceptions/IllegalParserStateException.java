@@ -6,7 +6,6 @@ package com.keildraco.config.exceptions;
  *
  */
 public class IllegalParserStateException extends RuntimeException {
-
 	/**
 	 *
 	 */

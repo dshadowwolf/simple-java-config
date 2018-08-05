@@ -26,7 +26,7 @@ public abstract class ParserInternalTypeBase {
 	/**
 	 *
 	 */
-	private Map<String, ParserInternalTypeBase> items;
+	private final Map<String, ParserInternalTypeBase> items;
 
 	/**
 	 *
@@ -81,7 +81,13 @@ public abstract class ParserInternalTypeBase {
 	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
 			final String nameIn) {
 		this.name = nameIn;
-		this.parent = parentIn == null ? EMPTY_TYPE : parentIn;
+
+		if (parentIn == null) {
+			this.parent = EMPTY_TYPE;
+		} else {
+			this.parent = parentIn;
+		}
+
 		this.items = new ConcurrentHashMap<>();
 	}
 
@@ -246,7 +252,7 @@ public abstract class ParserInternalTypeBase {
 	 *
 	 * @return
 	 */
-	protected Map<String, ParserInternalTypeBase> getItems() {
-		return items;
+	protected final Map<String, ParserInternalTypeBase> getItems() {
+		return Collections.unmodifiableMap(this.items);
 	}
 }
