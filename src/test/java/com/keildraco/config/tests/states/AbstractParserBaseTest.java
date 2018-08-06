@@ -45,10 +45,15 @@ import javax.annotation.Nullable;
  */
 final class AbstractParserBaseTest {
 
+	private static final String ASSETS = "assets";
+	private static final String BASE_CONFIG_TEST_CFG = "base-config-test.cfg";
 	private static final String BLARGH = "BLARGH";
 	private static final String BLECH = "BLECH";
+	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
+	private static final String EXCEPTION_GETTING = "Exception getting instance for %s: %s";
 	private static final String KEYVALUE = "KEYVALUE";
 	private static final String SECTION = "SECTION";
+	private static final String TEST = "test";
 
 	/**
 	 *
@@ -60,10 +65,10 @@ final class AbstractParserBaseTest {
 			final AbstractParserBase apb = new AbstractParserBaseTester(tf, null, BLARGH);
 			assertNotNull(apb, "");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -78,10 +83,10 @@ final class AbstractParserBaseTest {
 			apb.setFactory(tf);
 			assertSame(tf, apb.getFactory(), "AbstractParserBase.setFactory() works");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -95,10 +100,10 @@ final class AbstractParserBaseTest {
 			final AbstractParserBase apb = new AbstractParserBaseTester(tf, null, BLARGH);
 			assertSame(tf, apb.getFactory(), "");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -114,10 +119,10 @@ final class AbstractParserBaseTest {
 			assertEquals(ParserInternalTypeBase.EMPTY_TYPE, apb.getParent(),
 					"setParent() works");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -129,14 +134,14 @@ final class AbstractParserBaseTest {
 		try {
 			final TypeFactory tf = new TypeFactory();
 			final AbstractParserBase apb = new AbstractParserBaseTester(tf, null, BLARGH);
-			final IdentifierType it = new IdentifierType("test");
+			final IdentifierType it = new IdentifierType(TEST);
 			apb.setParent(it);
 			assertEquals(it, apb.getParent(), "");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -150,10 +155,10 @@ final class AbstractParserBaseTest {
 			final AbstractParserBase apb = new AbstractParserBaseTester(tf, null, BLARGH);
 			assertEquals(BLARGH, apb.getName(), "");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -168,10 +173,10 @@ final class AbstractParserBaseTest {
 			apb.setName(BLECH);
 			assertEquals(BLECH, apb.getName(), "");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -208,7 +213,7 @@ final class AbstractParserBaseTest {
 	void testGetState() {
 		try {
 			Config.registerKnownParts();
-			final Path p = Paths.get("assets", "base-config-test.cfg");
+			final Path p = Paths.get(ASSETS, BASE_CONFIG_TEST_CFG);
 			final String ts = String.join("/", p.toString().split("\\\\"));
 			final URL tu = Config.class.getClassLoader().getResource(ts);
 			assertNotNull(tu, "Resource could not be found!");
@@ -240,10 +245,10 @@ final class AbstractParserBaseTest {
 				| IllegalParserStateException | UnknownStateException | GenericParseException
 				| NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 

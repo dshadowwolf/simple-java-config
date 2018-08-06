@@ -40,7 +40,7 @@ public abstract class ParserInternalTypeBase {
 
 		@Override
 		public ParserInternalTypeBase get(final String itemName) {
-			return this;
+			return EMPTY_TYPE;
 		}
 
 		@Override

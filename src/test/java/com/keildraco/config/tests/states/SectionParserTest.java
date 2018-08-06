@@ -35,6 +35,10 @@ import com.keildraco.config.tokenizer.Tokenizer;
  */
 final class SectionParserTest {
 
+	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
+	private static final String EXCEPTION_GETTING = "Exception getting type instance for %s: %s";
+	private static final String SECTION = "SECTION";
+
 	/**
 	 *
 	 * @param data
@@ -53,7 +57,7 @@ final class SectionParserTest {
 			IllegalParserStateException, UnknownStateException, GenericParseException {
 		Config.reset();
 		Config.registerKnownParts();
-		final IStateParser parser = Config.getFactory().getParser("SECTION", null);
+		final IStateParser parser = Config.getFactory().getParser(SECTION, null);
 		final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
 		final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		final StreamTokenizer tok = new StreamTokenizer(br);
@@ -89,10 +93,10 @@ final class SectionParserTest {
 			final SectionParser sp = new SectionParser(tf, null);
 			assertNotNull(sp, "Able to instantiate a SectionParser");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -107,10 +111,10 @@ final class SectionParserTest {
 			sp.registerTransitions(tf);
 			assertTrue(true, "was able to register transitions");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 }

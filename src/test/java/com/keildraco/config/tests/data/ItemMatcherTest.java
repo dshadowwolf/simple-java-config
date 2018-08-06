@@ -54,7 +54,7 @@ final class ItemMatcherTest {
 			final ItemMatcher im = new ItemMatcher(item);
 			assertNotNull(im, "Able to instantiate an ItemMatcher");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION + e);

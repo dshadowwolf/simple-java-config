@@ -40,6 +40,9 @@ final class TypeFactoryTest {
 
 	private static final String BLARGH = "Blargh";
 	private static final String BLECH = "Blech";
+	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
+	private static final String EXCEPTION_GETTING = "Exception getting instance for %s: %s";
+	private static final String EXCEPTION_REGISTERING = "Exception registering type %s: %s";
 	private static final String KEYVALUE = "KEYVALUE";
 	private static final String SECTION = "SECTION";
 
@@ -65,10 +68,10 @@ final class TypeFactoryTest {
 			final TypeFactory tf = new TypeFactory();
 			assertNotNull(tf, "");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -88,7 +91,7 @@ final class TypeFactoryTest {
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -104,9 +107,9 @@ final class TypeFactoryTest {
 			assertNotNull(tf.getType(null, "", "", ItemType.IDENTIFIER),
 					"TypeFactory.getType() works");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error(EXCEPTION_REGISTERING, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -124,9 +127,9 @@ final class TypeFactoryTest {
 			}, SECTION);
 			assertTrue(true, "Able to register a parser without exceptions");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error(EXCEPTION_REGISTERING, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -149,9 +152,9 @@ final class TypeFactoryTest {
 			}, SECTION);
 			assertNotNull(tf.getParser(SECTION, null), "TypeFactory.getParser() works");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error(EXCEPTION_REGISTERING, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -174,9 +177,9 @@ final class TypeFactoryTest {
 					() -> assertEquals(KEYVALUE,
 							nextState.getName().toUpperCase(Locale.ENGLISH), ""));
 		} catch (final IOException e) {
-			Config.LOGGER.error("Exception registering type %s: %s", e.toString(), e.getMessage());
+			Config.LOGGER.error(EXCEPTION_REGISTERING, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 

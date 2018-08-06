@@ -60,5 +60,5 @@ public interface IStateParser {
 	 *
 	 * @param factory
 	 */
-	void registerTransitions(TypeFactory factory);
+	void registerTransitions(@Nullable TypeFactory factory);
 }

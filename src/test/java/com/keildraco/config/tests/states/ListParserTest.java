@@ -39,6 +39,10 @@ import com.keildraco.config.tokenizer.Tokenizer;
 @TestInstance(Lifecycle.PER_CLASS)
 final class ListParserTest {
 
+	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
+	private static final String EXCEPTION_GETTING = "Exception getting type instance for %s: %s";
+	private static final String LIST = "LIST";
+
 	/**
 	 *
 	 * @throws NoSuchMethodException
@@ -59,7 +63,7 @@ final class ListParserTest {
 	@Test
 	void testGetState() {
 		try {
-			final IStateParser p = Config.getFactory().getParser("LIST", null);
+			final IStateParser p = Config.getFactory().getParser(LIST, null);
 			final String data = "[ alpha, beta, charlie(! delta) ]";
 			final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
 			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
@@ -72,10 +76,10 @@ final class ListParserTest {
 					() -> assertFalse(pb.has("bravo"), "has no member named bravo"));
 		} catch (final IOException | IllegalArgumentException | IllegalParserStateException
 				| UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -89,10 +93,10 @@ final class ListParserTest {
 			final ListParser op = new ListParser(tf, null);
 			assertNotNull(op, "Able to instantiate a ListParser");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -107,10 +111,10 @@ final class ListParserTest {
 			op.registerTransitions(tf);
 			assertTrue(true, "was able to register transitions");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -124,7 +128,7 @@ final class ListParserTest {
 	 */
 	private void doParse(final String data) throws IOException, IllegalParserStateException,
 			UnknownStateException, GenericParseException {
-		final IStateParser parser = Config.getFactory().getParser("LIST", null);
+		final IStateParser parser = Config.getFactory().getParser(LIST, null);
 		final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
 		final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		final StreamTokenizer tok = new StreamTokenizer(br);
