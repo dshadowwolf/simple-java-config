@@ -133,7 +133,6 @@ final class ListParserTest {
 		final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		final StreamTokenizer tok = new StreamTokenizer(br);
 		final Tokenizer t = new Tokenizer(tok);
-		Config.LOGGER.fatal("parser: %s%nis: %s%nbr: %s%ntok: %s%nt: %s%n", parser, is, br, tok, t);
 		parser.getState(t);
 	}
 
@@ -141,14 +140,23 @@ final class ListParserTest {
 	 *
 	 */
 	@Test
-	void testErrorStates() {
-		final String earlyEOF = "[ a, b, c";
-		final String noData = "";
-		final String badData = "[ a, ( ]";
-
-		assertAll("",
-				() -> assertThrows(IllegalParserStateException.class, () -> this.doParse(noData)),
-				() -> assertThrows(GenericParseException.class, () -> this.doParse(badData)),
-				() -> assertThrows(GenericParseException.class, () -> this.doParse(earlyEOF)));
+	void testErrorNoData() {
+		assertThrows(IllegalParserStateException.class, () -> this.doParse(""));
 	}
+	
+	/**
+	 *
+	 */
+	@Test
+	void testErrorBadData() {
+		assertThrows(GenericParseException.class, () -> this.doParse("[ a, ( ]"));
+	}
+	
+	/**
+	 *
+	 */
+	@Test
+	void testErrorEarlyEOF() {
+		assertThrows(GenericParseException.class, () -> this.doParse("[ ash, blood, choices"));
+	}	
 }

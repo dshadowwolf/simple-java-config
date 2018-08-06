@@ -75,7 +75,8 @@ public final class Tokenizer {
 	 * @return
 	 */
 	public Token peekToken() {
-		if (this.tokens.isEmpty()) {
+		if (this.tokens.isEmpty() ||
+				this.tokens.size() == 1) {
 			return new Token("---EMPTY---");
 		}
 

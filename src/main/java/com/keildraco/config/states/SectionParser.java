@@ -24,7 +24,7 @@ public final class SectionParser extends AbstractParserBase {
 	 * @param factoryIn
 	 * @param parentIn
 	 */
-	public SectionParser(@Nullable final TypeFactory factoryIn,
+	public SectionParser(final TypeFactory factoryIn,
 			@Nullable final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "SECTION");
 	}

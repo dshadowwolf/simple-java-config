@@ -25,7 +25,7 @@ public final class OperationParser extends AbstractParserBase {
 	 * @param factoryIn
 	 * @param parentIn
 	 */
-	public OperationParser(@Nullable final TypeFactory factoryIn,
+	public OperationParser(final TypeFactory factoryIn,
 			@Nullable final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "OPERATION");
 	}

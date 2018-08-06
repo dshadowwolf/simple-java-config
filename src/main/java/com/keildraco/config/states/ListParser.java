@@ -6,6 +6,7 @@ import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
+import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
@@ -25,7 +26,7 @@ public final class ListParser extends AbstractParserBase {
 	 * @param factoryIn
 	 * @param parentIn
 	 */
-	public ListParser(@Nullable final TypeFactory factoryIn,
+	public ListParser(final TypeFactory factoryIn,
 			@Nullable final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "LIST");
 	}
@@ -49,10 +50,11 @@ public final class ListParser extends AbstractParserBase {
 		while (tokenizer.hasNext()) {
 			switch (current.getType()) {
 				case IDENTIFIER:
-					if ((next.isEmpty()) && ((next.getType() != TokenType.SEPERATOR)
-							&& (next.getType() != TokenType.CLOSE_LIST))) {
-						rv.addItem(this.getFactory().nextState(this.getName(), current, next)
-								.getState(tokenizer));
+					if ((!next.isEmpty()) && 
+							((next.getType() != TokenType.SEPERATOR) && 
+									(next.getType() != TokenType.CLOSE_LIST))) {
+						IStateParser nextState = this.getFactory().nextState(this.getName(), current, next); 
+						rv.addItem(nextState.getState(tokenizer));
 					} else {
 						rv.addItem(this.getFactory().getType(null, current.getValue(),
 								current.getValue(), ItemType.IDENTIFIER));
