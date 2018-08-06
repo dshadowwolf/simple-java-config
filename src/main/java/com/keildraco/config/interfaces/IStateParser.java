@@ -22,7 +22,6 @@ public interface IStateParser {
 	 *
 	 * @return
 	 */
-	@Nullable
 	TypeFactory getFactory();
 
 	/**
