@@ -2,6 +2,10 @@ package com.keildraco.config.exceptions;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 
+/**
+ *
+ * @author Daniel Hazelton
+ */
 public class TypeRegistrationException extends RuntimeException {
 
 	/**

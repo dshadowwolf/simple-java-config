@@ -58,7 +58,7 @@ public final class Tokenizer {
 	public Token nextToken() {
 		if (this.tokens.isEmpty()) {
 			return new Token("---EMPTY---");
-		} 
+		}
 		return this.tokens.pop();
 	}
 
@@ -74,15 +74,14 @@ public final class Tokenizer {
 	 *
 	 * @return
 	 */
-	@Nullable
 	public Token peekToken() {
 		if (this.tokens.isEmpty()) {
-			return null;
+			return new Token("---EMPTY---");
 		}
 
-		final Token k = this.tokens.pop();
+		final Token tok = this.tokens.pop();
 		final Token rv = this.tokens.peek();
-		this.tokens.push(k);
+		this.tokens.push(tok);
 		return rv;
 	}
 
@@ -90,8 +89,11 @@ public final class Tokenizer {
 	 *
 	 * @return
 	 */
-	@Nullable
 	public Token peek() {
+		if (this.tokens.isEmpty()) {
+			return new Token("---EMPTY---");
+		}
+
 		return this.tokens.peek();
 	}
 

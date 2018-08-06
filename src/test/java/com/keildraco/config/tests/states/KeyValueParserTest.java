@@ -50,7 +50,8 @@ final class KeyValueParserTest {
 			final StreamTokenizer tok = new StreamTokenizer(br);
 			final Tokenizer t = new Tokenizer(tok);
 			final ParserInternalTypeBase pb = p.getState(t);
-			assertAll("result is correct", () -> assertNotNull(pb, "result not null"),
+			assertAll("result is correct",
+					() -> assertNotNull(pb, "result not null"),
 					() -> assertEquals("item", pb.getName(), "name is correct"),
 					() -> assertEquals("value", pb.getValueRaw(), "value is correct"));
 		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
@@ -69,8 +70,8 @@ final class KeyValueParserTest {
 	@Test
 	void testKeyValueParser() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final KeyValueParser kvp = new KeyValueParser(f, null);
+			final TypeFactory tf = new TypeFactory();
+			final KeyValueParser kvp = new KeyValueParser(tf, null);
 			assertNotNull(kvp, "Able to instantiate a KeyValueParser");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
@@ -86,9 +87,9 @@ final class KeyValueParserTest {
 	@Test
 	void testRegisterTransitions() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final KeyValueParser kvp = new KeyValueParser(f, null);
-			kvp.registerTransitions(f);
+			final TypeFactory tf = new TypeFactory();
+			final KeyValueParser kvp = new KeyValueParser(tf, null);
+			kvp.registerTransitions(tf);
 			assertTrue(true, "was able to register transitions");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
@@ -132,11 +133,10 @@ final class KeyValueParserTest {
 	void testGetStateErrorRoutes() {
 		final String goodData = "item = value(! value)";
 		final String noData = "";
-		assertAll(
-				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData),
+		assertAll("",
+				() -> assertThrows(IllegalParserStateException.class, () -> this.doParse(noData),
 						"Illegal State, no data to parse"),
-				() -> assertThrows(UnknownStateException.class, () -> doParse(goodData),
+				() -> assertThrows(UnknownStateException.class, () -> this.doParse(goodData),
 						"KEYVALUE cannot store OPERATION"));
 	}
-
 }

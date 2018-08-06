@@ -46,7 +46,7 @@ public final class Config {
 	/**
 	 *
 	 */
-	private static final TypeFactory coreTypeFactory = new TypeFactory();
+	private static final TypeFactory CORE_TYPE_FACTORY = new TypeFactory();
 
 	/**
 	 *
@@ -60,7 +60,7 @@ public final class Config {
 	 * @return
 	 */
 	public static TypeFactory getFactory() {
-		return coreTypeFactory;
+		return CORE_TYPE_FACTORY;
 	}
 
 	/**
@@ -75,9 +75,9 @@ public final class Config {
 		try {
 			final Constructor<? extends IStateParser> c = clazz.getConstructor(TypeFactory.class,
 					ParserInternalTypeBase.class);
-			final IStateParser cc = c.newInstance(coreTypeFactory,
+			final IStateParser cc = c.newInstance(CORE_TYPE_FACTORY,
 					ParserInternalTypeBase.EMPTY_TYPE);
-			cc.registerTransitions(coreTypeFactory);
+			cc.registerTransitions(CORE_TYPE_FACTORY);
 			return cc;
 		} catch (final NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -95,7 +95,7 @@ public final class Config {
 	 */
 	private static void registerParserInternal(final String name,
 			final Class<? extends IStateParser> clazz) {
-		coreTypeFactory.registerParser(() -> registerParserGenerator(name, clazz), name);
+		CORE_TYPE_FACTORY.registerParser(() -> registerParserGenerator(name, clazz), name);
 	}
 
 	/**
@@ -130,7 +130,7 @@ public final class Config {
 	 */
 	private static void registerTypeInternal(final ItemType type,
 			final Class<? extends ParserInternalTypeBase> clazz) {
-		coreTypeFactory.registerType(
+		CORE_TYPE_FACTORY.registerType(
 				(parent, name, value) -> registerTypeGenerator(parent, name, value, clazz), type);
 	}
 
@@ -183,7 +183,7 @@ public final class Config {
 			InvocationTargetException {
 		final Constructor<? extends IStateParser> cc = clazz.getConstructor(TypeFactory.class,
 				ParserInternalTypeBase.class);
-		final IStateParser zz = cc.newInstance(coreTypeFactory, null);
+		final IStateParser zz = cc.newInstance(CORE_TYPE_FACTORY, null);
 		registerParser(zz.getName(), clazz);
 	}
 
@@ -219,7 +219,7 @@ public final class Config {
 	 *
 	 */
 	public static void reset() {
-		coreTypeFactory.reset();
+		CORE_TYPE_FACTORY.reset();
 	}
 
 	/**
@@ -231,7 +231,7 @@ public final class Config {
 	private static ParserInternalTypeBase runParser(final Reader reader) throws IOException {
 		final StreamTokenizer tok = new StreamTokenizer(reader);
 		final Tokenizer t = new Tokenizer(tok);
-		return coreTypeFactory.getParser("ROOT", null).getState(t);
+		return CORE_TYPE_FACTORY.getParser("ROOT", null).getState(t);
 	}
 
 	/**

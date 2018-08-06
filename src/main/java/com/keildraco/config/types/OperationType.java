@@ -76,7 +76,7 @@ public final class OperationType extends ParserInternalTypeBase {
 	 */
 	public int getOperator() {
 		// lets see IDEA bitch about this :)
-		return (int)this.operator.charAt(0);
+		return (int) this.operator.charAt(0);
 	}
 
 	@Nonnull

@@ -63,8 +63,8 @@ public abstract class AbstractParserBase implements IStateParser {
 	/**
 	 *
 	 */
-	@Nullable
 	@Override
+	@Nullable
 	public TypeFactory getFactory() {
 		return this.factory;
 	}
@@ -80,7 +80,6 @@ public abstract class AbstractParserBase implements IStateParser {
 	/**
 	 *
 	 */
-	@Nullable
 	@Override
 	public ParserInternalTypeBase getParent() {
 		return this.parent;

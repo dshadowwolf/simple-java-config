@@ -25,8 +25,8 @@ final class RootStateTest {
 	@Test
 	void testRootState() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final RootState rs = new RootState(f, null);
+			final TypeFactory tf = new TypeFactory();
+			final RootState rs = new RootState(tf, null);
 			assertNotNull(rs, "Able to instantiate a RootState");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
@@ -42,9 +42,9 @@ final class RootStateTest {
 	@Test
 	void testRegisterTransitions() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final RootState rs = new RootState(f, null);
-			rs.registerTransitions(f);
+			final TypeFactory tf = new TypeFactory();
+			final RootState rs = new RootState(tf, null);
+			rs.registerTransitions(tf);
 			assertTrue(true, "was able to register transitions");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),

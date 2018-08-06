@@ -71,12 +71,12 @@ final class SectionParserTest {
 		final String noData = "";
 		final String badData = "section { [ item ] }";
 
-		assertAll(
-				() -> assertNotSame(ParserInternalTypeBase.EMPTY_TYPE, doParse(validData),
+		assertAll("",
+				() -> assertNotSame(ParserInternalTypeBase.EMPTY_TYPE, this.doParse(validData),
 						"standard parse works"),
-				() -> assertThrows(GenericParseException.class, () -> doParse(earlyExit)),
-				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
-				() -> assertThrows(UnknownStateException.class, () -> doParse(badData)));
+				() -> assertThrows(GenericParseException.class, () -> this.doParse(earlyExit)),
+				() -> assertThrows(IllegalParserStateException.class, () -> this.doParse(noData)),
+				() -> assertThrows(UnknownStateException.class, () -> this.doParse(badData)));
 	}
 
 	/**
@@ -85,8 +85,8 @@ final class SectionParserTest {
 	@Test
 	void testSectionParser() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final SectionParser sp = new SectionParser(f, null);
+			final TypeFactory tf = new TypeFactory();
+			final SectionParser sp = new SectionParser(tf, null);
 			assertNotNull(sp, "Able to instantiate a SectionParser");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
@@ -102,9 +102,9 @@ final class SectionParserTest {
 	@Test
 	void testRegisterTransitions() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final SectionParser sp = new SectionParser(f, null);
-			sp.registerTransitions(f);
+			final TypeFactory tf = new TypeFactory();
+			final SectionParser sp = new SectionParser(tf, null);
+			sp.registerTransitions(tf);
 			assertTrue(true, "was able to register transitions");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),

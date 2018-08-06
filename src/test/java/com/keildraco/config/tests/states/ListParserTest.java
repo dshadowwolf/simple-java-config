@@ -66,7 +66,8 @@ final class ListParserTest {
 			final StreamTokenizer tok = new StreamTokenizer(br);
 			final Tokenizer t = new Tokenizer(tok);
 			final ParserInternalTypeBase pb = p.getState(t);
-			assertAll("result is correct", () -> assertNotNull(pb, "result not null"),
+			assertAll("result is correct",
+					() -> assertNotNull(pb, "result not null"),
 					() -> assertTrue(pb.has("alpha"), "has member named alpha"),
 					() -> assertFalse(pb.has("bravo"), "has no member named bravo"));
 		} catch (final IOException | IllegalArgumentException | IllegalParserStateException
@@ -84,8 +85,8 @@ final class ListParserTest {
 	@Test
 	void testListParser() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final ListParser op = new ListParser(f, null);
+			final TypeFactory tf = new TypeFactory();
+			final ListParser op = new ListParser(tf, null);
 			assertNotNull(op, "Able to instantiate a ListParser");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
@@ -101,9 +102,9 @@ final class ListParserTest {
 	@Test
 	void testRegisterTransitions() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final ListParser op = new ListParser(f, null);
-			op.registerTransitions(f);
+			final TypeFactory tf = new TypeFactory();
+			final ListParser op = new ListParser(tf, null);
+			op.registerTransitions(tf);
 			assertTrue(true, "was able to register transitions");
 		} catch (final Exception e) {
 			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
@@ -141,8 +142,9 @@ final class ListParserTest {
 		final String noData = "";
 		final String badData = "[ a, ( ]";
 
-		assertAll(() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
-				() -> assertThrows(GenericParseException.class, () -> doParse(badData)),
-				() -> assertThrows(GenericParseException.class, () -> doParse(earlyEOF)));
+		assertAll("",
+				() -> assertThrows(IllegalParserStateException.class, () -> this.doParse(noData)),
+				() -> assertThrows(GenericParseException.class, () -> this.doParse(badData)),
+				() -> assertThrows(GenericParseException.class, () -> this.doParse(earlyEOF)));
 	}
 }

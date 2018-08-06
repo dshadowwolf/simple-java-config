@@ -42,7 +42,7 @@ public final class KeyValueParser extends AbstractParserBase {
 		final Token following = tokenizer.peekToken();
 
 		if ((next.getType() == TokenType.IDENTIFIER)
-				&& ((following == null) || (following.getType() != TokenType.OPEN_PARENS))) {
+				&& ((following.isEmpty()) || (following.getType() != TokenType.OPEN_PARENS))) {
 			final ParserInternalTypeBase rv = this.getFactory().getType(null, key, next.getValue(),
 					ItemType.IDENTIFIER);
 			tokenizer.nextToken();

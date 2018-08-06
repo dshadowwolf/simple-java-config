@@ -29,6 +29,16 @@ import javax.annotation.Nonnull;
 @TestInstance(Lifecycle.PER_CLASS)
 final class ParserInternalTypeBaseTest {
 
+	private static final String ABSTRACT = "Abstract!";
+	private static final String BLARGH = "blargh";
+	private static final String BLECH = "blech";
+	private static final String EMPTY = "EMPTY";
+	private static final String EXPECTED_NO_EXCEPTION = "Expected no exception";
+	private static final String FOOBAR = "foobar";
+	private static final String MUZAK = "MUZAK";
+	private static final String NESTING = "nesting";
+	private static final String ZZTOP = "ZZTOP";
+
 	/**
 	 *
 	 */
@@ -55,7 +65,7 @@ final class ParserInternalTypeBaseTest {
 
 			@Override
 			public String getValue() {
-				return "Abstract!";
+				return ABSTRACT;
 			}
 		};
 	}
@@ -78,7 +88,7 @@ final class ParserInternalTypeBaseTest {
 
 			@Override
 			public String getValue() {
-				return "Abstract!";
+				return ABSTRACT;
 			}
 		};
 	}
@@ -102,7 +112,7 @@ final class ParserInternalTypeBaseTest {
 
 			@Override
 			public String getValue() {
-				return "Abstract!";
+				return ABSTRACT;
 			}
 		};
 	}
@@ -112,10 +122,10 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@BeforeAll
 	void setUp() throws Exception {
-		this.testItem = getInstance("blech");
-		this.testFoobar = getInstance("foobar");
+		this.testItem = getInstance(BLECH);
+		this.testFoobar = getInstance(FOOBAR);
 		this.testItem.addItem(this.testFoobar);
-		final ParserInternalTypeBase testNesting = getInstance("nesting");
+		final ParserInternalTypeBase testNesting = getInstance(NESTING);
 		testNesting.addItem(this.testFoobar);
 	}
 
@@ -126,7 +136,7 @@ final class ParserInternalTypeBaseTest {
 	@Test
 	void testParserInternalTypeBaseString() {
 		try {
-			assertNotNull(getInstance("blargh"), "Expected no exception");
+			assertNotNull(getInstance(BLARGH), EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
 		}
@@ -139,8 +149,8 @@ final class ParserInternalTypeBaseTest {
 	@Test
 	void testParserInternalTypeBaseParserInternalTypeBaseString() {
 		try {
-			assertNotNull(getInstance(ParserInternalTypeBase.EMPTY_TYPE, "blargh"),
-					"Expected no exception");
+			assertNotNull(getInstance(ParserInternalTypeBase.EMPTY_TYPE, BLARGH),
+					EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
 		}
@@ -153,8 +163,8 @@ final class ParserInternalTypeBaseTest {
 	@Test
 	void testParserInternalTypeBaseParserInternalTypeBaseStringString() {
 		try {
-			assertNotNull(getInstance(ParserInternalTypeBase.EMPTY_TYPE, "blargh", "blech"),
-					"Expected no exception");
+			assertNotNull(getInstance(ParserInternalTypeBase.EMPTY_TYPE, BLARGH, BLECH),
+					EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
 		}
@@ -166,7 +176,7 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testGet() {
-		assertAll(() -> assertEquals(this.testFoobar, this.testItem.get("foobar")),
+		assertAll("", () -> assertEquals(this.testFoobar, this.testItem.get(FOOBAR), ""),
 				() -> assertThrows(IllegalArgumentException.class,
 						() -> this.testItem.get(".foo")));
 	}
@@ -177,8 +187,9 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testHas() {
-		this.testFoobar.addItem(getInstance("blargh"));
-		assertAll(() -> assertTrue(this.testItem.has("foobar"), "Test Item has child \"foobar\""),
+		this.testFoobar.addItem(getInstance(BLARGH));
+		assertAll("",
+				() -> assertTrue(this.testItem.has(FOOBAR), "Test Item has child \"foobar\""),
 				() -> assertFalse(this.testItem.has("foobar.baz"),
 						"Test Item's child \"foobar\" doesn't have child \"baz\""),
 				() -> assertTrue(this.testItem.has("foobar.blargh"),
@@ -194,10 +205,11 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testEmptyType() {
-		assertAll(() -> assertEquals("EMPTY", ParserInternalTypeBase.EMPTY_TYPE.getValue()),
-				() -> assertEquals("EMPTY", ParserInternalTypeBase.EMPTY_TYPE.getValueRaw()),
-				() -> assertEquals(ItemType.EMPTY, ParserInternalTypeBase.EMPTY_TYPE.getType()),
-				() -> assertFalse(ParserInternalTypeBase.EMPTY_TYPE.has("Blargh"),
+		assertAll("",
+				() -> assertEquals(EMPTY, ParserInternalTypeBase.EMPTY_TYPE.getValue(), ""),
+				() -> assertEquals(EMPTY, ParserInternalTypeBase.EMPTY_TYPE.getValueRaw(), ""),
+				() -> assertEquals(ItemType.EMPTY, ParserInternalTypeBase.EMPTY_TYPE.getType(), ""),
+				() -> assertFalse(ParserInternalTypeBase.EMPTY_TYPE.has(BLARGH),
 						"EmptyType always fails has() checks"));
 	}
 
@@ -206,7 +218,7 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testGetType() {
-		assertEquals(ParserInternalTypeBase.ItemType.INVALID, this.testItem.getType());
+		assertEquals(ParserInternalTypeBase.ItemType.INVALID, this.testItem.getType(), "");
 	}
 
 	/**
@@ -214,7 +226,7 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testAsString() {
-		assertEquals("Abstract!", this.testItem.getValue());
+		assertEquals(ABSTRACT, this.testItem.getValue(), "");
 	}
 
 	/**
@@ -225,7 +237,7 @@ final class ParserInternalTypeBaseTest {
 	void testSetName() {
 		final ParserInternalTypeBase t = getInstance("a");
 		t.setName("b");
-		assertEquals("b", t.getName());
+		assertEquals("b", t.getName(), "");
 	}
 
 	/**
@@ -233,7 +245,7 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testGetName() {
-		assertEquals("blech", this.testItem.getName());
+		assertEquals(BLECH, this.testItem.getName(), "");
 	}
 
 	/**
@@ -244,7 +256,7 @@ final class ParserInternalTypeBaseTest {
 	void testAddItem() {
 		try {
 			this.testItem.addItem(ParserInternalTypeBase.EMPTY_TYPE);
-			assertTrue(true, "Expected no exception");
+			assertTrue(true, EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
@@ -255,7 +267,7 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testGetParent() {
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.getParent());
+		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.getParent(), "");
 	}
 
 	/**
@@ -263,7 +275,7 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testEmptyTypeGet() {
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, ParserInternalTypeBase.EMPTY_TYPE.get("blargh"));
+		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, ParserInternalTypeBase.EMPTY_TYPE.get(BLARGH), "");
 	}
 
 	/**
@@ -272,7 +284,7 @@ final class ParserInternalTypeBaseTest {
 	@Test
 	void testEmptyTypeGetType() {
 		assertEquals(ParserInternalTypeBase.ItemType.EMPTY,
-				ParserInternalTypeBase.EMPTY_TYPE.getType());
+				ParserInternalTypeBase.EMPTY_TYPE.getType(), "");
 	}
 
 	/**
@@ -282,7 +294,7 @@ final class ParserInternalTypeBaseTest {
 	void testEmptyTypeAddItem() {
 		try {
 			ParserInternalTypeBase.EMPTY_TYPE.addItem(ParserInternalTypeBase.EMPTY_TYPE);
-			assertTrue(true, "Expected no exception");
+			assertTrue(true, EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
@@ -294,7 +306,7 @@ final class ParserInternalTypeBaseTest {
 	@Test
 	void testParserInternalTypeBaseGetNoMember() {
 		final ParserInternalTypeBase p = getInstance("z");
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("blargh"));
+		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get(BLARGH), "");
 	}
 
 	/**
@@ -302,8 +314,8 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testParserInternalTypeBaseGetValue() {
-		final ParserInternalTypeBase p = getInstance("ZZTOP");
-		assertEquals("Abstract!", p.getValueRaw());
+		final ParserInternalTypeBase p = getInstance(ZZTOP);
+		assertEquals(ABSTRACT, p.getValueRaw(), "");
 	}
 
 	/**
@@ -311,8 +323,8 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testParserInternalTypeBaseGetChildrenEmpty() {
-		final ParserInternalTypeBase p = getInstance("ZZTOP");
-		assertEquals(Collections.emptyMap(), p.getChildren());
+		final ParserInternalTypeBase p = getInstance(ZZTOP);
+		assertEquals(Collections.emptyMap(), p.getChildren(), "");
 	}
 
 	/**
@@ -320,12 +332,12 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testParserInternalTypeBaseGetChildrenMembers() {
-		final ParserInternalTypeBase p = getInstance("MUZAK");
-		final ParserInternalTypeBase q = getInstance("ZZTOP");
+		final ParserInternalTypeBase p = getInstance(MUZAK);
+		final ParserInternalTypeBase q = getInstance(ZZTOP);
 		p.addItem(q);
 		final Map<String, ParserInternalTypeBase> expectBase = new ConcurrentHashMap<>();
-		expectBase.put("ZZTOP", q);
-		assertEquals(Collections.unmodifiableMap(expectBase), p.getChildren());
+		expectBase.put(ZZTOP, q);
+		assertEquals(Collections.unmodifiableMap(expectBase), p.getChildren(), "");
 	}
 
 	/**
@@ -333,10 +345,10 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testParserInternalTypeBaseGetItemLongNone() {
-		final ParserInternalTypeBase p = getInstance("MUZAK");
-		final ParserInternalTypeBase q = getInstance("ZZTOP");
+		final ParserInternalTypeBase p = getInstance(MUZAK);
+		final ParserInternalTypeBase q = getInstance(ZZTOP);
 		p.addItem(q);
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("ZZTOP.MUZAK"));
+		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("ZZTOP.MUZAK"), "");
 	}
 
 	/**
@@ -344,10 +356,10 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testParserInternalTypeBaseGetItemLongValid() {
-		final ParserInternalTypeBase p = getInstance("MUZAK");
-		final ParserInternalTypeBase q = getInstance("ZZTOP");
+		final ParserInternalTypeBase p = getInstance(MUZAK);
+		final ParserInternalTypeBase q = getInstance(ZZTOP);
 		p.addItem(q);
-		assertEquals(q, p.get("MUZAK.ZZTOP"));
+		assertEquals(q, p.get("MUZAK.ZZTOP"), "");
 	}
 
 	/**
@@ -355,10 +367,10 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testParserInternalTypeBaseGetItemLongCondTestOne() {
-		final ParserInternalTypeBase p = getInstance("MUZAK");
-		final ParserInternalTypeBase q = getInstance("ZZTOP");
+		final ParserInternalTypeBase p = getInstance(MUZAK);
+		final ParserInternalTypeBase q = getInstance(ZZTOP);
 		p.addItem(q);
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("ZZTOP.ZZTOP"));
+		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("ZZTOP.ZZTOP"), "");
 	}
 
 	/**
@@ -366,10 +378,10 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testParserInternalTypeBaseGetItemLongCondTestTwo() {
-		final ParserInternalTypeBase p = getInstance("MUZAK");
-		final ParserInternalTypeBase q = getInstance("ZZTOP");
+		final ParserInternalTypeBase p = getInstance(MUZAK);
+		final ParserInternalTypeBase q = getInstance(ZZTOP);
 		p.addItem(q);
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("MUZAK.MUZAK"));
+		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("MUZAK.MUZAK"), "");
 	}
 
 	/**
@@ -377,9 +389,9 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testParserInternalTypeBaseGetItemLongCondTestThree() {
-		final ParserInternalTypeBase p = getInstance("MUZAK");
-		final ParserInternalTypeBase q = getInstance("ZZTOP");
+		final ParserInternalTypeBase p = getInstance(MUZAK);
+		final ParserInternalTypeBase q = getInstance(ZZTOP);
 		p.addItem(q);
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("BLARGH.BLECH"));
+		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, p.get("BLARGH.BLECH"), "");
 	}
 }
