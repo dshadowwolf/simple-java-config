@@ -181,7 +181,8 @@ final class ConfigTests {
 				() -> assertThrows(TypeRegistrationException.class, () -> Config.getFactory().getType(null, "", "",
 				ItemType.INVALID), ""),
 				() -> assertThrows(ParserRegistrationException.class, () -> Config.registerParser(WILLTHROW, ParserThatThrows.class), ""),
-				() -> assertThrows(UnknownStateException.class, () -> Config.getFactory().getParser(NULLPARSER, null), ""));
+				() -> assertThrows(UnknownStateException.class, () -> Config.getFactory().getParser(NULLPARSER, null), ""),
+				() -> assertThrows(IOException.class, () -> Config.loadFile("assets/this-doesnt-exist.cfg")));
 	}
 
 	/**
@@ -263,5 +264,5 @@ final class ConfigTests {
 		public String getValueRaw() {
 			return this.getValue();
 		}
-	}
+	}	
 }

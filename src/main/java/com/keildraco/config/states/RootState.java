@@ -19,7 +19,7 @@ public final class RootState extends AbstractParserBase {
 	 * @param factoryIn
 	 * @param parentIn
 	 */
-	public RootState(@Nullable final TypeFactory factoryIn,
+	public RootState(final TypeFactory factoryIn,
 			@Nullable final ParserInternalTypeBase parentIn) {
 		super(factoryIn, parentIn, "ROOT");
 	}

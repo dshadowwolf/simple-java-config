@@ -7,8 +7,6 @@ import java.util.LinkedList;
 
 import com.keildraco.config.data.Token;
 
-import javax.annotation.Nullable;
-
 /**
  *
  * @author Daniel Hazelton
@@ -16,6 +14,8 @@ import javax.annotation.Nullable;
  */
 public final class Tokenizer {
 
+	private static final String EMPTY_TOKEN = "---EMPTY---";
+	
 	/**
 	 *
 	 */
@@ -57,7 +57,7 @@ public final class Tokenizer {
 	 */
 	public Token nextToken() {
 		if (this.tokens.isEmpty()) {
-			return new Token("---EMPTY---");
+			return new Token(EMPTY_TOKEN);
 		}
 		return this.tokens.pop();
 	}
@@ -77,7 +77,7 @@ public final class Tokenizer {
 	public Token peekToken() {
 		if (this.tokens.isEmpty() ||
 				this.tokens.size() == 1) {
-			return new Token("---EMPTY---");
+			return new Token(EMPTY_TOKEN);
 		}
 
 		final Token tok = this.tokens.pop();
@@ -92,7 +92,7 @@ public final class Tokenizer {
 	 */
 	public Token peek() {
 		if (this.tokens.isEmpty()) {
-			return new Token("---EMPTY---");
+			return new Token(EMPTY_TOKEN);
 		}
 
 		return this.tokens.peek();
