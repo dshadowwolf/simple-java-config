@@ -59,9 +59,8 @@ public final class OperationParser extends AbstractParserBase {
 					String.format("Found %s where an Identifier was expected", operT.getValue()));
 		}
 
-		
 		if (last.getType().equals(TokenType.CLOSE_PARENS)) {
-			OperationType rv = (OperationType) this.getFactory().getType(null, key, value.getValue(),
+			final OperationType rv = (OperationType) this.getFactory().getType(null, key, value.getValue(),
 					ItemType.OPERATION);
 			rv.setOperation(operT.getValue());
 			return rv;

@@ -35,6 +35,10 @@ import com.keildraco.config.tokenizer.Tokenizer;
  */
 final class KeyValueParserTest {
 
+	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
+	private static final String EXCEPTION_GETTING = "Exception getting type instance for %s: %s";
+	private static final String KEYVALUE = "KEYVALUE";
+
 	/**
 	 *
 	 */
@@ -43,23 +47,24 @@ final class KeyValueParserTest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			final IStateParser p = Config.getFactory().getParser("KEYVALUE", null);
+			final IStateParser p = Config.getFactory().getParser(KEYVALUE, null);
 			final String data = "item = value";
 			final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
 			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			final StreamTokenizer tok = new StreamTokenizer(br);
 			final Tokenizer t = new Tokenizer(tok);
 			final ParserInternalTypeBase pb = p.getState(t);
-			assertAll("result is correct", () -> assertNotNull(pb, "result not null"),
+			assertAll("result is correct",
+					() -> assertNotNull(pb, "result not null"),
 					() -> assertEquals("item", pb.getName(), "name is correct"),
 					() -> assertEquals("value", pb.getValueRaw(), "value is correct"));
 		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
 				| InstantiationException | IllegalAccessException | InvocationTargetException
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -69,14 +74,14 @@ final class KeyValueParserTest {
 	@Test
 	void testKeyValueParser() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final KeyValueParser kvp = new KeyValueParser(f, null);
+			final TypeFactory tf = new TypeFactory();
+			final KeyValueParser kvp = new KeyValueParser(tf, null);
 			assertNotNull(kvp, "Able to instantiate a KeyValueParser");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -86,15 +91,15 @@ final class KeyValueParserTest {
 	@Test
 	void testRegisterTransitions() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final KeyValueParser kvp = new KeyValueParser(f, null);
-			kvp.registerTransitions(f);
+			final TypeFactory tf = new TypeFactory();
+			final KeyValueParser kvp = new KeyValueParser(tf, null);
+			kvp.registerTransitions(tf);
 			assertTrue(true, "was able to register transitions");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -116,7 +121,7 @@ final class KeyValueParserTest {
 			IllegalAccessException, InvocationTargetException {
 		Config.reset();
 		Config.registerKnownParts();
-		final IStateParser parser = Config.getFactory().getParser("KEYVALUE", null);
+		final IStateParser parser = Config.getFactory().getParser(KEYVALUE, null);
 		final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
 		final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		final StreamTokenizer tok = new StreamTokenizer(br);
@@ -132,11 +137,10 @@ final class KeyValueParserTest {
 	void testGetStateErrorRoutes() {
 		final String goodData = "item = value(! value)";
 		final String noData = "";
-		assertAll(
-				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData),
+		assertAll("",
+				() -> assertThrows(IllegalParserStateException.class, () -> this.doParse(noData),
 						"Illegal State, no data to parse"),
-				() -> assertThrows(UnknownStateException.class, () -> doParse(goodData),
+				() -> assertThrows(UnknownStateException.class, () -> this.doParse(goodData),
 						"KEYVALUE cannot store OPERATION"));
 	}
-
 }

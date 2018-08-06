@@ -37,6 +37,14 @@ import com.keildraco.config.tokenizer.Tokenizer;
  */
 final class DataQueryTest {
 
+	private static final String ASSETS = "assets";
+	private static final String BASE_CONFIG_TEST_CFG = "base-config-test.cfg";
+	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
+	private static final String EXCEPTION_GETTING = "Exception getting type instance for %s: %s";
+	private static final String LOAD_WORKED = "Load Worked? ";
+	private static final String RESOURCE_COULD_NOT_BE_FOUND = "Resource could not be found!";
+	private static final String ROOT = "ROOT";
+
 	/**
 	 *
 	 * @throws Exception
@@ -53,25 +61,25 @@ final class DataQueryTest {
 	@Test
 	void testOf() {
 		try {
-			final Path p = Paths.get("assets", "base-config-test.cfg");
+			final Path p = Paths.get(ASSETS, BASE_CONFIG_TEST_CFG);
 			final String ts = String.join("/", p.toString().split("\\\\"));
 			final URL tu = Config.class.getClassLoader().getResource(ts);
-			assertNotNull(tu, "Resource could not be found!");
+			assertNotNull(tu, RESOURCE_COULD_NOT_BE_FOUND);
 			final URI temp = tu.toURI();
 			final InputStream is = temp.toURL().openStream();
 			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			final StreamTokenizer tok = new StreamTokenizer(br);
 			final Tokenizer t = new Tokenizer(tok);
-			final ParserInternalTypeBase pb = Config.getFactory().getParser("ROOT", null)
+			final ParserInternalTypeBase pb = Config.getFactory().getParser(ROOT, null)
 					.getState(t);
-			final DataQuery c = DataQuery.of(pb);
-			assertNotNull(c, "Load Worked? ");
+			final DataQuery dq = DataQuery.of(pb);
+			assertNotNull(dq, LOAD_WORKED);
 		} catch (final IOException | IllegalArgumentException | URISyntaxException
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -80,24 +88,23 @@ final class DataQueryTest {
 	 */
 	@Test
 	void testGet() {
-		final Path p = Paths.get("assets", "base-config-test.cfg");
-		DataQuery c;
 		try {
-			c = com.keildraco.config.Config.loadFile(p);
-			assertAll(() -> assertTrue(c.get("section.magic"), "basic test"),
-					() -> assertFalse(c.get("section.dead"), "incorrect key"),
-					() -> assertTrue(c.get("section"), "variant"),
-					() -> assertTrue(c.get("section.magic.xyzzy"), "long test"),
-					() -> assertFalse(c.get("nope"), "nonexistent bit, short"),
-					() -> assertFalse(c.get("section.blech.dead"), "buried dead key"),
-					() -> assertThrows(IllegalArgumentException.class, () -> c.get(".section")));
+			final Path p = Paths.get(ASSETS, BASE_CONFIG_TEST_CFG);
+			final DataQuery dq = Config.loadFile(p);
+			assertAll("",
+					() -> assertTrue(dq.get("section.magic"), "basic test"),
+					() -> assertFalse(dq.get("section.dead"), "incorrect key"),
+					() -> assertTrue(dq.get("section"), "variant"),
+					() -> assertTrue(dq.get("section.magic.xyzzy"), "long test"),
+					() -> assertFalse(dq.get("nope"), "nonexistent bit, short"),
+					() -> assertFalse(dq.get("section.blech.dead"), "buried dead key"),
+					() -> assertThrows(IllegalArgumentException.class, () -> dq.get(".section")));
 		} catch (final IOException | IllegalArgumentException | URISyntaxException
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error("Exception getting instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
-
 }

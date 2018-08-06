@@ -27,6 +27,8 @@ import com.keildraco.config.tokenizer.Tokenizer;
  */
 final class TokenizerTest {
 
+	private static final String CAUGHT_EXCEPTION = "Caught exception instantiating Tokenizer: ";
+
 	/**
 	 *
 	 */
@@ -50,11 +52,11 @@ final class TokenizerTest {
 	@Test
 	void testTokenizer() {
 		try {
-			final Tokenizer t = new Tokenizer(tok);
+			final Tokenizer t = new Tokenizer(this.tok);
 			assertTrue(t.getClass().equals(Tokenizer.class),
 					"No exception caught when instantiating tokenizer");
 		} catch (final Exception e) {
-			fail("Caught exception instantiating Tokenizer: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -64,7 +66,7 @@ final class TokenizerTest {
 	@Test
 	void testNextToken() {
 		try {
-			final Tokenizer t = new Tokenizer(tok);
+			final Tokenizer t = new Tokenizer(this.tok);
 			final Token tt = t.nextToken();
 			assertNotNull(tt, "t.nextToken() returned null!");
 			assertAll(
@@ -72,7 +74,7 @@ final class TokenizerTest {
 					() -> TokenType.IDENTIFIER.equals(tt.getType()),
 					() -> "a".equals(tt.getValue()));
 		} catch (final IOException e) {
-			fail("Caught exception running test: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -82,11 +84,11 @@ final class TokenizerTest {
 	@Test
 	void testHasNextTrue() {
 		try {
-			Tokenizer t = new Tokenizer(tok);
+			Tokenizer t = new Tokenizer(this.tok);
 			assertTrue(t.hasNext(),
 					"t.hasNext() did not throw an exception and returns true when more tokens remain");
 		} catch (final Exception e) {
-			fail("Caught exception running test: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -104,7 +106,7 @@ final class TokenizerTest {
 			assertFalse(t.hasNext(),
 					"t.hasNext() did not throw an exception and returns false when no more tokens remain");
 		} catch (final Exception e) {
-			fail("Caught exception running test: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -114,7 +116,7 @@ final class TokenizerTest {
 	@Test
 	void testPeekToken() {
 		try {
-			final Tokenizer t = new Tokenizer(tok);
+			final Tokenizer t = new Tokenizer(this.tok);
 			final Token tt = t.peekToken();
 			assertNotNull(tt, "t.nextToken() returned null!");
 			assertAll(
@@ -122,7 +124,7 @@ final class TokenizerTest {
 					() -> TokenType.IDENTIFIER.equals(tt.getType()),
 					() -> "a".equals(tt.getValue()));
 		} catch (final IOException e) {
-			fail("Caught exception running test: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -132,13 +134,13 @@ final class TokenizerTest {
 	@Test
 	void testPushBack() {
 		try {
-			final Tokenizer t = new Tokenizer(tok);
+			final Tokenizer t = new Tokenizer(this.tok);
 			final Token tt = t.nextToken();
 			assertNotNull(tt, "t.nextToken() returned null!");
 			t.pushBack(tt);
 			assertTrue(true, "t.nextToken() and t.pushBack() did not throw an exception");
 		} catch (final Exception e) {
-			fail("Caught exception running test: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 }

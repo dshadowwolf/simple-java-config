@@ -82,7 +82,11 @@ public final class Token {
 	public TokenType getType() {
 		return this.type;
 	}
-	
+
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isEmpty() {
 		return this.type.equals(TokenType.EMPTY);
 	}

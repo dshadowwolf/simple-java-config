@@ -37,6 +37,18 @@ import com.keildraco.config.types.ListType;
 @TestInstance(Lifecycle.PER_CLASS)
 final class ListTypeTest {
 
+	private static final String BAR = "bar";
+	private static final String BLANK = "blank";
+	private static final String BLARGH = "blargh";
+	private static final String CAUGHT_EXCEPTION = "caught exception: ";
+	private static final String CONSTRUCTOR_WORKS = "constructor works";
+	private static final String EMPTY = "EMPTY";
+	private static final String FOO = "foo";
+	private static final String FOOBAR = "foobar";
+	private static final String LIST = "LIST";
+	private static final String NOPE = "nope";
+	private static final String TEST = "test";
+
 	/**
 	 *
 	 */
@@ -47,7 +59,7 @@ final class ListTypeTest {
 	 */
 	@BeforeAll
 	void setUp() throws Exception {
-		this.testItem = new ListType("blank");
+		this.testItem = new ListType(BLANK);
 	}
 
 	/**
@@ -55,10 +67,10 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testGet() {
-		final ListType l = new ListType("blargh");
-		final IdentifierType i = new IdentifierType("test", "nope");
-		l.addItem(i);
-		assertEquals(i, l.get("test"));
+		final ListType lt = new ListType(BLARGH);
+		final IdentifierType idt = new IdentifierType(TEST, NOPE);
+		lt.addItem(idt);
+		assertEquals(idt, lt.get(TEST), "");
 	}
 
 	/**
@@ -66,7 +78,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testHas() {
-		assertFalse(this.testItem.has("test"));
+		assertFalse(this.testItem.has(TEST), "");
 	}
 
 	/**
@@ -74,7 +86,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testGetType() {
-		assertEquals(ParserInternalTypeBase.ItemType.LIST, this.testItem.getType());
+		assertEquals(ParserInternalTypeBase.ItemType.LIST, this.testItem.getType(), "");
 	}
 
 	/**
@@ -82,7 +94,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testGetValueAsList() {
-		assertEquals(Collections.emptyList(), this.testItem.getValueAsList());
+		assertEquals(Collections.emptyList(), this.testItem.getValueAsList(), "");
 	}
 
 	/**
@@ -92,9 +104,9 @@ final class ListTypeTest {
 	@Test
 	void testAddItem() {
 		try {
-			final ListType testItem2 = new ListType("blargh");
+			final ListType testItem2 = new ListType(BLARGH);
 			testItem2.addItem(ParserInternalTypeBase.EMPTY_TYPE);
-			assertTrue(testItem2.has("EMPTY"), "Expected no exception");
+			assertTrue(testItem2.has(EMPTY), "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
@@ -105,7 +117,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testGetValue() {
-		assertEquals("blank = [  ]", this.testItem.getValue());
+		assertEquals("blank = [  ]", this.testItem.getValue(), "");
 	}
 
 	/**
@@ -133,10 +145,10 @@ final class ListTypeTest {
 	@Test
 	void testListTypeParentName() {
 		try {
-			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "blargh");
-			assertNotNull(lt, "constructor works");
+			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, BLARGH);
+			assertNotNull(lt, CONSTRUCTOR_WORKS);
 		} catch (final Exception e) {
-			fail("caught exception: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -146,10 +158,10 @@ final class ListTypeTest {
 	@Test
 	void testListTypeParentNameValue() {
 		try {
-			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, "foo", "bar");
-			assertNotNull(lt, "constructor works");
+			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, FOO, BAR);
+			assertNotNull(lt, CONSTRUCTOR_WORKS);
 		} catch (final Exception e) {
-			fail("caught exception: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -162,18 +174,18 @@ final class ListTypeTest {
 			Config.reset();
 			Config.registerKnownParts();
 			final String data = "[ a, b, c, d, e(! f) ]";
-			final IStateParser parser = Config.getFactory().getParser("LIST", null);
+			final IStateParser parser = Config.getFactory().getParser(LIST, null);
 			final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
 			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 			final StreamTokenizer tok = new StreamTokenizer(br);
 			final Tokenizer t = new Tokenizer(tok);
 			final ParserInternalTypeBase pitb = parser.getState(t);
-			pitb.setName("foobar");
-			assertEquals("foobar = [ a, b, c, d, e(! f) ]", pitb.getValue());
+			pitb.setName(FOOBAR);
+			assertEquals("foobar = [ a, b, c, d, e(! f) ]", pitb.getValue(), "");
 		} catch (final UnknownStateException | IllegalParserStateException | GenericParseException
 				| IOException | NoSuchMethodException | InstantiationException
 				| IllegalAccessException | InvocationTargetException e) {
-			fail("caught exception: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 }

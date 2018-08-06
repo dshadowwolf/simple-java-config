@@ -49,7 +49,7 @@ public final class ListParser extends AbstractParserBase {
 		while (tokenizer.hasNext()) {
 			switch (current.getType()) {
 				case IDENTIFIER:
-					if ((next != null) && ((next.getType() != TokenType.SEPERATOR)
+					if ((next.isEmpty()) && ((next.getType() != TokenType.SEPERATOR)
 							&& (next.getType() != TokenType.CLOSE_LIST))) {
 						rv.addItem(this.getFactory().nextState(this.getName(), current, next)
 								.getState(tokenizer));

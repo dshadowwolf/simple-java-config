@@ -35,6 +35,10 @@ import com.keildraco.config.tokenizer.Tokenizer;
  */
 final class SectionParserTest {
 
+	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
+	private static final String EXCEPTION_GETTING = "Exception getting type instance for %s: %s";
+	private static final String SECTION = "SECTION";
+
 	/**
 	 *
 	 * @param data
@@ -53,7 +57,7 @@ final class SectionParserTest {
 			IllegalParserStateException, UnknownStateException, GenericParseException {
 		Config.reset();
 		Config.registerKnownParts();
-		final IStateParser parser = Config.getFactory().getParser("SECTION", null);
+		final IStateParser parser = Config.getFactory().getParser(SECTION, null);
 		final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
 		final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
 		final StreamTokenizer tok = new StreamTokenizer(br);
@@ -71,12 +75,12 @@ final class SectionParserTest {
 		final String noData = "";
 		final String badData = "section { [ item ] }";
 
-		assertAll(
-				() -> assertNotSame(ParserInternalTypeBase.EMPTY_TYPE, doParse(validData),
+		assertAll("",
+				() -> assertNotSame(ParserInternalTypeBase.EMPTY_TYPE, this.doParse(validData),
 						"standard parse works"),
-				() -> assertThrows(GenericParseException.class, () -> doParse(earlyExit)),
-				() -> assertThrows(IllegalParserStateException.class, () -> doParse(noData)),
-				() -> assertThrows(UnknownStateException.class, () -> doParse(badData)));
+				() -> assertThrows(GenericParseException.class, () -> this.doParse(earlyExit)),
+				() -> assertThrows(IllegalParserStateException.class, () -> this.doParse(noData)),
+				() -> assertThrows(UnknownStateException.class, () -> this.doParse(badData)));
 	}
 
 	/**
@@ -85,14 +89,14 @@ final class SectionParserTest {
 	@Test
 	void testSectionParser() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final SectionParser sp = new SectionParser(f, null);
+			final TypeFactory tf = new TypeFactory();
+			final SectionParser sp = new SectionParser(tf, null);
 			assertNotNull(sp, "Able to instantiate a SectionParser");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 
@@ -102,15 +106,15 @@ final class SectionParserTest {
 	@Test
 	void testRegisterTransitions() {
 		try {
-			final TypeFactory f = new TypeFactory();
-			final SectionParser sp = new SectionParser(f, null);
-			sp.registerTransitions(f);
+			final TypeFactory tf = new TypeFactory();
+			final SectionParser sp = new SectionParser(tf, null);
+			sp.registerTransitions(tf);
 			assertTrue(true, "was able to register transitions");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail("Caught exception running loadFile: " + e);
+			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
 }

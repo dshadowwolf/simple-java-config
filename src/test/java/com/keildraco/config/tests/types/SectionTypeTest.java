@@ -21,25 +21,31 @@ import com.keildraco.config.types.SectionType;
 @TestInstance(Lifecycle.PER_CLASS)
 final class SectionTypeTest {
 
-	/**
-	 *
-	 */
-	private SectionType root = new SectionType("ROOT");
+	private static final String BLARGH = "blargh";
+	private static final String BLECH = "blech";
+	private static final String CHILD = "CHILD";
+	private static final String FOOBAR = "foobar";
+	private static final String ROOT = "ROOT";
 
 	/**
 	 *
 	 */
-	private SectionType child = new SectionType(this.root, "CHILD");
+	private SectionType root = new SectionType(ROOT);
+
+	/**
+	 *
+	 */
+	private SectionType child = new SectionType(this.root, CHILD);
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-		this.root = new SectionType("ROOT");
-		this.child = new SectionType(this.root, "CHILD");
-		final IdentifierType kp = new IdentifierType("blargh", "blech");
-		this.child.addItem(new IdentifierType("blargh", "foobar"));
+		this.root = new SectionType(ROOT);
+		this.child = new SectionType(this.root, CHILD);
+		final IdentifierType kp = new IdentifierType(BLARGH, BLECH);
+		this.child.addItem(new IdentifierType(BLARGH, FOOBAR));
 		this.root.addItem(kp);
 		this.root.addItem(this.child);
 	}
@@ -49,7 +55,7 @@ final class SectionTypeTest {
 	 */
 	@Test
 	void testGetType() {
-		assertEquals(ParserInternalTypeBase.ItemType.SECTION, this.root.getType());
+		assertEquals(ParserInternalTypeBase.ItemType.SECTION, this.root.getType(), "");
 	}
 
 	/**
@@ -59,8 +65,7 @@ final class SectionTypeTest {
 	@Test
 	void testAddItem() {
 		try {
-			final SectionType testItem2 = new SectionType("blargh");
-			testItem2.addItem(ParserInternalTypeBase.EMPTY_TYPE);
+			final SectionType testItem2 = new SectionType(BLARGH);
 			assertTrue(true, "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
@@ -72,7 +77,7 @@ final class SectionTypeTest {
 	 */
 	@Test
 	void testGetParent() {
-		assertEquals(this.child.getParent(), this.root);
+		assertEquals(this.child.getParent(), this.root, "");
 	}
 
 	/**
@@ -81,8 +86,9 @@ final class SectionTypeTest {
 	@Test
 	void testAsString() {
 		final String result = String.format("blargh = blech%n CHILD {%n blargh = foobar%n}");
-		assertAll(() -> assertEquals(result, this.root.getValue().trim()),
-				() -> assertEquals(result, this.root.getValueRaw().trim()));
+		assertAll("",
+				() -> assertEquals(result, this.root.getValue().trim(), ""),
+				() -> assertEquals(result, this.root.getValueRaw().trim(), ""));
 	}
 
 	/**
@@ -91,15 +97,15 @@ final class SectionTypeTest {
 	@Test
 	void testSectionTypeParentNameValue() {
 		try {
-			final SectionType stOne = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, "blargh",
-					"blech");
-			final SectionType stTwo = new SectionType(null, "blargh");
+			final SectionType stOne = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, BLARGH, BLECH);
+			final SectionType stTwo = new SectionType(null, BLARGH);
 			final SectionType stThree = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, "");
 			final String matchVal = String.format("blargh {%n}%n");
-			assertAll(() -> assertEquals("blargh", stOne.getName()),
-					() -> assertEquals("ROOT", stTwo.getName()),
-					() -> assertEquals("ROOT", stThree.getName()),
-					() -> assertEquals(matchVal, stOne.getValue()));
+			assertAll("",
+					() -> assertEquals(BLARGH, stOne.getName(), ""),
+					() -> assertEquals(ROOT, stTwo.getName(), ""),
+					() -> assertEquals(ROOT, stThree.getName(), ""),
+					() -> assertEquals(matchVal, stOne.getValue(), ""));
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}

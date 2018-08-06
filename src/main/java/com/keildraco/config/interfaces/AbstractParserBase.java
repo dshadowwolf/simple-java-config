@@ -25,7 +25,6 @@ public abstract class AbstractParserBase implements IStateParser {
 	/**
 	 *
 	 */
-	@Nullable
 	private TypeFactory factory;
 
 	/**
@@ -45,7 +44,7 @@ public abstract class AbstractParserBase implements IStateParser {
 	 * @param parentIn
 	 * @param nameIn
 	 */
-	public AbstractParserBase(@Nullable final TypeFactory factoryIn,
+	public AbstractParserBase(final TypeFactory factoryIn,
 			@Nullable final ParserInternalTypeBase parentIn, final String nameIn) {
 		this.factory = factoryIn;
 		this.parent = parentIn;
@@ -63,7 +62,6 @@ public abstract class AbstractParserBase implements IStateParser {
 	/**
 	 *
 	 */
-	@Nullable
 	@Override
 	public TypeFactory getFactory() {
 		return this.factory;
@@ -80,7 +78,6 @@ public abstract class AbstractParserBase implements IStateParser {
 	/**
 	 *
 	 */
-	@Nullable
 	@Override
 	public ParserInternalTypeBase getParent() {
 		return this.parent;

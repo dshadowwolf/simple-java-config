@@ -22,10 +22,16 @@ import com.keildraco.config.types.OperationType;
 @TestInstance(Lifecycle.PER_CLASS)
 final class OperationTypeTest {
 
+	private static final String BLARGH = "blargh";
+	private static final String CAUGHT_EXCEPTION = "Caught exception instantiating new OperationType";
+	private static final String EXPECTED_NO_EXCEPTION = "Expected no exception";
+	private static final String FOOBAR = "foobar";
+	private static final String OPERATION = "OPERATION";
+
 	/**
 	 *
 	 */
-	private OperationType testItem = new OperationType(EMPTY_TYPE, "blargh", "foobar");
+	private OperationType testItem = new OperationType(EMPTY_TYPE, BLARGH, FOOBAR);
 
 	/**
 	 *
@@ -33,7 +39,7 @@ final class OperationTypeTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-		this.testItem = new OperationType(EMPTY_TYPE, "blargh", "foobar");
+		this.testItem = new OperationType(EMPTY_TYPE, BLARGH, FOOBAR);
 		this.testItem.setOperation("!");
 	}
 
@@ -43,11 +49,11 @@ final class OperationTypeTest {
 	@Test
 	void testOperationTypeString() {
 		try {
-			final OperationType op = new OperationType("OPERATION");
-			op.setName("blargh");
-			assertTrue(true, "Expected no exception");
+			final OperationType op = new OperationType(OPERATION);
+			op.setName(BLARGH);
+			assertTrue(true, EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {
-			fail("Caught exception instantiating new OperationType");
+			fail(CAUGHT_EXCEPTION);
 		}
 	}
 
@@ -58,11 +64,11 @@ final class OperationTypeTest {
 	void testOperationTypeParserInternalTypeBaseString() {
 		try {
 			final OperationType op = new OperationType(ParserInternalTypeBase.EMPTY_TYPE,
-					"OPERATION");
-			op.setName("blargh");
-			assertTrue(true, "Expected no exception");
+					OPERATION);
+			op.setName(BLARGH);
+			assertTrue(true, EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {
-			fail("Caught exception instantiating new OperationType");
+			fail(CAUGHT_EXCEPTION);
 		}
 	}
 
@@ -71,7 +77,7 @@ final class OperationTypeTest {
 	 */
 	@Test
 	void testGetType() {
-		assertEquals(ItemType.OPERATION, this.testItem.getType());
+		assertEquals(ItemType.OPERATION, this.testItem.getType(), "");
 	}
 
 	/**
@@ -79,7 +85,7 @@ final class OperationTypeTest {
 	 */
 	@Test
 	void testAsString() {
-		assertEquals("blargh(! foobar)", this.testItem.getValue());
+		assertEquals("blargh(! foobar)", this.testItem.getValue(), "");
 	}
 
 	/**
@@ -89,7 +95,7 @@ final class OperationTypeTest {
 	void testSetOperation() {
 		try {
 			this.testItem.setOperation("!");
-			assertTrue(true, "Expected no exception");
+			assertTrue(true, EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}

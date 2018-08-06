@@ -1,6 +1,9 @@
 package com.keildraco.config.exceptions;
 
-
+/**
+ *
+ * @author Daniel Hazelton
+ */
 public class ParserRegistrationException extends RuntimeException {
 
 	/**
