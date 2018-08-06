@@ -277,8 +277,12 @@ public final class Config {
 	 */
 	public static DataQuery loadFile(final String filePath) throws IOException, URISyntaxException {
 		final URL tu = Config.class.getClassLoader().getResource(filePath);
-		final URI temp = tu.toURI();
-		return loadFile(temp);
+		if (tu != null) {
+			final URI temp = tu.toURI();
+			return loadFile(temp);
+		} else {
+			throw new IOException("URL was null!");
+		}
 	}
 
 	/**
