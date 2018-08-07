@@ -111,7 +111,7 @@ public final class ListType extends ParserInternalTypeBase {
 	 * @param item
 	 * @return
 	 */
-	private String getItemValue(final ParserInternalTypeBase item) {
+	private static String getItemValue(final ParserInternalTypeBase item) {
 		return item.getValue();
 	}
 
@@ -129,6 +129,6 @@ public final class ListType extends ParserInternalTypeBase {
 	@Override
 	public String getValueRaw() {
 		return String.format("[ %s ]",
-				this.value.stream().map(this::getItemValue).collect(Collectors.joining(", ")));
+				this.value.stream().map(ListType::getItemValue).collect(Collectors.joining(", ")));
 	}
 }

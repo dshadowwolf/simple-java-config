@@ -1,5 +1,8 @@
 package com.keildraco.config.data;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 /**
  *
  * @author Daniel Hazelton
@@ -22,8 +25,9 @@ public final class Token {
 	 * @param valueIn
 	 */
 	public Token(final String valueIn) {
+		final Matcher m = Pattern.compile("^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$").matcher(valueIn);
 		this.value = valueIn;
-		if (this.value.matches("^\\s*[a-zA-Z_]{1}[a-zA-Z0-9_]*\\s*$")) {
+		if (m.matches()) {
 			this.type = TokenType.IDENTIFIER;
 		} else {
 			switch (this.value) {

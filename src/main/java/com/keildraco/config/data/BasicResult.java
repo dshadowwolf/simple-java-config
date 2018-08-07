@@ -24,14 +24,14 @@ public final class BasicResult extends ParserInternalTypeBase {
 	 * @param value
 	 * @return
 	 */
-	private String valAsString(final ParserInternalTypeBase value) {
+	private static String valAsString(final ParserInternalTypeBase value) {
 		return value.getValue();
 	}
 
 	@Override
 	public String getValue() {
 		return String.join(String.format("%n"), this.getItems().values().stream()
-				.map(this::valAsString).collect(Collectors.toList()));
+				.map(BasicResult::valAsString).collect(Collectors.toList()));
 	}
 
 	@Override

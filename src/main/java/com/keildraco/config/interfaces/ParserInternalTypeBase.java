@@ -68,7 +68,7 @@ public abstract class ParserInternalTypeBase {
 	 *
 	 * @param nameIn
 	 */
-	public ParserInternalTypeBase(final String nameIn) {
+	protected ParserInternalTypeBase(final String nameIn) {
 		this(null, nameIn);
 	}
 
@@ -77,7 +77,7 @@ public abstract class ParserInternalTypeBase {
 	 * @param parentIn
 	 * @param nameIn
 	 */
-	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
+	protected ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
 			final String nameIn) {
 		this.name = nameIn;
 
@@ -96,7 +96,7 @@ public abstract class ParserInternalTypeBase {
 	 * @param nameIn
 	 * @param valueIn
 	 */
-	public ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
+	protected ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
 			final String nameIn, final String valueIn) {
 		this(parentIn, valueIn);
 		this.setName(nameIn);

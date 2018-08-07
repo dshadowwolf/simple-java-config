@@ -25,7 +25,6 @@ public class ItemMatcher {
 	 *
 	 */
 	public static final ItemMatcher ALWAYS_FALSE = new ItemMatcher(EMPTY_TYPE) {
-
 		@Override
 		public boolean matches(final String name) {
 			return false;

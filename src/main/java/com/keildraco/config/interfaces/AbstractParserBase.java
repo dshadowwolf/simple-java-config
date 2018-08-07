@@ -35,7 +35,7 @@ public abstract class AbstractParserBase implements IStateParser {
 	 * @param parentIn
 	 * @param nameIn
 	 */
-	public AbstractParserBase(final TypeFactory factoryIn,
+	protected AbstractParserBase(final TypeFactory factoryIn,
 			@Nullable final ParserInternalTypeBase parentIn, final String nameIn) {
 		this.factory = factoryIn;
 		this.parent = parentIn;
