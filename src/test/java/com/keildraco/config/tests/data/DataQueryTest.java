@@ -25,6 +25,8 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+import static com.keildraco.config.data.Constants.ParserNames.ROOT;
+
 /**
  *
  * @author Daniel Hazelton
@@ -37,7 +39,6 @@ final class DataQueryTest {
 	private static final String	CAUGHT_EXCEPTION		= "Caught exception running loadFile: ";
 	private static final String	EXCEPTION_GETTING		= "Exception getting type instance for {}: {}";
 	private static final String	LOAD_WORKED				= "Load Worked? ";
-	private static final String	ROOT					= "ROOT";
 
 	/**
 	 *

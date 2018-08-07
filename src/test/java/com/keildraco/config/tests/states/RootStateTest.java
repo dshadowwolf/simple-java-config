@@ -22,6 +22,7 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.RootState;
 import static com.keildraco.config.testsupport.SupportClass.runParser;
 import static com.keildraco.config.Config.EMPTY_TYPE;
+import static com.keildraco.config.data.Constants.ParserNames.ROOT;
 
 /**
  *
@@ -78,7 +79,7 @@ final class RootStateTest {
 	@Test
 	void testErrorStateInParse() {
 		try {
-			assertEquals(EMPTY_TYPE, runParser("error(! state)", "ROOT"));
+			assertEquals(EMPTY_TYPE, runParser("error(! state)", ROOT));
 		} catch (IllegalParserStateException | UnknownStateException | GenericParseException
 				| NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException | IOException | URISyntaxException e) {
@@ -93,7 +94,6 @@ final class RootStateTest {
 	 */
 	@Test
 	void testErrorStateNoInput() {
-		assertThrows(IllegalParserStateException.class, () -> runParser("", "ROOT"));
+		assertThrows(IllegalParserStateException.class, () -> runParser("", ROOT));
 	}
-
 }

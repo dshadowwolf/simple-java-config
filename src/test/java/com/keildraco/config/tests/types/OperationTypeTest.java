@@ -12,6 +12,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.types.OperationType;
 import static com.keildraco.config.Config.EMPTY_TYPE;
+import static com.keildraco.config.data.Constants.ParserNames.OPERATION;
 
 /**
  *
@@ -25,7 +26,6 @@ final class OperationTypeTest {
 	private static final String	CAUGHT_EXCEPTION		= "Caught exception instantiating new OperationType";
 	private static final String	EXPECTED_NO_EXCEPTION	= "Expected no exception";
 	private static final String	FOOBAR					= "foobar";
-	private static final String	OPERATION				= "OPERATION";
 
 	/**
 	 *

@@ -65,9 +65,9 @@ public final class ListParser extends AbstractParserBase {
 
 		while (tokenizer.hasNext()) {
 			if (current.getType() == TokenType.IDENTIFIER) {
-				handleIdentifierLoad(next, current, tokenizer, rv);
-			} else if (current.getType() == TokenType.SEPERATOR
-					|| current.getType() == TokenType.CLOSE_LIST) {
+				this.handleIdentifierLoad(next, current, tokenizer, rv);
+			} else if ((current.getType() == TokenType.SEPERATOR)
+					|| (current.getType() == TokenType.CLOSE_LIST)) {
 				tokenizer.nextToken(); // consume!
 				if (current.getType() == TokenType.CLOSE_LIST) {
 					return rv;

@@ -22,6 +22,7 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.OperationParser;
 import com.keildraco.config.types.OperationType;
+import static com.keildraco.config.data.Constants.ParserNames.OPERATION;
 
 /**
  *
@@ -35,7 +36,6 @@ final class OperationParserTest {
 	private static final String	IDENT				= "ident";
 	private static final String	RESULT_IS_CORRECT	= "result is correct";
 	private static final String	OP					= "op";
-	private static final String	OPERATION			= "OPERATION";
 	private static final String	NAME_IS_CORRECT		= "name is correct";
 	private static final String	RESULT_NOT_NULL		= "result not null";
 	private static final String	VALUE_IS_CORRECT	= "value is correct";
@@ -73,7 +73,7 @@ final class OperationParserTest {
 			final OperationParser op = new OperationParser(tf, null);
 			assertNotNull(op, "Able to instantiate a OperationParser");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error("Exception getting type instance for {}: {}", e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION + e);
@@ -91,7 +91,7 @@ final class OperationParserTest {
 			op.registerTransitions(tf);
 			assertTrue(true, "was able to register transitions");
 		} catch (final Exception e) {
-			Config.LOGGER.error("Exception getting type instance for %s: %s", e.toString(),
+			Config.LOGGER.error("Exception getting type instance for {}: {}", e.toString(),
 					e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION + e);

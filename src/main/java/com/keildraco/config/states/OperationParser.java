@@ -32,19 +32,19 @@ public final class OperationParser extends AbstractParserBase {
 	}
 
 	@Override
-	public ParserInternalTypeBase getState(final Tokenizer tok) {
-		if (!tok.hasNext()) {
+	public ParserInternalTypeBase getState(final Tokenizer tokenizer) {
+		if (!tokenizer.hasNext()) {
 			throw new IllegalParserStateException("End of input at start of state");
 		}
 
-		final String key = tok.nextToken().getValue();
+		final String key = tokenizer.nextToken().getValue();
 
-		tok.nextToken();
-		final Token operT = tok.nextToken();
-		final Token value = tok.nextToken();
-		final Token last = tok.nextToken();
+		tokenizer.nextToken();
+		final Token operT = tokenizer.nextToken();
+		final Token value = tokenizer.nextToken();
+		final Token last = tokenizer.nextToken();
 
-		if (operT.getType() != TokenType.NOT && operT.getType() != TokenType.TILDE) {
+		if ((operT.getType() != TokenType.NOT) && (operT.getType() != TokenType.TILDE)) {
 			if (operT.getType() == TokenType.IDENTIFIER) {
 				throw new GenericParseException(
 						"Found an Identifier where an Operator was expected");

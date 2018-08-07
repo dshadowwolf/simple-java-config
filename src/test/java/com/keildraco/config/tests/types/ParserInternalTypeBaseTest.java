@@ -23,6 +23,8 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
 import static com.keildraco.config.testsupport.SupportClass.getInstance;
 import static com.keildraco.config.Config.EMPTY_TYPE;
+import static com.keildraco.config.data.Constants.EMPTY_TYPE_VALUE;
+
 
 /**
  * @author Daniel Hazelton
@@ -34,7 +36,7 @@ final class ParserInternalTypeBaseTest {
 	private static final String	ABSTRACT				= "Abstract!";
 	private static final String	BLARGH					= "blargh";
 	private static final String	BLECH					= "blech";
-	private static final String	EMPTY					= "EMPTY";
+//	private static final String	EMPTY					= "EMPTY";
 	private static final String	EXPECTED_NO_EXCEPTION	= "Expected no exception";
 	private static final String	FOOBAR					= "foobar";
 	private static final String	MUZAK					= "MUZAK";
@@ -136,8 +138,8 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testEmptyType() {
-		assertAll("", () -> assertEquals(EMPTY, EMPTY_TYPE.getValue(), ""),
-				() -> assertEquals(EMPTY, EMPTY_TYPE.getValueRaw(), ""),
+		assertAll("", () -> assertEquals(EMPTY_TYPE_VALUE, EMPTY_TYPE.getValue(), ""),
+				() -> assertEquals(EMPTY_TYPE_VALUE, EMPTY_TYPE.getValueRaw(), ""),
 				() -> assertEquals(ItemType.EMPTY, EMPTY_TYPE.getType(), ""),
 				() -> assertFalse(EMPTY_TYPE.has(BLARGH), "EmptyType always fails has() checks"));
 	}
