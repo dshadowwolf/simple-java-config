@@ -12,6 +12,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.io.IOUtils;
@@ -142,6 +143,74 @@ public class SupportClass {
 		public String getValueRaw() {
 			return this.getValue();
 		}
+	}
+
+	/**
+	 *
+	 * @param name
+	 * @return
+	 */
+	public static final ParserInternalTypeBase getInstance(final String name) {
+		return new ParserInternalTypeBase(name) {
+
+			@Override
+			@Nonnull
+			public String getValueRaw() {
+				return this.getValue();
+			}
+
+			@Override
+			public String getValue() {
+				return ABSTRACT;
+			}
+		};
+	}
+
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 * @return
+	 */
+	public static final ParserInternalTypeBase getInstance(final ParserInternalTypeBase parent,
+			final String name) {
+		return new ParserInternalTypeBase(parent, name) {
+
+			@Nonnull
+			@Override
+			public String getValueRaw() {
+				return this.getValue();
+			}
+
+			@Override
+			public String getValue() {
+				return ABSTRACT;
+			}
+		};
+	}
+
+	/**
+	 *
+	 * @param parent
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public static final ParserInternalTypeBase getInstance(final ParserInternalTypeBase parent,
+			final String name, final String value) {
+		return new ParserInternalTypeBase(parent, name, value) {
+
+			@Nonnull
+			@Override
+			public String getValueRaw() {
+				return this.getValue();
+			}
+
+			@Override
+			public String getValue() {
+				return ABSTRACT;
+			}
+		};
 	}
 
 }

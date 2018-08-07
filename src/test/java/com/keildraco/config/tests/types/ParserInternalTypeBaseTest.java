@@ -12,8 +12,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.Nonnull;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -21,6 +19,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
+import static com.keildraco.config.testsupport.SupportClass.getInstance;
 
 /**
  * @author Daniel Hazelton
@@ -48,74 +47,6 @@ final class ParserInternalTypeBaseTest {
 	 *
 	 */
 	private ParserInternalTypeBase testFoobar;
-
-	/**
-	 *
-	 * @param name
-	 * @return
-	 */
-	private static ParserInternalTypeBase getInstance(final String name) {
-		return new ParserInternalTypeBase(name) {
-
-			@Override
-			@Nonnull
-			public String getValueRaw() {
-				return this.getValue();
-			}
-
-			@Override
-			public String getValue() {
-				return ABSTRACT;
-			}
-		};
-	}
-
-	/**
-	 *
-	 * @param parent
-	 * @param name
-	 * @return
-	 */
-	private static ParserInternalTypeBase getInstance(final ParserInternalTypeBase parent,
-			final String name) {
-		return new ParserInternalTypeBase(parent, name) {
-
-			@Nonnull
-			@Override
-			public String getValueRaw() {
-				return this.getValue();
-			}
-
-			@Override
-			public String getValue() {
-				return ABSTRACT;
-			}
-		};
-	}
-
-	/**
-	 *
-	 * @param parent
-	 * @param name
-	 * @param value
-	 * @return
-	 */
-	private static ParserInternalTypeBase getInstance(final ParserInternalTypeBase parent,
-			final String name, final String value) {
-		return new ParserInternalTypeBase(parent, name, value) {
-
-			@Nonnull
-			@Override
-			public String getValueRaw() {
-				return this.getValue();
-			}
-
-			@Override
-			public String getValue() {
-				return ABSTRACT;
-			}
-		};
-	}
 
 	/**
 	 * @throws java.lang.Exception
