@@ -1,9 +1,9 @@
 package com.keildraco.config.interfaces;
 
+import javax.annotation.Nullable;
+
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.tokenizer.Tokenizer;
-
-import javax.annotation.Nullable;
 
 /**
  *

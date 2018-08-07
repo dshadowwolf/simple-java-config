@@ -1,5 +1,7 @@
 package com.keildraco.config.states;
 
+import javax.annotation.Nullable;
+
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
@@ -11,8 +13,6 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.ListType;
-
-import javax.annotation.Nullable;
 
 /**
  *
@@ -50,10 +50,10 @@ public final class ListParser extends AbstractParserBase {
 		while (tokenizer.hasNext()) {
 			switch (current.getType()) {
 				case IDENTIFIER:
-					if ((!next.isEmpty()) && 
-							((next.getType() != TokenType.SEPERATOR) && 
-									(next.getType() != TokenType.CLOSE_LIST))) {
-						IStateParser nextState = this.getFactory().nextState(this.getName(), current, next); 
+					if ((!next.isEmpty()) && ((next.getType() != TokenType.SEPERATOR)
+							&& (next.getType() != TokenType.CLOSE_LIST))) {
+						IStateParser nextState = this.getFactory().nextState(this.getName(),
+								current, next);
 						rv.addItem(nextState.getState(tokenizer));
 					} else {
 						rv.addItem(this.getFactory().getType(null, current.getValue(),

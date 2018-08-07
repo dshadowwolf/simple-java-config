@@ -7,7 +7,7 @@
 @MethodsAreNonnullByDefault
 package com.keildraco.config.states;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import com.sharneng.annotation.FieldsAreNonnullByDefault;
 import com.sharneng.annotation.MethodsAreNonnullByDefault;
-
-import javax.annotation.ParametersAreNonnullByDefault;

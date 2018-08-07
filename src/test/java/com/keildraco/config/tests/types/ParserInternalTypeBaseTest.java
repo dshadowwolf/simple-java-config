@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.Nonnull;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -19,8 +21,6 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
-
-import javax.annotation.Nonnull;
 
 /**
  * @author Daniel Hazelton
@@ -188,8 +188,7 @@ final class ParserInternalTypeBaseTest {
 	@Test
 	void testHas() {
 		this.testFoobar.addItem(getInstance(BLARGH));
-		assertAll("",
-				() -> assertTrue(this.testItem.has(FOOBAR), "Test Item has child \"foobar\""),
+		assertAll("", () -> assertTrue(this.testItem.has(FOOBAR), "Test Item has child \"foobar\""),
 				() -> assertFalse(this.testItem.has("foobar.baz"),
 						"Test Item's child \"foobar\" doesn't have child \"baz\""),
 				() -> assertTrue(this.testItem.has("foobar.blargh"),
@@ -205,8 +204,7 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testEmptyType() {
-		assertAll("",
-				() -> assertEquals(EMPTY, ParserInternalTypeBase.EMPTY_TYPE.getValue(), ""),
+		assertAll("", () -> assertEquals(EMPTY, ParserInternalTypeBase.EMPTY_TYPE.getValue(), ""),
 				() -> assertEquals(EMPTY, ParserInternalTypeBase.EMPTY_TYPE.getValueRaw(), ""),
 				() -> assertEquals(ItemType.EMPTY, ParserInternalTypeBase.EMPTY_TYPE.getType(), ""),
 				() -> assertFalse(ParserInternalTypeBase.EMPTY_TYPE.has(BLARGH),
@@ -275,7 +273,8 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testEmptyTypeGet() {
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, ParserInternalTypeBase.EMPTY_TYPE.get(BLARGH), "");
+		assertEquals(ParserInternalTypeBase.EMPTY_TYPE,
+				ParserInternalTypeBase.EMPTY_TYPE.get(BLARGH), "");
 	}
 
 	/**

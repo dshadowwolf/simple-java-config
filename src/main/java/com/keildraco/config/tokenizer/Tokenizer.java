@@ -15,7 +15,7 @@ import com.keildraco.config.data.Token;
 public final class Tokenizer {
 
 	private static final String EMPTY_TOKEN = "---EMPTY---";
-	
+
 	/**
 	 *
 	 */
@@ -75,8 +75,7 @@ public final class Tokenizer {
 	 * @return
 	 */
 	public Token peekToken() {
-		if (this.tokens.isEmpty() ||
-				this.tokens.size() == 1) {
+		if (this.tokens.isEmpty() || this.tokens.size() == 1) {
 			return new Token(EMPTY_TOKEN);
 		}
 

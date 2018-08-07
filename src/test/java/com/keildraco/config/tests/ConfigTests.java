@@ -13,21 +13,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
+import javax.annotation.Nullable;
+
 import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.data.DataQuery;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
-import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.exceptions.ParserRegistrationException;
 import com.keildraco.config.exceptions.TypeRegistrationException;
+import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
-
-import javax.annotation.Nullable;
+import com.keildraco.config.testsupport.SupportClass.ParserThatThrows;
+import com.keildraco.config.testsupport.SupportClass.TypeThatThrows;
+import com.keildraco.config.tokenizer.Tokenizer;
 
 /**
  *
@@ -36,7 +39,6 @@ import javax.annotation.Nullable;
  */
 final class ConfigTests {
 
-	private static final String ABSTRACT = "Abstract!";
 	private static final String ASSETS = "assets";
 	private static final String BASE_CONFIG_TEST_CFG = "base-config-test.cfg";
 	private static final String CAUGHT_EXCEPTION_RUNNING_LOADFILE = "Caught exception running loadFile: ";
@@ -46,8 +48,6 @@ final class ConfigTests {
 	private static final String LOAD_WORKED = "Load Worked? ";
 	private static final String NULLPARSER = "NULLPARSER";
 	private static final String SECTION = "SECTION";
-	private static final String TEST = "TEST";
-	private static final String TESTING_PURPOSES_ONLY = "Testing purposes only";
 	private static final String WILLTHROW = "WILLTHROW";
 
 	/**
@@ -114,8 +114,7 @@ final class ConfigTests {
 				| NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException | IllegalParserStateException | UnknownStateException
 				| GenericParseException e) {
-			Config.LOGGER.error(EXCEPTION_GETTING_TYPE_INSTANCE_FOR, e.toString(),
-					e.getMessage());
+			Config.LOGGER.error(EXCEPTION_GETTING_TYPE_INSTANCE_FOR, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION_RUNNING_LOADFILE + e);
 		}
@@ -129,14 +128,14 @@ final class ConfigTests {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			final DataQuery dq = com.keildraco.config.Config.loadFile(ASSETS + '/' + BASE_CONFIG_TEST_CFG);
+			final DataQuery dq = com.keildraco.config.Config
+					.loadFile(ASSETS + '/' + BASE_CONFIG_TEST_CFG);
 			assertNotNull(dq, LOAD_WORKED);
 		} catch (final IOException | IllegalArgumentException | URISyntaxException
 				| NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException | IllegalParserStateException | UnknownStateException
 				| GenericParseException e) {
-			Config.LOGGER.error(EXCEPTION_GETTING_TYPE_INSTANCE_FOR, e.toString(),
-					e.getMessage());
+			Config.LOGGER.error(EXCEPTION_GETTING_TYPE_INSTANCE_FOR, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION_RUNNING_LOADFILE + e);
 		}
@@ -156,8 +155,7 @@ final class ConfigTests {
 		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
 				| InstantiationException | IllegalAccessException | InvocationTargetException
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error(EXCEPTION_GETTING_TYPE_INSTANCE_FOR, e.toString(),
-					e.getMessage());
+			Config.LOGGER.error(EXCEPTION_GETTING_TYPE_INSTANCE_FOR, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION_RUNNING_LOADFILE + e);
 		}
@@ -178,11 +176,14 @@ final class ConfigTests {
 			}
 		}, NULLPARSER);
 		assertAll("",
-				() -> assertThrows(TypeRegistrationException.class, () -> Config.getFactory().getType(null, "", "",
-				ItemType.INVALID), ""),
-				() -> assertThrows(ParserRegistrationException.class, () -> Config.registerParser(WILLTHROW, ParserThatThrows.class), ""),
-				() -> assertThrows(UnknownStateException.class, () -> Config.getFactory().getParser(NULLPARSER, null), ""),
-				() -> assertThrows(IOException.class, () -> Config.loadFile("assets/this-doesnt-exist.cfg")));
+				() -> assertThrows(TypeRegistrationException.class,
+						() -> Config.getFactory().getType(null, "", "", ItemType.INVALID), ""),
+				() -> assertThrows(ParserRegistrationException.class,
+						() -> Config.registerParser(WILLTHROW, ParserThatThrows.class), ""),
+				() -> assertThrows(UnknownStateException.class,
+						() -> Config.getFactory().getParser(NULLPARSER, null), ""),
+				() -> assertThrows(IOException.class,
+						() -> Config.loadFile("assets/this-doesnt-exist.cfg")));
 	}
 
 	/**
@@ -207,62 +208,10 @@ final class ConfigTests {
 		public void registerTransitions(@Nullable final TypeFactory factory) {
 			// blank
 		}
-	}
-
-	/**
-	 *
-	 * @author Daniel Hazelton
-	 *
-	 */
-	private static final class ParserThatThrows extends AbstractParserBase {
-
-		/**
-		 *
-		 * @param factory
-		 * @param parent
-		 * @throws IllegalAccessException
-		 */
-		ParserThatThrows(final TypeFactory factory, final ParserInternalTypeBase parent)
-				throws IllegalArgumentException {
-			super(factory, parent, TEST);
-			throw new IllegalArgumentException(TESTING_PURPOSES_ONLY);
-		}
 
 		@Override
-		public void registerTransitions(@Nullable final TypeFactory factory) {
-			// not needed
+		public ParserInternalTypeBase getState(Tokenizer tokenizer) {
+			return ParserInternalTypeBase.EMPTY_TYPE;
 		}
 	}
-
-	/**
-	 *
-	 * @author Daniel Hazelton
-	 *
-	 *
-	 */
-	private static final class TypeThatThrows extends ParserInternalTypeBase {
-
-		/**
-		 *
-		 * @param parentIn
-		 * @param nameIn
-		 * @param valueIn
-		 * @throws IllegalAccessException
-		 */
-		TypeThatThrows(final ParserInternalTypeBase parentIn, final String nameIn,
-				final String valueIn) throws GenericParseException {
-			super(parentIn, nameIn, valueIn);
-			throw new GenericParseException(TESTING_PURPOSES_ONLY);
-		}
-
-		@Override
-		public String getValue() {
-			return ABSTRACT;
-		}
-
-		@Override
-		public String getValueRaw() {
-			return this.getValue();
-		}
-	}	
 }

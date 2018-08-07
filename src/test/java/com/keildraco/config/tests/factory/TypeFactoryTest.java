@@ -1,5 +1,6 @@
 package com.keildraco.config.tests.factory;
 
+import static com.keildraco.config.testsupport.SupportClass.getTokenizerFromString;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -8,15 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StreamTokenizer;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Locale;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +51,8 @@ final class TypeFactoryTest {
 	 *
 	 */
 	@BeforeEach
-	void setUp() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+	void setUp() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+			InvocationTargetException {
 		Config.reset();
 		Config.registerKnownParts();
 	}
@@ -68,8 +66,7 @@ final class TypeFactoryTest {
 			final TypeFactory tf = new TypeFactory();
 			assertNotNull(tf, "");
 		} catch (final Exception e) {
-			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
-					e.getMessage());
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION + e);
 		}
@@ -165,18 +162,14 @@ final class TypeFactoryTest {
 	void testNextState() {
 		try {
 			final String data = "key = value";
-			final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
-			final StreamTokenizer tok = new StreamTokenizer(br);
-			final Tokenizer t = new Tokenizer(tok);
+			final Tokenizer t = getTokenizerFromString(data);
 			final Token cur = t.peek();
 			final Token next = t.peekToken();
 			final IStateParser nextState = Config.getFactory().nextState(SECTION, cur, next);
-			assertAll("TypeFactory.nextState() works",
-					() -> assertNotNull(nextState, ""),
-					() -> assertEquals(KEYVALUE,
-							nextState.getName().toUpperCase(Locale.ENGLISH), ""));
-		} catch (final IOException e) {
+			assertAll("TypeFactory.nextState() works", () -> assertNotNull(nextState, ""),
+					() -> assertEquals(KEYVALUE, nextState.getName().toUpperCase(Locale.ENGLISH),
+							""));
+		} catch (final IOException | URISyntaxException e) {
 			Config.LOGGER.error(EXCEPTION_REGISTERING, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION + e);
@@ -188,7 +181,8 @@ final class TypeFactoryTest {
 	 */
 	@Test
 	void testGetNonexistentType() {
-		assertThrows(UnknownParseTreeTypeException.class, () -> Config.getFactory().getType(null, BLARGH, BLECH, ItemType.INVALID));
+		assertThrows(UnknownParseTreeTypeException.class,
+				() -> Config.getFactory().getType(null, BLARGH, BLECH, ItemType.INVALID));
 	}
 
 	/**
@@ -196,6 +190,7 @@ final class TypeFactoryTest {
 	 */
 	@Test
 	void testGetWithParent() {
-		assertNotNull(Config.getFactory().getParser(SECTION, ParserInternalTypeBase.EMPTY_TYPE), "");
+		assertNotNull(Config.getFactory().getParser(SECTION, ParserInternalTypeBase.EMPTY_TYPE),
+				"");
 	}
 }

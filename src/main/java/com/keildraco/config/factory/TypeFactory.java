@@ -77,7 +77,8 @@ public final class TypeFactory {
 		final IParserType ipt = this.typeMap.get(type);
 
 		if (ipt == null) {
-			throw new UnknownParseTreeTypeException("Type " + type + " is not registered with the factory");
+			throw new UnknownParseTreeTypeException(
+					"Type " + type + " is not registered with the factory");
 		}
 
 		final ParserInternalTypeBase rv = ipt.get(parent, name, value);
@@ -138,7 +139,8 @@ public final class TypeFactory {
 		} else {
 			final IStateParser rv = parser.get();
 			if (rv == null) {
-				throw new UnknownStateException("Error getting parser instance: IParserState.get() returned null");
+				throw new UnknownStateException(
+						"Error getting parser instance: IParserState.get() returned null");
 			} else if (parent != null) {
 				rv.setParent(parent);
 			}

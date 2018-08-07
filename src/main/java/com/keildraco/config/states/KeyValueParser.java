@@ -1,5 +1,7 @@
 package com.keildraco.config.states;
 
+import javax.annotation.Nullable;
+
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.IllegalParserStateException;
@@ -9,8 +11,6 @@ import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
-
-import javax.annotation.Nullable;
 
 /**
  *

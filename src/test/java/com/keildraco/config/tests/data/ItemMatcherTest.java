@@ -1,5 +1,6 @@
 package com.keildraco.config.tests.data;
 
+import static com.keildraco.config.testsupport.SupportClass.getTokenizerFromString;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -7,14 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StreamTokenizer;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
@@ -54,8 +51,7 @@ final class ItemMatcherTest {
 			final ItemMatcher im = new ItemMatcher(item);
 			assertNotNull(im, "Able to instantiate an ItemMatcher");
 		} catch (final Exception e) {
-			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
-					e.getMessage());
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION + e);
 		}
@@ -68,8 +64,7 @@ final class ItemMatcherTest {
 	void testMatches() {
 		final ParserInternalTypeBase item = new IdentifierType(MAGIC, NAME);
 		final ItemMatcher im = new ItemMatcher(item);
-		assertAll("",
-				() -> assertTrue(im.matches("magic.name"), "name and value match"),
+		assertAll("", () -> assertTrue(im.matches("magic.name"), "name and value match"),
 				() -> assertFalse(im.matches("name.name"), "name doesn't match but value does"),
 				() -> assertFalse(im.matches("magic.xyzzy"), "name matches but value doesn't"),
 				() -> assertFalse(im.matches("xyzzy.magic"), "neither name or value match"));
@@ -94,18 +89,14 @@ final class ItemMatcherTest {
 			Config.registerKnownParts();
 			final IStateParser p = Config.getFactory().getParser(SECTION, null);
 			final String data = "section { item = value\n listitem = [ alpha, bravo(! charlie), epsilon(~ foobar) ] }";
-			final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
-			final StreamTokenizer tok = new StreamTokenizer(br);
-			final Tokenizer t = new Tokenizer(tok);
+			final Tokenizer t = getTokenizerFromString(data);
 			final ParserInternalTypeBase pb = p.getState(t);
 			final ItemMatcher im = new ItemMatcher(pb);
 			final ItemMatcher im2 = new ItemMatcher(ParserInternalTypeBase.EMPTY_TYPE);
 			final OperationType o = new OperationType(OPER, VALUE);
 			o.setOperation(">");
 			final ItemMatcher im3 = new ItemMatcher(o);
-			assertAll("result is correct",
-					() -> assertNotNull(im, "result not null"),
+			assertAll("result is correct", () -> assertNotNull(im, "result not null"),
 					() -> assertTrue(im.matches("section"), "section match correct"),
 					() -> assertTrue(im.matches("section.item.value"), "full item match works"),
 					() -> assertTrue(im.matches("section.item"), "item exists/short name match"),
@@ -127,9 +118,9 @@ final class ItemMatcherTest {
 							"invalid/unknown operation - always false"));
 		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
 				| InstantiationException | IllegalAccessException | InvocationTargetException
-				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
-			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(),
-					e.getMessage());
+				| IllegalParserStateException | UnknownStateException | GenericParseException
+				| URISyntaxException e) {
+			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION + e);
 		}

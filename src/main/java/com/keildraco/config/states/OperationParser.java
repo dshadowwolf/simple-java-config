@@ -1,5 +1,7 @@
 package com.keildraco.config.states;
 
+import javax.annotation.Nullable;
+
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
@@ -10,8 +12,6 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.OperationType;
-
-import javax.annotation.Nullable;
 
 /**
  *
@@ -60,8 +60,8 @@ public final class OperationParser extends AbstractParserBase {
 		}
 
 		if (last.getType().equals(TokenType.CLOSE_PARENS)) {
-			final OperationType rv = (OperationType) this.getFactory().getType(null, key, value.getValue(),
-					ItemType.OPERATION);
+			final OperationType rv = (OperationType) this.getFactory().getType(null, key,
+					value.getValue(), ItemType.OPERATION);
 			rv.setOperation(operT.getValue());
 			return rv;
 		}

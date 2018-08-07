@@ -1,5 +1,6 @@
 package com.keildraco.config.tests.types;
 
+import static com.keildraco.config.testsupport.SupportClass.getTokenizerFromString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -7,14 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StreamTokenizer;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
 import java.util.Collections;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -173,18 +170,14 @@ final class ListTypeTest {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-			final String data = "[ a, b, c, d, e(! f) ]";
 			final IStateParser parser = Config.getFactory().getParser(LIST, null);
-			final InputStream is = IOUtils.toInputStream(data, StandardCharsets.UTF_8);
-			final InputStreamReader br = new InputStreamReader(is, StandardCharsets.UTF_8);
-			final StreamTokenizer tok = new StreamTokenizer(br);
-			final Tokenizer t = new Tokenizer(tok);
+			final Tokenizer t = getTokenizerFromString("[ a, b, c, d, e(! f) ]");
 			final ParserInternalTypeBase pitb = parser.getState(t);
 			pitb.setName(FOOBAR);
 			assertEquals("foobar = [ a, b, c, d, e(! f) ]", pitb.getValue(), "");
 		} catch (final UnknownStateException | IllegalParserStateException | GenericParseException
 				| IOException | NoSuchMethodException | InstantiationException
-				| IllegalAccessException | InvocationTargetException e) {
+				| IllegalAccessException | InvocationTargetException | URISyntaxException e) {
 			fail(CAUGHT_EXCEPTION + e);
 		}
 	}

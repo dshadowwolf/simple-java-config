@@ -2,7 +2,7 @@ package com.keildraco.config.tests.types;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -65,8 +65,7 @@ final class SectionTypeTest {
 	@Test
 	void testAddItem() {
 		try {
-			final SectionType testItem2 = new SectionType(BLARGH);
-			assertTrue(true, "Expected no exception");
+			assertNotNull(new SectionType(BLARGH), "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
@@ -86,8 +85,7 @@ final class SectionTypeTest {
 	@Test
 	void testAsString() {
 		final String result = String.format("blargh = blech%n CHILD {%n blargh = foobar%n}");
-		assertAll("",
-				() -> assertEquals(result, this.root.getValue().trim(), ""),
+		assertAll("", () -> assertEquals(result, this.root.getValue().trim(), ""),
 				() -> assertEquals(result, this.root.getValueRaw().trim(), ""));
 	}
 
@@ -97,12 +95,12 @@ final class SectionTypeTest {
 	@Test
 	void testSectionTypeParentNameValue() {
 		try {
-			final SectionType stOne = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, BLARGH, BLECH);
+			final SectionType stOne = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, BLARGH,
+					BLECH);
 			final SectionType stTwo = new SectionType(null, BLARGH);
 			final SectionType stThree = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, "");
 			final String matchVal = String.format("blargh {%n}%n");
-			assertAll("",
-					() -> assertEquals(BLARGH, stOne.getName(), ""),
+			assertAll("", () -> assertEquals(BLARGH, stOne.getName(), ""),
 					() -> assertEquals(ROOT, stTwo.getName(), ""),
 					() -> assertEquals(ROOT, stThree.getName(), ""),
 					() -> assertEquals(matchVal, stOne.getValue(), ""));
