@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -68,11 +69,11 @@ final class TokenizerTest {
 		try {
 			final Tokenizer t = new Tokenizer(this.tok);
 			final Token tt = t.nextToken();
-			assertNotNull(tt, "t.nextToken() returned null!");
 			assertAll(
 					"t.nextToken() did not throw an exception and returns a TokenType.IDENTIFIER of value \"a\"",
-					() -> TokenType.IDENTIFIER.equals(tt.getType()),
-					() -> "a".equals(tt.getValue()));
+					() -> assertNotNull(tt, "t.nextToken() returned null!"),
+					() -> assertEquals(TokenType.IDENTIFIER, tt.getType()),
+					() -> assertEquals("a", tt.getValue()));
 		} catch (final IOException e) {
 			fail(CAUGHT_EXCEPTION + e);
 		}
@@ -118,11 +119,11 @@ final class TokenizerTest {
 		try {
 			final Tokenizer t = new Tokenizer(this.tok);
 			final Token tt = t.peekToken();
-			assertNotNull(tt, "t.nextToken() returned null!");
 			assertAll(
 					"t.peekToken() did not throw an exception and returns a TokenType.IDENTIFIER of value \"a\"",
-					() -> TokenType.IDENTIFIER.equals(tt.getType()),
-					() -> "a".equals(tt.getValue()));
+					() -> assertNotNull(tt, "t.nextToken() returned null!"),
+					() -> assertEquals(TokenType.IDENTIFIER, tt.getType()),
+					() -> assertEquals("b", tt.getValue()));
 		} catch (final IOException e) {
 			fail(CAUGHT_EXCEPTION + e);
 		}

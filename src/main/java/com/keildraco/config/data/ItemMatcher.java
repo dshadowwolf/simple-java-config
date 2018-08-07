@@ -43,7 +43,7 @@ public class ItemMatcher {
 			extendedNameData = name.substring(name.indexOf('.') + 1);
 		}
 
-		return this.match(this.thisItem.getType(), baseName, extendedNameData);
+		return this.doesItemMatch(this.thisItem.getType(), baseName, extendedNameData);
 	}
 
 	/**
@@ -53,16 +53,16 @@ public class ItemMatcher {
 	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean match(final ItemType type, final String baseName, final String extendedNameData) {
+	private boolean doesItemMatch(final ItemType type, final String baseName, final String extendedNameData) {
 		switch (type) {
 			case IDENTIFIER:
-				return this.matchIdentifier(baseName, extendedNameData);
+				return this.doesIdentifierMatch(baseName, extendedNameData);
 			case LIST:
-				return this.matchList(baseName, extendedNameData);
+				return this.doesListMatch(baseName, extendedNameData);
 			case OPERATION:
-				return this.matchOperator(baseName);
+				return this.doesOperatorMatch(baseName);
 			case SECTION:
-				return this.matchSection(baseName, extendedNameData);
+				return this.doesSectionMatch(baseName, extendedNameData);
 			default:
 				return false;
 		}
@@ -74,7 +74,7 @@ public class ItemMatcher {
 	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean matchSection(final String baseName, final String extendedNameData) {
+	private boolean doesSectionMatch(final String baseName, final String extendedNameData) {
 		if (this.thisItem.getName().equalsIgnoreCase(baseName)) {
 			// we match the base name itself, so we have to see if we can split the extended name or
 			// don't need to and re-match
@@ -92,7 +92,7 @@ public class ItemMatcher {
 		}
 
 		// blargh ? Final chance, maybe we've found a loophole!
-		return this.sectionMatches(baseName);
+		return this.doesSectionMatch(baseName);
 	}
 
 	/**
@@ -101,10 +101,10 @@ public class ItemMatcher {
 	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean matchList(final String baseName, final String extendedNameData) {
+	private boolean doesListMatch(final String baseName, final String extendedNameData) {
 		if (extendedNameData.isEmpty()) {
 			// above all else we're only, actually, into the list here...
-			return this.listMatchesAny(baseName);
+			return this.doesAnyItemInMyListMatch(baseName);
 		}
 		// if we have an extendedNameData value, its likely we're looking for an operator
 		if (this.thisItem.has(baseName)) {
@@ -120,11 +120,11 @@ public class ItemMatcher {
 	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean matchIdentifier(final String baseName, final String extendedNameData) {
+	private boolean doesIdentifierMatch(final String baseName, final String extendedNameData) {
 		if (!extendedNameData.isEmpty()) {
-			return this.identMatches((IdentifierType) this.thisItem, baseName, extendedNameData);
+			return this.doesThisIdentifierMatch((IdentifierType) this.thisItem, baseName, extendedNameData);
 		} else {
-			return this.identMatches((IdentifierType) this.thisItem, baseName);
+			return this.doesThisIdentifierMatchByNameOnly((IdentifierType) this.thisItem, baseName);
 		}
 	}
 
@@ -133,7 +133,7 @@ public class ItemMatcher {
 	 * @param baseName
 	 * @return
 	 */
-	private boolean matchOperator(final String baseName) {
+	private boolean doesOperatorMatch(final String baseName) {
 		// at this point our item is an operator, so we should only have 'baseName'
 
 		final OperationType op = (OperationType) this.thisItem;
@@ -153,7 +153,7 @@ public class ItemMatcher {
 	 * @param name
 	 * @return
 	 */
-	private boolean sectionMatches(final SectionType section, final String name) {
+	private boolean doesThisSectionMatch(final SectionType section, final String name) {
 		return section.has(name);
 	}
 
@@ -162,8 +162,8 @@ public class ItemMatcher {
 	 * @param name
 	 * @return
 	 */
-	private boolean sectionMatches(final String name) {
-		return this.sectionMatches((SectionType) this.thisItem, name);
+	private boolean doesSectionMatch(final String name) {
+		return this.doesThisSectionMatch((SectionType) this.thisItem, name);
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class ItemMatcher {
 	 * @param value
 	 * @return
 	 */
-	private boolean identMatches(final IdentifierType ident, final String value) {
+	private boolean doesThisIdentifierMatchByNameOnly(final IdentifierType ident, final String value) {
 		return ident.getValueRaw().equalsIgnoreCase(value);
 	}
 
@@ -183,7 +183,7 @@ public class ItemMatcher {
 	 * @param value
 	 * @return
 	 */
-	private boolean identMatches(final IdentifierType ident, final String name,
+	private boolean doesThisIdentifierMatch(final IdentifierType ident, final String name,
 			final String value) {
 		return ident.getName().equalsIgnoreCase(name)
 				&& ident.getValueRaw().equalsIgnoreCase(value);
@@ -195,7 +195,7 @@ public class ItemMatcher {
 	 * @param name
 	 * @return
 	 */
-	private boolean listMatchesAny(final ListType theList, final String name) {
+	private boolean doesAnyItemInThisListMatch(final ListType theList, final String name) {
 		return theList.has(name);
 	}
 
@@ -204,7 +204,7 @@ public class ItemMatcher {
 	 * @param name
 	 * @return
 	 */
-	private boolean listMatchesAny(final String name) {
-		return this.listMatchesAny((ListType) this.thisItem, name);
+	private boolean doesAnyItemInMyListMatch(final String name) {
+		return this.doesAnyItemInThisListMatch((ListType) this.thisItem, name);
 	}
 }
