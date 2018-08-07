@@ -81,19 +81,17 @@ public class ItemMatcher {
 			// don't need to and re-match
 			if (!extendedNameData.isEmpty()) {
 				return this.matches(extendedNameData);
-			} else {
-				return true;
 			}
 		} else if (this.thisItem.has(baseName)) {
 			if (!extendedNameData.isEmpty()) {
 				return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
-			} else {
-				return true;
 			}
+		} else if(extendedNameData.isEmpty() && (this.thisItem.has(baseName) || this.thisItem.getName().equalsIgnoreCase(baseName))) {
+			return true;
+		} else {
+			// blargh ? Final chance, maybe we've found a loophole!
+			return this.doesSectionMatch(baseName);
 		}
-
-		// blargh ? Final chance, maybe we've found a loophole!
-		return this.doesSectionMatch(baseName);
 	}
 
 	/**
@@ -106,9 +104,8 @@ public class ItemMatcher {
 		if (extendedNameData.isEmpty()) {
 			// above all else we're only, actually, into the list here...
 			return this.doesAnyItemInMyListMatch(baseName);
-		}
-		// if we have an extendedNameData value, its likely we're looking for an operator
-		if (this.thisItem.has(baseName)) {
+		} else if (this.thisItem.has(baseName)) {
+			// if we have an extendedNameData value, its likely we're looking for an operator
 			return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
 		}
 
