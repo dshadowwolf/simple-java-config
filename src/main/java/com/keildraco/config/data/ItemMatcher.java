@@ -181,9 +181,9 @@ public class ItemMatcher {
 
 		final OperationType op = (OperationType) this.thisItem;
 		final int oper = op.getOperator();
-		if (oper == Constants.NOTOPERATOR) {
+		if (oper == (int) Constants.NOTOPERATOR) {
 			return !op.getValueRaw().equals(baseName);
-		} else if (oper == Constants.IGNOREOPERATOR) {
+		} else if (oper == (int) Constants.IGNOREOPERATOR) {
 			return op.getValueRaw().equals(baseName);
 		}
 

@@ -10,6 +10,8 @@ import javax.annotation.Nullable;
 import com.keildraco.config.data.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
+import static com.keildraco.config.data.Constants.ParserNames.ROOT;
+
 /**
  *
  * @author Daniel Hazelton
@@ -33,7 +35,7 @@ public final class SectionType extends ParserInternalTypeBase {
 	public SectionType(@Nullable final ParserInternalTypeBase parent, final String name) {
 		super(parent, name);
 		if ((this.getName().isEmpty()) || (parent == null)) {
-			this.setName("ROOT");
+			this.setName(ROOT);
 		}
 	}
 
@@ -60,13 +62,13 @@ public final class SectionType extends ParserInternalTypeBase {
 		List<ParserInternalTypeBase> work = new ArrayList<>(this.getItems().values());
 		Collections.reverse(work);
 
-		if (!this.getName().equals("ROOT")) {
+		if (!this.getName().equals(ROOT)) {
 			k.append(String.format("%s {%n", this.getName()));
 		}
 
 		work.forEach(v -> k.append(String.format(" %s%n", v.getValue())));
 
-		if (!this.getName().equals("ROOT")) {
+		if (!this.getName().equals(ROOT)) {
 			k.append(String.format("}%n"));
 		}
 

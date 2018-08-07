@@ -14,6 +14,7 @@ import com.keildraco.config.data.ItemType;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.SectionType;
 import static com.keildraco.config.Config.EMPTY_TYPE;
+import static com.keildraco.config.data.Constants.ParserNames.ROOT;
 
 /**
  * @author Daniel Hazelton
@@ -26,7 +27,6 @@ final class SectionTypeTest {
 	private static final String	BLECH	= "blech";
 	private static final String	CHILD	= "CHILD";
 	private static final String	FOOBAR	= "foobar";
-	private static final String	ROOT	= "ROOT";
 
 	/**
 	 *

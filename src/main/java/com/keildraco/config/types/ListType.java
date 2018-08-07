@@ -126,7 +126,7 @@ public final class ListType extends ParserInternalTypeBase {
 	@Override
 	public String getValue() {
 		final String format = this.getValueRaw();
-		if (this.getName().equals("")) {
+		if (this.getName().isEmpty()) {
 			return format;
 		}
 		return String.format("%s = %s", this.getName(), format);

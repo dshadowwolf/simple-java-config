@@ -19,6 +19,7 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.states.SectionParser;
 import static com.keildraco.config.Config.EMPTY_TYPE;
+import static com.keildraco.config.data.Constants.ParserNames.SECTION;
 
 /**
  *
@@ -29,7 +30,6 @@ final class SectionParserTest {
 
 	private static final String	CAUGHT_EXCEPTION	= "Caught exception running loadFile: ";
 	private static final String	EXCEPTION_GETTING	= "Exception getting type instance for {}: {}";
-	private static final String	SECTION				= "SECTION";
 
 	/**
 	 *

@@ -69,7 +69,7 @@ public abstract class ParserInternalTypeBase {
 	protected ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
 			final String nameIn, final String valueIn) {
 		this(parentIn, valueIn.toLowerCase(Locale.getDefault()));
-		this.setName(nameIn.toLowerCase(Locale.getDefault()));
+		this.name = nameIn.toLowerCase(Locale.getDefault());
 	}
 
 	/**

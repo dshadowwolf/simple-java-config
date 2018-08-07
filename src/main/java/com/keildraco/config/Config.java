@@ -29,6 +29,8 @@ import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 
+import static com.keildraco.config.data.Constants.ParserNames.ROOT;
+
 /**
  * <p>
  * Core API and access point for the entire configuration parsing and query system.
@@ -384,7 +386,7 @@ public final class Config {
 	private static ParserInternalTypeBase runParser(final Reader reader) throws IOException {
 		final StreamTokenizer tok = new StreamTokenizer(reader);
 		final Tokenizer t = new Tokenizer(tok);
-		return CORE_TYPE_FACTORY.getParser("ROOT", null).getState(t);
+		return CORE_TYPE_FACTORY.getParser(ROOT, null).getState(t);
 	}
 
 	/**

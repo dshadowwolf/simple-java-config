@@ -24,6 +24,7 @@ import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.KeyValueParser;
 import com.keildraco.config.tokenizer.Tokenizer;
+import static com.keildraco.config.data.Constants.ParserNames.KEYVALUE;
 
 /**
  *
@@ -34,7 +35,6 @@ final class KeyValueParserTest {
 
 	private static final String	CAUGHT_EXCEPTION	= "Caught exception running loadFile: ";
 	private static final String	EXCEPTION_GETTING	= "Exception getting type instance for {}: {}";
-	private static final String	KEYVALUE			= "KEYVALUE";
 
 	/**
 	 *

@@ -92,6 +92,6 @@ public final class Token {
 	 * @return
 	 */
 	public boolean isEmpty() {
-		return this.type.equals(TokenType.EMPTY);
+		return this.type == TokenType.EMPTY;
 	}
 }
