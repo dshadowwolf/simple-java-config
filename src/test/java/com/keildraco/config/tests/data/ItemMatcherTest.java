@@ -33,7 +33,6 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
  */
 final class ItemMatcherTest {
 
-	private static final String BLARGH = "blargh";
 	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
 	private static final String EXCEPTION_GETTING = "Exception getting type instance for {}: {}";
 	private static final String MAGIC = "magic";
@@ -69,15 +68,6 @@ final class ItemMatcherTest {
 				() -> assertFalse(im.matches("name.name"), "name doesn't match but value does"),
 				() -> assertFalse(im.matches("magic.xyzzy"), "name matches but value doesn't"),
 				() -> assertFalse(im.matches("xyzzy.magic"), "neither name or value match"));
-	}
-
-	/**
-	 *
-	 */
-	@Test
-	void testAlwaysFalseMatcherMatches() {
-		assertFalse(ItemMatcher.ALWAYS_FALSE.matches(BLARGH),
-				"The AlwaysFalse matcher should only return false");
 	}
 
 	/**

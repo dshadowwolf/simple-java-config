@@ -6,7 +6,6 @@ import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
 import com.keildraco.config.types.OperationType;
 import com.keildraco.config.types.SectionType;
-import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  *
@@ -19,16 +18,6 @@ public class ItemMatcher {
 	 *
 	 */
 	private final ParserInternalTypeBase thisItem;
-
-	/**
-	 *
-	 */
-	public static final ItemMatcher ALWAYS_FALSE = new ItemMatcher(EMPTY_TYPE) {
-		@Override
-		public boolean matches(final String name) {
-			return false;
-		}
-	};
 
 	/**
 	 *
@@ -54,7 +43,7 @@ public class ItemMatcher {
 			extendedNameData = name.substring(name.indexOf('.') + 1);
 		}
 
-		return this.doMatch(this.thisItem.getType(), baseName, extendedNameData);
+		return this.match(this.thisItem.getType(), baseName, extendedNameData);
 	}
 
 	/**
@@ -64,16 +53,16 @@ public class ItemMatcher {
 	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean doMatch(final ItemType type, final String baseName, final String extendedNameData) {
+	private boolean match(final ItemType type, final String baseName, final String extendedNameData) {
 		switch (type) {
 			case IDENTIFIER:
-				return this.identMatcher(baseName, extendedNameData);
+				return this.matchIdentifier(baseName, extendedNameData);
 			case LIST:
-				return this.listMatcher(baseName, extendedNameData);
+				return this.matchList(baseName, extendedNameData);
 			case OPERATION:
-				return this.operatorMatches(baseName);
+				return this.matchOperator(baseName);
 			case SECTION:
-				return this.sectionMatcher(baseName, extendedNameData);
+				return this.matchSection(baseName, extendedNameData);
 			default:
 				return false;
 		}
@@ -85,7 +74,7 @@ public class ItemMatcher {
 	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean sectionMatcher(final String baseName, final String extendedNameData) {
+	private boolean matchSection(final String baseName, final String extendedNameData) {
 		if (this.thisItem.getName().equalsIgnoreCase(baseName)) {
 			// we match the base name itself, so we have to see if we can split the extended name or
 			// don't need to and re-match
@@ -112,7 +101,7 @@ public class ItemMatcher {
 	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean listMatcher(final String baseName, final String extendedNameData) {
+	private boolean matchList(final String baseName, final String extendedNameData) {
 		if (extendedNameData.isEmpty()) {
 			// above all else we're only, actually, into the list here...
 			return this.listMatchesAny(baseName);
@@ -131,7 +120,7 @@ public class ItemMatcher {
 	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean identMatcher(final String baseName, final String extendedNameData) {
+	private boolean matchIdentifier(final String baseName, final String extendedNameData) {
 		if (!extendedNameData.isEmpty()) {
 			return this.identMatches((IdentifierType) this.thisItem, baseName, extendedNameData);
 		} else {
@@ -144,7 +133,7 @@ public class ItemMatcher {
 	 * @param baseName
 	 * @return
 	 */
-	private boolean operatorMatches(final String baseName) {
+	private boolean matchOperator(final String baseName) {
 		// at this point our item is an operator, so we should only have 'baseName'
 
 		final OperationType op = (OperationType) this.thisItem;
