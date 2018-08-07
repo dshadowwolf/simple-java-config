@@ -82,7 +82,8 @@ public class ItemMatcher {
 			return this.matches(extendedNameData);
 		} else if (this.thisItem.has(baseName) && !extendedNameData.isEmpty()) {
 			return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
-		} else if(extendedNameData.isEmpty() && (this.thisItem.has(baseName) || this.thisItem.getName().equalsIgnoreCase(baseName))) {
+		} else if (extendedNameData.isEmpty() && (this.thisItem.has(baseName)
+				|| this.thisItem.getName().equalsIgnoreCase(baseName))) {
 			return true;
 		} else {
 			// blargh ? Final chance, maybe we've found a loophole!
