@@ -108,7 +108,7 @@ public final class Config {
 	/**
 	 * Get the instance of the {@link com.keildraco.config.factory.TypeFactory TypeFactory}
 	 * currently in use by this code.
-	 * 
+	 *
 	 * @return the current instance of the TypeFactory
 	 */
 	public static TypeFactory getFactory() {
@@ -185,7 +185,7 @@ public final class Config {
 	 * @param name
 	 *            Name of the element this is going to represent - this value is taken, nominally,
 	 *            direct from the input data.
-	 * @param name
+	 * @param value
 	 *            Value for this element - this value is taken, nominally, direct from the input
 	 *            data.
 	 * @param clazz
@@ -193,13 +193,13 @@ public final class Config {
 	 *
 	 * @throws NoSuchMethodException
 	 *             Thrown if the
-	 *             {@link com.keildraco.config.interfaces.AbstractParserBase#AbstractParserBase(com.keildraco.config.factory.TypeFactory, com.keildraco.config.interfaces.ParserInternalTypeBase)
+	 *             {@link AbstractParserBase#AbstractParserBase(TypeFactory, ParserInternalTypeBase)
 	 *             "TypeFactory, ParserInternalTypeBase"} constructor does not exist.
 	 * @throws InvocationTargetException
 	 *             The constructor itself threw an exception.
 	 * @throws IllegalAccessException
 	 *             Thrown if the
-	 *             {@link com.keildraco.config.interfaces.AbstractParserBase#AbstractParserBase(com.keildraco.config.factory.TypeFactory, com.keildraco.config.interfaces.ParserInternalTypeBase)
+	 *             {@link AbstractParserBase#AbstractParserBase(TypeFactory, ParserInternalTypeBase)
 	 *             "TypeFactory, ParserInternalTypeBase"} constructor is not public.
 	 * @throws InstantiationException
 	 *             Something went wrong in the newInstance() call.
@@ -219,7 +219,7 @@ public final class Config {
 	 * Internal helper - creates the lambda that calls
 	 * {@link #registerTypeGenerator(ParserInternalTypeBase, String, String, Class)
 	 * registerTypeGenerator} to get instances of the requested parse tree type.
-	 * 
+	 *
 	 * @param type
 	 *            {@link com.keildraco.config.data.ItemType ItemType} value specifically designating
 	 *            this parse tree items type.
@@ -247,7 +247,7 @@ public final class Config {
 
 	/**
 	 * Wrapper around {@link #registerTypeInternal(ItemType, Class) registerTypeInternal}.
-	 * 
+	 *
 	 * @param type
 	 *            {@link com.keildraco.config.data.ItemType ItemType} value specifically designating
 	 *            this parse tree items type.
@@ -263,7 +263,7 @@ public final class Config {
 	/**
 	 * Internal helper, exists to extract the {@link com.keildraco.config.data.ItemType ItemType}
 	 * from the rest of the data and use that for the call to
-	 * {@link #registerTypeInternal(ItemType, Class) registerTypeInternal}
+	 * {@link #registerTypeInternal(ItemType, Class) registerTypeInternal}.
 	 *
 	 * @param clazz
 	 *            Class&lt;? extends {@link com.keildraco.config.interfaces.ParserInternalTypeBase
@@ -291,7 +291,7 @@ public final class Config {
 
 	/**
 	 * Wrapper around {@link #registerParserInternal(String, Class) registerParserInternal}.
-	 * 
+	 *
 	 * @param name
 	 *            The name of this parser.
 	 * @param clazz
@@ -391,6 +391,8 @@ public final class Config {
 	 * Parse an open {@link java.io.InputStream InputStream} and return a {@link DataQuery} based on
 	 * the result.
 	 *
+	 * @param inputStream The {@link InputStream} that is the source of the data to be parsed.
+	 *
 	 * @throws IOException
 	 *             Something has gone wrong during the reading of the {@link java.io.InputStream
 	 *             Input Stream}.
@@ -406,7 +408,7 @@ public final class Config {
 
 	/**
 	 * Open a given {@link java.net.URI URI} and parse it.
-	 * 
+	 *
 	 * @param uri
 	 *            The URI to open
 	 *
@@ -422,7 +424,7 @@ public final class Config {
 
 	/**
 	 * Open a given {@link java.nio.file.Path path} and parse it.
-	 * 
+	 *
 	 * @param filePath
 	 *            The {@link java.nio.file.Path path} of the file.
 	 *
