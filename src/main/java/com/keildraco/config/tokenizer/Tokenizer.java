@@ -14,6 +14,9 @@ import com.keildraco.config.data.Token;
  */
 public final class Tokenizer {
 
+	/**
+	 * Name and Value for the empty token...
+	 */
 	private static final String EMPTY_TOKEN = "---EMPTY---";
 
 	/**
