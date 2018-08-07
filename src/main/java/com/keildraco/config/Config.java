@@ -52,7 +52,7 @@ public final class Config {
 	/**
 	 *
 	 */
-	public static final ParserInternalTypeBase EMPTY_TYPE = new EmptyParserType("EMPTY");
+	public static final ParserInternalTypeBase EMPTY_TYPE = new EmptyParserType();
 
 	/**
 	 *

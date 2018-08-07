@@ -1,26 +1,14 @@
 package com.keildraco.config.interfaces;
 
-import javax.annotation.Nullable;
-
 import com.keildraco.config.Config;
 
 public final class EmptyParserType extends ParserInternalTypeBase {
 	private static final String MY_VALUE = "EMPTY";
 	
-	public EmptyParserType(final String nameIn) {
-		super(null, nameIn, MY_VALUE);
+	public EmptyParserType() {
+		super(null, MY_VALUE, MY_VALUE);
 	}
-	
-	public EmptyParserType(@Nullable final ParserInternalTypeBase parentIn,
-			final String nameIn) {
-		super(parentIn, nameIn, MY_VALUE);
-	}
-	
-	public EmptyParserType(@Nullable final ParserInternalTypeBase parentIn,
-			final String nameIn, final String valueIn) {
-		super(parentIn, nameIn, valueIn);
-	}
-	
+
 	@Override
 	public boolean has(final String itemName) {
 		return false;
