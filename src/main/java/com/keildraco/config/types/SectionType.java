@@ -1,5 +1,9 @@
 package com.keildraco.config.types;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -53,12 +57,14 @@ public final class SectionType extends ParserInternalTypeBase {
 	@Override
 	public String getValue() {
 		final StringBuilder k = new StringBuilder();
-
+		List<ParserInternalTypeBase> work = new ArrayList<>(this.getItems().values());
+		Collections.reverse(work);
+		
 		if (!this.getName().equals("ROOT")) {
 			k.append(String.format("%s {%n", this.getName()));
 		}
 
-		this.getItems().values().forEach(v -> k.append(String.format(" %s%n", v.getValue())));
+		work.forEach(v -> k.append(String.format(" %s%n", v.getValue())));
 
 		if (!this.getName().equals("ROOT")) {
 			k.append(String.format("}%n"));
