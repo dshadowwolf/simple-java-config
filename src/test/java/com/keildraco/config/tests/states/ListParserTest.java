@@ -25,6 +25,7 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.ListParser;
+import static com.keildraco.config.data.Constants.ParserNames.LIST;
 
 /**
  *
@@ -36,7 +37,6 @@ final class ListParserTest {
 
 	private static final String	CAUGHT_EXCEPTION	= "Caught exception running loadFile: ";
 	private static final String	EXCEPTION_GETTING	= "Exception getting type instance for {}: {}";
-	private static final String	LIST				= "LIST";
 
 	/**
 	 *

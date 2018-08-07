@@ -1,5 +1,6 @@
 package com.keildraco.config.tests.types;
 
+import static com.keildraco.config.data.Constants.EMPTY_TYPE_NAME;
 import static com.keildraco.config.testsupport.SupportClass.getTokenizerFromString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,6 +28,7 @@ import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
 import static com.keildraco.config.Config.EMPTY_TYPE;
+import static com.keildraco.config.data.Constants.ParserNames.LIST;
 
 /**
  * @author Daniel Hazelton
@@ -40,10 +42,8 @@ final class ListTypeTest {
 	private static final String	BLARGH				= "blargh";
 	private static final String	CAUGHT_EXCEPTION	= "caught exception: ";
 	private static final String	CONSTRUCTOR_WORKS	= "constructor works";
-	private static final String	EMPTY				= "EMPTY";
 	private static final String	FOO					= "foo";
 	private static final String	FOOBAR				= "foobar";
-	private static final String	LIST				= "LIST";
 	private static final String	NOPE				= "nope";
 	private static final String	TEST				= "test";
 
@@ -104,7 +104,7 @@ final class ListTypeTest {
 		try {
 			final ListType testItem2 = new ListType(BLARGH);
 			testItem2.addItem(EMPTY_TYPE);
-			assertTrue(testItem2.has(EMPTY), "Expected no exception");
+			assertTrue(testItem2.has(EMPTY_TYPE_NAME), "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}

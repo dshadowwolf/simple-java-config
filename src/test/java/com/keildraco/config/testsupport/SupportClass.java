@@ -110,7 +110,7 @@ public final class SupportClass {
 		}
 
 		@Override
-		public ParserInternalTypeBase getState(Tokenizer tokenizer) {
+		public ParserInternalTypeBase getState(@Nonnull final Tokenizer tokenizer) {
 			return EMPTY_TYPE;
 		}
 	}
@@ -239,7 +239,7 @@ public final class SupportClass {
 		}
 
 		@Override
-		public ParserInternalTypeBase getState(final Tokenizer tokenizer) {
+		public ParserInternalTypeBase getState(@Nonnull final Tokenizer tokenizer) {
 			return EMPTY_TYPE;
 		}
 

@@ -24,6 +24,7 @@ import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.OperationType;
 import static com.keildraco.config.Config.EMPTY_TYPE;
+import static com.keildraco.config.data.Constants.ParserNames.SECTION;
 
 /**
  *
@@ -37,7 +38,6 @@ final class ItemMatcherTest {
 	private static final String	MAGIC				= "magic";
 	private static final String	NAME				= "name";
 	private static final String	OPER				= "oper";
-	private static final String	SECTION				= "SECTION";
 	private static final String	VALUE				= "value";
 
 	/**

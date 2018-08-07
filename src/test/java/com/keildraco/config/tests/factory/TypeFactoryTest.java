@@ -27,6 +27,8 @@ import com.keildraco.config.states.SectionParser;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 import static com.keildraco.config.Config.EMPTY_TYPE;
+import static com.keildraco.config.data.Constants.ParserNames.KEYVALUE;
+import static com.keildraco.config.data.Constants.ParserNames.SECTION;
 
 /**
  *
@@ -40,8 +42,6 @@ final class TypeFactoryTest {
 	private static final String	CAUGHT_EXCEPTION		= "Caught exception running loadFile: ";
 	private static final String	EXCEPTION_GETTING		= "Exception getting instance for {}: {}";
 	private static final String	EXCEPTION_REGISTERING	= "Exception registering type {}: {}";
-	private static final String	KEYVALUE				= "KEYVALUE";
-	private static final String	SECTION					= "SECTION";
 
 	/**
 	 * @throws InvocationTargetException
