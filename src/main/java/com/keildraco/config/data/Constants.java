@@ -55,7 +55,7 @@ public final class Constants {
 	 * This is the splitter character used in ItemMatcher and some other places to split the
 	 * incoming String into a set of separate item names for matching and lookup.
 	 */
-	public static final char	KEYSEPARATOR	= '.';
+	public static final char	KEYSEPARATOR		= '.';
 	/**
 	 * <p>
 	 * Used in ItemMatcher for work on checking if an OperationType matches a given value.
@@ -66,7 +66,7 @@ public final class Constants {
 	 * issues of ItemMatcher growing excessively complex ?)
 	 * </p>
 	 */
-	public static final char	NOTOPERATOR		= '!';
+	public static final char	NOTOPERATOR			= '!';
 	/**
 	 * <p>
 	 * Used in ItemMatcher for work on checking if an OperationType matches a given value.
@@ -77,7 +77,7 @@ public final class Constants {
 	 * issues of ItemMatcher growing excessively complex ?)
 	 * </p>
 	 */
-	public static final char	IGNOREOPERATOR	= '~';
+	public static final char	IGNOREOPERATOR		= '~';
 	/**
 	 * <p>
 	 * Used in the {@link com.keildraco.config.data.Token Token class} to help decide what the next
@@ -86,7 +86,7 @@ public final class Constants {
 	 * This is actually the separator between a key and value that is used by the ROOT and SECTION
 	 * parsers to tell that a key value pair needs parsing.
 	 */
-	public static final String	STOREOPERATOR	= "=";
+	public static final String	STOREOPERATOR		= "=";
 	/**
 	 * <p>
 	 * Used in the {@link com.keildraco.config.data.Token Token class} to help decide what the next
@@ -95,7 +95,7 @@ public final class Constants {
 	 * This is the starting mark of a SECTION - used by the ROOT and SECTION parsers to know to
 	 * shift to parsing a SECTION (or subsection).
 	 */
-	public static final String	OPENBRACE		= "{";
+	public static final String	OPENBRACE			= "{";
 	/**
 	 * <p>
 	 * Used in the {@link com.keildraco.config.data.Token Token class} to help decide what the next
@@ -103,7 +103,7 @@ public final class Constants {
 	 * <p>
 	 * Finding this is how the SECTION parser knows when to clean up and return.
 	 */
-	public static final String	CLOSEBRACE		= "}";
+	public static final String	CLOSEBRACE			= "}";
 	/**
 	 * <p>
 	 * Used in the {@link com.keildraco.config.data.Token Token class} to help decide what the next
@@ -112,7 +112,7 @@ public final class Constants {
 	 * Starting mark of an OPERATION - used by KEYVALUE and LIST parsers to know to shift to parsing
 	 * an OPERATION.
 	 */
-	public static final String	OPENPARENS		= "(";
+	public static final String	OPENPARENS			= "(";
 	/**
 	 * <p>
 	 * Used in the {@link com.keildraco.config.data.Token Token class} to help decide what the next
@@ -120,7 +120,7 @@ public final class Constants {
 	 * <p>
 	 * When found by an OPERATION parser this says "clean up your work and return".
 	 */
-	public static final String	CLOSEPARENS		= ")";
+	public static final String	CLOSEPARENS			= ")";
 	/**
 	 * <p>
 	 * Used in the {@link com.keildraco.config.data.Token Token class} to help decide what the next
@@ -128,7 +128,7 @@ public final class Constants {
 	 * <p>
 	 * Start of a LIST, used by the KEYVALUE parser to know when to shift state to a LIST parser.
 	 */
-	public static final String	OPENLIST		= "[";
+	public static final String	OPENLIST			= "[";
 	/**
 	 * <p>
 	 * Used in the {@link com.keildraco.config.data.Token Token class} to help decide what the next
@@ -136,7 +136,7 @@ public final class Constants {
 	 * <p>
 	 * End of a LIST - "clean up and return".
 	 */
-	public static final String	CLOSELIST		= "]";
+	public static final String	CLOSELIST			= "]";
 	/**
 	 * <p>
 	 * Used in the {@link com.keildraco.config.data.Token Token class} to help decide what the next
@@ -144,7 +144,7 @@ public final class Constants {
 	 * <p>
 	 * Separates different items in a list.
 	 */
-	public static final String	LISETSEPERATOR	= ",";
+	public static final String	LISETSEPERATOR		= ",";
 	/**
 	 * <p>
 	 * Used in the {@link com.keildraco.config.data.Token Token class} to help decide what the next
@@ -153,7 +153,7 @@ public final class Constants {
 	 * Raw token values come into the {@link com.keildraco.config.data.Token Token} Constructor as
 	 * {@link java.lang.String Strings} - this is a match for the "NOT" Operator.
 	 */
-	public static final String	NOTASSTRING		= "!";
+	public static final String	NOTASSTRING			= "!";
 	/**
 	 * <p>
 	 * Used in the {@link com.keildraco.config.data.Token Token class} to help decide what the next
@@ -162,7 +162,7 @@ public final class Constants {
 	 * Raw token values come into the {@link com.keildraco.config.data.Token Token} Constructor as
 	 * {@link java.lang.String Strings} - this is a match for the "IGNORE" Operator.
 	 */
-	public static final String	IGNOREASSTRING	= "~";
+	public static final String	IGNOREASSTRING		= "~";
 	/**
 	 * <p>
 	 * Used in the {@link com.keildraco.config.data.Token Token class} to define an Empty token.
@@ -170,7 +170,25 @@ public final class Constants {
 	 * requested beyond that. This exists because returning null is a bad idea and we try not to use
 	 * it anywhere in the code.
 	 */
-	public static final String	TOKENEMPTY		= "---EMPTY---";
+	public static final String	TOKENEMPTY			= "---EMPTY---";
+	/**
+	 * <p>
+	 * Used as the value for the {@link com.keildraco.config.Config.EMPTY_TYPE "Empty"}
+	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase Parser Type} that replaces a
+	 * null return or source value for any use of a generic Parser Type.
+	 */
+	public static final String	EMPTY_TYPE_VALUE	= "EMPTY";
+	/**
+	 * <p>
+	 * Used as the name for the {@link com.keildraco.config.Config.EMPTY_TYPE "Empty"}
+	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase Parser Type} that replaces a
+	 * null return or source value for any use of a generic Parser Type.
+	 * <p>
+	 * While this is currently the same as
+	 * {@link com.keildraco.config.data.Constants.EMPTY_TYPE_VALUE EMPTY_TYPE_VALUE} it doesn't have
+	 * to be, hence the reason it is a separate constant.
+	 */
+	public static final String	EMPTY_TYPE_NAME		= EMPTY_TYPE_VALUE;
 
 	/**
 	 * Private constructor to hide the default public one.

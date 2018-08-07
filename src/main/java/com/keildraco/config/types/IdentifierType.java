@@ -7,6 +7,8 @@ import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import static com.keildraco.config.Config.EMPTY_TYPE;
 
+import java.util.Locale;
+
 /**
  *
  * @author Daniel Hazelton
@@ -45,7 +47,7 @@ public final class IdentifierType extends ParserInternalTypeBase {
 	public IdentifierType(@Nullable final ParserInternalTypeBase parent, final String name,
 			final String value) {
 		super(parent, name);
-		this.ident = value;
+		this.ident = value.toLowerCase(Locale.getDefault());
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public final class IdentifierType extends ParserInternalTypeBase {
 
 	@Override
 	public boolean has(final String itemName) {
-		return this.getName().equalsIgnoreCase(itemName) || this.ident.equalsIgnoreCase(itemName);
+		return this.getName().equals(itemName) || this.ident.equals(itemName);
 	}
 
 	@Nonnull

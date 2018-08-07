@@ -1,16 +1,14 @@
 package com.keildraco.config.interfaces;
 
 import com.keildraco.config.Config;
+import com.keildraco.config.data.Constants;
 
 public final class EmptyParserType extends ParserInternalTypeBase {
-
-	private static final String MY_VALUE = "EMPTY";
-
 	/**
 	 *
 	 */
 	public EmptyParserType() {
-		super(null, MY_VALUE, MY_VALUE);
+		super(null, Constants.EMPTY_TYPE_NAME, Constants.EMPTY_TYPE_VALUE);
 	}
 
 	/**
@@ -57,7 +55,7 @@ public final class EmptyParserType extends ParserInternalTypeBase {
 	 */
 	@Override
 	public String getValue() {
-		return MY_VALUE;
+		return Constants.EMPTY_TYPE_VALUE;
 	}
 
 	/**
@@ -66,6 +64,6 @@ public final class EmptyParserType extends ParserInternalTypeBase {
 	 */
 	@Override
 	public String getValueRaw() {
-		return this.getValue();
+		return Constants.EMPTY_TYPE_VALUE;
 	}
 }

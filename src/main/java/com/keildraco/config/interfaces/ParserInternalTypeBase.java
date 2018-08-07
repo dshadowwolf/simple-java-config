@@ -1,6 +1,7 @@
 package com.keildraco.config.interfaces;
 
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -45,7 +46,7 @@ public abstract class ParserInternalTypeBase {
 	 */
 	protected ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
 			final String nameIn) {
-		this.name = nameIn;
+		this.name = nameIn.toLowerCase(Locale.getDefault());
 
 		if (parentIn == null) {
 			this.parent = EMPTY_TYPE;
@@ -64,8 +65,8 @@ public abstract class ParserInternalTypeBase {
 	 */
 	protected ParserInternalTypeBase(@Nullable final ParserInternalTypeBase parentIn,
 			final String nameIn, final String valueIn) {
-		this(parentIn, valueIn);
-		this.setName(nameIn);
+		this(parentIn, valueIn.toLowerCase(Locale.getDefault()));
+		this.setName(nameIn.toLowerCase(Locale.getDefault()));
 	}
 
 	/**
@@ -76,15 +77,15 @@ public abstract class ParserInternalTypeBase {
 	public ParserInternalTypeBase get(final String itemName) {
 		final int index = itemName.indexOf('.');
 		if (index > 0) {
-			final String nameBits = itemName.substring(0, itemName.indexOf('.'));
-			final String nameRest = itemName.substring(itemName.indexOf('.') + 1);
+			final String nameBits = itemName.substring(0, itemName.indexOf('.')).toLowerCase(Locale.getDefault());
+			final String nameRest = itemName.substring(itemName.indexOf('.') + 1).toLowerCase(Locale.getDefault());
 			if (this.has(nameBits)) {
 				/*
 				 * this had an extraneous null check originally... if 'this.has()' returns true,
 				 * then this.get() should not be null
 				 */
 				return this.get(nameBits).get(nameRest);
-			} else if (this.getName().equalsIgnoreCase(nameBits) && this.has(nameRest)) {
+			} else if (this.getName().equals(nameBits) && this.has(nameRest)) {
 				return this.getItems().get(nameRest);
 			}
 		} else if (index == 0) {

@@ -1,5 +1,7 @@
 package com.keildraco.config.data;
 
+import java.util.Locale;
+
 import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.IdentifierType;
@@ -39,8 +41,8 @@ public class ItemMatcher {
 		String extendedNameData = "";
 
 		if (tn) {
-			baseName = name.substring(0, name.indexOf(Constants.KEYSEPARATOR));
-			extendedNameData = name.substring(name.indexOf(Constants.KEYSEPARATOR) + 1);
+			baseName = name.substring(0, name.indexOf(Constants.KEYSEPARATOR)).toLowerCase(Locale.getDefault());
+			extendedNameData = name.substring(name.indexOf(Constants.KEYSEPARATOR) + 1).toLowerCase(Locale.getDefault());
 		}
 
 		return this.doesItemMatch(this.thisItem.getType(), baseName, extendedNameData);
@@ -76,14 +78,14 @@ public class ItemMatcher {
 	 * @return
 	 */
 	private boolean doesSectionMatch(final String baseName, final String extendedNameData) {
-		if (this.thisItem.getName().equalsIgnoreCase(baseName) && !extendedNameData.isEmpty()) {
+		if (this.thisItem.getName().equals(baseName) && !extendedNameData.isEmpty()) {
 			// we match the base name itself, so we have to see if we can split the extended name or
 			// don't need to and re-match
 			return this.matches(extendedNameData);
 		} else if (this.thisItem.has(baseName) && !extendedNameData.isEmpty()) {
 			return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
 		} else if (extendedNameData.isEmpty() && (this.thisItem.has(baseName)
-				|| this.thisItem.getName().equalsIgnoreCase(baseName))) {
+				|| this.thisItem.getName().equals(baseName))) {
 			return true;
 		} else {
 			// blargh ? Final chance, maybe we've found a loophole!
@@ -106,7 +108,7 @@ public class ItemMatcher {
 			return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
 		}
 
-		return Boolean.FALSE;
+		return false;
 	}
 
 	/**
@@ -135,9 +137,9 @@ public class ItemMatcher {
 		final OperationType op = (OperationType) this.thisItem;
 		final int oper = op.getOperator();
 		if (oper == Constants.NOTOPERATOR) {
-			return !op.getValueRaw().equalsIgnoreCase(baseName);
+			return !op.getValueRaw().equals(baseName);
 		} else if (oper == Constants.IGNOREOPERATOR) {
-			return op.getValueRaw().equalsIgnoreCase(baseName);
+			return op.getValueRaw().equals(baseName);
 		}
 
 		return false;
@@ -170,7 +172,7 @@ public class ItemMatcher {
 	 */
 	private static boolean doesThisIdentifierMatchByNameOnly(final IdentifierType ident,
 			final String value) {
-		return ident.getValueRaw().equalsIgnoreCase(value);
+		return ident.getValueRaw().equals(value);
 	}
 
 	/**
@@ -182,8 +184,8 @@ public class ItemMatcher {
 	 */
 	private static boolean doesThisIdentifierMatch(final IdentifierType ident, final String name,
 			final String value) {
-		return ident.getName().equalsIgnoreCase(name)
-				&& ident.getValueRaw().equalsIgnoreCase(value);
+		return ident.getName().equals(name)
+				&& ident.getValueRaw().equals(value);
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -81,17 +82,21 @@ public final class ListType extends ParserInternalTypeBase {
 	}
 
 	@Override
-	public boolean has(final String s) {
-		return this.value.stream().anyMatch(pitb -> pitb.getName().equalsIgnoreCase(s));
+	public boolean has(final String itemName) {
+		final String caseMatched = itemName.toLowerCase(Locale.getDefault());
+		return this.value.stream().map(ParserInternalTypeBase::getName)
+				.anyMatch(caseMatched::equals);
 	}
 
 	@Override
-	public ParserInternalTypeBase get(final String s) {
-		if (!this.has(s)) {
+	public ParserInternalTypeBase get(final String itemName) {
+		final String caseMatched = itemName.toLowerCase(Locale.getDefault());
+		
+		if (!this.has(caseMatched)) {
 			return EMPTY_TYPE;
 		}
 
-		return this.value.stream().filter(pitb -> pitb.getName().equalsIgnoreCase(s))
+		return this.value.stream().filter(pitb->caseMatched.equals(pitb.getName()))
 				.collect(Collectors.toList()).get(0);
 	}
 
