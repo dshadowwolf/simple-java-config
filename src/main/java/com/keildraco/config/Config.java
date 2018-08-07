@@ -13,10 +13,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +21,8 @@ import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
 
 import com.keildraco.config.data.DataQuery;
+import com.keildraco.config.exceptions.TypeRegistrationException;
+import com.keildraco.config.exceptions.ParserRegistrationException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.EmptyParserType;
@@ -74,23 +73,21 @@ public final class Config {
 	 * @param name
 	 * @param clazz
 	 * @return
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
-	@Nullable
-	private static IStateParser registerParserGenerator(final String name,
-			final Class<? extends IStateParser> clazz) {
-		try {
-			final Constructor<? extends IStateParser> c = clazz.getConstructor(TypeFactory.class,
-					ParserInternalTypeBase.class);
-			final IStateParser cc = c.newInstance(CORE_TYPE_FACTORY, Config.EMPTY_TYPE);
-			cc.registerTransitions(CORE_TYPE_FACTORY);
-			return cc;
-		} catch (final NoSuchMethodException | SecurityException | InstantiationException
-				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			LOGGER.error("Exception getting type instance for %s (%s): %s", name, e.toString(),
-					e.getMessage());
-			Arrays.stream(e.getStackTrace()).forEach(LOGGER::error);
-			return null;
-		}
+	private static IStateParser registerParserGenerator(final Class<? extends IStateParser> clazz)
+			throws NoSuchMethodException, InstantiationException,
+			IllegalAccessException, InvocationTargetException {
+		final Constructor<? extends IStateParser> c = clazz.getConstructor(TypeFactory.class,
+				ParserInternalTypeBase.class);
+		final IStateParser cc = c.newInstance(CORE_TYPE_FACTORY, Config.EMPTY_TYPE);
+		cc.registerTransitions(CORE_TYPE_FACTORY);
+		return cc;
 	}
 
 	/**
@@ -100,7 +97,13 @@ public final class Config {
 	 */
 	private static void registerParserInternal(final String name,
 			final Class<? extends IStateParser> clazz) {
-		CORE_TYPE_FACTORY.registerParser(() -> registerParserGenerator(name, clazz), name);
+		CORE_TYPE_FACTORY.registerParser(() -> {
+			try {
+				return registerParserGenerator(clazz);
+			} catch(NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				throw new ParserRegistrationException(name, e);
+			}
+		}, name);
 	}
 
 	/**
@@ -110,22 +113,21 @@ public final class Config {
 	 * @param value
 	 * @param clazz
 	 * @return
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
-	@Nullable
 	private static ParserInternalTypeBase registerTypeGenerator(final ParserInternalTypeBase parent,
 			final String name, final String value,
-			final Class<? extends ParserInternalTypeBase> clazz) {
-		try {
-			final Constructor<? extends ParserInternalTypeBase> c = clazz
-					.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
-			return c.newInstance(parent, name, value);
-		} catch (final NoSuchMethodException | SecurityException | InstantiationException
-				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			LOGGER.error("Exception getting type instance for %s (%s): %s", name, e.toString(),
-					e.getMessage());
-			Arrays.stream(e.getStackTrace()).forEach(LOGGER::error);
-			return null;
-		}
+			final Class<? extends ParserInternalTypeBase> clazz)
+			throws NoSuchMethodException, InstantiationException,
+			IllegalAccessException, InvocationTargetException {
+		final Constructor<? extends ParserInternalTypeBase> c = clazz
+				.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
+		return c.newInstance(parent, name, value);
 	}
 
 	/**
@@ -135,14 +137,17 @@ public final class Config {
 	 */
 	private static void registerTypeInternal(final ItemType type,
 			final Class<? extends ParserInternalTypeBase> clazz) {
-		CORE_TYPE_FACTORY.registerType(
-				(parent, name, value) -> {
-					if (parent==null) {
-						return registerTypeGenerator(EMPTY_TYPE, name, value, clazz);
-					} else {
-						return registerTypeGenerator(parent, name, value, clazz);
-					}
-				}, type);
+		CORE_TYPE_FACTORY.registerType((parent, name, value) -> {
+			try {
+				if (parent == null) {
+					return registerTypeGenerator(EMPTY_TYPE, name, value, clazz);
+				} else {
+					return registerTypeGenerator(parent, name, value, clazz);
+				}
+			} catch(NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				throw new TypeRegistrationException(String.format("Caught exception %s when trying to register type %s", e.getClass(), name));
+			}
+		}, type);
 	}
 
 	/**
@@ -168,7 +173,7 @@ public final class Config {
 			InvocationTargetException {
 		final Constructor<? extends ParserInternalTypeBase> cc = clazz.getConstructor(String.class);
 		ParserInternalTypeBase zz = cc.newInstance("blargh");
-		registerType(zz.getType(), clazz);
+		registerTypeInternal(zz.getType(), clazz);
 	}
 
 	/**
@@ -195,7 +200,7 @@ public final class Config {
 		final Constructor<? extends IStateParser> cc = clazz.getConstructor(TypeFactory.class,
 				ParserInternalTypeBase.class);
 		final IStateParser zz = cc.newInstance(CORE_TYPE_FACTORY, null);
-		registerParser(zz.getName(), clazz);
+		registerParserInternal(zz.getName(), clazz);
 	}
 
 	/**

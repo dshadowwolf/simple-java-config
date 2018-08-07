@@ -20,4 +20,13 @@ public class TypeRegistrationException extends RuntimeException {
 	public TypeRegistrationException(final ItemType type) {
 		super("An issue occurred while registering type " + type);
 	}
+	
+	/**
+	 *
+	 * @param type
+	 */
+	public TypeRegistrationException(final String message) {
+		super(message);
+	}
+
 }
