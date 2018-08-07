@@ -123,10 +123,10 @@ public class ItemMatcher {
 	 */
 	private boolean doesIdentifierMatch(final String baseName, final String extendedNameData) {
 		if (!extendedNameData.isEmpty()) {
-			return this.doesThisIdentifierMatch((IdentifierType) this.thisItem, baseName,
+			return doesThisIdentifierMatch((IdentifierType) this.thisItem, baseName,
 					extendedNameData);
 		} else {
-			return this.doesThisIdentifierMatchByNameOnly((IdentifierType) this.thisItem, baseName);
+			return doesThisIdentifierMatchByNameOnly((IdentifierType) this.thisItem, baseName);
 		}
 	}
 
@@ -155,7 +155,7 @@ public class ItemMatcher {
 	 * @param name
 	 * @return
 	 */
-	private boolean doesThisSectionMatch(final SectionType section, final String name) {
+	private static boolean doesThisSectionMatch(final SectionType section, final String name) {
 		return section.has(name);
 	}
 
@@ -165,7 +165,7 @@ public class ItemMatcher {
 	 * @return
 	 */
 	private boolean doesSectionMatch(final String name) {
-		return this.doesThisSectionMatch((SectionType) this.thisItem, name);
+		return doesThisSectionMatch((SectionType) this.thisItem, name);
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class ItemMatcher {
 	 * @param value
 	 * @return
 	 */
-	private boolean doesThisIdentifierMatchByNameOnly(final IdentifierType ident,
+	private static boolean doesThisIdentifierMatchByNameOnly(final IdentifierType ident,
 			final String value) {
 		return ident.getValueRaw().equalsIgnoreCase(value);
 	}
@@ -186,7 +186,7 @@ public class ItemMatcher {
 	 * @param value
 	 * @return
 	 */
-	private boolean doesThisIdentifierMatch(final IdentifierType ident, final String name,
+	private static boolean doesThisIdentifierMatch(final IdentifierType ident, final String name,
 			final String value) {
 		return ident.getName().equalsIgnoreCase(name)
 				&& ident.getValueRaw().equalsIgnoreCase(value);
@@ -198,7 +198,7 @@ public class ItemMatcher {
 	 * @param name
 	 * @return
 	 */
-	private boolean doesAnyItemInThisListMatch(final ListType theList, final String name) {
+	private static boolean doesAnyItemInThisListMatch(final ListType theList, final String name) {
 		return theList.has(name);
 	}
 
@@ -208,6 +208,6 @@ public class ItemMatcher {
 	 * @return
 	 */
 	private boolean doesAnyItemInMyListMatch(final String name) {
-		return this.doesAnyItemInThisListMatch((ListType) this.thisItem, name);
+		return doesAnyItemInThisListMatch((ListType) this.thisItem, name);
 	}
 }
