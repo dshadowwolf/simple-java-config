@@ -12,8 +12,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -221,23 +219,27 @@ public final class Config {
 	 * @throws NoSuchMethodException
 	 *
 	 */
-	public static void registerKnownParts() throws NoSuchMethodException, InstantiationException,
-			IllegalAccessException, InvocationTargetException {
-		final Reflections typeRefs = new Reflections("com.keildraco.config.types");
-		final Reflections parserRefs = new Reflections("com.keildraco.config.states");
-		final List<Class<? extends ParserInternalTypeBase>> types = new ArrayList<>(
-				typeRefs.getSubTypesOf(ParserInternalTypeBase.class));
-
-		for (final Class<? extends ParserInternalTypeBase> type : types) {
-			registerType(type);
-		}
-
-		final List<Class<? extends IStateParser>> parsers = new ArrayList<>(
-				parserRefs.getSubTypesOf(AbstractParserBase.class));
-
-		for (final Class<? extends IStateParser> parser : parsers) {
-			registerParser(parser);
-		}
+	public static void registerKnownParts() {
+		(new Reflections("com.keildraco.config.types")).getSubTypesOf(ParserInternalTypeBase.class)
+				.stream().forEach(t -> {
+					try {
+						Config.registerType(t);
+					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+							| InvocationTargetException e) {
+						throw new TypeRegistrationException(
+								String.format("Caught exception %s when trying to register type %s",
+										e.getClass(), t.getName()));
+					}
+				});
+		(new Reflections("com.keildraco.config.states")).getSubTypesOf(AbstractParserBase.class)
+				.stream().forEach(t -> {
+					try {
+						Config.registerParser(t);
+					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+							| InvocationTargetException e) {
+						throw new ParserRegistrationException(t.getName(), e);
+					}
+				});
 	}
 
 	/**

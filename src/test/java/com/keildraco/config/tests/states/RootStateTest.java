@@ -36,14 +36,7 @@ final class RootStateTest {
 	@BeforeAll
 	static void setup() {
 		Config.reset();
-		try {
-			Config.registerKnownParts();
-		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
-				| InvocationTargetException e) {
-			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(), e.getMessage());
-			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail(CAUGHT_EXCEPTION + e);
-		}
+		Config.registerKnownParts();
 	}
 
 	/**

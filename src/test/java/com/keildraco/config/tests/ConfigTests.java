@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -70,8 +69,7 @@ final class ConfigTests {
 		try {
 			Config.registerKnownParts();
 			assertTrue(true, "able to register known bits automatically and without exceptions");
-		} catch (final NoSuchMethodException | SecurityException | InstantiationException
-				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (final SecurityException | IllegalArgumentException e) {
 			Config.LOGGER.fatal(EXCEPTION, e.toString());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::fatal);
 			fail(EXCEPTION_CAUGHT);
@@ -106,9 +104,7 @@ final class ConfigTests {
 			final DataQuery dq = com.keildraco.config.Config.loadFile(p);
 			assertNotNull(dq, LOAD_WORKED);
 		} catch (final IOException | IllegalArgumentException | URISyntaxException
-				| NoSuchMethodException | InstantiationException | IllegalAccessException
-				| InvocationTargetException | IllegalParserStateException | UnknownStateException
-				| GenericParseException e) {
+				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error(EXCEPTION_GETTING_TYPE_INSTANCE_FOR, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION_RUNNING_LOADFILE + e);
@@ -127,9 +123,7 @@ final class ConfigTests {
 					.loadFile(ASSETS + '/' + BASE_CONFIG_TEST_CFG);
 			assertNotNull(dq, LOAD_WORKED);
 		} catch (final IOException | IllegalArgumentException | URISyntaxException
-				| NoSuchMethodException | InstantiationException | IllegalAccessException
-				| InvocationTargetException | IllegalParserStateException | UnknownStateException
-				| GenericParseException e) {
+				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error(EXCEPTION_GETTING_TYPE_INSTANCE_FOR, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION_RUNNING_LOADFILE + e);
@@ -147,9 +141,8 @@ final class ConfigTests {
 			final DataQuery dq = com.keildraco.config.Config.parseString(
 					"section { item = value\n item2 = [ list, op(! ident), op2(~ident2) ]\nsubsection { item3 = ident3 } }");
 			assertNotNull(dq, LOAD_WORKED);
-		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
-				| InstantiationException | IllegalAccessException | InvocationTargetException
-				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
+		} catch (final IOException | IllegalArgumentException | IllegalParserStateException
+				| UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error(EXCEPTION_GETTING_TYPE_INSTANCE_FOR, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION_RUNNING_LOADFILE + e);

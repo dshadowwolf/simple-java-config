@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.Collections;
 
@@ -177,8 +176,7 @@ final class ListTypeTest {
 			pitb.setName(FOOBAR);
 			assertEquals("foobar = [ a, b, c, d, e(! f) ]", pitb.getValue(), "");
 		} catch (final UnknownStateException | IllegalParserStateException | GenericParseException
-				| IOException | NoSuchMethodException | InstantiationException
-				| IllegalAccessException | InvocationTargetException | URISyntaxException e) {
+				| IOException | URISyntaxException e) {
 			fail(CAUGHT_EXCEPTION + e);
 		}
 	}

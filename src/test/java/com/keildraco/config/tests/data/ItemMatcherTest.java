@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 
@@ -107,10 +106,8 @@ final class ItemMatcherTest {
 							"section.item does not have value foobar"),
 					() -> assertFalse(im3.matches("oper.value"),
 							"invalid/unknown operation - always false"));
-		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
-				| InstantiationException | IllegalAccessException | InvocationTargetException
-				| IllegalParserStateException | UnknownStateException | GenericParseException
-				| URISyntaxException e) {
+		} catch (final IOException | IllegalArgumentException | IllegalParserStateException
+				| UnknownStateException | GenericParseException | URISyntaxException e) {
 			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION + e);

@@ -1,9 +1,6 @@
 package com.keildraco.config.tests.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.lang.reflect.InvocationTargetException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,13 +14,8 @@ public class MiscelanneousTests {
 
 	@BeforeEach
 	final void setupEach() {
-		try {
-			Config.reset();
-			Config.registerKnownParts();
-		} catch (final NoSuchMethodException | InstantiationException | IllegalAccessException
-				| InvocationTargetException e) {
-			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
-		}
+		Config.reset();
+		Config.registerKnownParts();
 	}
 
 	@Test

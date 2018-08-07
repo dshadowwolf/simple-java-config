@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 
@@ -51,10 +50,8 @@ final class KeyValueParserTest {
 			assertAll("result is correct", () -> assertNotNull(pb, "result not null"),
 					() -> assertEquals("item", pb.getName(), "name is correct"),
 					() -> assertEquals("value", pb.getValueRaw(), "value is correct"));
-		} catch (final IOException | IllegalArgumentException | NoSuchMethodException
-				| InstantiationException | IllegalAccessException | InvocationTargetException
-				| IllegalParserStateException | UnknownStateException | GenericParseException
-				| URISyntaxException e) {
+		} catch (final IOException | IllegalArgumentException | IllegalParserStateException
+				| UnknownStateException | GenericParseException | URISyntaxException e) {
 			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(), e.getMessage());
 			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 			fail(CAUGHT_EXCEPTION + e);
