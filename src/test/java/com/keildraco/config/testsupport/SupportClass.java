@@ -28,13 +28,12 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import static com.keildraco.config.Config.EMPTY_TYPE;
 
-
 public final class SupportClass {
 
-	private static final String ABSTRACT = "Abstract!";
-	private static final String TEST = "TEST";
-	private static final String TESTING_PURPOSES_ONLY = "Testing purposes only";
-	private static final String NULLPARSER = "NULLPARSER";
+	private static final String	ABSTRACT				= "Abstract!";
+	private static final String	TEST					= "TEST";
+	private static final String	TESTING_PURPOSES_ONLY	= "Testing purposes only";
+	private static final String	NULLPARSER				= "NULLPARSER";
 
 	public static InputStream getInputStreamFromPath(final Path path)
 			throws MalformedURLException, IOException, URISyntaxException {
@@ -216,7 +215,6 @@ public final class SupportClass {
 		};
 	}
 
-
 	/**
 	 *
 	 * @author Daniel Hazelton
@@ -244,11 +242,11 @@ public final class SupportClass {
 		public ParserInternalTypeBase getState(final Tokenizer tokenizer) {
 			return EMPTY_TYPE;
 		}
-		
+
 		public static boolean getFlag() {
 			return flag;
 		}
-		
+
 		public static void setFlag() {
 			flag = true;
 		}

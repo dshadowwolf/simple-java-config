@@ -3,8 +3,9 @@ package com.keildraco.config.interfaces;
 import com.keildraco.config.Config;
 
 public final class EmptyParserType extends ParserInternalTypeBase {
+
 	private static final String MY_VALUE = "EMPTY";
-	
+
 	public EmptyParserType() {
 		super(null, MY_VALUE, MY_VALUE);
 	}

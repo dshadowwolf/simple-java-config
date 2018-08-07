@@ -21,11 +21,11 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
 @TestInstance(Lifecycle.PER_CLASS)
 final class OperationTypeTest {
 
-	private static final String BLARGH = "blargh";
-	private static final String CAUGHT_EXCEPTION = "Caught exception instantiating new OperationType";
-	private static final String EXPECTED_NO_EXCEPTION = "Expected no exception";
-	private static final String FOOBAR = "foobar";
-	private static final String OPERATION = "OPERATION";
+	private static final String	BLARGH					= "blargh";
+	private static final String	CAUGHT_EXCEPTION		= "Caught exception instantiating new OperationType";
+	private static final String	EXPECTED_NO_EXCEPTION	= "Expected no exception";
+	private static final String	FOOBAR					= "foobar";
+	private static final String	OPERATION				= "OPERATION";
 
 	/**
 	 *

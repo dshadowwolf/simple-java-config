@@ -33,13 +33,13 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
  */
 final class ItemMatcherTest {
 
-	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
-	private static final String EXCEPTION_GETTING = "Exception getting type instance for {}: {}";
-	private static final String MAGIC = "magic";
-	private static final String NAME = "name";
-	private static final String OPER = "oper";
-	private static final String SECTION = "SECTION";
-	private static final String VALUE = "value";
+	private static final String	CAUGHT_EXCEPTION	= "Caught exception running loadFile: ";
+	private static final String	EXCEPTION_GETTING	= "Exception getting type instance for {}: {}";
+	private static final String	MAGIC				= "magic";
+	private static final String	NAME				= "name";
+	private static final String	OPER				= "oper";
+	private static final String	SECTION				= "SECTION";
+	private static final String	VALUE				= "value";
 
 	/**
 	 *

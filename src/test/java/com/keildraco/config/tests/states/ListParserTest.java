@@ -34,9 +34,9 @@ import com.keildraco.config.states.ListParser;
 @TestInstance(Lifecycle.PER_CLASS)
 final class ListParserTest {
 
-	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
-	private static final String EXCEPTION_GETTING = "Exception getting type instance for {}: {}";
-	private static final String LIST = "LIST";
+	private static final String	CAUGHT_EXCEPTION	= "Caught exception running loadFile: ";
+	private static final String	EXCEPTION_GETTING	= "Exception getting type instance for {}: {}";
+	private static final String	LIST				= "LIST";
 
 	/**
 	 *

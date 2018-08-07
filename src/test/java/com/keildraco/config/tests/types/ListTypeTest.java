@@ -36,17 +36,17 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
 @TestInstance(Lifecycle.PER_CLASS)
 final class ListTypeTest {
 
-	private static final String BAR = "bar";
-	private static final String BLANK = "blank";
-	private static final String BLARGH = "blargh";
-	private static final String CAUGHT_EXCEPTION = "caught exception: ";
-	private static final String CONSTRUCTOR_WORKS = "constructor works";
-	private static final String EMPTY = "EMPTY";
-	private static final String FOO = "foo";
-	private static final String FOOBAR = "foobar";
-	private static final String LIST = "LIST";
-	private static final String NOPE = "nope";
-	private static final String TEST = "test";
+	private static final String	BAR					= "bar";
+	private static final String	BLANK				= "blank";
+	private static final String	BLARGH				= "blargh";
+	private static final String	CAUGHT_EXCEPTION	= "caught exception: ";
+	private static final String	CONSTRUCTOR_WORKS	= "constructor works";
+	private static final String	EMPTY				= "EMPTY";
+	private static final String	FOO					= "foo";
+	private static final String	FOOBAR				= "foobar";
+	private static final String	LIST				= "LIST";
+	private static final String	NOPE				= "nope";
+	private static final String	TEST				= "test";
 
 	/**
 	 *
@@ -124,8 +124,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testGetNotThere() {
-		assertEquals(EMPTY_TYPE, this.testItem.get("no_such_item"),
-				"item doesn't exist");
+		assertEquals(EMPTY_TYPE, this.testItem.get("no_such_item"), "item doesn't exist");
 	}
 
 	/**

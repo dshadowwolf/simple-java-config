@@ -27,9 +27,9 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
  */
 final class SectionParserTest {
 
-	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
-	private static final String EXCEPTION_GETTING = "Exception getting type instance for {}: {}";
-	private static final String SECTION = "SECTION";
+	private static final String	CAUGHT_EXCEPTION	= "Caught exception running loadFile: ";
+	private static final String	EXCEPTION_GETTING	= "Exception getting type instance for {}: {}";
+	private static final String	SECTION				= "SECTION";
 
 	/**
 	 *
@@ -42,8 +42,8 @@ final class SectionParserTest {
 		final String badData = "section { [ item ] }";
 
 		assertAll("",
-				() -> assertNotSame(EMPTY_TYPE,
-						runParser(validData, SECTION), "standard parse works"),
+				() -> assertNotSame(EMPTY_TYPE, runParser(validData, SECTION),
+						"standard parse works"),
 				() -> assertThrows(GenericParseException.class,
 						() -> runParser(earlyExit, SECTION)),
 				() -> assertThrows(IllegalParserStateException.class,

@@ -11,8 +11,8 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
 
 class BasicResultTest {
 
-	private static final BasicResult testValue = new BasicResult("blargh");
-	private static final String RESULT = "ident = value";
+	private static final BasicResult	testValue	= new BasicResult("blargh");
+	private static final String			RESULT		= "ident = value";
 
 	@BeforeAll
 	static void setUp() throws Exception {

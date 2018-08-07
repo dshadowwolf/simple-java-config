@@ -59,7 +59,7 @@ public final class SectionType extends ParserInternalTypeBase {
 		final StringBuilder k = new StringBuilder();
 		List<ParserInternalTypeBase> work = new ArrayList<>(this.getItems().values());
 		Collections.reverse(work);
-		
+
 		if (!this.getName().equals("ROOT")) {
 			k.append(String.format("%s {%n", this.getName()));
 		}

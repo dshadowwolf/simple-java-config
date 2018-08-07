@@ -56,6 +56,11 @@ public final class Config {
 	/**
 	 *
 	 */
+	public static final int DEFAULT_HASH_SIZE = 256;
+
+	/**
+	 *
+	 */
 	private Config() {
 		// do nothing, not even throw
 	}
@@ -81,8 +86,8 @@ public final class Config {
 	 * @throws InstantiationException
 	 */
 	private static IStateParser registerParserGenerator(final Class<? extends IStateParser> clazz)
-			throws NoSuchMethodException, InstantiationException,
-			IllegalAccessException, InvocationTargetException {
+			throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+			InvocationTargetException {
 		final Constructor<? extends IStateParser> c = clazz.getConstructor(TypeFactory.class,
 				ParserInternalTypeBase.class);
 		final IStateParser cc = c.newInstance(CORE_TYPE_FACTORY, Config.EMPTY_TYPE);
@@ -100,7 +105,9 @@ public final class Config {
 		CORE_TYPE_FACTORY.registerParser(() -> {
 			try {
 				return registerParserGenerator(clazz);
-			} catch(NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			} catch (NoSuchMethodException | SecurityException | InstantiationException
+					| IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
 				throw new ParserRegistrationException(name, e);
 			}
 		}, name);
@@ -122,9 +129,8 @@ public final class Config {
 	 */
 	private static ParserInternalTypeBase registerTypeGenerator(final ParserInternalTypeBase parent,
 			final String name, final String value,
-			final Class<? extends ParserInternalTypeBase> clazz)
-			throws NoSuchMethodException, InstantiationException,
-			IllegalAccessException, InvocationTargetException {
+			final Class<? extends ParserInternalTypeBase> clazz) throws NoSuchMethodException,
+			InstantiationException, IllegalAccessException, InvocationTargetException {
 		final Constructor<? extends ParserInternalTypeBase> c = clazz
 				.getConstructor(ParserInternalTypeBase.class, String.class, String.class);
 		return c.newInstance(parent, name, value);
@@ -144,8 +150,11 @@ public final class Config {
 				} else {
 					return registerTypeGenerator(parent, name, value, clazz);
 				}
-			} catch(NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				throw new TypeRegistrationException(String.format("Caught exception %s when trying to register type %s", e.getClass(), name));
+			} catch (NoSuchMethodException | SecurityException | InstantiationException
+					| IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				throw new TypeRegistrationException(String.format(
+						"Caught exception %s when trying to register type %s", e.getClass(), name));
 			}
 		}, type);
 	}

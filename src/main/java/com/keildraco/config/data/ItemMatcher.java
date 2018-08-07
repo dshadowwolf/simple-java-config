@@ -53,7 +53,8 @@ public class ItemMatcher {
 	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean doesItemMatch(final ItemType type, final String baseName, final String extendedNameData) {
+	private boolean doesItemMatch(final ItemType type, final String baseName,
+			final String extendedNameData) {
 		switch (type) {
 			case IDENTIFIER:
 				return this.doesIdentifierMatch(baseName, extendedNameData);
@@ -122,7 +123,8 @@ public class ItemMatcher {
 	 */
 	private boolean doesIdentifierMatch(final String baseName, final String extendedNameData) {
 		if (!extendedNameData.isEmpty()) {
-			return this.doesThisIdentifierMatch((IdentifierType) this.thisItem, baseName, extendedNameData);
+			return this.doesThisIdentifierMatch((IdentifierType) this.thisItem, baseName,
+					extendedNameData);
 		} else {
 			return this.doesThisIdentifierMatchByNameOnly((IdentifierType) this.thisItem, baseName);
 		}
@@ -172,7 +174,8 @@ public class ItemMatcher {
 	 * @param value
 	 * @return
 	 */
-	private boolean doesThisIdentifierMatchByNameOnly(final IdentifierType ident, final String value) {
+	private boolean doesThisIdentifierMatchByNameOnly(final IdentifierType ident,
+			final String value) {
 		return ident.getValueRaw().equalsIgnoreCase(value);
 	}
 

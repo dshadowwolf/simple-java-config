@@ -22,11 +22,11 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
 @TestInstance(Lifecycle.PER_CLASS)
 final class SectionTypeTest {
 
-	private static final String BLARGH = "blargh";
-	private static final String BLECH = "blech";
-	private static final String CHILD = "CHILD";
-	private static final String FOOBAR = "foobar";
-	private static final String ROOT = "ROOT";
+	private static final String	BLARGH	= "blargh";
+	private static final String	BLECH	= "blech";
+	private static final String	CHILD	= "CHILD";
+	private static final String	FOOBAR	= "foobar";
+	private static final String	ROOT	= "ROOT";
 
 	/**
 	 *
@@ -96,8 +96,7 @@ final class SectionTypeTest {
 	@Test
 	void testSectionTypeParentNameValue() {
 		try {
-			final SectionType stOne = new SectionType(EMPTY_TYPE, BLARGH,
-					BLECH);
+			final SectionType stOne = new SectionType(EMPTY_TYPE, BLARGH, BLECH);
 			final SectionType stTwo = new SectionType(null, BLARGH);
 			final SectionType stThree = new SectionType(EMPTY_TYPE, "");
 			final String matchVal = String.format("blargh {%n}%n");

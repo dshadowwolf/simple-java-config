@@ -21,10 +21,10 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
 @TestInstance(Lifecycle.PER_CLASS)
 final class IdentifierTypeTest {
 
-	private static final String EXPECTED_NO_EXCEPTION = "Expected no exception";
-	private static final String KEY = "key";
-	private static final String VALUE = "value";
-	private static final String TEST = "test";
+	private static final String	EXPECTED_NO_EXCEPTION	= "Expected no exception";
+	private static final String	KEY						= "key";
+	private static final String	VALUE					= "value";
+	private static final String	TEST					= "test";
 
 	/**
 	 *

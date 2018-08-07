@@ -16,6 +16,7 @@ import com.keildraco.config.interfaces.IParserType;
 import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import static com.keildraco.config.Config.DEFAULT_HASH_SIZE;
 
 /**
  * @author Daniel Hazelton
@@ -42,9 +43,9 @@ public final class TypeFactory {
 	 * Private default constructor.
 	 */
 	public TypeFactory() {
-		this.typeMap = new ConcurrentHashMap<>(256);
-		this.parserMap = new ConcurrentHashMap<>(256);
-		this.stateMap = new ConcurrentHashMap<>(256);
+		this.typeMap = new ConcurrentHashMap<>(DEFAULT_HASH_SIZE);
+		this.parserMap = new ConcurrentHashMap<>(DEFAULT_HASH_SIZE);
+		this.stateMap = new ConcurrentHashMap<>(DEFAULT_HASH_SIZE);
 	}
 
 	/**
@@ -116,10 +117,10 @@ public final class TypeFactory {
 	public void registerStateTransition(final String stateName, final TokenType currentToken,
 			final TokenType nextToken, final String toState) {
 		final Map<TokenType, String> transitionMapping = this.stateMap
-				.getOrDefault(stateName, new ConcurrentHashMap<>(256))
-				.getOrDefault(currentToken, new ConcurrentHashMap<>(256));
+				.getOrDefault(stateName, new ConcurrentHashMap<>(DEFAULT_HASH_SIZE))
+				.getOrDefault(currentToken, new ConcurrentHashMap<>(DEFAULT_HASH_SIZE));
 		final Map<TokenType, Map<TokenType, String>> baseMapping = this.stateMap
-				.getOrDefault(stateName, new ConcurrentHashMap<>(256));
+				.getOrDefault(stateName, new ConcurrentHashMap<>(DEFAULT_HASH_SIZE));
 		transitionMapping.put(nextToken, toState);
 		baseMapping.put(currentToken, transitionMapping);
 		this.stateMap.put(stateName, baseMapping);
@@ -158,8 +159,9 @@ public final class TypeFactory {
 	 */
 	public IStateParser nextState(final String currentState, final Token currentToken,
 			final Token nextToken) {
-		final String nextState = this.stateMap.getOrDefault(currentState, new ConcurrentHashMap<>(256))
-				.getOrDefault(currentToken.getType(), new ConcurrentHashMap<>(256))
+		final String nextState = this.stateMap
+				.getOrDefault(currentState, new ConcurrentHashMap<>(DEFAULT_HASH_SIZE))
+				.getOrDefault(currentToken.getType(), new ConcurrentHashMap<>(DEFAULT_HASH_SIZE))
 				.getOrDefault(nextToken.getType(), "");
 
 		if (nextState.isEmpty()) {

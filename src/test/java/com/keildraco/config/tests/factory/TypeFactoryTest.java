@@ -35,13 +35,13 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
  */
 final class TypeFactoryTest {
 
-	private static final String BLARGH = "Blargh";
-	private static final String BLECH = "Blech";
-	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
-	private static final String EXCEPTION_GETTING = "Exception getting instance for {}: {}";
-	private static final String EXCEPTION_REGISTERING = "Exception registering type {}: {}";
-	private static final String KEYVALUE = "KEYVALUE";
-	private static final String SECTION = "SECTION";
+	private static final String	BLARGH					= "Blargh";
+	private static final String	BLECH					= "Blech";
+	private static final String	CAUGHT_EXCEPTION		= "Caught exception running loadFile: ";
+	private static final String	EXCEPTION_GETTING		= "Exception getting instance for {}: {}";
+	private static final String	EXCEPTION_REGISTERING	= "Exception registering type {}: {}";
+	private static final String	KEYVALUE				= "KEYVALUE";
+	private static final String	SECTION					= "SECTION";
 
 	/**
 	 * @throws InvocationTargetException
@@ -190,7 +190,6 @@ final class TypeFactoryTest {
 	 */
 	@Test
 	void testGetWithParent() {
-		assertNotNull(Config.getFactory().getParser(SECTION, EMPTY_TYPE),
-				"");
+		assertNotNull(Config.getFactory().getParser(SECTION, EMPTY_TYPE), "");
 	}
 }

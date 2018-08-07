@@ -30,15 +30,15 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
 @TestInstance(Lifecycle.PER_CLASS)
 final class ParserInternalTypeBaseTest {
 
-	private static final String ABSTRACT = "Abstract!";
-	private static final String BLARGH = "blargh";
-	private static final String BLECH = "blech";
-	private static final String EMPTY = "EMPTY";
-	private static final String EXPECTED_NO_EXCEPTION = "Expected no exception";
-	private static final String FOOBAR = "foobar";
-	private static final String MUZAK = "MUZAK";
-	private static final String NESTING = "nesting";
-	private static final String ZZTOP = "ZZTOP";
+	private static final String	ABSTRACT				= "Abstract!";
+	private static final String	BLARGH					= "blargh";
+	private static final String	BLECH					= "blech";
+	private static final String	EMPTY					= "EMPTY";
+	private static final String	EXPECTED_NO_EXCEPTION	= "Expected no exception";
+	private static final String	FOOBAR					= "foobar";
+	private static final String	MUZAK					= "MUZAK";
+	private static final String	NESTING					= "nesting";
+	private static final String	ZZTOP					= "ZZTOP";
 
 	/**
 	 *
@@ -82,8 +82,7 @@ final class ParserInternalTypeBaseTest {
 	@Test
 	void testParserInternalTypeBaseParserInternalTypeBaseString() {
 		try {
-			assertNotNull(getInstance(EMPTY_TYPE, BLARGH),
-					EXPECTED_NO_EXCEPTION);
+			assertNotNull(getInstance(EMPTY_TYPE, BLARGH), EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
 		}
@@ -96,8 +95,7 @@ final class ParserInternalTypeBaseTest {
 	@Test
 	void testParserInternalTypeBaseParserInternalTypeBaseStringString() {
 		try {
-			assertNotNull(getInstance(EMPTY_TYPE, BLARGH, BLECH),
-					EXPECTED_NO_EXCEPTION);
+			assertNotNull(getInstance(EMPTY_TYPE, BLARGH, BLECH), EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + ") caught when not expected");
 		}
@@ -140,8 +138,7 @@ final class ParserInternalTypeBaseTest {
 		assertAll("", () -> assertEquals(EMPTY, EMPTY_TYPE.getValue(), ""),
 				() -> assertEquals(EMPTY, EMPTY_TYPE.getValueRaw(), ""),
 				() -> assertEquals(ItemType.EMPTY, EMPTY_TYPE.getType(), ""),
-				() -> assertFalse(EMPTY_TYPE.has(BLARGH),
-						"EmptyType always fails has() checks"));
+				() -> assertFalse(EMPTY_TYPE.has(BLARGH), "EmptyType always fails has() checks"));
 	}
 
 	/**
@@ -206,8 +203,7 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testEmptyTypeGet() {
-		assertEquals(EMPTY_TYPE,
-				EMPTY_TYPE.get(BLARGH), "");
+		assertEquals(EMPTY_TYPE, EMPTY_TYPE.get(BLARGH), "");
 	}
 
 	/**
@@ -215,8 +211,7 @@ final class ParserInternalTypeBaseTest {
 	 */
 	@Test
 	void testEmptyTypeGetType() {
-		assertEquals(ItemType.EMPTY,
-				EMPTY_TYPE.getType(), "");
+		assertEquals(ItemType.EMPTY, EMPTY_TYPE.getType(), "");
 	}
 
 	/**

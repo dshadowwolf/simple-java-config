@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 import static com.keildraco.config.Config.EMPTY_TYPE;
+import static com.keildraco.config.Config.DEFAULT_HASH_SIZE;
 
 /**
  *
@@ -52,7 +53,7 @@ public abstract class ParserInternalTypeBase {
 			this.parent = parentIn;
 		}
 
-		this.items = new ConcurrentHashMap<>(256);
+		this.items = new ConcurrentHashMap<>(DEFAULT_HASH_SIZE);
 	}
 
 	/**

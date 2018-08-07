@@ -32,12 +32,12 @@ import com.keildraco.config.tokenizer.Tokenizer;
  */
 final class DataQueryTest {
 
-	private static final String ASSETS = "assets";
-	private static final String BASE_CONFIG_TEST_CFG = "base-config-test.cfg";
-	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
-	private static final String EXCEPTION_GETTING = "Exception getting type instance for {}: {}";
-	private static final String LOAD_WORKED = "Load Worked? ";
-	private static final String ROOT = "ROOT";
+	private static final String	ASSETS					= "assets";
+	private static final String	BASE_CONFIG_TEST_CFG	= "base-config-test.cfg";
+	private static final String	CAUGHT_EXCEPTION		= "Caught exception running loadFile: ";
+	private static final String	EXCEPTION_GETTING		= "Exception getting type instance for {}: {}";
+	private static final String	LOAD_WORKED				= "Load Worked? ";
+	private static final String	ROOT					= "ROOT";
 
 	/**
 	 *
@@ -81,7 +81,8 @@ final class DataQueryTest {
 					() -> assertTrue(dq.matches("section.magic.xyzzy"), "long test"),
 					() -> assertFalse(dq.matches("nope"), "nonexistent bit, short"),
 					() -> assertFalse(dq.matches("section.blech.dead"), "buried dead key"),
-					() -> assertThrows(IllegalArgumentException.class, () -> dq.matches(".section")));
+					() -> assertThrows(IllegalArgumentException.class,
+							() -> dq.matches(".section")));
 		} catch (final IOException | IllegalArgumentException | URISyntaxException
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(), e.getMessage());

@@ -30,8 +30,8 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
  */
 final class RootStateTest {
 
-	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
-	private static final String EXCEPTION_GETTING = "Exception getting type instance for {}: {}";
+	private static final String	CAUGHT_EXCEPTION	= "Caught exception running loadFile: ";
+	private static final String	EXCEPTION_GETTING	= "Exception getting type instance for {}: {}";
 
 	@BeforeAll
 	static void setup() {
