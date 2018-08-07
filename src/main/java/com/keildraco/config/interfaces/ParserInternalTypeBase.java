@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
+
+import com.keildraco.config.data.ItemType;
+
 import static com.keildraco.config.Config.EMPTY_TYPE;
 import static com.keildraco.config.Config.DEFAULT_HASH_SIZE;
 

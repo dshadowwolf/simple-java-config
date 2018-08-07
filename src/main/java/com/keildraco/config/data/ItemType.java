@@ -1,4 +1,4 @@
-package com.keildraco.config.interfaces;
+package com.keildraco.config.data;
 
 /**
  *

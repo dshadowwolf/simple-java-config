@@ -2,6 +2,7 @@ package com.keildraco.config.interfaces;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.data.Constants;
+import com.keildraco.config.data.ItemType;
 
 public final class EmptyParserType extends ParserInternalTypeBase {
 

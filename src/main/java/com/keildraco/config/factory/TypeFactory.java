@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
+import com.keildraco.config.data.ItemType;
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.ParserRegistrationException;
@@ -14,7 +15,6 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.interfaces.IParserState;
 import com.keildraco.config.interfaces.IParserType;
 import com.keildraco.config.interfaces.IStateParser;
-import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import static com.keildraco.config.Config.DEFAULT_HASH_SIZE;
 

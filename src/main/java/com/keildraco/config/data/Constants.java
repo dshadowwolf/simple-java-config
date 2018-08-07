@@ -188,7 +188,13 @@ public final class Constants {
 	 * have to be, hence the reason it is a separate constant.
 	 */
 	public static final String	EMPTY_TYPE_NAME		= EMPTY_TYPE_VALUE;
-
+	/**
+	 * <p>
+	 * Currently only used in {@link BasicResult} this string represents the system default,
+	 * when run through {@link java.lang.String#format(String, Object...) String.format()}, for
+	 * a newline.
+	 */
+	public static final String NEWLINE_FORMAT_STRING = "%n";
 	/**
 	 * Private constructor to hide the default public one.
 	 */

@@ -16,12 +16,12 @@ import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
 import com.keildraco.config.data.DataQuery;
+import com.keildraco.config.data.ItemType;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.ParserRegistrationException;
 import com.keildraco.config.exceptions.TypeRegistrationException;
 import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.testsupport.SupportClass.ParserThatThrows;
 import com.keildraco.config.testsupport.SupportClass.TypeThatThrows;
 import static com.keildraco.config.testsupport.SupportClass.NullParser;

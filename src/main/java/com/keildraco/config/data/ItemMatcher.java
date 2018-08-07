@@ -2,7 +2,6 @@ package com.keildraco.config.data;
 
 import java.util.Locale;
 
-import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import com.keildraco.config.interfaces.ItemType;
+import com.keildraco.config.data.ItemType;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.SectionType;
 import static com.keildraco.config.Config.EMPTY_TYPE;
