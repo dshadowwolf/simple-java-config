@@ -31,7 +31,7 @@ import com.keildraco.config.types.OperationType;
 final class OperationParserTest {
 
 	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
-	private static final String EXCEPTION_GETTING = "Exception getting type instance for %s: %s";
+	private static final String EXCEPTION_GETTING = "Exception getting type instance for {}: {}";
 	private static final String IDENT = "ident";
 	private static final String RESULT_IS_CORRECT = "result is correct";
 	private static final String OP = "op";

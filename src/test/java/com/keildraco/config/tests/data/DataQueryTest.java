@@ -35,7 +35,7 @@ final class DataQueryTest {
 	private static final String ASSETS = "assets";
 	private static final String BASE_CONFIG_TEST_CFG = "base-config-test.cfg";
 	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
-	private static final String EXCEPTION_GETTING = "Exception getting type instance for %s: %s";
+	private static final String EXCEPTION_GETTING = "Exception getting type instance for {}: {}";
 	private static final String LOAD_WORKED = "Load Worked? ";
 	private static final String ROOT = "ROOT";
 

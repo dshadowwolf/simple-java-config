@@ -34,7 +34,7 @@ import com.keildraco.config.tokenizer.Tokenizer;
 final class KeyValueParserTest {
 
 	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
-	private static final String EXCEPTION_GETTING = "Exception getting type instance for %s: %s";
+	private static final String EXCEPTION_GETTING = "Exception getting type instance for {}: {}";
 	private static final String KEYVALUE = "KEYVALUE";
 
 	/**

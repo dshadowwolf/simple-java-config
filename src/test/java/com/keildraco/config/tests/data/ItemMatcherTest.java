@@ -35,7 +35,7 @@ final class ItemMatcherTest {
 
 	private static final String BLARGH = "blargh";
 	private static final String CAUGHT_EXCEPTION = "Caught exception running loadFile: ";
-	private static final String EXCEPTION_GETTING = "Exception getting type instance for %s: %s";
+	private static final String EXCEPTION_GETTING = "Exception getting type instance for {}: {}";
 	private static final String MAGIC = "magic";
 	private static final String NAME = "name";
 	private static final String OPER = "oper";
