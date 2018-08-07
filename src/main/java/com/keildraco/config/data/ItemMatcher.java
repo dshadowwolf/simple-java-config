@@ -1,13 +1,12 @@
 package com.keildraco.config.data;
 
-import static com.keildraco.config.interfaces.ParserInternalTypeBase.EMPTY_TYPE;
-
+import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
-import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
 import com.keildraco.config.types.OperationType;
 import com.keildraco.config.types.SectionType;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  *
@@ -47,34 +46,34 @@ public class ItemMatcher {
 	 */
 	public boolean matches(final String name) {
 		final boolean tn = name.contains(".");
-		String bn = name;
-		String xn = "";
+		String baseName = name;
+		String extendedNameData = "";
 
 		if (tn) {
-			bn = name.substring(0, name.indexOf('.'));
-			xn = name.substring(name.indexOf('.') + 1);
+			baseName = name.substring(0, name.indexOf('.'));
+			extendedNameData = name.substring(name.indexOf('.') + 1);
 		}
 
-		return this.doMatch(this.thisItem.getType(), bn, xn);
+		return this.doMatch(this.thisItem.getType(), baseName, extendedNameData);
 	}
 
 	/**
 	 *
 	 * @param type
-	 * @param bn
-	 * @param xn
+	 * @param baseName
+	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean doMatch(final ItemType type, final String bn, final String xn) {
+	private boolean doMatch(final ItemType type, final String baseName, final String extendedNameData) {
 		switch (type) {
 			case IDENTIFIER:
-				return this.identMatcher(bn, xn);
+				return this.identMatcher(baseName, extendedNameData);
 			case LIST:
-				return this.listMatcher(bn, xn);
+				return this.listMatcher(baseName, extendedNameData);
 			case OPERATION:
-				return this.operatorMatches(bn);
+				return this.operatorMatches(baseName);
 			case SECTION:
-				return this.sectionMatcher(bn, xn);
+				return this.sectionMatcher(baseName, extendedNameData);
 			default:
 				return false;
 		}
@@ -82,45 +81,45 @@ public class ItemMatcher {
 
 	/**
 	 *
-	 * @param bn
-	 * @param xn
+	 * @param baseName
+	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean sectionMatcher(final String bn, final String xn) {
-		if (this.thisItem.getName().equalsIgnoreCase(bn)) {
+	private boolean sectionMatcher(final String baseName, final String extendedNameData) {
+		if (this.thisItem.getName().equalsIgnoreCase(baseName)) {
 			// we match the base name itself, so we have to see if we can split the extended name or
 			// don't need to and re-match
-			if (!xn.isEmpty()) {
-				return this.matches(xn);
+			if (!extendedNameData.isEmpty()) {
+				return this.matches(extendedNameData);
 			} else {
 				return true;
 			}
-		} else if (this.thisItem.has(bn)) {
-			if (!xn.isEmpty()) {
-				return new ItemMatcher(this.thisItem.get(bn)).matches(xn);
+		} else if (this.thisItem.has(baseName)) {
+			if (!extendedNameData.isEmpty()) {
+				return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
 			} else {
 				return true;
 			}
 		}
 
 		// blargh ? Final chance, maybe we've found a loophole!
-		return this.sectionMatches(bn);
+		return this.sectionMatches(baseName);
 	}
 
 	/**
 	 *
-	 * @param bn
-	 * @param xn
+	 * @param baseName
+	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean listMatcher(final String bn, final String xn) {
-		if (xn.isEmpty()) {
+	private boolean listMatcher(final String baseName, final String extendedNameData) {
+		if (extendedNameData.isEmpty()) {
 			// above all else we're only, actually, into the list here...
-			return this.listMatchesAny(bn);
+			return this.listMatchesAny(baseName);
 		}
-		// if we have an xn value, its likely we're looking for an operator
-		if (this.thisItem.has(bn)) {
-			return new ItemMatcher(this.thisItem.get(bn)).matches(xn);
+		// if we have an extendedNameData value, its likely we're looking for an operator
+		if (this.thisItem.has(baseName)) {
+			return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
 		}
 
 		return Boolean.FALSE;
@@ -128,32 +127,32 @@ public class ItemMatcher {
 
 	/**
 	 *
-	 * @param bn
-	 * @param xn
+	 * @param baseName
+	 * @param extendedNameData
 	 * @return
 	 */
-	private boolean identMatcher(final String bn, final String xn) {
-		if (!xn.isEmpty()) {
-			return this.identMatches((IdentifierType) this.thisItem, bn, xn);
+	private boolean identMatcher(final String baseName, final String extendedNameData) {
+		if (!extendedNameData.isEmpty()) {
+			return this.identMatches((IdentifierType) this.thisItem, baseName, extendedNameData);
 		} else {
-			return this.identMatches((IdentifierType) this.thisItem, bn);
+			return this.identMatches((IdentifierType) this.thisItem, baseName);
 		}
 	}
 
 	/**
 	 *
-	 * @param bn
+	 * @param baseName
 	 * @return
 	 */
-	private boolean operatorMatches(final String bn) {
-		// at this point our item is an operator, so we should only have 'bn'
+	private boolean operatorMatches(final String baseName) {
+		// at this point our item is an operator, so we should only have 'baseName'
 
 		final OperationType op = (OperationType) this.thisItem;
 		final int oper = op.getOperator();
 		if (oper == '!') {
-			return !op.getValueRaw().equalsIgnoreCase(bn);
+			return !op.getValueRaw().equalsIgnoreCase(baseName);
 		} else if (oper == '~') {
-			return op.getValueRaw().equalsIgnoreCase(bn);
+			return op.getValueRaw().equalsIgnoreCase(baseName);
 		}
 
 		return false;

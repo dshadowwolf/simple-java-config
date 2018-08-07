@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.data.BasicResult;
-import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.IdentifierType;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 class BasicResultTest {
 
@@ -31,6 +31,6 @@ class BasicResultTest {
 
 	@Test
 	final void testGetParent() {
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, testValue.getParent());
+		assertEquals(EMPTY_TYPE, testValue.getParent());
 	}
 }

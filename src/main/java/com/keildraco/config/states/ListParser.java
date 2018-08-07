@@ -9,8 +9,8 @@ import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
-import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.ListType;
 

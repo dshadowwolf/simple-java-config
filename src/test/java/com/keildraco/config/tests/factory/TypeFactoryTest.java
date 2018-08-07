@@ -22,11 +22,11 @@ import com.keildraco.config.data.Token;
 import com.keildraco.config.exceptions.UnknownParseTreeTypeException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.IStateParser;
-import com.keildraco.config.interfaces.ParserInternalTypeBase;
-import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.states.SectionParser;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  *
@@ -82,7 +82,7 @@ final class TypeFactoryTest {
 			tf.registerType((parent, name, value) -> new IdentifierType(parent, name, value),
 					ItemType.IDENTIFIER);
 			assertTrue(
-					tf.getType(ParserInternalTypeBase.EMPTY_TYPE, BLARGH, BLECH,
+					tf.getType(EMPTY_TYPE, BLARGH, BLECH,
 							ItemType.IDENTIFIER) instanceof IdentifierType,
 					"Able to register a type without an exception");
 		} catch (final Exception e) {
@@ -190,7 +190,7 @@ final class TypeFactoryTest {
 	 */
 	@Test
 	void testGetWithParent() {
-		assertNotNull(Config.getFactory().getParser(SECTION, ParserInternalTypeBase.EMPTY_TYPE),
+		assertNotNull(Config.getFactory().getParser(SECTION, EMPTY_TYPE),
 				"");
 	}
 }

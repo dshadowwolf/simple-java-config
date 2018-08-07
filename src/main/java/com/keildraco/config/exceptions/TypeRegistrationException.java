@@ -1,6 +1,6 @@
 package com.keildraco.config.exceptions;
 
-import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.interfaces.ItemType;
 
 /**
  *

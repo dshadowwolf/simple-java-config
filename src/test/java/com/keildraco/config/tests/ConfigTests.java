@@ -13,8 +13,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import javax.annotation.Nullable;
-
 import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
@@ -24,13 +22,10 @@ import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.ParserRegistrationException;
 import com.keildraco.config.exceptions.TypeRegistrationException;
 import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.interfaces.AbstractParserBase;
-import com.keildraco.config.interfaces.ParserInternalTypeBase;
-import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.testsupport.SupportClass.ParserThatThrows;
 import com.keildraco.config.testsupport.SupportClass.TypeThatThrows;
-import com.keildraco.config.tokenizer.Tokenizer;
+import static com.keildraco.config.testsupport.SupportClass.NullParser;
 
 /**
  *
@@ -46,9 +41,9 @@ final class ConfigTests {
 	private static final String EXCEPTION_CAUGHT = "Exception Caught";
 	private static final String EXCEPTION_GETTING_TYPE_INSTANCE_FOR = "Exception getting type instance for %s: %s";
 	private static final String LOAD_WORKED = "Load Worked? ";
-	private static final String NULLPARSER = "NULLPARSER";
 	private static final String SECTION = "SECTION";
 	private static final String WILLTHROW = "WILLTHROW";
+	private static final String NULLPARSER = "NULLPARSER";
 
 	/**
 	 *
@@ -168,10 +163,10 @@ final class ConfigTests {
 	void testErrorStates() {
 		Config.registerType(ItemType.INVALID, TypeThatThrows.class);
 		Config.getFactory().registerParser(() -> {
-			if (NullParser.flag) {
+			if (NullParser.getFlag()) {
 				return null;
 			} else {
-				NullParser.flag = true;
+				NullParser.setFlag();
 				return new NullParser(Config.getFactory(), null);
 			}
 		}, NULLPARSER);
@@ -184,34 +179,5 @@ final class ConfigTests {
 						() -> Config.getFactory().getParser(NULLPARSER, null), ""),
 				() -> assertThrows(IOException.class,
 						() -> Config.loadFile("assets/this-doesnt-exist.cfg")));
-	}
-
-	/**
-	 *
-	 * @author Daniel Hazelton
-	 *
-	 */
-	private static final class NullParser extends AbstractParserBase {
-
-		static boolean flag = false;
-
-		/**
-		 *
-		 * @param factory
-		 * @param parent
-		 */
-		NullParser(final TypeFactory factory, final ParserInternalTypeBase parent) {
-			super(factory, parent, NULLPARSER);
-		}
-
-		@Override
-		public void registerTransitions(@Nullable final TypeFactory factory) {
-			// blank
-		}
-
-		@Override
-		public ParserInternalTypeBase getState(Tokenizer tokenizer) {
-			return ParserInternalTypeBase.EMPTY_TYPE;
-		}
 	}
 }

@@ -12,9 +12,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -26,9 +26,10 @@ import org.reflections.Reflections;
 import com.keildraco.config.data.DataQuery;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
+import com.keildraco.config.interfaces.EmptyParserType;
 import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
-import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
 import com.keildraco.config.tokenizer.Tokenizer;
 
 /**
@@ -47,6 +48,11 @@ public final class Config {
 	 *
 	 */
 	private static final TypeFactory CORE_TYPE_FACTORY = new TypeFactory();
+
+	/**
+	 *
+	 */
+	public static final ParserInternalTypeBase EMPTY_TYPE = new EmptyParserType("EMPTY");
 
 	/**
 	 *
@@ -75,8 +81,7 @@ public final class Config {
 		try {
 			final Constructor<? extends IStateParser> c = clazz.getConstructor(TypeFactory.class,
 					ParserInternalTypeBase.class);
-			final IStateParser cc = c.newInstance(CORE_TYPE_FACTORY,
-					ParserInternalTypeBase.EMPTY_TYPE);
+			final IStateParser cc = c.newInstance(CORE_TYPE_FACTORY, Config.EMPTY_TYPE);
 			cc.registerTransitions(CORE_TYPE_FACTORY);
 			return cc;
 		} catch (final NoSuchMethodException | SecurityException | InstantiationException
@@ -200,15 +205,15 @@ public final class Config {
 			IllegalAccessException, InvocationTargetException {
 		final Reflections typeRefs = new Reflections("com.keildraco.config.types");
 		final Reflections parserRefs = new Reflections("com.keildraco.config.states");
-		final List<Class<? extends ParserInternalTypeBase>> types = typeRefs
-				.getSubTypesOf(ParserInternalTypeBase.class).stream().collect(Collectors.toList());
+		final List<Class<? extends ParserInternalTypeBase>> types = new ArrayList<>(
+				typeRefs.getSubTypesOf(ParserInternalTypeBase.class));
 
 		for (final Class<? extends ParserInternalTypeBase> type : types) {
 			registerType(type);
 		}
 
-		final List<Class<? extends IStateParser>> parsers = parserRefs
-				.getSubTypesOf(AbstractParserBase.class).stream().collect(Collectors.toList());
+		final List<Class<? extends IStateParser>> parsers = new ArrayList<>(
+				parserRefs.getSubTypesOf(AbstractParserBase.class));
 
 		for (final Class<? extends IStateParser> parser : parsers) {
 			registerParser(parser);

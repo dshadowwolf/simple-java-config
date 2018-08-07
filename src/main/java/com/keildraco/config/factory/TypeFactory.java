@@ -14,6 +14,7 @@ import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.interfaces.IParserState;
 import com.keildraco.config.interfaces.IParserType;
 import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
 /**
@@ -25,7 +26,7 @@ public final class TypeFactory {
 	/**
 	 *
 	 */
-	private final Map<ParserInternalTypeBase.ItemType, IParserType> typeMap;
+	private final Map<ItemType, IParserType> typeMap;
 
 	/**
 	 *
@@ -60,7 +61,7 @@ public final class TypeFactory {
 	 * @param lambda
 	 * @param type
 	 */
-	public void registerType(final IParserType lambda, final ParserInternalTypeBase.ItemType type) {
+	public void registerType(final IParserType lambda, final ItemType type) {
 		this.typeMap.put(type, lambda);
 	}
 
@@ -73,7 +74,7 @@ public final class TypeFactory {
 	 * @return
 	 */
 	public ParserInternalTypeBase getType(@Nullable final ParserInternalTypeBase parent,
-			final String name, final String value, final ParserInternalTypeBase.ItemType type) {
+			final String name, final String value, final ItemType type) {
 		final IParserType ipt = this.typeMap.get(type);
 
 		if (ipt == null) {

@@ -1,6 +1,5 @@
 package com.keildraco.config.tests.states;
 
-import static com.keildraco.config.testsupport.SupportClass.runParser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,8 +19,9 @@ import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.RootState;
+import static com.keildraco.config.testsupport.SupportClass.runParser;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  *
@@ -85,7 +85,7 @@ final class RootStateTest {
 	@Test
 	void testErrorStateInParse() {
 		try {
-			assertEquals(ParserInternalTypeBase.EMPTY_TYPE, runParser("error(! state)", "ROOT"));
+			assertEquals(EMPTY_TYPE, runParser("error(! state)", "ROOT"));
 		} catch (IllegalParserStateException | UnknownStateException | GenericParseException
 				| NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException | IOException | URISyntaxException e) {

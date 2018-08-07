@@ -24,6 +24,7 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.OperationType;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  *
@@ -92,7 +93,7 @@ final class ItemMatcherTest {
 			final Tokenizer t = getTokenizerFromString(data);
 			final ParserInternalTypeBase pb = p.getState(t);
 			final ItemMatcher im = new ItemMatcher(pb);
-			final ItemMatcher im2 = new ItemMatcher(ParserInternalTypeBase.EMPTY_TYPE);
+			final ItemMatcher im2 = new ItemMatcher(EMPTY_TYPE);
 			final OperationType o = new OperationType(OPER, VALUE);
 			o.setOperation(">");
 			final ItemMatcher im3 = new ItemMatcher(o);

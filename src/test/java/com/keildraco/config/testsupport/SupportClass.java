@@ -26,12 +26,15 @@ import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
+import static com.keildraco.config.Config.EMPTY_TYPE;
+
 
 public class SupportClass {
 
 	private static final String ABSTRACT = "Abstract!";
 	private static final String TEST = "TEST";
 	private static final String TESTING_PURPOSES_ONLY = "Testing purposes only";
+	private static final String NULLPARSER = "NULLPARSER";
 
 	public static final InputStream getInputStreamFromPath(final Path path)
 			throws MalformedURLException, IOException, URISyntaxException {
@@ -109,7 +112,7 @@ public class SupportClass {
 
 		@Override
 		public ParserInternalTypeBase getState(Tokenizer tokenizer) {
-			return ParserInternalTypeBase.EMPTY_TYPE;
+			return EMPTY_TYPE;
 		}
 	}
 
@@ -213,4 +216,41 @@ public class SupportClass {
 		};
 	}
 
+
+	/**
+	 *
+	 * @author Daniel Hazelton
+	 *
+	 */
+	public static final class NullParser extends AbstractParserBase {
+
+		private static boolean flag = false;
+
+		/**
+		 *
+		 * @param factory
+		 * @param parent
+		 */
+		public NullParser(final TypeFactory factory, final ParserInternalTypeBase parent) {
+			super(factory, parent, NULLPARSER);
+		}
+
+		@Override
+		public void registerTransitions(@Nullable final TypeFactory factory) {
+			// blank
+		}
+
+		@Override
+		public ParserInternalTypeBase getState(Tokenizer tokenizer) {
+			return EMPTY_TYPE;
+		}
+		
+		public static boolean getFlag() {
+			return flag;
+		}
+		
+		public static void setFlag() {
+			flag = true;
+		}
+	}
 }

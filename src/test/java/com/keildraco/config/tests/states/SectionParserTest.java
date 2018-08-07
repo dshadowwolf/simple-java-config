@@ -17,8 +17,8 @@ import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.SectionParser;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  *
@@ -42,7 +42,7 @@ final class SectionParserTest {
 		final String badData = "section { [ item ] }";
 
 		assertAll("",
-				() -> assertNotSame(ParserInternalTypeBase.EMPTY_TYPE,
+				() -> assertNotSame(EMPTY_TYPE,
 						runParser(validData, SECTION), "standard parse works"),
 				() -> assertThrows(GenericParseException.class,
 						() -> runParser(earlyExit, SECTION)),

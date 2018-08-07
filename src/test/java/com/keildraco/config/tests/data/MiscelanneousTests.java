@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.IStateParser;
-import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 public class MiscelanneousTests {
 
@@ -37,7 +37,7 @@ public class MiscelanneousTests {
 	@Test
 	final void testGetParent() {
 		IStateParser parser = Config.getFactory().getParser("ROOT", null);
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, parser.getParent());
+		assertEquals(EMPTY_TYPE, parser.getParent());
 	}
 
 	@Test

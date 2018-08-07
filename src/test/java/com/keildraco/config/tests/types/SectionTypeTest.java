@@ -10,9 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.SectionType;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  * @author Daniel Hazelton
@@ -55,7 +56,7 @@ final class SectionTypeTest {
 	 */
 	@Test
 	void testGetType() {
-		assertEquals(ParserInternalTypeBase.ItemType.SECTION, this.root.getType(), "");
+		assertEquals(ItemType.SECTION, this.root.getType(), "");
 	}
 
 	/**
@@ -95,10 +96,10 @@ final class SectionTypeTest {
 	@Test
 	void testSectionTypeParentNameValue() {
 		try {
-			final SectionType stOne = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, BLARGH,
+			final SectionType stOne = new SectionType(EMPTY_TYPE, BLARGH,
 					BLECH);
 			final SectionType stTwo = new SectionType(null, BLARGH);
-			final SectionType stThree = new SectionType(ParserInternalTypeBase.EMPTY_TYPE, "");
+			final SectionType stThree = new SectionType(EMPTY_TYPE, "");
 			final String matchVal = String.format("blargh {%n}%n");
 			assertAll("", () -> assertEquals(BLARGH, stOne.getName(), ""),
 					() -> assertEquals(ROOT, stTwo.getName(), ""),

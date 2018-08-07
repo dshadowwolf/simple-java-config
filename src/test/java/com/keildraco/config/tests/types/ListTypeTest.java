@@ -22,10 +22,12 @@ import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  * @author Daniel Hazelton
@@ -83,7 +85,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testGetType() {
-		assertEquals(ParserInternalTypeBase.ItemType.LIST, this.testItem.getType(), "");
+		assertEquals(ItemType.LIST, this.testItem.getType(), "");
 	}
 
 	/**
@@ -102,7 +104,7 @@ final class ListTypeTest {
 	void testAddItem() {
 		try {
 			final ListType testItem2 = new ListType(BLARGH);
-			testItem2.addItem(ParserInternalTypeBase.EMPTY_TYPE);
+			testItem2.addItem(EMPTY_TYPE);
 			assertTrue(testItem2.has(EMPTY), "Expected no exception");
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
@@ -122,7 +124,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testGetNotThere() {
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get("no_such_item"),
+		assertEquals(EMPTY_TYPE, this.testItem.get("no_such_item"),
 				"item doesn't exist");
 	}
 
@@ -142,7 +144,7 @@ final class ListTypeTest {
 	@Test
 	void testListTypeParentName() {
 		try {
-			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, BLARGH);
+			final ListType lt = new ListType(EMPTY_TYPE, BLARGH);
 			assertNotNull(lt, CONSTRUCTOR_WORKS);
 		} catch (final Exception e) {
 			fail(CAUGHT_EXCEPTION + e);
@@ -155,7 +157,7 @@ final class ListTypeTest {
 	@Test
 	void testListTypeParentNameValue() {
 		try {
-			final ListType lt = new ListType(ParserInternalTypeBase.EMPTY_TYPE, FOO, BAR);
+			final ListType lt = new ListType(EMPTY_TYPE, FOO, BAR);
 			assertNotNull(lt, CONSTRUCTOR_WORKS);
 		} catch (final Exception e) {
 			fail(CAUGHT_EXCEPTION + e);

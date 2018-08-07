@@ -16,6 +16,7 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  *
@@ -56,7 +57,7 @@ public final class RootState extends AbstractParserBase {
 			} catch (UnknownStateException e) {
 				Config.LOGGER.error("Exception during parse: %s", e.getMessage());
 				Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-				return ParserInternalTypeBase.EMPTY_TYPE;
+				return EMPTY_TYPE;
 			}
 			current = tokenizer.peek();
 			next = tokenizer.peekToken();

@@ -10,8 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.types.IdentifierType;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  * @author Daniel Hazelton
@@ -43,7 +44,7 @@ final class IdentifierTypeTest {
 	 */
 	@Test
 	void testGetNoItem() {
-		assertEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get(TEST), "");
+		assertEquals(EMPTY_TYPE, this.testItem.get(TEST), "");
 	}
 
 	/**
@@ -51,7 +52,7 @@ final class IdentifierTypeTest {
 	 */
 	@Test
 	void testGetHasItem() {
-		assertNotEquals(ParserInternalTypeBase.EMPTY_TYPE, this.testItem.get(VALUE), "");
+		assertNotEquals(EMPTY_TYPE, this.testItem.get(VALUE), "");
 	}
 
 	/**
@@ -67,7 +68,7 @@ final class IdentifierTypeTest {
 	 */
 	@Test
 	void testGetType() {
-		assertEquals(ParserInternalTypeBase.ItemType.IDENTIFIER, this.testItem.getType(), "");
+		assertEquals(ItemType.IDENTIFIER, this.testItem.getType(), "");
 	}
 
 	/**
@@ -94,7 +95,7 @@ final class IdentifierTypeTest {
 	@Test
 	void testAddItem() {
 		try {
-			this.testItem.addItem(ParserInternalTypeBase.EMPTY_TYPE);
+			this.testItem.addItem(EMPTY_TYPE);
 			assertTrue(true, EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");

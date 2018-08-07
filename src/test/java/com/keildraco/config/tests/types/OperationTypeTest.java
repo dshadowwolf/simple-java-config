@@ -1,6 +1,5 @@
 package com.keildraco.config.tests.types;
 
-import static com.keildraco.config.interfaces.ParserInternalTypeBase.EMPTY_TYPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -10,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import com.keildraco.config.interfaces.ParserInternalTypeBase;
-import com.keildraco.config.interfaces.ParserInternalTypeBase.ItemType;
+import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.types.OperationType;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  *
@@ -63,8 +62,7 @@ final class OperationTypeTest {
 	@Test
 	void testOperationTypeParserInternalTypeBaseString() {
 		try {
-			final OperationType op = new OperationType(ParserInternalTypeBase.EMPTY_TYPE,
-					OPERATION);
+			final OperationType op = new OperationType(EMPTY_TYPE, OPERATION);
 			op.setName(BLARGH);
 			assertTrue(true, EXPECTED_NO_EXCEPTION);
 		} catch (final Exception e) {

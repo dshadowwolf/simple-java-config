@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import static com.keildraco.config.Config.EMPTY_TYPE;
 
 /**
  *
