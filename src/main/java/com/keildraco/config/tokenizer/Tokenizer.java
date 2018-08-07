@@ -5,6 +5,7 @@ import java.io.StreamTokenizer;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import com.keildraco.config.data.Constants;
 import com.keildraco.config.data.Token;
 
 /**
@@ -15,19 +16,27 @@ import com.keildraco.config.data.Token;
 public final class Tokenizer {
 
 	/**
-	 * Name and Value for the empty token...
-	 */
-	private static final String EMPTY_TOKEN = "---EMPTY---";
-
-	/**
-	 *
+	 * Internal storage of the token stream derived from the StreamTokenizer that was a parameter of
+	 * the constructor
 	 */
 	private final Deque<Token> tokens;
 
 	/**
-	 *
+	 * <p>
+	 * Constructor (seriously, the only one for this class)
+	 * </p>
+	 * <p>
+	 * Takes a {@link java.io.StreamTokenizer StreamTokenizer} and iterates its results, turning it
+	 * into a uniform stream of {@link com.keildraco.config.data.Token Tokens} that get later used
+	 * by the parser.
+	 * </p>
+	 * 
 	 * @param tokenizer
+	 *            A {@link java.io.StreamTokenizer StreamTokenizer} instance that is used as the raw
+	 *            lexical source for the uninterpreted tokens
 	 * @throws IOException
+	 *             Same reasons as {@link java.io.StreamTokenizer StreamTokenizer} would, since that
+	 *             is the source of this exception, in this case.
 	 */
 	public Tokenizer(final StreamTokenizer tokenizer) throws IOException {
 		this.tokens = new LinkedList<>();
@@ -60,7 +69,7 @@ public final class Tokenizer {
 	 */
 	public Token nextToken() {
 		if (this.tokens.isEmpty()) {
-			return new Token(EMPTY_TOKEN);
+			return new Token(Constants.TOKENEMPTY);
 		}
 		return this.tokens.pop();
 	}
@@ -79,7 +88,7 @@ public final class Tokenizer {
 	 */
 	public Token peekToken() {
 		if (this.tokens.isEmpty() || this.tokens.size() == 1) {
-			return new Token(EMPTY_TOKEN);
+			return new Token(Constants.TOKENEMPTY);
 		}
 
 		final Token tok = this.tokens.pop();
@@ -94,7 +103,7 @@ public final class Tokenizer {
 	 */
 	public Token peek() {
 		if (this.tokens.isEmpty()) {
-			return new Token(EMPTY_TOKEN);
+			return new Token(Constants.TOKENEMPTY);
 		}
 
 		return this.tokens.peek();

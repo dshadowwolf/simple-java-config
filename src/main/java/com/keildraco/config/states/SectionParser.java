@@ -11,6 +11,8 @@ import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.SectionType;
+import static com.keildraco.config.data.Constants.ParserNames.SECTION;
+import static com.keildraco.config.data.Constants.ParserNames.KEYVALUE;
 
 /**
  *
@@ -26,7 +28,7 @@ public final class SectionParser extends AbstractParserBase {
 	 */
 	public SectionParser(final TypeFactory factoryIn,
 			@Nullable final ParserInternalTypeBase parentIn) {
-		super(factoryIn, parentIn, "SECTION");
+		super(factoryIn, parentIn, SECTION);
 	}
 
 	@Override
@@ -61,9 +63,8 @@ public final class SectionParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName(), TokenType.IDENTIFIER, TokenType.STORE,
-				"KEYVALUE");
-		factory.registerStateTransition(this.getName(), TokenType.IDENTIFIER, TokenType.OPEN_BRACE,
-				this.getName());
+		factory.registerStateTransition(SECTION, TokenType.IDENTIFIER, TokenType.STORE, KEYVALUE);
+		factory.registerStateTransition(SECTION, TokenType.IDENTIFIER, TokenType.OPEN_BRACE,
+				SECTION);
 	}
 }

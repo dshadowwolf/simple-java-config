@@ -13,6 +13,8 @@ import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.ListType;
+import static com.keildraco.config.data.Constants.ParserNames.LIST;
+import static com.keildraco.config.data.Constants.ParserNames.OPERATION;
 
 /**
  *
@@ -28,7 +30,21 @@ public final class ListParser extends AbstractParserBase {
 	 */
 	public ListParser(final TypeFactory factoryIn,
 			@Nullable final ParserInternalTypeBase parentIn) {
-		super(factoryIn, parentIn, "LIST");
+		super(factoryIn, parentIn, LIST);
+	}
+
+	private void handleIdentifierLoad(final Token next, final Token current,
+			final Tokenizer tokenizer, final ListType rv) {
+		if ((!next.isEmpty()) && ((next.getType() != TokenType.SEPERATOR)
+				&& (next.getType() != TokenType.CLOSE_LIST))) {
+			final IStateParser nextState = this.getFactory().nextState(this.getName(), current,
+					next);
+			rv.addItem(nextState.getState(tokenizer));
+		} else {
+			rv.addItem(this.getFactory().getType(null, current.getValue(), current.getValue(),
+					ItemType.IDENTIFIER));
+			tokenizer.nextToken(); // consume the identifier
+		}
 	}
 
 	@Override
@@ -48,29 +64,18 @@ public final class ListParser extends AbstractParserBase {
 		final ListType rv = new ListType("");
 
 		while (tokenizer.hasNext()) {
-			switch (current.getType()) {
-				case IDENTIFIER:
-					if ((!next.isEmpty()) && ((next.getType() != TokenType.SEPERATOR)
-							&& (next.getType() != TokenType.CLOSE_LIST))) {
-						IStateParser nextState = this.getFactory().nextState(this.getName(),
-								current, next);
-						rv.addItem(nextState.getState(tokenizer));
-					} else {
-						rv.addItem(this.getFactory().getType(null, current.getValue(),
-								current.getValue(), ItemType.IDENTIFIER));
-						tokenizer.nextToken(); // consume the identifier
-					}
-					break;
-				case SEPERATOR:
-					tokenizer.nextToken(); // consume!
-					break;
-				case CLOSE_LIST:
-					tokenizer.nextToken(); // consume!
+			if (current.getType() == TokenType.IDENTIFIER) {
+				handleIdentifierLoad(next, current, tokenizer, rv);
+			} else if (current.getType() == TokenType.SEPERATOR
+					|| current.getType() == TokenType.CLOSE_LIST) {
+				tokenizer.nextToken(); // consume!
+				if (current.getType() == TokenType.CLOSE_LIST) {
 					return rv;
-				default:
-					throw new GenericParseException(String.format(
-							"Odd, this (token of type %s, value %s) should not be here!",
-							current.getType(), current.getValue()));
+				}
+			} else {
+				throw new GenericParseException(
+						String.format("Odd, this (token of type %s, value %s) should not be here!",
+								current.getType(), current.getValue()));
 			}
 			current = tokenizer.peek();
 			next = tokenizer.peekToken();
@@ -81,7 +86,7 @@ public final class ListParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName(), TokenType.IDENTIFIER, TokenType.OPEN_PARENS,
-				"OPERATION");
+		factory.registerStateTransition(LIST, TokenType.IDENTIFIER, TokenType.OPEN_PARENS,
+				OPERATION);
 	}
 }

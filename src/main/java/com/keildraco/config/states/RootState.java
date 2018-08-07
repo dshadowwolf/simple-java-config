@@ -17,6 +17,9 @@ import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import static com.keildraco.config.Config.EMPTY_TYPE;
+import static com.keildraco.config.data.Constants.ParserNames.ROOT;
+import static com.keildraco.config.data.Constants.ParserNames.SECTION;
+import static com.keildraco.config.data.Constants.ParserNames.KEYVALUE;
 
 /**
  *
@@ -31,7 +34,7 @@ public final class RootState extends AbstractParserBase {
 	 * @param parentIn
 	 */
 	public RootState(final TypeFactory factoryIn, @Nullable final ParserInternalTypeBase parentIn) {
-		super(factoryIn, parentIn, "ROOT");
+		super(factoryIn, parentIn, ROOT);
 	}
 
 	/**
@@ -55,7 +58,7 @@ public final class RootState extends AbstractParserBase {
 				bits.push(this.getFactory().nextState(this.getName(), current, next)
 						.getState(tokenizer));
 			} catch (UnknownStateException e) {
-				Config.LOGGER.error("Exception during parse: %s", e.getMessage());
+				Config.LOGGER.error("Exception during parse: {}", e.getMessage());
 				Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
 				return EMPTY_TYPE;
 			}
@@ -71,9 +74,7 @@ public final class RootState extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName(), TokenType.IDENTIFIER, TokenType.OPEN_BRACE,
-				"SECTION");
-		factory.registerStateTransition(this.getName(), TokenType.IDENTIFIER, TokenType.STORE,
-				"KEYVALUE");
+		factory.registerStateTransition(ROOT, TokenType.IDENTIFIER, TokenType.OPEN_BRACE, SECTION);
+		factory.registerStateTransition(ROOT, TokenType.IDENTIFIER, TokenType.STORE, KEYVALUE);
 	}
 }

@@ -31,37 +31,37 @@ public final class Token {
 			this.type = TokenType.IDENTIFIER;
 		} else {
 			switch (this.value) {
-				case "=":
+				case Constants.STOREOPERATOR:
 					this.type = TokenType.STORE;
 					break;
-				case "{":
+				case Constants.OPENBRACE:
 					this.type = TokenType.OPEN_BRACE;
 					break;
-				case "}":
+				case Constants.CLOSEBRACE:
 					this.type = TokenType.CLOSE_BRACE;
 					break;
-				case "(":
+				case Constants.OPENPARENS:
 					this.type = TokenType.OPEN_PARENS;
 					break;
-				case ")":
+				case Constants.CLOSEPARENS:
 					this.type = TokenType.CLOSE_PARENS;
 					break;
-				case "~":
+				case Constants.IGNOREASSTRING:
 					this.type = TokenType.TILDE;
 					break;
-				case "!":
+				case Constants.NOTASSTRING:
 					this.type = TokenType.NOT;
 					break;
-				case "[":
+				case Constants.OPENLIST:
 					this.type = TokenType.OPEN_LIST;
 					break;
-				case "]":
+				case Constants.CLOSELIST:
 					this.type = TokenType.CLOSE_LIST;
 					break;
-				case ",":
+				case Constants.LISETSEPERATOR:
 					this.type = TokenType.SEPERATOR;
 					break;
-				case "---EMPTY---":
+				case Constants.TOKENEMPTY:
 					this.type = TokenType.EMPTY;
 					break;
 				default:

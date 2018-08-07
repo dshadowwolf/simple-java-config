@@ -12,6 +12,7 @@ import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.OperationType;
+import static com.keildraco.config.data.Constants.ParserNames.OPERATION;
 
 /**
  *
@@ -27,7 +28,7 @@ public final class OperationParser extends AbstractParserBase {
 	 */
 	public OperationParser(final TypeFactory factoryIn,
 			@Nullable final ParserInternalTypeBase parentIn) {
-		super(factoryIn, parentIn, "OPERATION");
+		super(factoryIn, parentIn, OPERATION);
 	}
 
 	@Override
@@ -42,24 +43,23 @@ public final class OperationParser extends AbstractParserBase {
 		final Token operT = tok.nextToken();
 		final Token value = tok.nextToken();
 		final Token last = tok.nextToken();
-		switch (operT.getType()) {
-			case NOT:
-			case TILDE:
-				break;
-			case IDENTIFIER:
+
+		if (operT.getType() != TokenType.NOT && operT.getType() != TokenType.TILDE) {
+			if (operT.getType() == TokenType.IDENTIFIER) {
 				throw new GenericParseException(
 						"Found an Identifier where an Operator was expected");
-			default:
+			} else {
 				throw new GenericParseException(
 						String.format("Found %s where an Operator was expected", operT.getValue()));
+			}
 		}
 
-		if (!value.getType().equals(TokenType.IDENTIFIER)) {
+		if (value.getType() != TokenType.IDENTIFIER) {
 			throw new GenericParseException(
 					String.format("Found %s where an Identifier was expected", operT.getValue()));
 		}
 
-		if (last.getType().equals(TokenType.CLOSE_PARENS)) {
+		if (last.getType() == TokenType.CLOSE_PARENS) {
 			final OperationType rv = (OperationType) this.getFactory().getType(null, key,
 					value.getValue(), ItemType.OPERATION);
 			rv.setOperation(operT.getValue());

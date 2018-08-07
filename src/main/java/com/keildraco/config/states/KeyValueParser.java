@@ -11,6 +11,9 @@ import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
+import static com.keildraco.config.data.Constants.ParserNames.OPERATION;
+import static com.keildraco.config.data.Constants.ParserNames.LIST;
+import static com.keildraco.config.data.Constants.ParserNames.KEYVALUE;
 
 /**
  *
@@ -26,7 +29,7 @@ public final class KeyValueParser extends AbstractParserBase {
 	 */
 	public KeyValueParser(final TypeFactory factoryIn,
 			@Nullable final ParserInternalTypeBase parentIn) {
-		super(factoryIn, parentIn, "KEYVALUE");
+		super(factoryIn, parentIn, KEYVALUE);
 	}
 
 	@Override
@@ -57,7 +60,8 @@ public final class KeyValueParser extends AbstractParserBase {
 
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
-		factory.registerStateTransition(this.getName(), TokenType.OPEN_LIST, TokenType.IDENTIFIER,
-				"LIST");
+		factory.registerStateTransition(KEYVALUE, TokenType.OPEN_LIST, TokenType.IDENTIFIER, LIST);
+		factory.registerStateTransition(KEYVALUE, TokenType.OPEN_PARENS, TokenType.IDENTIFIER,
+				OPERATION);
 	}
 }

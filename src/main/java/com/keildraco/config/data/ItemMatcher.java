@@ -39,8 +39,8 @@ public class ItemMatcher {
 		String extendedNameData = "";
 
 		if (tn) {
-			baseName = name.substring(0, name.indexOf('.'));
-			extendedNameData = name.substring(name.indexOf('.') + 1);
+			baseName = name.substring(0, name.indexOf(Constants.KEYSEPARATOR));
+			extendedNameData = name.substring(name.indexOf(Constants.KEYSEPARATOR) + 1);
 		}
 
 		return this.doesItemMatch(this.thisItem.getType(), baseName, extendedNameData);
@@ -134,9 +134,9 @@ public class ItemMatcher {
 
 		final OperationType op = (OperationType) this.thisItem;
 		final int oper = op.getOperator();
-		if (oper == '!') {
+		if (oper == Constants.NOTOPERATOR) {
 			return !op.getValueRaw().equalsIgnoreCase(baseName);
-		} else if (oper == '~') {
+		} else if (oper == Constants.IGNOREOPERATOR) {
 			return op.getValueRaw().equalsIgnoreCase(baseName);
 		}
 
