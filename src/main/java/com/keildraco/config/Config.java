@@ -211,12 +211,8 @@ public final class Config {
 	}
 
 	/**
-	 * @throws InvocationTargetException
 	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
 	 * @throws SecurityException
-	 * @throws NoSuchMethodException
 	 *
 	 */
 	public static void registerKnownParts() {

@@ -23,7 +23,7 @@ public class TypeRegistrationException extends RuntimeException {
 
 	/**
 	 *
-	 * @param type
+	 * @param message
 	 */
 	public TypeRegistrationException(final String message) {
 		super(message);

@@ -77,8 +77,10 @@ public abstract class ParserInternalTypeBase {
 	public ParserInternalTypeBase get(final String itemName) {
 		final int index = itemName.indexOf('.');
 		if (index > 0) {
-			final String nameBits = itemName.substring(0, itemName.indexOf('.')).toLowerCase(Locale.getDefault());
-			final String nameRest = itemName.substring(itemName.indexOf('.') + 1).toLowerCase(Locale.getDefault());
+			final String nameBits = itemName.substring(0, itemName.indexOf('.'))
+					.toLowerCase(Locale.getDefault());
+			final String nameRest = itemName.substring(itemName.indexOf('.') + 1)
+					.toLowerCase(Locale.getDefault());
 			if (this.has(nameBits)) {
 				/*
 				 * this had an extraneous null check originally... if 'this.has()' returns true,

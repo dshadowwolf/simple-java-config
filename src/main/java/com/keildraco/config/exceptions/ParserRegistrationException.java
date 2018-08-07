@@ -22,9 +22,10 @@ public class ParserRegistrationException extends RuntimeException {
 	/**
 	 *
 	 * @param parserName
+	 * @param originalException
 	 */
-	public ParserRegistrationException(final String parserName, final Exception e) {
-		super("An exception occurred while registering parser " + parserName + " -- " + e.getClass()
-				+ " :: " + e.getMessage());
+	public ParserRegistrationException(final String parserName, final Exception originalException) {
+		super("An exception occurred while registering parser " + parserName + " -- "
+				+ originalException.getClass() + " :: " + originalException.getMessage());
 	}
 }

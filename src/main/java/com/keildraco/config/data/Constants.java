@@ -173,20 +173,19 @@ public final class Constants {
 	public static final String	TOKENEMPTY			= "---EMPTY---";
 	/**
 	 * <p>
-	 * Used as the value for the {@link com.keildraco.config.Config.EMPTY_TYPE "Empty"}
+	 * Used as the value for the {@link com.keildraco.config.Config#EMPTY_TYPE "Empty"}
 	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase Parser Type} that replaces a
 	 * null return or source value for any use of a generic Parser Type.
 	 */
 	public static final String	EMPTY_TYPE_VALUE	= "EMPTY";
 	/**
 	 * <p>
-	 * Used as the name for the {@link com.keildraco.config.Config.EMPTY_TYPE "Empty"}
+	 * Used as the name for the {@link com.keildraco.config.Config#EMPTY_TYPE "Empty"}
 	 * {@link com.keildraco.config.interfaces.ParserInternalTypeBase Parser Type} that replaces a
 	 * null return or source value for any use of a generic Parser Type.
 	 * <p>
-	 * While this is currently the same as
-	 * {@link com.keildraco.config.data.Constants.EMPTY_TYPE_VALUE EMPTY_TYPE_VALUE} it doesn't have
-	 * to be, hence the reason it is a separate constant.
+	 * While this is currently the same as {@link #EMPTY_TYPE_VALUE EMPTY_TYPE_VALUE} it doesn't
+	 * have to be, hence the reason it is a separate constant.
 	 */
 	public static final String	EMPTY_TYPE_NAME		= EMPTY_TYPE_VALUE;
 

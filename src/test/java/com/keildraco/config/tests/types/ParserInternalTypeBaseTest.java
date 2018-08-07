@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -263,7 +264,7 @@ final class ParserInternalTypeBaseTest {
 		final ParserInternalTypeBase q = getInstance(ZZTOP);
 		p.addItem(q);
 		final Map<String, ParserInternalTypeBase> expectBase = new ConcurrentHashMap<>();
-		expectBase.put(ZZTOP, q);
+		expectBase.put(ZZTOP.toLowerCase(Locale.getDefault()), q);
 		assertEquals(Collections.unmodifiableMap(expectBase), p.getChildren(), "");
 	}
 

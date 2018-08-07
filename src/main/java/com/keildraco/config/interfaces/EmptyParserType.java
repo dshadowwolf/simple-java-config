@@ -4,6 +4,7 @@ import com.keildraco.config.Config;
 import com.keildraco.config.data.Constants;
 
 public final class EmptyParserType extends ParserInternalTypeBase {
+
 	/**
 	 *
 	 */

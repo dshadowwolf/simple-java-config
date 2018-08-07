@@ -91,12 +91,12 @@ public final class ListType extends ParserInternalTypeBase {
 	@Override
 	public ParserInternalTypeBase get(final String itemName) {
 		final String caseMatched = itemName.toLowerCase(Locale.getDefault());
-		
+
 		if (!this.has(caseMatched)) {
 			return EMPTY_TYPE;
 		}
 
-		return this.value.stream().filter(pitb->caseMatched.equals(pitb.getName()))
+		return this.value.stream().filter(pitb -> caseMatched.equals(pitb.getName()))
 				.collect(Collectors.toList()).get(0);
 	}
 

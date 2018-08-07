@@ -85,7 +85,7 @@ final class SectionTypeTest {
 	 */
 	@Test
 	void testAsString() {
-		final String result = String.format("blargh = blech%n CHILD {%n blargh = foobar%n}");
+		final String result = String.format("blargh = blech%n child {%n blargh = foobar%n}");
 		assertAll("", () -> assertEquals(result, this.root.getValue().trim(), ""),
 				() -> assertEquals(result, this.root.getValueRaw().trim(), ""));
 	}
