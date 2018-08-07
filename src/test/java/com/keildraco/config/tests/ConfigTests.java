@@ -39,7 +39,7 @@ final class ConfigTests {
 	private static final String CAUGHT_EXCEPTION_RUNNING_LOADFILE = "Caught exception running loadFile: ";
 	private static final String EXCEPTION = "Exception %s";
 	private static final String EXCEPTION_CAUGHT = "Exception Caught";
-	private static final String EXCEPTION_GETTING_TYPE_INSTANCE_FOR = "Exception getting type instance for %s: %s";
+	private static final String EXCEPTION_GETTING_TYPE_INSTANCE_FOR = "Exception getting type instance for {}: {}";
 	private static final String LOAD_WORKED = "Load Worked? ";
 	private static final String SECTION = "SECTION";
 	private static final String WILLTHROW = "WILLTHROW";

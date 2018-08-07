@@ -21,16 +21,16 @@ class BasicResultTest {
 
 	@Test
 	final void testGetValue() {
-		assertEquals(RESULT, testValue.getValue());
+		assertEquals(RESULT, testValue.getValue(), "");
 	}
 
 	@Test
 	final void testGetValueRaw() {
-		assertEquals(RESULT, testValue.getValueRaw());
+		assertEquals(RESULT, testValue.getValueRaw(), "");
 	}
 
 	@Test
 	final void testGetParent() {
-		assertEquals(EMPTY_TYPE, testValue.getParent());
+		assertEquals(EMPTY_TYPE, testValue.getParent(), "");
 	}
 }

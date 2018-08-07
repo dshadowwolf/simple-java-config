@@ -29,14 +29,14 @@ import com.keildraco.config.tokenizer.Tokenizer;
 import static com.keildraco.config.Config.EMPTY_TYPE;
 
 
-public class SupportClass {
+public final class SupportClass {
 
 	private static final String ABSTRACT = "Abstract!";
 	private static final String TEST = "TEST";
 	private static final String TESTING_PURPOSES_ONLY = "Testing purposes only";
 	private static final String NULLPARSER = "NULLPARSER";
 
-	public static final InputStream getInputStreamFromPath(final Path path)
+	public static InputStream getInputStreamFromPath(final Path path)
 			throws MalformedURLException, IOException, URISyntaxException {
 		final String ts = String.join("/", path.toString().split("\\\\"));
 		final URL tu = Config.class.getClassLoader().getResource(ts);
@@ -45,17 +45,17 @@ public class SupportClass {
 		return is;
 	}
 
-	public static final Tokenizer getTokenizerFromPath(final Path path)
+	public static Tokenizer getTokenizerFromPath(final Path path)
 			throws MalformedURLException, IOException, URISyntaxException {
 		return new Tokenizer(new StreamTokenizer(
 				new InputStreamReader(getInputStreamFromPath(path), StandardCharsets.UTF_8)));
 	}
 
-	public static final InputStream getInputStreamFromString(final String data) {
+	public static InputStream getInputStreamFromString(final String data) {
 		return IOUtils.toInputStream(data, StandardCharsets.UTF_8);
 	}
 
-	public static final Tokenizer getTokenizerFromString(final String data)
+	public static Tokenizer getTokenizerFromString(final String data)
 			throws MalformedURLException, IOException, URISyntaxException {
 		return new Tokenizer(new StreamTokenizer(
 				new InputStreamReader(getInputStreamFromString(data), StandardCharsets.UTF_8)));
@@ -75,7 +75,7 @@ public class SupportClass {
 	 * @throws InvocationTargetException
 	 * @throws URISyntaxException
 	 */
-	public static final ParserInternalTypeBase runParser(final String data, final String parserName)
+	public static ParserInternalTypeBase runParser(final String data, final String parserName)
 			throws IOException, IllegalParserStateException, UnknownStateException,
 			GenericParseException, NoSuchMethodException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, URISyntaxException {
@@ -153,7 +153,7 @@ public class SupportClass {
 	 * @param name
 	 * @return
 	 */
-	public static final ParserInternalTypeBase getInstance(final String name) {
+	public static ParserInternalTypeBase getInstance(final String name) {
 		return new ParserInternalTypeBase(name) {
 
 			@Override
@@ -175,7 +175,7 @@ public class SupportClass {
 	 * @param name
 	 * @return
 	 */
-	public static final ParserInternalTypeBase getInstance(final ParserInternalTypeBase parent,
+	public static ParserInternalTypeBase getInstance(final ParserInternalTypeBase parent,
 			final String name) {
 		return new ParserInternalTypeBase(parent, name) {
 
@@ -199,7 +199,7 @@ public class SupportClass {
 	 * @param value
 	 * @return
 	 */
-	public static final ParserInternalTypeBase getInstance(final ParserInternalTypeBase parent,
+	public static ParserInternalTypeBase getInstance(final ParserInternalTypeBase parent,
 			final String name, final String value) {
 		return new ParserInternalTypeBase(parent, name, value) {
 
@@ -241,7 +241,7 @@ public class SupportClass {
 		}
 
 		@Override
-		public ParserInternalTypeBase getState(Tokenizer tokenizer) {
+		public ParserInternalTypeBase getState(final Tokenizer tokenizer) {
 			return EMPTY_TYPE;
 		}
 		

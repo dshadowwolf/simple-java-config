@@ -20,7 +20,7 @@ public class MiscelanneousTests {
 		try {
 			Config.reset();
 			Config.registerKnownParts();
-		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+		} catch (final NoSuchMethodException | InstantiationException | IllegalAccessException
 				| InvocationTargetException e) {
 			fail("Exception (" + e.getMessage() + " :: " + e + ") caught when not expected");
 		}
@@ -28,24 +28,23 @@ public class MiscelanneousTests {
 
 	@Test
 	final void testSetFactory() {
-		IStateParser parser = Config.getFactory().getParser("ROOT", null);
-		TypeFactory f = new TypeFactory();
-		parser.setFactory(f);
-		assertEquals(f, parser.getFactory());
+		final IStateParser parser = Config.getFactory().getParser("ROOT", null);
+		final TypeFactory tf = new TypeFactory();
+		parser.setFactory(tf);
+		assertEquals(tf, parser.getFactory(), "");
 	}
 
 	@Test
 	final void testGetParent() {
-		IStateParser parser = Config.getFactory().getParser("ROOT", null);
-		assertEquals(EMPTY_TYPE, parser.getParent());
+		final IStateParser parser = Config.getFactory().getParser("ROOT", null);
+		assertEquals(EMPTY_TYPE, parser.getParent(), "");
 	}
 
 	@Test
 	final void testSetName() {
 		final String name = "BLARGH";
-		IStateParser parser = Config.getFactory().getParser("ROOT", null);
+		final IStateParser parser = Config.getFactory().getParser("ROOT", null);
 		parser.setName(name);
-		assertEquals(name, parser.getName());
+		assertEquals(name, parser.getName(), "");
 	}
-
 }
