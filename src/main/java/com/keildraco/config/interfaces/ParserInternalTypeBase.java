@@ -52,7 +52,7 @@ public abstract class ParserInternalTypeBase {
 			this.parent = parentIn;
 		}
 
-		this.items = new ConcurrentHashMap<>();
+		this.items = new ConcurrentHashMap<>(256);
 	}
 
 	/**

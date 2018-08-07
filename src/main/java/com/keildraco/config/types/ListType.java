@@ -51,7 +51,7 @@ public final class ListType extends ParserInternalTypeBase {
 			final List<ParserInternalTypeBase> values) {
 		super(parent, name);
 		this.value = new LinkedList<>();
-		this.value.addAll(values);
+		values.stream().forEach(this.value::add);
 	}
 
 	/**

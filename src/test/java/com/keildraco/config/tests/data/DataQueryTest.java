@@ -75,13 +75,13 @@ final class DataQueryTest {
 		try {
 			final Path p = Paths.get(ASSETS, BASE_CONFIG_TEST_CFG);
 			final DataQuery dq = Config.loadFile(p);
-			assertAll("", () -> assertTrue(dq.get("section.magic"), "basic test"),
-					() -> assertFalse(dq.get("section.dead"), "incorrect key"),
-					() -> assertTrue(dq.get("section"), "variant"),
-					() -> assertTrue(dq.get("section.magic.xyzzy"), "long test"),
-					() -> assertFalse(dq.get("nope"), "nonexistent bit, short"),
-					() -> assertFalse(dq.get("section.blech.dead"), "buried dead key"),
-					() -> assertThrows(IllegalArgumentException.class, () -> dq.get(".section")));
+			assertAll("", () -> assertTrue(dq.matches("section.magic"), "basic test"),
+					() -> assertFalse(dq.matches("section.dead"), "incorrect key"),
+					() -> assertTrue(dq.matches("section"), "variant"),
+					() -> assertTrue(dq.matches("section.magic.xyzzy"), "long test"),
+					() -> assertFalse(dq.matches("nope"), "nonexistent bit, short"),
+					() -> assertFalse(dq.matches("section.blech.dead"), "buried dead key"),
+					() -> assertThrows(IllegalArgumentException.class, () -> dq.matches(".section")));
 		} catch (final IOException | IllegalArgumentException | URISyntaxException
 				| IllegalParserStateException | UnknownStateException | GenericParseException e) {
 			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(), e.getMessage());

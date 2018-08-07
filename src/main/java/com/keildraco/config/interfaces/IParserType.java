@@ -16,6 +16,5 @@ public interface IParserType {
 	 * @param value
 	 * @return
 	 */
-	@Nullable
 	ParserInternalTypeBase get(@Nullable ParserInternalTypeBase parent, String name, String value);
 }

@@ -42,9 +42,9 @@ public final class TypeFactory {
 	 * Private default constructor.
 	 */
 	public TypeFactory() {
-		this.typeMap = new ConcurrentHashMap<>();
-		this.parserMap = new ConcurrentHashMap<>();
-		this.stateMap = new ConcurrentHashMap<>();
+		this.typeMap = new ConcurrentHashMap<>(256);
+		this.parserMap = new ConcurrentHashMap<>(256);
+		this.stateMap = new ConcurrentHashMap<>(256);
 	}
 
 	/**
@@ -116,10 +116,10 @@ public final class TypeFactory {
 	public void registerStateTransition(final String stateName, final TokenType currentToken,
 			final TokenType nextToken, final String toState) {
 		final Map<TokenType, String> transitionMapping = this.stateMap
-				.getOrDefault(stateName, new ConcurrentHashMap<>())
-				.getOrDefault(currentToken, new ConcurrentHashMap<>());
+				.getOrDefault(stateName, new ConcurrentHashMap<>(256))
+				.getOrDefault(currentToken, new ConcurrentHashMap<>(256));
 		final Map<TokenType, Map<TokenType, String>> baseMapping = this.stateMap
-				.getOrDefault(stateName, new ConcurrentHashMap<>());
+				.getOrDefault(stateName, new ConcurrentHashMap<>(256));
 		transitionMapping.put(nextToken, toState);
 		baseMapping.put(currentToken, transitionMapping);
 		this.stateMap.put(stateName, baseMapping);
@@ -158,8 +158,8 @@ public final class TypeFactory {
 	 */
 	public IStateParser nextState(final String currentState, final Token currentToken,
 			final Token nextToken) {
-		final String nextState = this.stateMap.getOrDefault(currentState, new ConcurrentHashMap<>())
-				.getOrDefault(currentToken.getType(), new ConcurrentHashMap<>())
+		final String nextState = this.stateMap.getOrDefault(currentState, new ConcurrentHashMap<>(256))
+				.getOrDefault(currentToken.getType(), new ConcurrentHashMap<>(256))
 				.getOrDefault(nextToken.getType(), "");
 
 		if (nextState.isEmpty()) {

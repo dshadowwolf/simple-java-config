@@ -136,7 +136,13 @@ public final class Config {
 	private static void registerTypeInternal(final ItemType type,
 			final Class<? extends ParserInternalTypeBase> clazz) {
 		CORE_TYPE_FACTORY.registerType(
-				(parent, name, value) -> registerTypeGenerator(parent, name, value, clazz), type);
+				(parent, name, value) -> {
+					if (parent==null) {
+						return registerTypeGenerator(EMPTY_TYPE, name, value, clazz);
+					} else {
+						return registerTypeGenerator(parent, name, value, clazz);
+					}
+				}, type);
 	}
 
 	/**

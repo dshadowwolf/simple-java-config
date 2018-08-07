@@ -39,7 +39,7 @@ public final class DataQuery {
 	 *            Name of item to look for, can be a dotted-notation for sub-items
 	 * @return true/false of items existence
 	 */
-	public boolean get(final String key) {
+	public boolean matches(final String key) {
 		// find item, or "all"
 		final int index = key.indexOf('.');
 		if (this.baseSection.has(key)) {
