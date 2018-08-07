@@ -76,16 +76,12 @@ public class ItemMatcher {
 	 * @return
 	 */
 	private boolean doesSectionMatch(final String baseName, final String extendedNameData) {
-		if (this.thisItem.getName().equalsIgnoreCase(baseName)) {
+		if (this.thisItem.getName().equalsIgnoreCase(baseName) && !extendedNameData.isEmpty()) {
 			// we match the base name itself, so we have to see if we can split the extended name or
 			// don't need to and re-match
-			if (!extendedNameData.isEmpty()) {
-				return this.matches(extendedNameData);
-			}
-		} else if (this.thisItem.has(baseName)) {
-			if (!extendedNameData.isEmpty()) {
-				return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
-			}
+			return this.matches(extendedNameData);
+		} else if (this.thisItem.has(baseName) && !extendedNameData.isEmpty()) {
+			return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
 		} else if(extendedNameData.isEmpty() && (this.thisItem.has(baseName) || this.thisItem.getName().equalsIgnoreCase(baseName))) {
 			return true;
 		} else {
