@@ -115,7 +115,7 @@ final class SectionParserTest {
 		// data for tokenizer mocks
 		Deque<Token> goodData = Lists.newLinkedList(Arrays.asList(new Token("section"), new Token("{"), new Token("key"), new Token("="), new Token("value"), new Token("}")));
 		Deque<Token> earlyEndData = Lists.newLinkedList(Arrays.asList(new Token("section"), new Token("{"), new Token("key"), new Token("="), new Token("value")));
-		Deque<Token> badData = Lists.newLinkedList(Arrays.asList(new Token("section"), new Token("[")));
+		Deque<Token> badData = Lists.newLinkedList(Arrays.asList(new Token("section"), new Token("["), new Token("blargh"), new Token("]")));
 
 		// type factory "nextState()" mock
 		doAnswer(invocation -> {

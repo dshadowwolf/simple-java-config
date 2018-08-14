@@ -61,7 +61,9 @@ public final class KeyValueParser extends AbstractParserBase {
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
 		factory.registerStateTransition(KEYVALUE, TokenType.OPEN_LIST, TokenType.IDENTIFIER, LIST);
-		factory.registerStateTransition(KEYVALUE, TokenType.OPEN_PARENS, TokenType.IDENTIFIER,
+		factory.registerStateTransition(KEYVALUE, TokenType.OPEN_PARENS, TokenType.NOT,
+				OPERATION);
+		factory.registerStateTransition(KEYVALUE, TokenType.OPEN_PARENS, TokenType.TILDE,
 				OPERATION);
 	}
 }
