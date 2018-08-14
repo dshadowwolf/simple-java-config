@@ -13,7 +13,7 @@ import com.keildraco.config.data.Token;
  * @author Daniel Hazelton
  *
  */
-public final class Tokenizer {
+public /*final*/ class Tokenizer {
 
 	/**
 	 * Internal storage of the token stream derived from the StreamTokenizer that was a parameter of

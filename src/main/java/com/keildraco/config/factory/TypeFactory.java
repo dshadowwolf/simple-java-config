@@ -22,7 +22,7 @@ import static com.keildraco.config.Config.DEFAULT_HASH_SIZE;
  * @author Daniel Hazelton
  *
  */
-public final class TypeFactory {
+public /*final*/ class TypeFactory {
 
 	/**
 	 *

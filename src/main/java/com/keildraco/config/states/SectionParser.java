@@ -52,10 +52,13 @@ public final class SectionParser extends AbstractParserBase {
 				return rv;
 			}
 
+			com.keildraco.config.Config.LOGGER.fatal("(A) name: %s -- current: %s -- next: %s", this.getName(), current.getValue(), next.getValue());
+			
 			rv.addItem(
 					this.getFactory().nextState(this.getName(), current, next).getState(tokenizer));
 			current = tokenizer.peek();
 			next = tokenizer.peekToken();
+			com.keildraco.config.Config.LOGGER.fatal("(B) name: %s -- current: %s -- next: %s", this.getName(), current.getValue(), next.getValue());
 		}
 
 		throw new GenericParseException("End of input while parsing a SECTION");
