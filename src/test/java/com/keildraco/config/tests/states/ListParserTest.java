@@ -79,57 +79,20 @@ final class ListParserTest {
 		earlyEndDataTokenizer = MockTokenizer.of(earlyEndData);
 		noDataTokenizer = MockTokenizer.noDataTokenizer();
 		
-		typeFactoryMock = mock(TypeFactory.class);
+		typeFactoryMock = new MockTokenizer.TypeFactoryMockBuilder()
+				.addType(ItemType.LIST, i -> new ListType(i.getArgument(1)))
+				.addType(ItemType.IDENTIFIER, i -> new IdentifierType(i.getArgument(0),i.getArgument(1), i.getArgument(2)))
+				.addType(ItemType.OPERATION, i -> new OperationType(i.getArgument(0), i.getArgument(1), i.getArgument(2)))
+				.addState("KEYVALUE", i -> keyValueParserMock)
+				.addState("OPERATION", i -> operationParserMock)
+				.addState("SECTION", i -> sectionParserMock)
+				.addState("LIST", i -> new ListParser(typeFactoryMock, null))
+				.addTransition("LIST", TokenType.IDENTIFIER, TokenType.OPEN_PARENS, "OPERATION")
+				.create();
+		
 		keyValueParserMock = MockTokenizer.mockKeyValueParser();
 		sectionParserMock = MockTokenizer.mockSectionParser();
-		operationParserMock = MockTokenizer.mockOperationParser();
-		
-		doAnswer(invocation -> keyValueParserMock)
-		.when(typeFactoryMock).getParser(eq("KEYVALUE"), any());
-		doAnswer(invocation -> new ListParser(typeFactoryMock, null))
-		.when(typeFactoryMock).getParser(eq("LIST"), any());
-		doAnswer(invocation -> sectionParserMock)
-		.when(typeFactoryMock).getParser(eq("SECTION"), any());
-		doAnswer(invocation -> operationParserMock)
-		.when(typeFactoryMock).getParser(eq("OPERATION"), any());
-		
-		doAnswer(invocation -> {
-			ItemType type = invocation.getArgument(3);
-			if(type == ItemType.LIST) {
-				return new ListType(invocation.getArgument(1));
-			} else if(type == ItemType.IDENTIFIER) {
-				return new IdentifierType(invocation.getArgument(0),invocation.getArgument(1), invocation.getArgument(2));
-			} else if(type == ItemType.OPERATION) {
-				return new OperationType(invocation.getArgument(0), invocation.getArgument(1), invocation.getArgument(2));
-			}
-			return new EmptyParserType();
-		})
-		.when(typeFactoryMock).getType(any(), any(), any(), any(ItemType.class));
-		
-		// type factory "nextState()" mock
-		doAnswer(invocation -> {
-			String current = invocation.getArgument(0);
-			Token currentToken = invocation.getArgument(1);
-			Token nextToken = invocation.getArgument(2);
-
-			switch(current) {
-				case "SECTION":
-					break;
-				case "KEYVALUE":
-					break;
-				case "LIST":
-					if(currentToken.getType() == TokenType.IDENTIFIER && nextToken.getType() == TokenType.OPEN_PARENS) return operationParserMock;
-					else throw new UnknownStateException(String.format(
-							"Transition state starting at %s with current as %s and next as %s is not known (%s :: %s)",
-							current, currentToken.getType(), nextToken.getType(), currentToken.getValue(), nextToken.getValue()));
-				default:
-					throw new UnknownStateException(String.format(
-							"Transition state starting at %s with current as %s and next as %s is not known (%s :: %s)",
-							current, currentToken.getType(), nextToken.getType(), currentToken.getValue(), nextToken.getValue()));
-			}
-			return null;
-		}).when(typeFactoryMock).nextState(any(String.class), any(Token.class), any(Token.class));
-
+		operationParserMock = MockTokenizer.mockOperationParser();		
 	}
 
 	/**

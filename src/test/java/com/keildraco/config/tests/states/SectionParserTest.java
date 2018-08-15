@@ -54,7 +54,14 @@ final class SectionParserTest {
 	static void setupMocks() {
 		keyValueParserMock = MockTokenizer.mockKeyValueParser();
 		listParserMock = MockTokenizer.mockListParser();
-		typeFactoryMock = mock(TypeFactory.class);
+		typeFactoryMock = new MockTokenizer.TypeFactoryMockBuilder()
+				.addType(ItemType.SECTION, i -> new SectionType(i.getArgument(0), i.getArgument(1)))
+				.addState("KEYVALUE", i -> keyValueParserMock)
+		        .addState("LIST", i -> listParserMock)
+		        .addState("SECTION", i -> new SectionParser(typeFactoryMock, null))
+		        .addTransition("SECTION", TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE")
+		        .addTransition("SECTION", TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION")
+		        .create();
 		
 		// data for tokenizer mocks
 		Deque<Token> goodData = Lists.newLinkedList(Arrays.asList(new Token("section"), new Token("{"), new Token("key"), new Token("="), new Token("value"), new Token("}")));
@@ -65,38 +72,6 @@ final class SectionParserTest {
 		earlyEndDataTokenizerMock = MockTokenizer.of(earlyEndData);
 		badDataTokenizerMock = MockTokenizer.of(badData);
 		noDataTokenizerMock = MockTokenizer.noDataTokenizer();
-
-		// setup type factory
-		when(typeFactoryMock.getParser(eq("KEYVALUE"), any())).thenReturn(keyValueParserMock);
-		when(typeFactoryMock.getParser(eq("LIST"), any())).thenReturn(listParserMock);
-		when(typeFactoryMock.getParser(eq("SECTION"), any())).thenReturn(new SectionParser(typeFactoryMock, null));
-		when(typeFactoryMock.getType(any(), any(), any(), eq(ItemType.SECTION))).thenReturn(new SectionType("section"));
-		
-		// type factory "nextState()" mock
-		doAnswer(invocation -> {
-			String current = invocation.getArgument(0);
-			Token currentToken = invocation.getArgument(1);
-			Token nextToken = invocation.getArgument(2);
-			
-			switch(current) {
-				case "SECTION":
-					if(currentToken.getType() == TokenType.IDENTIFIER && nextToken.getType() == TokenType.STORE) return keyValueParserMock;
-					else if(currentToken.getType() == TokenType.IDENTIFIER && nextToken.getType() == TokenType.OPEN_BRACE) return new SectionParser(typeFactoryMock, null);
-					else throw new UnknownStateException(String.format(
-							"Transition state starting at %s with current as %s and next as %s is not known (%s :: %s)",
-							current, currentToken.getType(), nextToken.getType(), currentToken.getValue(), nextToken.getValue()));
-
-				case "KEYVALUE":
-					break;
-				case "LIST":
-					break;
-				default:
-					throw new UnknownStateException(String.format(
-							"Transition state starting at %s with current as %s and next as %s is not known (%s :: %s)",
-							current, currentToken.getType(), nextToken.getType(), currentToken.getValue(), nextToken.getValue()));
-			}
-			return null;
-		}).when(typeFactoryMock).nextState(any(String.class), any(Token.class), any(Token.class));
 	}
 
 	ParserInternalTypeBase runParser(final Tokenizer whichTokenizer) {

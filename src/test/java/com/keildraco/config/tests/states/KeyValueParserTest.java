@@ -52,51 +52,17 @@ final class KeyValueParserTest {
 	static void setupMocks() {
 		Deque<Token> goodData = Lists.newLinkedList(Arrays.asList(new Token("key"), new Token("="), new Token("value")));
 		
-		typeFactoryMock = mock(TypeFactory.class);
+		typeFactoryMock = new MockTokenizer.TypeFactoryMockBuilder().addState("KEYVALUE", i -> new KeyValueParser(typeFactoryMock, null))
+				.addState("LIST", i -> listParserMock)
+				.addState("SECTION", i -> sectionParserMock)
+				.addType(ItemType.IDENTIFIER, i -> new IdentifierType(i.getArgument(0), i.getArgument(1), i.getArgument(2)))
+				.addTransition("KEYVALUE", TokenType.OPEN_LIST, TokenType.IDENTIFIER, "LIST")
+				.create();
+		
 		goodDataokenizerMock = MockTokenizer.of(goodData);
 		listParserMock = MockTokenizer.mockListParser();
 		sectionParserMock = MockTokenizer.mockSectionParser();
-		noDataTokenizerMock = MockTokenizer.noDataTokenizer();
-		
-		// setup type factory
-		doAnswer(invocation -> new KeyValueParser(typeFactoryMock, null))
-		.when(typeFactoryMock).getParser(eq("KEYVALUE"), any());
-		doAnswer(invocation -> listParserMock)
-		.when(typeFactoryMock).getParser(eq("LIST"), any());
-		doAnswer(invocation -> sectionParserMock)
-		.when(typeFactoryMock).getParser(eq("SECTION"), any());
-		doAnswer(invocation -> {
-			ItemType type = invocation.getArgument(3);
-			if(type == ItemType.IDENTIFIER) {
-				return new IdentifierType(null, invocation.getArgument(1), invocation.getArgument(2));
-			}
-			return null;
-		})
-		.when(typeFactoryMock).getType(any(), any(), any(), any(ItemType.class));
-
-		// type factory "nextState()" mock
-		doAnswer(invocation -> {
-			String current = invocation.getArgument(0);
-			Token currentToken = invocation.getArgument(1);
-			Token nextToken = invocation.getArgument(2);
-
-			switch(current) {
-				case "SECTION":
-					break;
-				case "KEYVALUE":
-					if(currentToken.getType() == TokenType.OPEN_LIST && nextToken.getType() == TokenType.IDENTIFIER) return listParserMock;
-					else throw new UnknownStateException(String.format(
-							"Transition state starting at %s with current as %s and next as %s is not known (%s :: %s)",
-							current, currentToken.getType(), nextToken.getType(), currentToken.getValue(), nextToken.getValue()));
-				case "LIST":
-					break;
-				default:
-					throw new UnknownStateException(String.format(
-							"Transition state starting at %s with current as %s and next as %s is not known (%s :: %s)",
-							current, currentToken.getType(), nextToken.getType(), currentToken.getValue(), nextToken.getValue()));
-			}
-			return null;
-		}).when(typeFactoryMock).nextState(any(String.class), any(Token.class), any(Token.class));
+		noDataTokenizerMock = MockTokenizer.noDataTokenizer();		
 	}
 	/**
 	 *

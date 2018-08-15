@@ -13,12 +13,18 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
+import org.mockito.stubbing.Answer;
+
+import com.google.common.collect.Maps;
 import com.keildraco.config.Config;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
@@ -27,18 +33,24 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.AbstractParserBase;
 import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.states.KeyValueParser;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
 import com.keildraco.config.types.OperationType;
 import com.keildraco.config.types.SectionType;
 
+import net.bytebuddy.asm.Advice.This;
+
+import static com.keildraco.config.Config.DEFAULT_HASH_SIZE;
 import static com.keildraco.config.Config.EMPTY_TYPE;
 import com.keildraco.config.data.Constants;
+import com.keildraco.config.data.ItemType;
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
@@ -427,5 +439,58 @@ public final class SupportClass {
 			return resp;
 		}
 
+		public static class TypeFactoryMockBuilder {
+			private Map<ItemType, Answer<ParserInternalTypeBase>> types;
+			private Map<String, Answer<IStateParser>> states;
+			private Map<String, Map<Pair<TokenType,TokenType>, String>> transitions;
+			private TypeFactory theMock;
+			
+			public TypeFactoryMockBuilder() {
+				types = Maps.newConcurrentMap();
+				states = Maps.newConcurrentMap();
+				transitions = Maps.newConcurrentMap();
+				theMock = mock(TypeFactory.class);
+			}
+			
+			public TypeFactoryMockBuilder addType(final ItemType type, final Answer<ParserInternalTypeBase> answer) {
+				types.put(type, answer);
+				return this;
+			}
+			
+			public TypeFactoryMockBuilder addState(final String stateName, final Answer<IStateParser> answer) {
+				states.put(stateName, answer);
+				return this;
+			}
+			
+			public TypeFactoryMockBuilder addTransition(final String currentState, final TokenType currentToken, final TokenType nextToken, final String newState) {
+				Map<Pair<TokenType,TokenType>, String> transition = transitions.getOrDefault(currentState, Maps.newConcurrentMap());
+				transition.put(Pair.of(currentToken, nextToken), newState);
+				transitions.put(currentState, transition);
+				return this;
+			}
+			
+			public TypeFactory create() {
+				types.entrySet().forEach( ent -> doAnswer(ent.getValue()).when(theMock).getType(any(), any(), any(), eq(ent.getKey())) );
+				states.entrySet().forEach( ent -> doAnswer(ent.getValue()).when(theMock).getParser(eq(ent.getKey()), any()));
+				doAnswer( i -> {
+					final String currentState = i.getArgument(0);
+					final Token currentToken = i.getArgument(1);
+					final Token nextToken = i.getArgument(2);
+					final Pair<TokenType,TokenType> pairMatch = Pair.of(currentToken.getType(), nextToken.getType());
+					final Map<Pair<TokenType,TokenType>, String> stateMaps = transitions.getOrDefault(currentState, Maps.newConcurrentMap());
+					final String nextState = stateMaps.getOrDefault(pairMatch, "");
+					
+					if(stateMaps.isEmpty() || nextState.isEmpty()) {
+						throw new UnknownStateException(String.format(
+								"Transition state starting at %s with current as %s and next as %s is not known",
+								currentState, currentToken.getType(), nextToken.getType()));
+					}
+					
+					return theMock.getParser(nextState, null);
+				}).when(theMock).nextState(any(String.class), any(Token.class), any(Token.class));
+
+				return theMock;
+			}
+		}
 	}
 }
