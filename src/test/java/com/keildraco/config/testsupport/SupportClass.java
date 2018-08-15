@@ -30,6 +30,7 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
+import com.keildraco.config.types.OperationType;
 import com.keildraco.config.types.SectionType;
 
 import static com.keildraco.config.Config.EMPTY_TYPE;
@@ -383,6 +384,43 @@ public final class SupportClass {
 					tt = t.nextToken();
 				
 				return new SectionType("section");
+			})
+			.when(resp).getState(any(Tokenizer.class));
+			
+			return resp;
+		}
+
+		public static IStateParser mockOperationParser() {
+			IStateParser resp = mock(IStateParser.class);
+			
+			doAnswer( invocation -> {
+				Tokenizer t = invocation.getArgument(0);
+				Token ntt = t.peek();
+				Token nntt = t.peekToken();
+				String name;
+				String value;
+				String op;
+				if( ntt.getType() != TokenType.IDENTIFIER && nntt.getType() != TokenType.OPEN_PARENS) {
+					throw new GenericParseException("not an operation!");
+				} else {
+					name = t.nextToken().getValue(); t.nextToken(); // consume
+				}
+				ntt = t.peek();
+				nntt = t.peekToken();
+				if( (ntt.getType() != TokenType.NOT || ntt.getType() != TokenType.TILDE) && nntt.getType() != TokenType.IDENTIFIER) {
+					throw new GenericParseException("malformed operation!");
+				} else {
+					op = t.nextToken().getValue(); value = t.nextToken().getValue(); // consume
+				}
+				if(t.peek().getType() != TokenType.CLOSE_PARENS) {
+					throw new GenericParseException("unclosed operation!");
+				}
+				
+				t.nextToken(); // mass consumption!
+				
+				OperationType rv = new OperationType(null, name, value);
+				rv.setOperation(op);
+				return rv;
 			})
 			.when(resp).getState(any(Tokenizer.class));
 			
