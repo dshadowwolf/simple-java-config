@@ -37,7 +37,10 @@ dependencies {
 	compile 'com.google.guava:guava:23.0'
 	// Apache Commons IO
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
-
+	
+	// Apache Commons 'lang3' - for things like pairs and tuples
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+	
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.2.0'
 
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
