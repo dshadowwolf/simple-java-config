@@ -5,12 +5,14 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
+import org.mockito.stubbing.Answer;
+
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.mockito.stubbing.Answer;
 
 import com.google.common.collect.Maps;
+
 import com.keildraco.config.data.ItemType;
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
@@ -46,6 +48,24 @@ public class TypeFactoryMockBuilder {
 		Map<Pair<TokenType,TokenType>, String> transition = transitions.getOrDefault(currentState, Maps.newConcurrentMap());
 		transition.put(Pair.of(currentToken, nextToken), newState);
 		transitions.put(currentState, transition);
+		return this;
+	}
+
+	public TypeFactoryMockBuilder addTransitionsReal(IStateParser...parsers) {
+		for(IStateParser parser : parsers) {
+			TypeFactory t = mock(TypeFactory.class);
+			doAnswer( i -> {
+				final String currentState = i.getArgument(0);
+				final TokenType currentToken = i.getArgument(1);
+				final TokenType nextToken = i.getArgument(2);
+				final String nextState = i.getArgument(3);
+				final Map<Pair<TokenType,TokenType>, String> stateMaps = transitions.getOrDefault(currentState, Maps.newConcurrentMap());
+				stateMaps.put(Pair.of(currentToken, nextToken), nextState);
+				transitions.put(currentState, stateMaps);
+				return null;
+			}).when(t).registerStateTransition(any(String.class), any(TokenType.class), any(TokenType.class), any(String.class));
+			parser.registerTransitions(t);
+		}
 		return this;
 	}
 	

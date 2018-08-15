@@ -22,9 +22,10 @@ import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.ParserRegistrationException;
 import com.keildraco.config.exceptions.TypeRegistrationException;
 import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.testsupport.SupportClass.ParserThatThrows;
-import com.keildraco.config.testsupport.SupportClass.TypeThatThrows;
-import static com.keildraco.config.testsupport.SupportClass.NullParser;
+import com.keildraco.config.testsupport.NullParser;
+import com.keildraco.config.testsupport.ParserThatThrows;
+import com.keildraco.config.testsupport.TypeThatThrows;
+
 import static com.keildraco.config.data.Constants.ParserNames.SECTION;
 
 /**

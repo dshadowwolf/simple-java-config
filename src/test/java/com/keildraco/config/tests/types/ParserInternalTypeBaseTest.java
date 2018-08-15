@@ -21,7 +21,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import com.keildraco.config.data.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 
-import static com.keildraco.config.testsupport.SupportClass.getInstance;
+import static com.keildraco.config.testsupport.TypeInstanceProvider.getInstance;
 import static com.keildraco.config.Config.EMPTY_TYPE;
 import static com.keildraco.config.data.Constants.EMPTY_TYPE_VALUE;
 

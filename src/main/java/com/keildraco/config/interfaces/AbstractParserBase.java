@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import javax.annotation.Nullable;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.factory.TypeFactory;
 
 /**
@@ -71,6 +72,7 @@ public abstract class AbstractParserBase implements IStateParser {
 	 */
 	@Override
 	public ParserInternalTypeBase getParent() {
+		if(this.parent == null) return Config.EMPTY_TYPE;
 		return this.parent;
 	}
 

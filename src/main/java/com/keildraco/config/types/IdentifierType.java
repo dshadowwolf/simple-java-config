@@ -14,7 +14,7 @@ import java.util.Locale;
  * @author Daniel Hazelton
  *
  */
-public final class IdentifierType extends ParserInternalTypeBase {
+public class IdentifierType extends ParserInternalTypeBase {
 
 	/**
 	 *

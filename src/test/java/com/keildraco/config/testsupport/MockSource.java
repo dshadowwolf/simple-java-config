@@ -12,6 +12,7 @@ import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
@@ -186,4 +187,25 @@ public class MockSource {
 		
 		return resp;
 	}
+	
+	public static ParserInternalTypeBase identifierTypeMock(final String nameValue) {
+		ParserInternalTypeBase resp = mock(IdentifierType.class);
+		
+		doAnswer( i -> nameValue ).when(resp).getValue();
+		doAnswer( i -> nameValue ).when(resp).getName();
+		doAnswer( i -> nameValue ).when(resp).getValueRaw();
+		
+		return resp;
+	}
+	
+	public static ParserInternalTypeBase identifierTypeMock(final String name, final String value) {
+		ParserInternalTypeBase resp = mock(IdentifierType.class);
+		
+		doAnswer( i -> String.format("%s = %s", name, value) ).when(resp).getValue();
+		doAnswer( i -> name ).when(resp).getName();
+		doAnswer( i -> value ).when(resp).getValueRaw();
+		
+		return resp;
+	}
+
 }

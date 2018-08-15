@@ -86,9 +86,22 @@ public class ItemMatcher {
 				return this.doesOperationMatch(baseName);
 			case SECTION:
 				return this.doesSectionMatch(baseName, extendedNameData);
+			case INVALID:
+				if(thisItem instanceof BasicResult) {
+					return this.basicResultMatch(baseName, extendedNameData);
+				}
+				return false;
 			default:
 				return false;
 		}
+	}
+
+	private boolean basicResultMatch(String baseName, String extendedNameData) {
+		if(thisItem.has(baseName)) {
+			if(extendedNameData.isEmpty()) return true;
+			return new ItemMatcher(thisItem.get(baseName)).matches(extendedNameData);
+		}
+		return false;
 	}
 
 	/**
@@ -162,7 +175,7 @@ public class ItemMatcher {
 			return doesThisIdentifierMatch((IdentifierType) this.thisItem, baseName,
 					extendedNameData);
 		} else {
-			return doesThisIdentifierMatchByNameOnly((IdentifierType) this.thisItem, baseName);
+			return doesThisIdentifierMatchByValueOnly((IdentifierType) this.thisItem, baseName);
 		}
 	}
 
@@ -232,7 +245,7 @@ public class ItemMatcher {
 	 *            The {@link java.lang.String String} value to match for.
 	 * @return boolean "true" if the item is found to meet the given data, "false" if it does not.
 	 */
-	private static boolean doesThisIdentifierMatchByNameOnly(final IdentifierType ident,
+	private static boolean doesThisIdentifierMatchByValueOnly(final IdentifierType ident,
 			final String value) {
 		return ident.getValueRaw().equals(value);
 	}
@@ -272,7 +285,7 @@ public class ItemMatcher {
 	 * @return boolean "true" if the item is found to meet the given data, "false" if it does not.
 	 */
 	private static boolean doesAnyItemInThisListMatch(final ListType theList, final String name) {
-		// FIXME: I should have code for matching Operations in here but currently do not!
+		// FIXED: Doesn't appear to need special handling of operations
 		return theList.has(name);
 	}
 

@@ -1,40 +1,29 @@
 package com.keildraco.config.tests.types;
 
 import static com.keildraco.config.data.Constants.EMPTY_TYPE_NAME;
-import static com.keildraco.config.testsupport.SupportClass.getTokenizerFromString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import com.keildraco.config.Config;
 import com.keildraco.config.data.ItemType;
-import com.keildraco.config.exceptions.GenericParseException;
-import com.keildraco.config.exceptions.IllegalParserStateException;
-import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
-import com.keildraco.config.tokenizer.Tokenizer;
-import com.keildraco.config.types.IdentifierType;
+import com.keildraco.config.testsupport.MockSource;
 import com.keildraco.config.types.ListType;
+
 import static com.keildraco.config.Config.EMPTY_TYPE;
-import static com.keildraco.config.data.Constants.ParserNames.LIST;
 
 /**
  * @author Daniel Hazelton
  *
  */
-@TestInstance(Lifecycle.PER_CLASS)
 final class ListTypeTest {
 
 	private static final String	BAR					= "bar";
@@ -46,18 +35,18 @@ final class ListTypeTest {
 	private static final String	FOOBAR				= "foobar";
 	private static final String	NOPE				= "nope";
 	private static final String	TEST				= "test";
-
+	
 	/**
 	 *
 	 */
-	private ListType testItem;
+	private static ListType testItem;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeAll
-	void setUp() throws Exception {
-		this.testItem = new ListType(BLANK);
+	static void setUp() throws Exception {
+		testItem = new ListType(BLANK);
 	}
 
 	/**
@@ -66,7 +55,7 @@ final class ListTypeTest {
 	@Test
 	void testGet() {
 		final ListType lt = new ListType(BLARGH);
-		final IdentifierType idt = new IdentifierType(TEST, NOPE);
+		final ParserInternalTypeBase idt = MockSource.identifierTypeMock(TEST, NOPE);
 		lt.addItem(idt);
 		assertEquals(idt, lt.get(TEST), "");
 	}
@@ -76,7 +65,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testHas() {
-		assertFalse(this.testItem.has(TEST), "");
+		assertFalse(testItem.has(TEST), "");
 	}
 
 	/**
@@ -84,7 +73,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testGetType() {
-		assertEquals(ItemType.LIST, this.testItem.getType(), "");
+		assertEquals(ItemType.LIST, testItem.getType(), "");
 	}
 
 	/**
@@ -92,7 +81,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testGetValueAsList() {
-		assertEquals(Collections.emptyList(), this.testItem.getValueAsList(), "");
+		assertEquals(Collections.emptyList(), testItem.getValueAsList(), "");
 	}
 
 	/**
@@ -115,7 +104,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testGetValue() {
-		assertEquals("blank = [  ]", this.testItem.getValue(), "");
+		assertEquals("blank = [  ]", testItem.getValue(), "");
 	}
 
 	/**
@@ -123,7 +112,7 @@ final class ListTypeTest {
 	 */
 	@Test
 	void testGetNotThere() {
-		assertEquals(EMPTY_TYPE, this.testItem.get("no_such_item"), "item doesn't exist");
+		assertEquals(EMPTY_TYPE, testItem.get("no_such_item"), "item doesn't exist");
 	}
 
 	/**
@@ -167,17 +156,9 @@ final class ListTypeTest {
 	 */
 	@Test
 	void fullAsString() {
-		try {
-			Config.reset();
-			Config.registerKnownParts();
-			final IStateParser parser = Config.getFactory().getParser(LIST, null);
-			final Tokenizer t = getTokenizerFromString("[ a, b, c, d, e(! f) ]");
-			final ParserInternalTypeBase pitb = parser.getState(t);
-			pitb.setName(FOOBAR);
-			assertEquals("foobar = [ a, b, c, d, e(! f) ]", pitb.getValue(), "");
-		} catch (final UnknownStateException | IllegalParserStateException | GenericParseException
-				| IOException | URISyntaxException e) {
-			fail(CAUGHT_EXCEPTION + e);
-		}
+		final ListType test = new ListType(EMPTY_TYPE, FOOBAR, Arrays.asList(MockSource.identifierTypeMock("a"), 
+				MockSource.identifierTypeMock("b"), MockSource.identifierTypeMock("c"), 
+				MockSource.identifierTypeMock("d"), MockSource.identifierTypeMock("e")));
+		assertEquals("foobar = [ a, b, c, d, e ]", test.getValue(), "");
 	}
 }

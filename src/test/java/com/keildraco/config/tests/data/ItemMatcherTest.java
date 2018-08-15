@@ -1,30 +1,20 @@
 package com.keildraco.config.tests.data;
 
-import static com.keildraco.config.testsupport.SupportClass.getTokenizerFromString;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
+import com.keildraco.config.data.BasicResult;
 import com.keildraco.config.data.ItemMatcher;
-import com.keildraco.config.exceptions.GenericParseException;
-import com.keildraco.config.exceptions.IllegalParserStateException;
-import com.keildraco.config.exceptions.UnknownStateException;
-import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
-import com.keildraco.config.tokenizer.Tokenizer;
-import com.keildraco.config.types.IdentifierType;
-import com.keildraco.config.types.OperationType;
-import static com.keildraco.config.Config.EMPTY_TYPE;
-import static com.keildraco.config.data.Constants.ParserNames.SECTION;
+import com.keildraco.config.types.*;
 
 /**
  *
@@ -33,27 +23,45 @@ import static com.keildraco.config.data.Constants.ParserNames.SECTION;
  */
 final class ItemMatcherTest {
 
-	private static final String	CAUGHT_EXCEPTION	= "Caught exception running loadFile: ";
-	private static final String	EXCEPTION_GETTING	= "Exception getting type instance for {}: {}";
-	private static final String	MAGIC				= "magic";
-	private static final String	NAME				= "name";
 	private static final String	OPER				= "oper";
 	private static final String	VALUE				= "value";
 
+	private static ParserInternalTypeBase fullStructure;
+	private static ParserInternalTypeBase sectionOnly;
+
+	@BeforeAll
+	static void setupTestData() {
+		BasicResult base = new BasicResult("ROOT");
+		SectionType realRoot = new SectionType(base, "section");
+		IdentifierType magic = new IdentifierType(realRoot, "magic", "xyzzy");		
+		IdentifierType all = new IdentifierType(realRoot, "all", "ident3");
+		IdentifierType list = new IdentifierType("list");
+		OperationType op = new OperationType(Config.EMPTY_TYPE, "op", "ident");
+		op.setOperation("!");
+		OperationType op2 = new OperationType(Config.EMPTY_TYPE, "ni", "epsilon");
+		op2.setOperation("~");
+		IdentifierType ident2 = new IdentifierType("ident2");
+		ListType key = new ListType(realRoot, "key", Arrays.asList(list, op, ident2, op2));
+		SectionType blech = new SectionType(realRoot, "blech");
+		IdentifierType magic2 = new IdentifierType(blech, "magic", "abcd");
+		blech.addItem(magic2);
+		realRoot.addItem(magic);
+		realRoot.addItem(all);
+		realRoot.addItem(key);
+		realRoot.addItem(list);
+		realRoot.addItem(blech);
+		base.addItem(realRoot);
+
+		fullStructure = base;
+		sectionOnly = magic;
+	}
 	/**
 	 *
 	 */
 	@Test
 	void testItemMatcher() {
-		try {
-			final ParserInternalTypeBase item = new IdentifierType(MAGIC, NAME);
-			final ItemMatcher im = new ItemMatcher(item);
-			assertNotNull(im, "Able to instantiate an ItemMatcher");
-		} catch (final Exception e) {
-			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(), e.getMessage());
-			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail(CAUGHT_EXCEPTION + e);
-		}
+		final ItemMatcher im = new ItemMatcher(Config.EMPTY_TYPE);
+		assertNotNull(im, "Able to instantiate an ItemMatcher");
 	}
 
 	/**
@@ -61,11 +69,10 @@ final class ItemMatcherTest {
 	 */
 	@Test
 	void testMatches() {
-		final ParserInternalTypeBase item = new IdentifierType(MAGIC, NAME);
-		final ItemMatcher im = new ItemMatcher(item);
-		assertAll("", () -> assertTrue(im.matches("magic.name"), "name and value match"),
-				() -> assertFalse(im.matches("name.name"), "name doesn't match but value does"),
-				() -> assertFalse(im.matches("magic.xyzzy"), "name matches but value doesn't"),
+		final ItemMatcher im = new ItemMatcher(sectionOnly);
+		assertAll("Value matching tests", () -> assertTrue(im.matches("magic.xyzzy"), "name and value match"),
+				() -> assertFalse(im.matches("name.xyzzy"), "name doesn't match but value does"),
+				() -> assertFalse(im.matches("magic.name"), "name matches but value doesn't"),
 				() -> assertFalse(im.matches("xyzzy.magic"), "neither name or value match"));
 	}
 
@@ -74,43 +81,30 @@ final class ItemMatcherTest {
 	 */
 	@Test
 	void testMoreConditionCoverage() {
-		try {
-			Config.reset();
-			Config.registerKnownParts();
-			final IStateParser p = Config.getFactory().getParser(SECTION, null);
-			final String data = "section { item = value\n listitem = [ alpha, bravo(! charlie), epsilon(~ foobar) ] }";
-			final Tokenizer t = getTokenizerFromString(data);
-			final ParserInternalTypeBase pb = p.getState(t);
-			final ItemMatcher im = new ItemMatcher(pb);
-			final ItemMatcher im2 = new ItemMatcher(EMPTY_TYPE);
-			final OperationType o = new OperationType(OPER, VALUE);
-			o.setOperation(">");
-			final ItemMatcher im3 = new ItemMatcher(o);
-			assertAll("result is correct", () -> assertNotNull(im, "result not null"),
-					() -> assertTrue(im.matches("section"), "section match correct"),
-					() -> assertTrue(im.matches("section.item.value"), "full item match works"),
-					() -> assertTrue(im.matches("section.item"), "item exists/short name match"),
-					() -> assertFalse(im.matches("section.I_Dont_Exist"), "item doesn't exist"),
-					() -> assertTrue(im.matches("section.listitem.alpha"),
-							"section has a list sub-item named \"listitem\" that has a member named \"alpha\""),
-					() -> assertFalse(im.matches("section.listitem.bravo.charlie"),
-							"operation named \"bravo\" says \"charlie\" shouldn't match"),
-					() -> assertTrue(im.matches("section.listitem.bravo.delta"),
-							"operation named \"bravo\" should match \"delta\""),
-					() -> assertTrue(im.matches("section.listitem.epsilon.foobar"),
-							"foobar temp-ignore operation type named epsilon"),
-					() -> assertFalse(im.matches("section.listitem.echo.foxtrot"),
-							"check for a different code path"),
-					() -> assertFalse(im2.matches("blargh"), "EmptyType should match nothing"),
-					() -> assertFalse(im.matches("section.item.foobar"),
-							"section.item does not have value foobar"),
-					() -> assertFalse(im3.matches("oper.value"),
-							"invalid/unknown operation - always false"));
-		} catch (final IOException | IllegalArgumentException | IllegalParserStateException
-				| UnknownStateException | GenericParseException | URISyntaxException e) {
-			Config.LOGGER.error(EXCEPTION_GETTING, e.toString(), e.getMessage());
-			Arrays.stream(e.getStackTrace()).forEach(Config.LOGGER::error);
-			fail(CAUGHT_EXCEPTION + e);
-		}
+		final ItemMatcher im = new ItemMatcher(fullStructure);
+		final ItemMatcher im2 = new ItemMatcher(Config.EMPTY_TYPE);
+		final OperationType o = new OperationType(OPER, VALUE);
+		o.setOperation(">");
+		final ItemMatcher im3 = new ItemMatcher(o);
+		assertAll("result is correct", () -> assertNotNull(im, "result not null"),
+				() -> assertTrue(im.matches("section"), "section match correct"),
+				() -> assertTrue(im.matches("section.magic.xyzzy"), "full item match works"),
+				() -> assertTrue(im.matches("section.magic"), "item exists/short name match"),
+				() -> assertFalse(im.matches("section.I_Dont_Exist"), "item doesn't exist"),
+				() -> assertTrue(im.matches("section.key.list"),
+						"section has a list sub-item named \"key\" that has a member named \"list\""),
+				() -> assertFalse(im.matches("section.key.op.ident"),
+						"operation named \"op\" says \"ident\" shouldn't match"),
+				() -> assertTrue(im.matches("section.key.op.delta"),
+						"operation named \"op\" should match \"delta\""),
+				() -> assertTrue(im.matches("section.key.ni.epsilon"),
+						"epsilon temp-ignore operation type named ni"),
+				() -> assertFalse(im.matches("section.key.echo"),
+						"check for a different code path"),
+				() -> assertFalse(im2.matches("blargh"), "EmptyType should match nothing"),
+				() -> assertFalse(im.matches("section.blech.foobar"),
+						"section.item does not have value foobar"),
+				() -> assertFalse(im3.matches("oper.value"),
+						"invalid/unknown operation - always false"));
 	}
 }
