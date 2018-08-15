@@ -10,10 +10,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Deque;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,11 +19,9 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.keildraco.config.Config;
-import com.keildraco.config.data.Constants;
 import com.keildraco.config.data.ItemType;
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
-import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
@@ -34,8 +30,8 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.KeyValueParser;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
-import com.keildraco.config.types.ListType;
-import com.keildraco.config.types.SectionType;
+
+import static com.keildraco.config.testsupport.SupportClass.MockTokenizer;
 
 /**
  *
@@ -54,39 +50,13 @@ final class KeyValueParserTest {
 
 	@BeforeAll
 	static void setupMocks() {
-		typeFactoryMock = mock(TypeFactory.class);
-		goodDataokenizerMock = mock(Tokenizer.class);
-		listParserMock = mock(IStateParser.class);
-		sectionParserMock = mock(IStateParser.class);
-		noDataTokenizerMock = mock(Tokenizer.class);
-
 		Deque<Token> goodData = Lists.newLinkedList(Arrays.asList(new Token("key"), new Token("="), new Token("value")));
-
-		doAnswer( invocation -> {
-			Tokenizer t = invocation.getArgument(0);
-			Token tt = t.nextToken();
-			while(t.hasNext() && tt.getType() != TokenType.CLOSE_LIST) tt = t.nextToken();
-			if(!t.hasNext() && tt.getType() != TokenType.CLOSE_LIST)
-				throw new GenericParseException("Early End of Data");
-			else
-				tt = t.nextToken();
-			
-			return new ListType("blargh", Collections.emptyList());
-		})
-		.when(listParserMock).getState(any(Tokenizer.class));
-
-		doAnswer( invocation -> {
-			Tokenizer t = invocation.getArgument(0);
-			Token tt = t.nextToken();
-			while(t.hasNext() && tt.getType() != TokenType.CLOSE_BRACE) tt = t.nextToken();
-			if(!t.hasNext() && tt.getType() != TokenType.CLOSE_BRACE)
-				throw new GenericParseException("Early End of Data");
-			else
-				tt = t.nextToken();
-			
-			return new SectionType("section");
-		})
-		.when(sectionParserMock).getState(any(Tokenizer.class));
+		
+		typeFactoryMock = mock(TypeFactory.class);
+		goodDataokenizerMock = MockTokenizer.of(goodData);
+		listParserMock = MockTokenizer.mockListParser();
+		sectionParserMock = MockTokenizer.mockSectionParser();
+		noDataTokenizerMock = MockTokenizer.noDataTokenizer();
 		
 		// setup type factory
 		doAnswer(invocation -> new KeyValueParser(typeFactoryMock, null))
@@ -127,50 +97,6 @@ final class KeyValueParserTest {
 			}
 			return null;
 		}).when(typeFactoryMock).nextState(any(String.class), any(Token.class), any(Token.class));
-
-		// Tokenizer with "good data" mock starts here
-		doAnswer( invocation -> {
-			if (goodData.isEmpty()) {
-				return new Token(Constants.TOKENEMPTY);
-			}
-
-			return goodData.peek();
-		}).when(goodDataokenizerMock).peek();
-
-		doAnswer( invocation ->  {
-			if ((goodData.isEmpty()) || (goodData.size() == 1)) {
-				return new Token(Constants.TOKENEMPTY);
-			}
-
-			final Token tok = goodData.pop();
-			final Token rv = goodData.peek();
-
-			goodData.push(tok);
-			return rv;
-		}).when(goodDataokenizerMock).peekToken();
-
-		doAnswer(invocation -> {
-			Token val = invocation.getArgument(0);
-			goodData.push(val);
-			return null;
-		}).when(goodDataokenizerMock).pushBack(any(Token.class));
-
-		doAnswer(invocation -> !goodData.isEmpty()).when(goodDataokenizerMock).hasNext();
-
-		doAnswer(invocation -> {
-			if (goodData.isEmpty()) {
-				return new Token(Constants.TOKENEMPTY);
-			}
-
-			Token rv = goodData.pop();
-
-			return rv;
-		}).when(goodDataokenizerMock).nextToken();
-
-		when(noDataTokenizerMock.nextToken()).thenReturn(new Token(Constants.TOKENEMPTY));
-		when(noDataTokenizerMock.peekToken()).thenReturn(new Token(Constants.TOKENEMPTY));
-		when(noDataTokenizerMock.peek()).thenReturn(new Token(Constants.TOKENEMPTY));
-		when(noDataTokenizerMock.hasNext()).thenReturn(false);
 	}
 	/**
 	 *
