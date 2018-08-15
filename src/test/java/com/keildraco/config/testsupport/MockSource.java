@@ -88,6 +88,8 @@ public class MockSource {
 		})
 		.when(resp).getState(any(Tokenizer.class));
 		
+		doAnswer( invocation -> "LIST").when(resp).getName();
+		
 		return resp;
 	}
 	
@@ -120,6 +122,8 @@ public class MockSource {
 		})
 		.when(resp).getState(any(Tokenizer.class));
 		
+		doAnswer( invocation -> "KEYVALUE").when(resp).getName();
+		
 		return resp;
 	}
 	
@@ -138,6 +142,8 @@ public class MockSource {
 			return new SectionType("section");
 		})
 		.when(resp).getState(any(Tokenizer.class));
+		
+		doAnswer( invocation -> "SECTION").when(resp).getName();
 		
 		return resp;
 	}
@@ -175,6 +181,8 @@ public class MockSource {
 			return rv;
 		})
 		.when(resp).getState(any(Tokenizer.class));
+		
+		doAnswer( invocation -> "OPERATION").when(resp).getName();
 		
 		return resp;
 	}
