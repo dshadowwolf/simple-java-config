@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import static org.mockito.Mockito.*;
-
 import java.util.Arrays;
 import java.util.Deque;
 
@@ -27,7 +25,8 @@ import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.SectionParser;
-import com.keildraco.config.testsupport.SupportClass.MockTokenizer;
+import com.keildraco.config.testsupport.MockSource;
+import com.keildraco.config.testsupport.TypeFactoryMockBuilder;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.SectionType;
 
@@ -52,9 +51,9 @@ final class SectionParserTest {
 	
 	@BeforeAll
 	static void setupMocks() {
-		keyValueParserMock = MockTokenizer.mockKeyValueParser();
-		listParserMock = MockTokenizer.mockListParser();
-		typeFactoryMock = new MockTokenizer.TypeFactoryMockBuilder()
+		keyValueParserMock = MockSource.mockKeyValueParser();
+		listParserMock = MockSource.mockListParser();
+		typeFactoryMock = new TypeFactoryMockBuilder()
 				.addType(ItemType.SECTION, i -> new SectionType(i.getArgument(0), i.getArgument(1)))
 				.addState("KEYVALUE", i -> keyValueParserMock)
 		        .addState("LIST", i -> listParserMock)
@@ -68,10 +67,10 @@ final class SectionParserTest {
 		Deque<Token> earlyEndData = Lists.newLinkedList(Arrays.asList(new Token("section"), new Token("{"), new Token("key"), new Token("="), new Token("value")));
 		Deque<Token> badData = Lists.newLinkedList(Arrays.asList(new Token("section"), new Token("["), new Token("blargh"), new Token("]")));
 		
-		goodDataTokenizerMock = MockTokenizer.of(goodData);
-		earlyEndDataTokenizerMock = MockTokenizer.of(earlyEndData);
-		badDataTokenizerMock = MockTokenizer.of(badData);
-		noDataTokenizerMock = MockTokenizer.noDataTokenizer();
+		goodDataTokenizerMock = MockSource.tokenizerOf(goodData);
+		earlyEndDataTokenizerMock = MockSource.tokenizerOf(earlyEndData);
+		badDataTokenizerMock = MockSource.tokenizerOf(badData);
+		noDataTokenizerMock = MockSource.noDataTokenizer();
 	}
 
 	ParserInternalTypeBase runParser(final Tokenizer whichTokenizer) {

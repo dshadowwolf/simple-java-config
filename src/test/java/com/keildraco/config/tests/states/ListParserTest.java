@@ -6,10 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -25,13 +21,12 @@ import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
 import com.keildraco.config.exceptions.IllegalParserStateException;
-import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
-import com.keildraco.config.interfaces.EmptyParserType;
 import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.ListParser;
-import com.keildraco.config.testsupport.SupportClass.MockTokenizer;
+import com.keildraco.config.testsupport.MockSource;
+import com.keildraco.config.testsupport.TypeFactoryMockBuilder;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
@@ -74,12 +69,12 @@ final class ListParserTest {
 		Deque<Token> earlyEndData = Lists.newLinkedList(Arrays.asList(new Token("["), new Token("ash"), 
 				new Token(","), new Token("blood"), new Token(","), new Token("choices")));
 
-		goodDataTokenizer = MockTokenizer.of(goodData);
-		badDataTokenizer = MockTokenizer.of(badData);
-		earlyEndDataTokenizer = MockTokenizer.of(earlyEndData);
-		noDataTokenizer = MockTokenizer.noDataTokenizer();
+		goodDataTokenizer = MockSource.tokenizerOf(goodData);
+		badDataTokenizer = MockSource.tokenizerOf(badData);
+		earlyEndDataTokenizer = MockSource.tokenizerOf(earlyEndData);
+		noDataTokenizer = MockSource.noDataTokenizer();
 		
-		typeFactoryMock = new MockTokenizer.TypeFactoryMockBuilder()
+		typeFactoryMock = new TypeFactoryMockBuilder()
 				.addType(ItemType.LIST, i -> new ListType(i.getArgument(1)))
 				.addType(ItemType.IDENTIFIER, i -> new IdentifierType(i.getArgument(0),i.getArgument(1), i.getArgument(2)))
 				.addType(ItemType.OPERATION, i -> new OperationType(i.getArgument(0), i.getArgument(1), i.getArgument(2)))
@@ -90,9 +85,9 @@ final class ListParserTest {
 				.addTransition("LIST", TokenType.IDENTIFIER, TokenType.OPEN_PARENS, "OPERATION")
 				.create();
 		
-		keyValueParserMock = MockTokenizer.mockKeyValueParser();
-		sectionParserMock = MockTokenizer.mockSectionParser();
-		operationParserMock = MockTokenizer.mockOperationParser();		
+		keyValueParserMock = MockSource.mockKeyValueParser();
+		sectionParserMock = MockSource.mockSectionParser();
+		operationParserMock = MockSource.mockOperationParser();		
 	}
 
 	/**

@@ -6,10 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
 
 import java.util.Arrays;
 import java.util.Deque;
@@ -23,15 +19,14 @@ import com.keildraco.config.data.ItemType;
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.IllegalParserStateException;
-import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.KeyValueParser;
+import com.keildraco.config.testsupport.MockSource;
+import com.keildraco.config.testsupport.TypeFactoryMockBuilder;
 import com.keildraco.config.tokenizer.Tokenizer;
 import com.keildraco.config.types.IdentifierType;
-
-import static com.keildraco.config.testsupport.SupportClass.MockTokenizer;
 
 /**
  *
@@ -52,17 +47,17 @@ final class KeyValueParserTest {
 	static void setupMocks() {
 		Deque<Token> goodData = Lists.newLinkedList(Arrays.asList(new Token("key"), new Token("="), new Token("value")));
 		
-		typeFactoryMock = new MockTokenizer.TypeFactoryMockBuilder().addState("KEYVALUE", i -> new KeyValueParser(typeFactoryMock, null))
+		typeFactoryMock = new TypeFactoryMockBuilder().addState("KEYVALUE", i -> new KeyValueParser(typeFactoryMock, null))
 				.addState("LIST", i -> listParserMock)
 				.addState("SECTION", i -> sectionParserMock)
 				.addType(ItemType.IDENTIFIER, i -> new IdentifierType(i.getArgument(0), i.getArgument(1), i.getArgument(2)))
 				.addTransition("KEYVALUE", TokenType.OPEN_LIST, TokenType.IDENTIFIER, "LIST")
 				.create();
 		
-		goodDataokenizerMock = MockTokenizer.of(goodData);
-		listParserMock = MockTokenizer.mockListParser();
-		sectionParserMock = MockTokenizer.mockSectionParser();
-		noDataTokenizerMock = MockTokenizer.noDataTokenizer();		
+		goodDataokenizerMock = MockSource.tokenizerOf(goodData);
+		listParserMock = MockSource.mockListParser();
+		sectionParserMock = MockSource.mockSectionParser();
+		noDataTokenizerMock = MockSource.noDataTokenizer();		
 	}
 	/**
 	 *
