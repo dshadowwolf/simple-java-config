@@ -19,7 +19,7 @@ import static com.keildraco.config.Config.EMPTY_TYPE;
  * @author Daniel Hazelton
  *
  */
-public final class ListType extends ParserInternalTypeBase {
+public /*final*/ class ListType extends ParserInternalTypeBase {
 
 	/**
 	 *

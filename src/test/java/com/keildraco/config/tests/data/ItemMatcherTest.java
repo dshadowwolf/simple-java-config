@@ -13,7 +13,9 @@ import org.junit.jupiter.api.Test;
 import com.keildraco.config.Config;
 import com.keildraco.config.data.BasicResult;
 import com.keildraco.config.data.ItemMatcher;
+import com.keildraco.config.data.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.testsupport.MockSource;
 import com.keildraco.config.types.*;
 
 /**
@@ -26,35 +28,37 @@ final class ItemMatcherTest {
 	private static final String	OPER				= "oper";
 	private static final String	VALUE				= "value";
 
-	private static ParserInternalTypeBase fullStructure;
-	private static ParserInternalTypeBase sectionOnly;
+	private static ParserInternalTypeBase dataStructure;
+	private static ParserInternalTypeBase mainStructure;
 
 	@BeforeAll
 	static void setupTestData() {
-		BasicResult base = new BasicResult("ROOT");
-		SectionType realRoot = new SectionType(base, "section");
-		IdentifierType magic = new IdentifierType(realRoot, "magic", "xyzzy");		
-		IdentifierType all = new IdentifierType(realRoot, "all", "ident3");
-		IdentifierType list = new IdentifierType("list");
-		OperationType op = new OperationType(Config.EMPTY_TYPE, "op", "ident");
+		mainStructure = MockSource.typeMockOf(ItemType.SECTION, "section", "");
+		ParserInternalTypeBase magic = MockSource.typeMockOf(ItemType.IDENTIFIER, "magic", "xyzzy");
+		ParserInternalTypeBase all = MockSource.typeMockOf(ItemType.IDENTIFIER, "all", "ident3");
+		ParserInternalTypeBase list = MockSource.typeMockOf(ItemType.IDENTIFIER, "list", "");
+		OperationType op = (OperationType) MockSource.typeMockOf(ItemType.OPERATION, "op", "ident");
 		op.setOperation("!");
-		OperationType op2 = new OperationType(Config.EMPTY_TYPE, "ni", "epsilon");
+		OperationType op2 = (OperationType) MockSource.typeMockOf(ItemType.OPERATION, "ni", "epsilon");
 		op2.setOperation("~");
-		IdentifierType ident2 = new IdentifierType("ident2");
-		ListType key = new ListType(realRoot, "key", Arrays.asList(list, op, ident2, op2));
-		SectionType blech = new SectionType(realRoot, "blech");
-		IdentifierType magic2 = new IdentifierType(blech, "magic", "abcd");
+		ParserInternalTypeBase ident2 = MockSource.typeMockOf(ItemType.IDENTIFIER, "ident2", "");
+		ParserInternalTypeBase key = MockSource.typeMockOf(ItemType.LIST, "key", "");
+		key.addItem(list);
+		key.addItem(op);
+		key.addItem(ident2);
+		key.addItem(op2);
+		ParserInternalTypeBase blech = MockSource.typeMockOf(ItemType.SECTION, "blech", "");
+		ParserInternalTypeBase magic2 = MockSource.typeMockOf(ItemType.IDENTIFIER, "magic", "abcd");
 		blech.addItem(magic2);
-		realRoot.addItem(magic);
-		realRoot.addItem(all);
-		realRoot.addItem(key);
-		realRoot.addItem(list);
-		realRoot.addItem(blech);
-		base.addItem(realRoot);
+		mainStructure.addItem(magic);
+		mainStructure.addItem(all);
+		mainStructure.addItem(key);
+		mainStructure.addItem(list);
+		mainStructure.addItem(blech);
 
-		fullStructure = base;
-		sectionOnly = magic;
+		dataStructure = magic;
 	}
+	
 	/**
 	 *
 	 */
@@ -69,7 +73,7 @@ final class ItemMatcherTest {
 	 */
 	@Test
 	void testMatches() {
-		final ItemMatcher im = new ItemMatcher(sectionOnly);
+		final ItemMatcher im = new ItemMatcher(dataStructure);
 		assertAll("Value matching tests", () -> assertTrue(im.matches("magic.xyzzy"), "name and value match"),
 				() -> assertFalse(im.matches("name.xyzzy"), "name doesn't match but value does"),
 				() -> assertFalse(im.matches("magic.name"), "name matches but value doesn't"),
@@ -81,11 +85,12 @@ final class ItemMatcherTest {
 	 */
 	@Test
 	void testMoreConditionCoverage() {
-		final ItemMatcher im = new ItemMatcher(fullStructure);
+		final ItemMatcher im = new ItemMatcher(mainStructure);
 		final ItemMatcher im2 = new ItemMatcher(Config.EMPTY_TYPE);
-		final OperationType o = new OperationType(OPER, VALUE);
+		final OperationType o = (OperationType)MockSource.typeMockOf(ItemType.OPERATION, OPER, VALUE);
 		o.setOperation(">");
 		final ItemMatcher im3 = new ItemMatcher(o);
+
 		assertAll("result is correct", () -> assertNotNull(im, "result not null"),
 				() -> assertTrue(im.matches("section"), "section match correct"),
 				() -> assertTrue(im.matches("section.magic.xyzzy"), "full item match works"),

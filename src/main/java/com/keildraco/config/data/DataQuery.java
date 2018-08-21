@@ -45,9 +45,10 @@ public final class DataQuery {
 		if (this.baseSection.has(key)) {
 			return true;
 		} else if ((index != -1) && (index > 0)) {
-			final String base = String.format("%s.all", key.substring(0, key.lastIndexOf('.')));
-			if (this.baseSection.has(base)) {
-				final String term = key.substring(key.lastIndexOf('.') + 1);
+			final String base = key.substring(0, index);
+			final String term = key.substring(index + 1);
+			com.keildraco.config.Config.LOGGER.fatal("key: %s -- base: %s -- term: %s", key, base, term);
+			if(this.baseSection.has(base)) {
 				return new ItemMatcher(this.baseSection.get(base)).matches(term);
 			} else {
 				return false;

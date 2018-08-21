@@ -10,7 +10,9 @@ import com.keildraco.config.types.SectionType;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.data.BasicResult;
 import com.keildraco.config.data.DataQuery;
+import com.keildraco.config.data.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.testsupport.MockSource;
 
 /**
  *
@@ -27,9 +29,9 @@ final class DataQueryTest {
 	 */
 	@BeforeAll
 	static void setUp() throws Exception {
-		BasicResult base = new BasicResult("ROOT");
-		SectionType realRoot = new SectionType(base, "section");
-		IdentifierType magic = new IdentifierType(realRoot, "magic", "xyzzy");		
+		BasicResult base = MockSource.basicResultMock();
+		SectionType realRoot = (SectionType)MockSource.typeMockOf(ItemType.SECTION, "section", "");
+		IdentifierType magic = (IdentifierType)MockSource.typeMockOf(ItemType.IDENTIFIER, "magic", "xyzzy");		
 		realRoot.addItem(magic);
 		base.addItem(realRoot);
 

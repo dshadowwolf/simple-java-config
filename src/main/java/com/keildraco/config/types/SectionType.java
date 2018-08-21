@@ -17,7 +17,7 @@ import static com.keildraco.config.data.Constants.ParserNames.ROOT;
  * @author Daniel Hazelton
  *
  */
-public final class SectionType extends ParserInternalTypeBase {
+public /*final*/ class SectionType extends ParserInternalTypeBase {
 
 	/**
 	 *

@@ -10,7 +10,7 @@ import static com.keildraco.config.data.Constants.NEWLINE_FORMAT_STRING;
  * @author Daniel Hazelton
  *
  */
-public final class BasicResult extends ParserInternalTypeBase {
+public /*final*/ class BasicResult extends ParserInternalTypeBase {
 
 	/**
 	 * Standard Constructor. This has to exist, none of the rest of them do (for this type, at

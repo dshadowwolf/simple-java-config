@@ -1,13 +1,25 @@
 package com.keildraco.config.testsupport;
 
+import static com.keildraco.config.data.Constants.NEWLINE_FORMAT_STRING;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.mockito.stubbing.Answer;
+
+import com.google.common.collect.Maps;
+import com.keildraco.config.data.BasicResult;
 import com.keildraco.config.data.Constants;
+import com.keildraco.config.data.ItemType;
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.GenericParseException;
@@ -208,4 +220,107 @@ public class MockSource {
 		return resp;
 	}
 
+	public static ParserInternalTypeBase typeMockOf(final ItemType type, final String name, final String value) {
+		ParserInternalTypeBase resp;// = mock(ParserInternalTypeBase.class);
+		Map<String, ParserInternalTypeBase> values = Maps.newConcurrentMap();
+		List<String> oper = new ArrayList<>(1);
+		
+		Answer<Boolean> operAnswer = i -> (value.equals(i.getArgument(0)) && oper.get(0).equals("~")) || (!value.equals(i.getArgument(0)) && oper.get(0).equals("!"));
+		Answer<Boolean> setAnswer = i -> values.containsKey(((String)i.getArgument(0)).toLowerCase(Locale.US)) || name.equals(((String)i.getArgument(0)).toLowerCase(Locale.US));
+		Answer<Boolean> unitAnswer = i -> value.equals(i.getArgument(0));
+
+		Answer<ParserInternalTypeBase> putValueAnswer = i -> values.put(((ParserInternalTypeBase)i.getArgument(0)).getName(), i.getArgument(0));
+
+		Answer<ParserInternalTypeBase> getItem = i -> {
+			String itemName = i.getArgument(0);
+			if(values.containsKey(itemName)) return values.get(itemName);
+			else return com.keildraco.config.Config.EMPTY_TYPE;
+		};
+		
+		Answer<Boolean> usingHasAnswer;
+		Answer<String> valueFormatter;
+		Answer<String> rawValueFormatter = i -> value;
+		
+		switch(type) {
+			case SECTION:
+				resp = mock(SectionType.class);
+				valueFormatter =  i -> {
+					List<String> valuesValues = values.values().stream().map( val -> val.getValue()).collect(Collectors.toList());		
+					return String.format("%s {\n%s\n}", name, String.join("\n", valuesValues.toArray(new String[valuesValues.size()])));
+				};
+				rawValueFormatter = i -> {
+					List<String> valuesValues = values.values().stream().map( val -> val.getValue()).collect(Collectors.toList());		
+					return String.format("%s", String.join("\n", valuesValues.toArray(new String[valuesValues.size()])));
+				};
+				usingHasAnswer = setAnswer;
+				doAnswer( putValueAnswer ).when(resp).addItem(any(ParserInternalTypeBase.class));
+				doAnswer( getItem ).when(resp).get(any(String.class));
+				break;
+			case IDENTIFIER:
+				resp = mock(IdentifierType.class);
+				valueFormatter = i -> String.format("%s = %s", name, value);
+				usingHasAnswer = unitAnswer;
+				break;
+			case LIST:
+				resp = mock(ListType.class);
+				valueFormatter = i -> {
+					List<String> valuesValues = values.values().stream().map( val -> val.getValue()).collect(Collectors.toList());		
+					return String.format("[ %s ]", value, String.join(", ", valuesValues.toArray(new String[valuesValues.size()])));
+				};
+				rawValueFormatter = i -> {
+					List<String> valuesValues = values.values().stream().map( val -> val.getValue()).collect(Collectors.toList());		
+					return String.format("[ %s ]", value, String.join(", ", valuesValues.toArray(new String[valuesValues.size()])));
+				};
+				usingHasAnswer = setAnswer;
+				doAnswer( putValueAnswer ).when(resp).addItem(any(ParserInternalTypeBase.class));
+				doAnswer( getItem ).when(resp).get(any(String.class));
+				break;
+			case OPERATION:
+				resp = mock(OperationType.class);
+				valueFormatter = i -> String.format("%s(%s %s)", name, oper, value);
+				usingHasAnswer = operAnswer;
+				doAnswer( i -> {
+					String op = i.getArgument(0);
+					oper.clear();
+					oper.add(op);
+					return null;
+				}).when((OperationType)resp).setOperation(any(String.class));
+				doAnswer( i -> (int)oper.get(0).charAt(0)).when((OperationType)resp).getOperator();
+				break;
+			default:
+				throw new IllegalArgumentException(String.format("Type value %s not a known, valid type", type.toString()));
+		}
+		doAnswer( i -> name ).when(resp).getName();
+		doAnswer(i -> type).when(resp).getType();
+		doAnswer(rawValueFormatter).when(resp).getValueRaw();
+		doAnswer(valueFormatter).when(resp).getValue();
+		doAnswer(usingHasAnswer).when(resp).has(any(String.class));
+		return resp;
+	}
+
+	public static BasicResult basicResultMock() {
+		BasicResult resp = mock(BasicResult.class);
+		Map<String, ParserInternalTypeBase> values = Maps.newConcurrentMap();
+
+		Answer<Boolean> hasAnswer = i -> values.containsKey(((String)i.getArgument(0)).toLowerCase(Locale.US)) || "ROOT".equals(((String)i.getArgument(0)).toLowerCase(Locale.US));
+		Answer<ParserInternalTypeBase> putValueAnswer = i -> values.put(((ParserInternalTypeBase)i.getArgument(0)).getName(), i.getArgument(0));
+
+		Answer<ParserInternalTypeBase> getItem = i -> {
+			String itemName = i.getArgument(0);
+			if(values.containsKey(itemName)) return values.get(itemName);
+			else return com.keildraco.config.Config.EMPTY_TYPE;
+		};
+		Answer<String> value = i -> String.join(String.format(NEWLINE_FORMAT_STRING), values.values().stream()
+				.map(val -> val.getValue()).collect(Collectors.toList()));
+
+		doAnswer( i -> "ROOT" ).when(resp).getName();
+		doAnswer(i -> ItemType.INVALID).when(resp).getType();
+		doAnswer(value).when(resp).getValueRaw();
+		doAnswer(value).when(resp).getValue();
+		doAnswer(hasAnswer).when(resp).has(any(String.class));
+		doAnswer( putValueAnswer ).when(resp).addItem(any(ParserInternalTypeBase.class));
+		doAnswer( getItem ).when(resp).get(any(String.class));
+
+		return resp;
+	}
 }

@@ -11,7 +11,7 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
  * @author Daniel Hazelton
  *
  */
-public final class OperationType extends ParserInternalTypeBase {
+public /*final*/ class OperationType extends ParserInternalTypeBase {
 
 	/**
 	 *

@@ -17,6 +17,7 @@ apply plugin: 'jacoco'
 apply plugin: 'com.github.spotbugs'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+
 //apply plugin: 'org.junit.platform.gradle.plugin'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -35,11 +36,15 @@ idea.module {
 dependencies {
 	// This dependency is found on compile classpath of this component and consumers.
 	compile 'com.google.guava:guava:23.0'
+	runtime 'com.google.guava:guava:23.0'
+	
 	// Apache Commons IO
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+	runtime group: 'commons-io', name: 'commons-io', version: '2.6'
 	
 	// Apache Commons 'lang3' - for things like pairs and tuples
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+	runtime group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 	
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.2.0'
 
