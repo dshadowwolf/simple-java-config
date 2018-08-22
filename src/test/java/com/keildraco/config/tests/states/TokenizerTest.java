@@ -17,6 +17,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.keildraco.config.data.Constants;
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
 import com.keildraco.config.tokenizer.Tokenizer;
@@ -141,6 +142,25 @@ final class TokenizerTest {
 			t.pushBack(tt);
 			assertTrue(true, "t.nextToken() and t.pushBack() did not throw an exception");
 		} catch (final Exception e) {
+			fail(CAUGHT_EXCEPTION + e);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	void testEmptyStack() {
+		final InputStream is = IOUtils.toInputStream("item", StandardCharsets.UTF_8);
+		final InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
+
+		try {
+			final Tokenizer t = new Tokenizer(new StreamTokenizer(isr));
+			t.nextToken();
+			final Token shouldBeEmpty = t.nextToken();
+			assertAll( () -> assertEquals(Constants.TOKENEMPTY, shouldBeEmpty.getValue(), "on an empty stream - or at the end of the stream - the \"Empty Token\" is returned - name is "+Constants.TOKENEMPTY),
+					() -> assertEquals(TokenType.EMPTY, shouldBeEmpty.getType(), "on an empty stream - or at the end of the stream - the \"Empty Token\" is returned - Type is "+TokenType.EMPTY.toString()));
+		} catch (IOException e) {
 			fail(CAUGHT_EXCEPTION + e);
 		}
 	}
