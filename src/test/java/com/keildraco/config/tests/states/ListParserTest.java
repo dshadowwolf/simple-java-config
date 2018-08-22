@@ -43,6 +43,7 @@ final class ListParserTest {
 	private static Tokenizer noDataTokenizer;
 	private static Tokenizer badDataTokenizer;
 	private static Tokenizer earlyEndDataTokenizer;
+	private static Tokenizer reallyBadDataTokenizer;
 	private static TypeFactory typeFactoryMock;
 	private static IStateParser keyValueParserMock;
 	private static IStateParser sectionParserMock;
@@ -65,11 +66,13 @@ final class ListParserTest {
 				new Token("(")));
 		Deque<Token> earlyEndData = Lists.newLinkedList(Arrays.asList(new Token("["), new Token("ash"), 
 				new Token(","), new Token("blood"), new Token(","), new Token("choices")));
-
+		Deque<Token> reallyBadData = Lists.newLinkedList(Arrays.asList(new Token("["), new Token("(")));
+		
 		goodDataTokenizer = MockSource.tokenizerOf(goodData);
 		badDataTokenizer = MockSource.tokenizerOf(badData);
 		earlyEndDataTokenizer = MockSource.tokenizerOf(earlyEndData);
 		noDataTokenizer = MockSource.noDataTokenizer();
+		reallyBadDataTokenizer = MockSource.tokenizerOf(reallyBadData);
 		
 		typeFactoryMock = new TypeFactoryMockBuilder()
 				.addType(ItemType.LIST, (parent, name, value) -> MockSource.typeMockOf(ItemType.LIST, name, ""))
@@ -155,5 +158,14 @@ final class ListParserTest {
 	void testErrorEarlyEOF() {
 		IStateParser listParser = new ListParser(typeFactoryMock, null);
 		assertThrows(GenericParseException.class, () -> listParser.getState(earlyEndDataTokenizer));
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	void testErrorBadToken() {
+		IStateParser listParser = new ListParser(typeFactoryMock, null);
+		assertThrows(GenericParseException.class, () -> listParser.getState(reallyBadDataTokenizer));
 	}
 }
