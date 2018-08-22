@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.data.BasicResult;
+import com.keildraco.config.data.ItemType;
 import com.keildraco.config.types.IdentifierType;
 import static com.keildraco.config.Config.EMPTY_TYPE;
 
@@ -36,6 +37,6 @@ class BasicResultTest {
 	
 	@Test
 	final void testGetType() {
-		assertEquals(ItemType.BASIC_TYPE, testValue.getType(), "test of getType() on BasicResult");
+		assertEquals(ItemType.BASIC_RESULT, testValue.getType(), "test of getType() on BasicResult");
 	}
 }
