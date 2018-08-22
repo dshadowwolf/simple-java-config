@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.keildraco.config.Config;
+import com.keildraco.config.data.BasicResult;
 import com.keildraco.config.data.ItemMatcher;
 import com.keildraco.config.data.ItemType;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
@@ -27,7 +28,8 @@ final class ItemMatcherTest {
 
 	private static ParserInternalTypeBase dataStructure;
 	private static ParserInternalTypeBase mainStructure;
-
+	private static BasicResult basicResultStructure;
+	
 	@BeforeAll
 	static void setupTestData() {
 		mainStructure = MockSource.typeMockOf(ItemType.SECTION, "section", "");
@@ -46,14 +48,37 @@ final class ItemMatcherTest {
 		key.addItem(op2);
 		ParserInternalTypeBase blech = MockSource.typeMockOf(ItemType.SECTION, "blech", "");
 		ParserInternalTypeBase magic2 = MockSource.typeMockOf(ItemType.IDENTIFIER, "magic", "abcd");
+		ParserInternalTypeBase magic3 = MockSource.typeMockOf(ItemType.SECTION, "magicX", "");
+		ParserInternalTypeBase magic4 = MockSource.typeMockOf(ItemType.IDENTIFIER, "magicX", "abcd");
+		magic3.addItem(magic4);
 		blech.addItem(magic2);
+		blech.addItem(magic3);
 		mainStructure.addItem(magic);
 		mainStructure.addItem(all);
 		mainStructure.addItem(key);
 		mainStructure.addItem(list);
 		mainStructure.addItem(blech);
-
+		
 		dataStructure = magic;
+		
+		basicResultStructure = MockSource.basicResultMock();
+		basicResultStructure.addItem(mainStructure);
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	void testBasicResultMatching() {
+		final ItemMatcher im = new ItemMatcher(basicResultStructure);
+		
+		assertAll( () -> assertTrue(im.matches("section.magic.xyzzy")),
+				() -> assertTrue(im.matches("section")),
+				() -> assertTrue(im.matches("section.blech.magicX.magicX.abcd")),
+				() -> assertTrue(im.matches("section.blech.magicX.magicX")),
+				() -> assertFalse(im.matches("section.blech.magicX.a1b2c3")),
+				() -> assertTrue(im.matches("section.blech")),
+				() -> assertFalse(im.matches("foo.bar.baz")));
 	}
 	
 	/**

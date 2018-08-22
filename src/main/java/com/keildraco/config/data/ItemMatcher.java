@@ -123,9 +123,8 @@ public class ItemMatcher {
 			return this.matches(extendedNameData);
 		} else if (this.thisItem.has(baseName) && !extendedNameData.isEmpty()) {
 			return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
-		} else if (extendedNameData.isEmpty()
-				&& (this.thisItem.has(baseName) || this.thisItem.getName().equals(baseName))) {
-			return true;
+		} else if (extendedNameData.isEmpty() && this.thisItem.has(baseName)) {
+				return true;
 		} else {
 			// blargh ? Final chance, maybe we've found a loophole!
 			return this.doesMySectionMatch(baseName);
