@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import com.keildraco.config.Config;
 import com.keildraco.config.data.ItemType;
 import com.keildraco.config.types.IdentifierType;
 import static com.keildraco.config.Config.EMPTY_TYPE;
@@ -108,5 +109,14 @@ final class IdentifierTypeTest {
 	@Test
 	void testHasByIdent() {
 		assertTrue(this.testItem.has(VALUE), "");
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	void testNameEqualsIdentCode() {
+		final IdentifierType idt = new IdentifierType("blargh");
+		assertEquals(idt.getName(), idt.getValue(), "when no value is given on create, name should equal value");
 	}
 }
