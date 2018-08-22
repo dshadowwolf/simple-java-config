@@ -21,16 +21,21 @@ class BasicResultTest {
 
 	@Test
 	final void testGetValue() {
-		assertEquals(RESULT, testValue.getValue(), "");
+		assertEquals(RESULT, testValue.getValue(), "test of getValue() on BasicResult");
 	}
 
 	@Test
 	final void testGetValueRaw() {
-		assertEquals(RESULT, testValue.getValueRaw(), "");
+		assertEquals(RESULT, testValue.getValueRaw(), "test of getValueRaw() on BasicResult");
 	}
 
 	@Test
 	final void testGetParent() {
-		assertEquals(EMPTY_TYPE, testValue.getParent(), "");
+		assertEquals(EMPTY_TYPE, testValue.getParent(), "test of getParent() on BasicResult");
+	}
+	
+	@Test
+	final void testGetType() {
+		assertEquals(ItemType.BASIC_TYPE, testValue.getType(), "test of getType() on BasicResult");
 	}
 }
