@@ -226,15 +226,55 @@ public class MockSource {
 		List<String> oper = new ArrayList<>(1);
 		
 		Answer<Boolean> operAnswer = i -> (value.equals(i.getArgument(0)) && oper.get(0).equals("~")) || (!value.equals(i.getArgument(0)) && oper.get(0).equals("!"));
-		Answer<Boolean> setAnswer = i -> values.containsKey(((String)i.getArgument(0)).toLowerCase(Locale.US)) || name.equals(((String)i.getArgument(0)).toLowerCase(Locale.US));
+		Answer<Boolean> setAnswer = i -> {
+			String base = ((String)i.getArgument(0)).toLowerCase(Locale.US);
+			int index = base.indexOf('.');
+
+			if (index > 0) {
+				String itemName = base.substring(0, index);
+				String rest = base.substring(index+1);
+				
+				if (values.containsKey(itemName)) {
+					return values.get(itemName).has(rest);
+				}
+				return false;
+			} else if (index == 0) {
+				return false; // nominally an error state
+			}
+			
+			return values.containsKey(base) || name.equals(base);
+		};
+		
 		Answer<Boolean> unitAnswer = i -> value.equals(i.getArgument(0));
 
-		Answer<ParserInternalTypeBase> putValueAnswer = i -> values.put(((ParserInternalTypeBase)i.getArgument(0)).getName(), i.getArgument(0));
+		Answer<ParserInternalTypeBase> putValueAnswer = i -> {
+			ParserInternalTypeBase pitb = (ParserInternalTypeBase)i.getArgument(0);
+			String nameX = pitb.getName().toLowerCase(Locale.US);
+			values.put(nameX, i.getArgument(0));
+			return pitb;
+		};
 
 		Answer<ParserInternalTypeBase> getItem = i -> {
-			String itemName = i.getArgument(0);
-			if(values.containsKey(itemName)) return values.get(itemName);
-			else return com.keildraco.config.Config.EMPTY_TYPE;
+			String base = ((String)i.getArgument(0)).toLowerCase(Locale.US);
+			int index = base.indexOf('.');
+
+			if (index > 0) {
+				String itemName = base.substring(0, index);
+				String rest = base.substring(index+1);
+
+				if (values.containsKey(itemName)) {
+					return values.get(itemName).get(rest);
+				}
+				return com.keildraco.config.Config.EMPTY_TYPE;
+			} else if (index == 0) {
+				return com.keildraco.config.Config.EMPTY_TYPE; // nominally an error state
+			}
+			
+			if (values.containsKey(base)) {
+				return values.get(base);
+			}
+			
+			return com.keildraco.config.Config.EMPTY_TYPE;
 		};
 		
 		Answer<Boolean> usingHasAnswer;
