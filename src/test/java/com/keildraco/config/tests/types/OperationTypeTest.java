@@ -57,6 +57,20 @@ final class OperationTypeTest {
 	}
 
 	/**
+	 * 
+	 */
+	@Test
+	void testOperationTypeStringString() {
+		try {
+			@SuppressWarnings("unused")
+			final OperationType op = new OperationType(OPERATION,OPERATION);
+			assertTrue(true, EXPECTED_NO_EXCEPTION);
+		} catch (final Exception e) {
+			fail(CAUGHT_EXCEPTION);
+		}
+	}
+	
+	/**
 	 *
 	 */
 	@Test
