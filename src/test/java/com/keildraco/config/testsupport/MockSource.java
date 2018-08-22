@@ -351,7 +351,7 @@ public class MockSource {
 				.map(val -> val.getValue()).collect(Collectors.toList()));
 
 		doAnswer( i -> "ROOT" ).when(resp).getName();
-		doAnswer(i -> ItemType.INVALID).when(resp).getType();
+		doAnswer(i -> ItemType.BASIC_RESULT).when(resp).getType();
 		doAnswer(value).when(resp).getValueRaw();
 		doAnswer(value).when(resp).getValue();
 		doAnswer(hasAnswer).when(resp).has(any(String.class));

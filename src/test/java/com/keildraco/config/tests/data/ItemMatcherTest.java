@@ -72,15 +72,16 @@ final class ItemMatcherTest {
 	void testBasicResultMatching() {
 		final ItemMatcher im = new ItemMatcher(basicResultStructure);
 		
-		assertAll( () -> assertTrue(im.matches("section.magic.xyzzy")),
-				() -> assertTrue(im.matches("section")),
-				() -> assertTrue(im.matches("section.blech.magicX.magic.abcd")),
-				() -> assertTrue(im.matches("section.blech.magicX.magic")),
-				() -> assertFalse(im.matches("section.blech.magicX.magic.a1b2c3")),
-				() -> assertFalse(im.matches("section.blech.magicX.a1b2c3")),
-				() -> assertFalse(im.matches("section.blech.magicX.a1b2c3.1234")),
-				() -> assertTrue(im.matches("section.blech")),
-				() -> assertFalse(im.matches("foo.bar.baz")));
+		assertAll( () -> assertTrue(im.matches("section.magic.xyzzy"), "doubled up basic test"),
+				() -> assertTrue(im.matches("section"), "doubled up basic test"),
+				() -> assertTrue(im.matches("section.blech.magicX.magic.abcd"), "deep match, extra condition coverage, sub-sub-section with value"),
+				() -> assertTrue(im.matches("section.blech.magicX.magic"), "deep match, extra condition coverage, sub-sub-section without value"),
+				() -> assertFalse(im.matches("section.blech.magicX.magic.a1b2c3"), "deep match, extra condition coverage, sub-sub-section with value - non-matching"),
+				() -> assertFalse(im.matches("section.blech.magicX.a1b2c3"), "deep match, extra condition coverage, nonexistant key of sub-sub-section"),
+				() -> assertFalse(im.matches("section.blech.magicX.a1b2c3.1234"), "deep match, extra condition coverage, nonexistant key of sub-sub-section with value"),
+				() -> assertTrue(im.matches("section.blech"), "match subsection - doubled up"),
+				() -> assertFalse(im.matches("section.key.op2.xyzzy"), "nonexistant item match in list"),
+				() -> assertFalse(im.matches("foo.bar.baz"), "will never match test"));
 	}
 	
 	/**

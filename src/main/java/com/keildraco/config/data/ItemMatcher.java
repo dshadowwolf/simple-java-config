@@ -6,7 +6,6 @@ import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.types.IdentifierType;
 import com.keildraco.config.types.ListType;
 import com.keildraco.config.types.OperationType;
-import com.keildraco.config.types.SectionType;
 
 /**
  *
@@ -86,11 +85,8 @@ public class ItemMatcher {
 				return this.doesOperationMatch(baseName);
 			case SECTION:
 				return this.doesSectionMatch(baseName, extendedNameData);
-			case INVALID:
-				if(thisItem instanceof BasicResult) {
-					return this.basicResultMatch(baseName, extendedNameData);
-				}
-				return false;
+			case BASIC_RESULT:
+				return this.basicResultMatch(baseName, extendedNameData);
 			default:
 				return false;
 		}
@@ -199,35 +195,6 @@ public class ItemMatcher {
 		}
 
 		return false;
-	}
-
-	/**
-	 * One of the final matching routines for a {@link com.keildraco.config.data.ItemType.SECTION
-	 * section}.
-	 *
-	 * @param section
-	 *            <p>
-	 *            The {@link com.keildraco.config.types.SectionType Section} to match against.
-	 * @param name
-	 *            <p>
-	 *            The name to match against the section.
-	 * @return boolean "true" if the item is found to meet the given data, "false" if it does not.
-	 */
-	private static boolean doesThisSectionMatch(final SectionType section, final String name) {
-		return section.has(name);
-	}
-
-	/**
-	 * Try to match the {@link com.keildraco.config.data.ItemType.SECTION section} that is held by
-	 * this ItemMatcher directly.
-	 *
-	 * @param name
-	 *            <p>
-	 *            The name to match against the section.
-	 * @return boolean "true" if the item is found to meet the given data, "false" if it does not.
-	 */
-	private boolean doesMySectionMatch(final String name) {
-		return doesThisSectionMatch((SectionType) this.thisItem, name);
 	}
 
 	/**

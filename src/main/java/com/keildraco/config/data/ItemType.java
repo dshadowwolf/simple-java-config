@@ -26,7 +26,12 @@ public enum ItemType {
 	 *
 	 */
 	OPERATION,
-
+	
+	/**
+	 *
+	 */
+	BASIC_RESULT,
+	
 	/**
 	 *
 	 */

@@ -55,4 +55,12 @@ public /*final*/ class BasicResult extends ParserInternalTypeBase {
 	public String getValueRaw() {
 		return this.getValue();
 	}
+	
+	/**
+	 * Override of {@link ParserInternalTypeBase#getType()} that reports this as type BASIC_RESULT
+	 */
+	@Override
+	public ItemType getType() {
+		return ItemType.BASIC_RESULT;
+	}
 }
