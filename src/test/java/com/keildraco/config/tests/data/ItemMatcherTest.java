@@ -49,7 +49,7 @@ final class ItemMatcherTest {
 		ParserInternalTypeBase blech = MockSource.typeMockOf(ItemType.SECTION, "blech", "");
 		ParserInternalTypeBase magic2 = MockSource.typeMockOf(ItemType.IDENTIFIER, "magic", "abcd");
 		ParserInternalTypeBase magic3 = MockSource.typeMockOf(ItemType.SECTION, "magicX", "");
-		ParserInternalTypeBase magic4 = MockSource.typeMockOf(ItemType.IDENTIFIER, "magicX", "abcd");
+		ParserInternalTypeBase magic4 = MockSource.typeMockOf(ItemType.IDENTIFIER, "magic", "abcd");
 		magic3.addItem(magic4);
 		blech.addItem(magic2);
 		blech.addItem(magic3);
@@ -74,9 +74,11 @@ final class ItemMatcherTest {
 		
 		assertAll( () -> assertTrue(im.matches("section.magic.xyzzy")),
 				() -> assertTrue(im.matches("section")),
-				() -> assertTrue(im.matches("section.blech.magicX.magicX.abcd")),
-				() -> assertTrue(im.matches("section.blech.magicX.magicX")),
+				() -> assertTrue(im.matches("section.blech.magicX.magic.abcd")),
+				() -> assertTrue(im.matches("section.blech.magicX.magic")),
+				() -> assertFalse(im.matches("section.blech.magicX.magic.a1b2c3")),
 				() -> assertFalse(im.matches("section.blech.magicX.a1b2c3")),
+				() -> assertFalse(im.matches("section.blech.magicX.a1b2c3.1234")),
 				() -> assertTrue(im.matches("section.blech")),
 				() -> assertFalse(im.matches("foo.bar.baz")));
 	}

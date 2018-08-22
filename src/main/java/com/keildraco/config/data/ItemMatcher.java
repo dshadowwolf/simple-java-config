@@ -117,18 +117,17 @@ public class ItemMatcher {
 	 * @return boolean "true" if the item is found to meet the given data, "false" if it does not.
 	 */
 	private boolean doesSectionMatch(final String baseName, final String extendedNameData) {
-		if (this.thisItem.getName().equals(baseName) && !extendedNameData.isEmpty()) {
-			// we match the base name itself, so we have to see if we can split the extended name or
-			// don't need to and re-match
-			return this.matches(extendedNameData);
-		} else if (this.thisItem.has(baseName) && !extendedNameData.isEmpty()) {
-			return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
-		} else if (extendedNameData.isEmpty() && this.thisItem.has(baseName)) {
-				return true;
-		} else {
-			// blargh ? Final chance, maybe we've found a loophole!
-			return this.doesMySectionMatch(baseName);
+		if(!extendedNameData.isEmpty()) {
+			if (this.thisItem.getName().equals(baseName)) {
+				return this.matches(extendedNameData);
+			} else if (this.thisItem.has(baseName)) {
+				return new ItemMatcher(this.thisItem.get(baseName)).matches(extendedNameData);
+			}
+		} else if (this.thisItem.has(baseName)) {
+			return true;
 		}
+		
+		return false;
 	}
 
 	/**
