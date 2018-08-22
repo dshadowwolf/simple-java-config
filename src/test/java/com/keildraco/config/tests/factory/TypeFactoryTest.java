@@ -18,7 +18,10 @@ import com.keildraco.config.Config;
 import com.keildraco.config.data.ItemType;
 import com.keildraco.config.data.Token;
 import com.keildraco.config.data.TokenType;
+import com.keildraco.config.exceptions.TypeRegistrationException;
+import com.keildraco.config.exceptions.ParserRegistrationException;
 import com.keildraco.config.exceptions.UnknownParseTreeTypeException;
+import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.IStateParser;
 import com.keildraco.config.testsupport.MockSource;
@@ -179,5 +182,33 @@ final class TypeFactoryTest {
 		final TypeFactory tf = new TypeFactory();
 		tf.registerParser(() -> MockSource.mockSectionParser(), SECTION);
 		assertNotNull(tf.getParser(SECTION, EMPTY_TYPE), "");
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	void testIParserTypeReturnsNull() {
+		final TypeFactory tf = new TypeFactory();
+		tf.registerType((parent, name, value) -> null, ItemType.INVALID);
+		assertThrows(TypeRegistrationException.class, () -> tf.getType(com.keildraco.config.Config.EMPTY_TYPE, "key", "value", ItemType.INVALID));
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	void testIParserStateReturnsNullOnRegister() {
+		final TypeFactory tf = new TypeFactory();
+		assertThrows(ParserRegistrationException.class, () -> tf.registerParser(() -> null, "TEST"));
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	void testNextStateNotFound() {
+		final TypeFactory tf = new TypeFactory();
+		assertThrows(UnknownStateException.class, () -> tf.nextState("BLARGH", new Token("FOO"), new Token("BAR")));
 	}
 }
