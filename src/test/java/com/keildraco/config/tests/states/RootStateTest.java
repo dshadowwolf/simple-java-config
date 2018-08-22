@@ -24,10 +24,6 @@ import com.keildraco.config.states.RootState;
 import com.keildraco.config.testsupport.MockSource;
 import com.keildraco.config.testsupport.TypeFactoryMockBuilder;
 import com.keildraco.config.tokenizer.Tokenizer;
-import com.keildraco.config.types.IdentifierType;
-import com.keildraco.config.types.ListType;
-import com.keildraco.config.types.OperationType;
-import com.keildraco.config.types.SectionType;
 
 import static com.keildraco.config.Config.EMPTY_TYPE;
 
@@ -52,14 +48,14 @@ final class RootStateTest {
 	static void setup() {
 		Deque<Token> badData = Lists.newLinkedList(Arrays.asList(new Token("op"), new Token("("), new Token("!"), new Token("ident"), new Token("ent"), new Token(")")));
 		typeFactoryMock = new TypeFactoryMockBuilder()
-				.addType(ItemType.LIST, i -> new ListType(i.getArgument(1)))
-				.addType(ItemType.IDENTIFIER, i -> new IdentifierType(i.getArgument(0),i.getArgument(1), i.getArgument(2)))
-				.addType(ItemType.OPERATION, i -> new OperationType(i.getArgument(0), i.getArgument(1), i.getArgument(2)))
-				.addType(ItemType.SECTION, i -> new SectionType(i.getArgument(0), i.getArgument(1)))
-				.addState("KEYVALUE", i -> keyValueParserMock)
-				.addState("OPERATION", i -> operationParserMock)
-				.addState("SECTION", i -> sectionParserMock)
-				.addState("LIST", i -> listParserMock)
+				.addType(ItemType.LIST, (parent,name,value) -> MockSource.typeMockOf(ItemType.LIST, name, value))
+				.addType(ItemType.IDENTIFIER, (parent,name,value) -> MockSource.typeMockOf(ItemType.IDENTIFIER, name, value))
+				.addType(ItemType.OPERATION, (parent,name,value) -> MockSource.typeMockOf(ItemType.OPERATION, name, value))
+				.addType(ItemType.SECTION, (parent,name,value) -> MockSource.typeMockOf(ItemType.SECTION, name, value))
+				.addState("KEYVALUE", () -> keyValueParserMock)
+				.addState("OPERATION", () -> operationParserMock)
+				.addState("SECTION", () -> sectionParserMock)
+				.addState("LIST", () -> listParserMock)
 				.addTransition("ROOT", TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION")
 				.addTransition("ROOT", TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE")
 				.create();

@@ -57,7 +57,7 @@ final class OperationParserTest {
 		Deque<Token> notAnIdentifierData = Lists.newLinkedList(Arrays.asList(new Token("op"), new Token("("), new Token("!"), new Token("id-ent"), new Token("ent"), new Token(")")));
 
 		typeFactoryMock = new TypeFactoryMockBuilder()
-				.addType(ItemType.OPERATION, i -> new OperationType(i.getArgument(0), i.getArgument(1), i.getArgument(2)))
+				.addType(ItemType.OPERATION, (parent, name, value) -> new OperationType(parent, name, value))
 				.create();
 		
 		goodDataTokenizerMock = MockSource.tokenizerOf(goodData);

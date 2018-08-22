@@ -6,8 +6,6 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
@@ -97,7 +95,7 @@ public class MockSource {
 			else
 				tt = t.nextToken();
 			
-			return new ListType("blargh", Collections.emptyList());
+			return typeMockOf(ItemType.LIST, "blargh", "");
 		})
 		.when(resp).getState(any(Tokenizer.class));
 		
@@ -110,9 +108,10 @@ public class MockSource {
 		IStateParser resp = mock(IStateParser.class);
 		
 		doAnswer( invocation -> {
+			String name = "key";
 			Tokenizer t = invocation.getArgument(0);
 			if(t.peek().getType() == TokenType.IDENTIFIER && t.peekToken().getType() == TokenType.STORE) {
-				t.nextToken(); // consume opening ident
+				name = t.nextToken().getValue(); // consume opening ident
 				t.nextToken(); // consume store
 			}
 			
@@ -131,7 +130,7 @@ public class MockSource {
 			}
 			
 			t.nextToken(); // consume
-			return new IdentifierType("key", "value");
+			return typeMockOf(ItemType.IDENTIFIER, name, "value");
 		})
 		.when(resp).getState(any(Tokenizer.class));
 		
@@ -146,13 +145,14 @@ public class MockSource {
 		doAnswer( invocation -> {
 			Tokenizer t = invocation.getArgument(0);
 			Token tt = t.nextToken();
+			String name = tt.getValue();
 			while(t.hasNext() && tt.getType() != TokenType.CLOSE_BRACE) tt = t.nextToken();
 			if(!t.hasNext() && tt.getType() != TokenType.CLOSE_BRACE)
 				throw new GenericParseException("Early End of Data");
 			else
 				tt = t.nextToken();
 			
-			return new SectionType("section");
+			return typeMockOf(ItemType.SECTION, name, "");
 		})
 		.when(resp).getState(any(Tokenizer.class));
 		
@@ -188,8 +188,8 @@ public class MockSource {
 			}
 			
 			t.nextToken(); // mass consumption!
-			
-			OperationType rv = new OperationType(null, name, value);
+			com.keildraco.config.Config.LOGGER.fatal("%s -- %s -- %s", name, value, op);
+			OperationType rv = (OperationType)typeMockOf(ItemType.OPERATION, name, value);
 			rv.setOperation(op);
 			return rv;
 		})
@@ -246,7 +246,7 @@ public class MockSource {
 				resp = mock(SectionType.class);
 				valueFormatter =  i -> {
 					List<String> valuesValues = values.values().stream().map( val -> val.getValue()).collect(Collectors.toList());		
-					return String.format("%s {\n%s\n}", name, String.join("\n", valuesValues.toArray(new String[valuesValues.size()])));
+					return String.format("%s {%n%s%n}", name, String.join("\n", valuesValues.toArray(new String[valuesValues.size()])));
 				};
 				rawValueFormatter = i -> {
 					List<String> valuesValues = values.values().stream().map( val -> val.getValue()).collect(Collectors.toList());		
@@ -265,19 +265,16 @@ public class MockSource {
 				resp = mock(ListType.class);
 				valueFormatter = i -> {
 					List<String> valuesValues = values.values().stream().map( val -> val.getValue()).collect(Collectors.toList());		
-					return String.format("[ %s ]", value, String.join(", ", valuesValues.toArray(new String[valuesValues.size()])));
+					return String.format("[ %s ]", String.join(", ", valuesValues.toArray(new String[valuesValues.size()])));
 				};
-				rawValueFormatter = i -> {
-					List<String> valuesValues = values.values().stream().map( val -> val.getValue()).collect(Collectors.toList());		
-					return String.format("[ %s ]", value, String.join(", ", valuesValues.toArray(new String[valuesValues.size()])));
-				};
+				rawValueFormatter = valueFormatter;
 				usingHasAnswer = setAnswer;
 				doAnswer( putValueAnswer ).when(resp).addItem(any(ParserInternalTypeBase.class));
 				doAnswer( getItem ).when(resp).get(any(String.class));
 				break;
 			case OPERATION:
 				resp = mock(OperationType.class);
-				valueFormatter = i -> String.format("%s(%s %s)", name, oper, value);
+				valueFormatter = i -> String.format("%s(%s %s)", name, oper.get(0), value);
 				usingHasAnswer = operAnswer;
 				doAnswer( i -> {
 					String op = i.getArgument(0);

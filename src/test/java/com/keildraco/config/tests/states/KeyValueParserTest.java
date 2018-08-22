@@ -26,7 +26,6 @@ import com.keildraco.config.states.KeyValueParser;
 import com.keildraco.config.testsupport.MockSource;
 import com.keildraco.config.testsupport.TypeFactoryMockBuilder;
 import com.keildraco.config.tokenizer.Tokenizer;
-import com.keildraco.config.types.IdentifierType;
 
 /**
  *
@@ -39,24 +38,33 @@ final class KeyValueParserTest {
 	private static final String	EXCEPTION_GETTING	= "Exception getting type instance for {}: {}";
 	private static TypeFactory typeFactoryMock;
 	private static Tokenizer goodDataokenizerMock;
+	private static Tokenizer withOperationDataokenizerMock;
 	private static IStateParser listParserMock;
 	private static IStateParser sectionParserMock;
+	private static IStateParser operationParserMock;
 	private static Tokenizer noDataTokenizerMock;
 
 	@BeforeAll
 	static void setupMocks() {
 		Deque<Token> goodData = Lists.newLinkedList(Arrays.asList(new Token("key"), new Token("="), new Token("value")));
-		
-		typeFactoryMock = new TypeFactoryMockBuilder().addState("KEYVALUE", i -> new KeyValueParser(typeFactoryMock, null))
-				.addState("LIST", i -> listParserMock)
-				.addState("SECTION", i -> sectionParserMock)
-				.addType(ItemType.IDENTIFIER, i -> new IdentifierType(i.getArgument(0), i.getArgument(1), i.getArgument(2)))
+		Deque<Token> withOperationData = Lists.newLinkedList(Arrays.asList(new Token("key"), new Token("="), 
+				new Token("oper"), new Token("("), new Token("!"), new Token("value"), new Token(")")));
+
+		typeFactoryMock = new TypeFactoryMockBuilder().addState("KEYVALUE", () -> new KeyValueParser(typeFactoryMock, null))
+				.addState("LIST", () -> listParserMock)
+				.addState("SECTION", () -> sectionParserMock)
+				.addState("OPERATION", () -> operationParserMock)
+				.addType(ItemType.IDENTIFIER, (parent, name, value) -> MockSource.typeMockOf(ItemType.IDENTIFIER, name, value))
+				.addType(ItemType.OPERATION, (parent, name, value) -> MockSource.typeMockOf(ItemType.OPERATION, name, value))
 				.addTransition("KEYVALUE", TokenType.OPEN_LIST, TokenType.IDENTIFIER, "LIST")
+				.addTransition("KEYVALUE", TokenType.IDENTIFIER, TokenType.OPEN_PARENS, "OPERATION")
 				.create();
 		
 		goodDataokenizerMock = MockSource.tokenizerOf(goodData);
+		withOperationDataokenizerMock = MockSource.tokenizerOf(withOperationData);
 		listParserMock = MockSource.mockListParser();
 		sectionParserMock = MockSource.mockSectionParser();
+		operationParserMock = MockSource.mockOperationParser();
 		noDataTokenizerMock = MockSource.noDataTokenizer();		
 	}
 	/**
@@ -66,9 +74,12 @@ final class KeyValueParserTest {
 	void testGetState() {
 		final IStateParser p = new KeyValueParser(typeFactoryMock, null);
 		final ParserInternalTypeBase pb = p.getState(goodDataokenizerMock);
+		final ParserInternalTypeBase opb = p.getState(withOperationDataokenizerMock);
 		assertAll("result is correct", () -> assertNotNull(pb, "result not null"),
 				() -> assertEquals("key", pb.getName(), "name is correct"),
-				() -> assertEquals("value", pb.getValueRaw(), "value is correct"));
+				() -> assertEquals("value", pb.getValueRaw(), "value is correct"),
+				() -> assertEquals("oper(! value)", opb.getValue(), "operation as value parsed correctly"),
+				() -> assertEquals("oper", opb.getName(), "operation as value, name is correct"));
 	}
 
 	/**

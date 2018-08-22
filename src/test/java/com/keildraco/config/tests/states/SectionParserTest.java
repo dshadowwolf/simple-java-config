@@ -28,7 +28,6 @@ import com.keildraco.config.states.SectionParser;
 import com.keildraco.config.testsupport.MockSource;
 import com.keildraco.config.testsupport.TypeFactoryMockBuilder;
 import com.keildraco.config.tokenizer.Tokenizer;
-import com.keildraco.config.types.SectionType;
 
 import static com.keildraco.config.Config.EMPTY_TYPE;
 
@@ -54,10 +53,10 @@ final class SectionParserTest {
 		keyValueParserMock = MockSource.mockKeyValueParser();
 		listParserMock = MockSource.mockListParser();
 		typeFactoryMock = new TypeFactoryMockBuilder()
-				.addType(ItemType.SECTION, i -> new SectionType(i.getArgument(0), i.getArgument(1)))
-				.addState("KEYVALUE", i -> keyValueParserMock)
-		        .addState("LIST", i -> listParserMock)
-		        .addState("SECTION", i -> new SectionParser(typeFactoryMock, null))
+				.addType(ItemType.SECTION, (parent,name,value) -> MockSource.typeMockOf(ItemType.SECTION, name, value))
+				.addState("KEYVALUE", () -> keyValueParserMock)
+		        .addState("LIST", () -> listParserMock)
+		        .addState("SECTION", () -> new SectionParser(typeFactoryMock, null))
 		        .addTransition("SECTION", TokenType.IDENTIFIER, TokenType.STORE, "KEYVALUE")
 		        .addTransition("SECTION", TokenType.IDENTIFIER, TokenType.OPEN_BRACE, "SECTION")
 		        .create();

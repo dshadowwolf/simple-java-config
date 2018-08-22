@@ -28,9 +28,6 @@ import com.keildraco.config.states.ListParser;
 import com.keildraco.config.testsupport.MockSource;
 import com.keildraco.config.testsupport.TypeFactoryMockBuilder;
 import com.keildraco.config.tokenizer.Tokenizer;
-import com.keildraco.config.types.IdentifierType;
-import com.keildraco.config.types.ListType;
-import com.keildraco.config.types.OperationType;
 
 /**
  *
@@ -75,13 +72,13 @@ final class ListParserTest {
 		noDataTokenizer = MockSource.noDataTokenizer();
 		
 		typeFactoryMock = new TypeFactoryMockBuilder()
-				.addType(ItemType.LIST, i -> new ListType(i.getArgument(1)))
-				.addType(ItemType.IDENTIFIER, i -> new IdentifierType(i.getArgument(0),i.getArgument(1), i.getArgument(2)))
-				.addType(ItemType.OPERATION, i -> new OperationType(i.getArgument(0), i.getArgument(1), i.getArgument(2)))
-				.addState("KEYVALUE", i -> keyValueParserMock)
-				.addState("OPERATION", i -> operationParserMock)
-				.addState("SECTION", i -> sectionParserMock)
-				.addState("LIST", i -> new ListParser(typeFactoryMock, null))
+				.addType(ItemType.LIST, (parent, name, value) -> MockSource.typeMockOf(ItemType.LIST, name, ""))
+				.addType(ItemType.IDENTIFIER, (parent, name, value) -> MockSource.typeMockOf(ItemType.IDENTIFIER, name, value))
+				.addType(ItemType.OPERATION, (parent, name, value) -> MockSource.typeMockOf(ItemType.OPERATION, name, value))
+				.addState("KEYVALUE", () -> keyValueParserMock)
+				.addState("OPERATION", () -> operationParserMock)
+				.addState("SECTION", () -> sectionParserMock)
+				.addState("LIST", () -> new ListParser(typeFactoryMock, null))
 				.addTransition("LIST", TokenType.IDENTIFIER, TokenType.OPEN_PARENS, "OPERATION")
 				.create();
 		

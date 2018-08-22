@@ -53,6 +53,7 @@ public final class KeyValueParser extends AbstractParserBase {
 		}
 
 		final IStateParser parser = this.getFactory().nextState(this.getName(), next, following);
+		com.keildraco.config.Config.LOGGER.fatal("(factory: %s -- name: %s -- next: %s -- following: %s) -- next parser is: %s", this.getFactory(), this.getName(), next.getType(), following.getType(), parser);
 		final ParserInternalTypeBase rv = parser.getState(tokenizer);
 		rv.setName(key);
 		return rv;
@@ -61,9 +62,7 @@ public final class KeyValueParser extends AbstractParserBase {
 	@Override
 	public void registerTransitions(final TypeFactory factory) {
 		factory.registerStateTransition(KEYVALUE, TokenType.OPEN_LIST, TokenType.IDENTIFIER, LIST);
-		factory.registerStateTransition(KEYVALUE, TokenType.OPEN_PARENS, TokenType.NOT,
-				OPERATION);
-		factory.registerStateTransition(KEYVALUE, TokenType.OPEN_PARENS, TokenType.TILDE,
+		factory.registerStateTransition(KEYVALUE, TokenType.IDENTIFIER, TokenType.OPEN_PARENS,
 				OPERATION);
 	}
 }
