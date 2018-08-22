@@ -1,5 +1,6 @@
 package com.keildraco.config.tests.states;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,6 +21,7 @@ import com.keildraco.config.data.TokenType;
 import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.factory.TypeFactory;
 import com.keildraco.config.interfaces.IStateParser;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.states.RootState;
 import com.keildraco.config.testsupport.MockSource;
 import com.keildraco.config.testsupport.TypeFactoryMockBuilder;
@@ -67,6 +69,20 @@ final class RootStateTest {
 		
 		noDataTokenizerMock = MockSource.noDataTokenizer();
 		badDataTokenizerMock = MockSource.tokenizerOf(badData);
+	}
+
+	/**
+	 * Test method for {@link com.keildraco.config.interfaces.AbstractParserBase#getParent()}
+	 * and {@link com.keildraco.config.interfaces.AbstractParserBase#setParent(com.keildraco.config.interfaces.ParserInternalTypeBase)}
+	 */
+	@Test
+	void testGetParentAndSetParent() {
+		RootState test = new RootState(typeFactoryMock, null);
+		ParserInternalTypeBase initialParent = test.getParent();
+		ParserInternalTypeBase newParent = MockSource.typeMockOf(ItemType.SECTION, "section", "");
+		test.setParent(newParent);
+		assertAll(() -> assertEquals(com.keildraco.config.Config.EMPTY_TYPE, initialParent),
+				() -> assertEquals(newParent, test.getParent()));
 	}
 
 	/**
