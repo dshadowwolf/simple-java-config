@@ -195,6 +195,14 @@ public final class Constants {
 	 * a newline.
 	 */
 	public static final String NEWLINE_FORMAT_STRING = "%n";
+	
+	/**
+	 * <p>
+	 * This represents a value for a key that covers all possible options. It can be a section name, a key
+	 * or the "identifier" part of an operation. (At the time this is being written, its use as an operation identifier
+	 * is not implemented)
+	 */
+	public static final String ALL_KEY = "all";
 	/**
 	 * Private constructor to hide the default public one.
 	 */

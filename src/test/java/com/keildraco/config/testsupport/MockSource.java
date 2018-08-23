@@ -260,10 +260,9 @@ public class MockSource {
 
 			if (index > 0) {
 				String itemName = base.substring(0, index);
-				String rest = base.substring(index+1);
 
 				if (values.containsKey(itemName)) {
-					return values.get(itemName).get(rest);
+					return values.get(itemName);
 				}
 				return com.keildraco.config.Config.EMPTY_TYPE;
 			} else if (index == 0) {
