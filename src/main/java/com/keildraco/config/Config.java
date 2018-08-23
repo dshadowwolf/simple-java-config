@@ -336,6 +336,26 @@ public final class Config {
 		registerParserInternal(zz.getName(), clazz);
 	}
 
+	protected static void doRegisterType(Class<? extends ParserInternalTypeBase> clazz) {
+		try {
+			Config.registerType(clazz);
+		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+				| InvocationTargetException e) {
+			throw new TypeRegistrationException(
+					String.format("Caught exception %s when trying to register type %s",
+							e.getClass(), clazz.getName()));
+		}
+	}
+	
+	protected static void doRegisterParser(Class<? extends AbstractParserBase> clazz) {
+		try {
+			Config.registerParser(clazz);
+		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+				| InvocationTargetException e) {
+			throw new ParserRegistrationException(clazz.getName(), e);
+		}
+	}
+	
 	/**
 	 * Register all classes found in {@link com.keildraco.config.types} and
 	 * {@link com.keildraco.config.states} that extend either {@link ParserInternalTypeBase} or
@@ -343,25 +363,9 @@ public final class Config {
 	 */
 	public static void registerKnownParts() {
 		(new Reflections("com.keildraco.config.types")).getSubTypesOf(ParserInternalTypeBase.class)
-				.stream().forEach(t -> {
-					try {
-						Config.registerType(t);
-					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
-							| InvocationTargetException e) {
-						throw new TypeRegistrationException(
-								String.format("Caught exception %s when trying to register type %s",
-										e.getClass(), t.getName()));
-					}
-				});
+				.stream().forEach(t -> doRegisterType(t));
 		(new Reflections("com.keildraco.config.states")).getSubTypesOf(AbstractParserBase.class)
-				.stream().forEach(t -> {
-					try {
-						Config.registerParser(t);
-					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
-							| InvocationTargetException e) {
-						throw new ParserRegistrationException(t.getName(), e);
-					}
-				});
+				.stream().forEach(t -> doRegisterParser(t));
 	}
 
 	/**
