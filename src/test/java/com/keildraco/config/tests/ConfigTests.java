@@ -1,6 +1,7 @@
 package com.keildraco.config.tests;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,6 +23,7 @@ import com.keildraco.config.exceptions.IllegalParserStateException;
 import com.keildraco.config.exceptions.ParserRegistrationException;
 import com.keildraco.config.exceptions.TypeRegistrationException;
 import com.keildraco.config.exceptions.UnknownStateException;
+import com.keildraco.config.interfaces.ParserInternalTypeBase;
 import com.keildraco.config.testsupport.NullParser;
 import com.keildraco.config.testsupport.ParserThatThrows;
 import com.keildraco.config.testsupport.TypeThatThrows;
@@ -174,4 +176,26 @@ final class ConfigTests {
 				() -> assertThrows(IOException.class,
 						() -> Config.loadFile("assets/this-doesnt-exist.cfg")));
 	}
+	
+	/**
+	 *
+	 */
+	@Test
+	void testAlternateCodePathForTypeLambda() {
+		Config.reset();
+		Config.registerKnownParts();
+		ParserInternalTypeBase testItem = Config.getFactory().getType(Config.EMPTY_TYPE, SECTION, "", ItemType.SECTION);
+		assertEquals(Config.EMPTY_TYPE, testItem.getParent(), "Actually testing for lambda code path completeness");
+	}
+
+	/**
+	 *
+	 */
+	@Test
+	void testRegisterParserStringClass() {
+		Config.reset();
+		Config.registerParser("SECTION", com.keildraco.config.states.SectionParser.class);
+		assertNotNull(Config.getFactory().getParser("SECTION", null));
+	}
+
 }
