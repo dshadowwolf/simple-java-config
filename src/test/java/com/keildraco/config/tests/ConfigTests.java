@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +26,8 @@ import com.keildraco.config.exceptions.ParserRegistrationException;
 import com.keildraco.config.exceptions.TypeRegistrationException;
 import com.keildraco.config.exceptions.UnknownStateException;
 import com.keildraco.config.interfaces.ParserInternalTypeBase;
+import com.keildraco.config.testsupport.BrokenParserState;
+import com.keildraco.config.testsupport.BrokenType;
 import com.keildraco.config.testsupport.NullParser;
 import com.keildraco.config.testsupport.ParserThatThrows;
 import com.keildraco.config.testsupport.TypeThatThrows;
@@ -198,4 +202,33 @@ final class ConfigTests {
 		assertNotNull(Config.getFactory().getParser("SECTION", null));
 	}
 
+	/**
+	 *
+	 */
+	@Test
+	void testTypeRegisterException() {
+		Method m;
+		try {
+			m = Config.class.getDeclaredMethod("doRegisterType", Class.class);
+			m.setAccessible(true);
+			assertThrows(InvocationTargetException.class, () -> m.invoke(null, BrokenType.class));
+		} catch (NoSuchMethodException | SecurityException e) {
+			fail("Caught exception "+e);
+		}
+	}
+
+	/**
+	 *
+	 */
+	@Test
+	void testParserRegisterException() {
+		Method m;
+		try {
+			m = Config.class.getDeclaredMethod("doRegisterParser", Class.class);
+			m.setAccessible(true);
+			assertThrows(InvocationTargetException.class, () -> m.invoke(null, BrokenParserState.class));
+		} catch (NoSuchMethodException | SecurityException e) {
+			fail("Caught exception "+e);
+		}
+	}
 }
