@@ -42,20 +42,12 @@ public final class DataQuery {
 	public boolean matches(final String key) {
 		// find item, or "all"
 		final int index = key.indexOf('.');
-		if (this.baseSection.has(key)) {
-			return true;
-		} else if ((index != -1) && (index > 0)) {
-			final String base = key.substring(0, index);
-			final String term = key.substring(index + 1);
-			if(this.baseSection.has(base)) {
-				return new ItemMatcher(this.baseSection.get(base)).matches(term);
-			} else {
-				return false;
-			}
+		if ((index != -1) && (index > 0)) {
+			return new ItemMatcher(this.baseSection).matches(key);
 		} else if (index == 0) {
 			throw new IllegalArgumentException("search keys must not start with '.'");
 		} else {
-			return false;
+			return this.baseSection.has(key);
 		}
 	}
 }

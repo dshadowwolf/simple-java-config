@@ -1,7 +1,10 @@
 package com.keildraco.config.tests.data;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -52,8 +55,18 @@ final class DataQueryTest {
 	 */
 	@Test
 	void testMatches() {
-		assertTrue(true, "blargh");
 		final DataQuery dq = DataQuery.of(work);
 		assertTrue(dq.matches("section.magic.xyzzy"), "basic test");
+	}
+	
+	/**
+	 *
+	 */
+	@Test
+	void testAlternateCodePaths() {
+		final DataQuery dq = DataQuery.of(work);
+		assertAll( () -> assertThrows(IllegalArgumentException.class, () -> dq.matches(".section.magic.xyzzy")),
+				() -> assertTrue(dq.matches("section")),
+				() -> assertFalse(dq.matches("section.blargh")));
 	}
 }
