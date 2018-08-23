@@ -336,7 +336,7 @@ public final class Config {
 		registerParserInternal(zz.getName(), clazz);
 	}
 
-	protected static void doRegisterType(Class<? extends ParserInternalTypeBase> clazz) {
+	private static void doRegisterType(Class<? extends ParserInternalTypeBase> clazz) {
 		try {
 			Config.registerType(clazz);
 		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
@@ -347,7 +347,7 @@ public final class Config {
 		}
 	}
 	
-	protected static void doRegisterParser(Class<? extends AbstractParserBase> clazz) {
+	private static void doRegisterParser(Class<? extends AbstractParserBase> clazz) {
 		try {
 			Config.registerParser(clazz);
 		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
@@ -363,9 +363,9 @@ public final class Config {
 	 */
 	public static void registerKnownParts() {
 		(new Reflections("com.keildraco.config.types")).getSubTypesOf(ParserInternalTypeBase.class)
-				.stream().forEach(t -> doRegisterType(t));
+				.stream().forEach(Config::doRegisterType);
 		(new Reflections("com.keildraco.config.states")).getSubTypesOf(AbstractParserBase.class)
-				.stream().forEach(t -> doRegisterParser(t));
+				.stream().forEach(Config::doRegisterParser);
 	}
 
 	/**
