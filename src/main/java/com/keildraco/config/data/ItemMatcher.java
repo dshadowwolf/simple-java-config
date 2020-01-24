@@ -119,7 +119,7 @@ public class ItemMatcher {
 	}
 
 	private static BooleanMatch doMatchReturnCombination(final BooleanMatch base, final BooleanMatch all) {
-		if (base == BooleanMatch.FORCE_TRUE || base == BooleanMatch.FORCE_FALSE || base == BooleanMatch.TRUE) return base;
+		if (base == BooleanMatch.FORCED_TRUE || base == BooleanMatch.FORCED_FALSE || base == BooleanMatch.TRUE) return base;
 		else return all;
 	}
 	
@@ -230,12 +230,12 @@ public class ItemMatcher {
 		
 		if (oper == (int) Constants.NOTOPERATOR) {
 			if(operation.getValueRaw().equals(value)) {
-				return BooleanMatch.FORCE_FALSE;
+				return BooleanMatch.FORCED_FALSE;
 			}
 			return BooleanMatch.TRUE;
 		} else if (oper == (int) Constants.IGNOREOPERATOR) {
 			if(operation.getValueRaw().equals(value)) {
-				return BooleanMatch.FORCE_TRUE;
+				return BooleanMatch.FORCED_TRUE;
 			}
 			return BooleanMatch.FALSE;
 		}
